@@ -1,42 +1,78 @@
-# sv
+# Shellfish
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Shellfish is a standalone PC console-style game launcher/front-end in the Monsan
+workspace.
 
-## Creating a project
+It targets a controller-first desktop experience for Windows and Linux gaming
+PCs: unified libraries, local metadata, emulation, downloads, save backups and
+direct game launch from a console-like UI.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Stack
 
-```sh
-# create a new project
-npx sv create my-app
+- SvelteKit with Svelte 5
+- TypeScript
+- Paraglide i18n
+- MonsanUI
+- Tauri v2 scaffold
+- Planned SQLite local data
+
+## Current State
+
+Shellfish is early-stage. The repository has the SvelteKit/MonsanUI foundation,
+suite-standard validation scripts and Tauri commands, but the full launcher,
+store integrations, SQLite model, emulator integrations and save-management
+runtime are still product plan items.
+
+Shellfish does not currently use Owlth SSO, Directus, Examster or Manki data.
+
+## Requirements
+
+- Node `>=22.13.0`
+- pnpm
+- Access to the private MonsanUI repository during install
+- Tauri prerequisites for desktop development/builds
+
+## Commands
+
+```bash
+pnpm dev
+pnpm dev:fast
+pnpm standards
+pnpm tooling
+pnpm lint
+pnpm typecheck
+pnpm build
+pnpm test
+pnpm desktop:dev
+pnpm desktop:build
 ```
 
-To recreate this project with the same configuration:
+`pnpm test` is the full local gate:
 
-```sh
-# recreate this project
-pnpm dlx sv@0.16.1 create --template minimal --types ts --add prettier eslint sveltekit-adapter="adapter:auto" paraglide="languageTags:en, pt, es+demo:no" --install pnpm Shellfish
+```bash
+pnpm standards && pnpm tooling && pnpm env:check && pnpm page-structure && pnpm lint && pnpm typecheck && pnpm build
 ```
 
-## Developing
+## MonsanUI
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Shellfish consumes MonsanUI for shared components, CSS and standards checks.
 
-```sh
-npm run dev
+Local development commands build and link the sibling `../MonsanUI` checkout
+before starting the app, so component changes can be tested without changing the
+production dependency declaration.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+After MonsanUI changes are merged into `main`, update Shellfish with:
+
+```bash
+pnpm update monsan-ui
+pnpm test
 ```
 
-## Building
+## Documentation
 
-To create a production version of your app:
+- `DOC_PROJ.md`: compact agent context plus product specification.
+- `AGENTS.md` in the workspace root: canonical implementation rules.
+- `SUITE_CONTEXT.md` in the workspace root: cross-project map.
 
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Do not commit `build`, `.svelte-kit`, `node_modules`, generated desktop output,
+secrets, store credentials, local save data or private user paths.

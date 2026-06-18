@@ -7,3 +7,11 @@ bun.lockb
 
 # Miscellaneous
 /static/
+/.svelte-kit/
+/build/
+/dist/
+/node_modules/
+/src-tauri/target/
+project.inlang/.meta.json
+project.inlang/README.md
+/src/lib/paraglide/
