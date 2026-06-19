@@ -5,7 +5,7 @@
 	"identifier": "com.tauri.dev",
 	"build": {
 		"frontendDist": "../build",
-		"devUrl": "http://localhost:5177",
+		"devUrl": "http://localhost:5178",
 		"beforeDevCommand": "pnpm dev:fast",
 		"beforeBuildCommand": "pnpm build"
 	},

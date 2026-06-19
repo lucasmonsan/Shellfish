@@ -25,6 +25,10 @@ runtime are still product plan items.
 
 Shellfish does not currently use Owlth SSO, Directus, Examster or Manki data.
 
+## Local Origin
+
+- Shellfish web/dev origin: `http://localhost:5178`
+
 ## Requirements
 
 - Node `>=22.13.0`

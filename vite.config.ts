@@ -8,7 +8,7 @@ export default defineConfig({
 		paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' })
 	],
 	server: {
-		port: 5177,
+		port: 5178,
 		strictPort: true,
 		fs: {
 			allow: ['..']

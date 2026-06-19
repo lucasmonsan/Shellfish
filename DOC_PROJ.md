@@ -44,6 +44,10 @@ Shellfish does not currently own or depend on Owlth SSO, Examster, Manki or
 Directus data. If that changes, document the contract here before implementing
 the integration.
 
+## Local Origin
+
+- Shellfish web/dev origin: `http://localhost:5178`.
+
 ## Stack
 
 - SvelteKit with Svelte 5.
