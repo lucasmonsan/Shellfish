@@ -1,0 +1,50 @@
+@import './modern-normalize.css';
+@import './variables.css';
+
+/* Viewport Base */
+html {
+	font-family: var(--font-body);
+	background-color: var(--bg-primary);
+	color: var(--text-primary);
+}
+
+body {
+	min-height: 100dvh;
+	background-color: var(--bg-primary);
+	color: var(--text-primary);
+}
+
+/* Tipografia Base */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-display);
+	font-weight: 700;
+	line-height: 1.2;
+	color: var(--text-primary);
+}
+
+p {
+	line-height: 1.6;
+}
+
+/* Foco Acessível Padronizado */
+:focus-visible {
+	outline: var(--border-width) solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+/* Acessibilidade para Movimento Reduzido */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

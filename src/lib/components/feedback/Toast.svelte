@@ -1,0 +1,118 @@
+<script lang="ts">
+	import type { ToastProps } from '$lib/types/index.js';
+
+	let {
+		children,
+		variant = 'info',
+		duration = 4000,
+		open = $bindable(true),
+		onclose,
+		class: className,
+		...restProps
+	}: ToastProps = $props();
+
+	$effect(() => {
+		if (!open || duration <= 0) return;
+
+		const timer = setTimeout(() => {
+			open = false;
+			onclose?.();
+		}, duration);
+
+		return () => clearTimeout(timer);
+	});
+</script>
+
+{#if open}
+	<aside role="status" aria-live="polite" data-variant={variant} class={className} {...restProps}>
+		<div class="toast-content">
+			{@render children?.()}
+		</div>
+		<button
+			type="button"
+			class="close-button"
+			aria-label="Fechar notificação"
+			onclick={() => {
+				open = false;
+				onclose?.();
+			}}
+		>
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2.5"
+				stroke-linecap="round"
+			>
+				<line x1="4" y1="4" x2="12" y2="12" />
+				<line x1="12" y1="4" x2="4" y2="12" />
+			</svg>
+		</button>
+	</aside>
+{/if}
+
+<style>
+	aside {
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-md);
+		padding: var(--space-sm) var(--space-md);
+		box-sizing: border-box;
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-sm);
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
+		box-shadow: var(--shadow);
+		position: fixed;
+		bottom: var(--space-lg);
+		right: var(--space-lg);
+		z-index: var(--z-toast);
+		max-width: min(420px, 90vw);
+	}
+
+	.toast-content {
+		flex: 1;
+		font-family: inherit;
+		font-size: var(--text-sm);
+		line-height: 1.4;
+	}
+
+	/* Variantes */
+	aside[data-variant='info'] {
+		border-left: calc(var(--border-width) * 3) solid var(--color-blue);
+	}
+
+	aside[data-variant='success'] {
+		border-left: calc(var(--border-width) * 3) solid var(--color-green);
+	}
+
+	aside[data-variant='warning'] {
+		border-left: calc(var(--border-width) * 3) solid var(--color-orange);
+	}
+
+	aside[data-variant='danger'] {
+		border-left: calc(var(--border-width) * 3) solid var(--color-danger);
+	}
+
+	.close-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 2px;
+		color: var(--text-secondary);
+		border-radius: var(--radius-sm);
+	}
+
+	.close-button:hover {
+		color: var(--text-primary);
+	}
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+</style>
