@@ -1,0 +1,108 @@
+:root {
+	/* ==========================================================================
+	   1. SOMBRA SÓLIDA TÁTIL (PADRÃO ÚNICO GLOBAL)
+	   ========================================================================== */
+	--shadow: 2px 2px 0px var(--border-color);
+
+	/* ==========================================================================
+	   2. PALETA DE 12 CORES (HARMONIA TERRACOTA)
+	   ========================================================================== */
+	--color-red: #c94038;
+	--color-orange: #d96b27;
+	--color-purple: #6f4c8a;
+	--color-pink: #c75c82;
+	--color-green-dark: #2b6140;
+	--color-green-light: #489968;
+	--color-blue-dark: #274c77;
+	--color-blue-light: #4f86c6;
+	--color-yellow: #dca130;
+	--color-white: #ffffff;
+	--color-gray: #71717a;
+	--color-black: #18181b;
+
+	/* Identidade Principal */
+	--color-primary: #b94b38;
+	--color-primary-hover: #9c3f2f;
+	--color-primary-contrast: #ffffff;
+
+	/* Status Semânticos */
+	--color-success: var(--color-green-light);
+	--color-warning: var(--color-yellow);
+	--color-danger: var(--color-red);
+	--color-info: var(--color-blue-light);
+
+	/* ==========================================================================
+	   3. SUPERFÍCIES & CONTRASTE (LIGHT MODE)
+	   ========================================================================== */
+	--bg-primary: #fdfbf7;
+	--bg-secondary: #f4eee3;
+	--text-primary: #1c1917;
+	--text-secondary: #78716c;
+	--border-color: #1c1917;
+	--border-width: 2px;
+
+	/* ==========================================================================
+	   4. ARREDONDAMENTO DE CANTOS (APENAS SM E MD)
+	   ========================================================================== */
+	--radius-sm: 2px;
+	--radius-md: 4px;
+
+	/* ==========================================================================
+	   5. ESPAÇAMENTO (6 NÍVEIS BASEADOS NA GRADE DE 4/8PX)
+	   ========================================================================== */
+	--space-none: 0px;
+	--space-xs: 4px;
+	--space-sm: 8px;
+	--space-md: 16px;
+	--space-lg: 24px;
+	--space-xl: 32px;
+	--space-2xl: 48px;
+
+	/* Alturas Padrão de Controles */
+	--control-height-sm: 32px;
+	--control-height-md: 40px;
+	--control-height-lg: 48px;
+
+	/* ==========================================================================
+	   6. TIPOGRAFIA & ESCALA DE TEXTOS
+	   ========================================================================== */
+	--font-display: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-body:
+		'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+
+	/* ==========================================================================
+	   7. ESCALA SEMÂNTICA DE CAMADAS (Z-INDEX)
+	   ========================================================================== */
+	--z-below: -1;
+	--z-base: 0;
+	--z-sticky: 10;
+	--z-popover: 20;
+	--z-drawer: 30;
+	--z-toast: 40;
+}
+
+/* ==========================================================================
+   8. DARK MODE
+   ========================================================================== */
+:root[data-theme='dark'] {
+	--bg-primary: #181615;
+	--bg-secondary: #24201e;
+	--text-primary: #f5f0eb;
+	--text-secondary: #a8a29e;
+	--border-color: #f5f0eb;
+
+	--color-primary: #d9624c;
+	--color-primary-hover: #b94b38;
+	--color-primary-contrast: #181615;
+
+	--color-black: #f5f0eb;
+	--color-white: #181615;
+}

@@ -1,0 +1,85 @@
+{
+	"name": "shellfish",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"license": "AGPL-3.0-only",
+	"packageManager": "pnpm@11.17.0",
+	"engines": {
+		"node": ">=22.13.0"
+	},
+	"monsanSuite": {
+		"type": "ui",
+		"publicProduct": false,
+		"usesMonsanUI": false,
+		"requiresSSO": false,
+		"requiresSEO": false,
+		"hasDirectus": false,
+		"hasLanding": false
+	},
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./shellfish.css": "./dist/styles/index.css",
+		"./variables.css": "./dist/styles/variables.css"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && pnpm run build:package",
+		"build:package": "svelte-kit sync && svelte-package",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
+		"lint": "prettier --check . && eslint .",
+		"lint:package": "publint run --pack false",
+		"format": "prettier --write .",
+		"test:unit": "vitest run",
+		"test": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm run lint:package",
+		"test:e2e": "playwright test"
+	},
+	"peerDependencies": {
+		"@sveltejs/kit": "^2.0.0",
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@playwright/test": "^1.60.0",
+		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/kit": "^2.63.0",
+		"@sveltejs/package": "^2.5.8",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^24",
+		"@vitest/browser-playwright": "^4.1.8",
+		"eslint": "^10.4.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.19.0",
+		"globals": "^17.6.0",
+		"playwright": "^1.60.0",
+		"prettier": "^3.8.3",
+		"prettier-plugin-svelte": "^4.1.0",
+		"publint": "^0.3.23",
+		"svelte": "^5.56.1",
+		"svelte-check": "^4.6.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.60.1",
+		"vite": "^8.0.16",
+		"vitest": "^4.1.8",
+		"vitest-browser-svelte": "^2.1.1"
+	}
+}
