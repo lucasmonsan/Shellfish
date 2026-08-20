@@ -75,13 +75,13 @@
 		</Row>
 	</Header>
 
-	<Section scrollable={true} padding="lg" gap="lg">
+	<Section scrollable={true} padding="md" gap="md">
 		<Row fullWidth={true} justify="between" align="center">
 			<Tabs items={tabItems} bind:value={activeTab} />
 		</Row>
 
 		{#if activeTab === 'actions'}
-			<Card radius="md" padding="lg">
+			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.buttonVariants.title')}</span>
 				{/snippet}
@@ -99,7 +99,7 @@
 				</Column>
 			</Card>
 
-			<Card radius="md" padding="lg">
+			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.buttonSizes.title')}</span>
 				{/snippet}
@@ -145,11 +145,11 @@
 		{/if}
 
 		{#if activeTab === 'forms'}
-			<Card radius="md" padding="lg">
+			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.forms.title')}</span>
 				{/snippet}
-				<Column gap="lg">
+				<Column gap="md">
 					<Row align="center" gap="md">
 						<Checkbox bind:checked={isInvalid} label={t('showcase.forms.simulateInvalid')} />
 					</Row>
@@ -251,8 +251,8 @@
 		{/if}
 
 		{#if activeTab === 'display'}
-			<Grid columns={2} gap="lg">
-				<Card radius="md" padding="lg">
+			<Grid columns={2} gap="md">
+				<Card radius="md" padding="md">
 					{#snippet header()}
 						<span>{t('showcase.display.badgesTitle')}</span>
 					{/snippet}
@@ -272,7 +272,7 @@
 					</Column>
 				</Card>
 
-				<Card radius="md" padding="lg">
+				<Card radius="md" padding="md">
 					{#snippet header()}
 						<span>{t('showcase.display.avatarsTitle')}</span>
 					{/snippet}
@@ -285,7 +285,7 @@
 				</Card>
 			</Grid>
 
-			<Card radius="md" padding="lg" interactive={true}>
+			<Card radius="md" padding="md" interactive={true}>
 				{#snippet header()}
 					<span>{t('showcase.display.interactiveCardTitle')}</span>
 				{/snippet}
@@ -296,7 +296,7 @@
 		{/if}
 
 		{#if activeTab === 'feedback'}
-			<Column gap="lg">
+			<Column gap="md">
 				<Alert variant="info" title={t('showcase.feedback.infoTitle')}>
 					{t('showcase.feedback.infoMsg')}
 				</Alert>
@@ -310,7 +310,7 @@
 					{t('showcase.feedback.dangerMsg')}
 				</Alert>
 
-				<Card radius="md" padding="lg">
+				<Card radius="md" padding="md">
 					{#snippet header()}
 						<span>{t('showcase.feedback.dialogsTitle')}</span>
 					{/snippet}
@@ -328,7 +328,7 @@
 		{/if}
 	</Section>
 
-	<Footer sticky={true} padding="sm">
+	<Footer sticky={true} padding="md">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
 				{t('showcase.footer.tagline')}

@@ -109,7 +109,8 @@
 	header {
 		display: flex;
 		align-items: center;
-		padding: var(--space-sm) var(--space-md);
+		padding-block: var(--space-sm);
+		padding-inline: var(--space-md);
 		border-bottom: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
 		font-family: var(--font-display);
@@ -123,32 +124,67 @@
 	footer {
 		display: flex;
 		align-items: center;
-		padding: var(--space-sm) var(--space-md);
+		padding-block: var(--space-sm);
+		padding-inline: var(--space-md);
 		border-top: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
 	}
 
-	/* Paddings do Body */
+	/* Paddings do Body e Alinhamento Horizontal de Header/Footer */
 	article[data-padding='none'] .card-body {
 		padding: var(--space-none);
 	}
+	article[data-padding='none'] header,
+	article[data-padding='none'] footer {
+		padding-inline: var(--space-md);
+	}
+
 	article[data-padding='xs'] .card-body {
 		padding: var(--space-xs);
 	}
+	article[data-padding='xs'] header,
+	article[data-padding='xs'] footer {
+		padding-inline: var(--space-xs);
+	}
+
 	article[data-padding='sm'] .card-body {
 		padding: var(--space-sm);
 	}
+	article[data-padding='sm'] header,
+	article[data-padding='sm'] footer {
+		padding-inline: var(--space-sm);
+	}
+
 	article[data-padding='md'] .card-body {
 		padding: var(--space-md);
 	}
+	article[data-padding='md'] header,
+	article[data-padding='md'] footer {
+		padding-inline: var(--space-md);
+	}
+
 	article[data-padding='lg'] .card-body {
 		padding: var(--space-lg);
 	}
+	article[data-padding='lg'] header,
+	article[data-padding='lg'] footer {
+		padding-inline: var(--space-lg);
+	}
+
 	article[data-padding='xl'] .card-body {
 		padding: var(--space-xl);
 	}
+	article[data-padding='xl'] header,
+	article[data-padding='xl'] footer {
+		padding-inline: var(--space-xl);
+	}
+
 	article[data-padding='2xl'] .card-body {
 		padding: var(--space-2xl);
+	}
+	article[data-padding='2xl'] header,
+	article[data-padding='2xl'] footer {
+		padding-inline: var(--space-2xl);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
