@@ -37,8 +37,8 @@ describe('Design Tokens & CSS Variables', () => {
 	});
 
 	it('deve conter apenas 2 níveis de radius (--radius-sm e --radius-md)', () => {
-		expect(variablesContent).toContain('--radius-sm: 2px;');
-		expect(variablesContent).toContain('--radius-md: 4px;');
+		expect(variablesContent).toContain('--radius-sm: 1px;');
+		expect(variablesContent).toContain('--radius-md: 2px;');
 
 		// Garante que níveis descartados foram removidos
 		expect(variablesContent).not.toContain('--radius-xs:');
