@@ -63,6 +63,13 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.display.interactiveCardTitle': 'Card Interativo com Elevação Tátil',
 		'showcase.display.interactiveCardDesc':
 			'Passe o cursor sobre este card ou clique nele para sentir a física de interação tátil neobrutalista.',
+		'showcase.display.collapsibleCardTitle': 'Painel Expansível (Collapsible)',
+		'showcase.display.collapsibleCardDesc':
+			'Clique no cabeçalho para recolher ou expandir o conteúdo com rotação suave de chevron.',
+		'showcase.display.cardActionsTitle': 'Painel com Ações no Cabeçalho & Rodapé',
+		'showcase.display.cardActionsDesc':
+			'Cabeçalho e rodapé travados em 42px. Botões de 32px se acomodam perfeitamente sem esticar o painel.',
+		'showcase.display.cardHeaderAction': 'Ação Rápida',
 		'showcase.feedback.infoTitle': 'Informação',
 		'showcase.feedback.infoMsg': 'Este é um banner de alerta informativo com tag semântica pura.',
 		'showcase.feedback.successTitle': 'Sucesso',
@@ -144,6 +151,13 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.display.interactiveCardTitle': 'Interactive Card with Tactile Elevation',
 		'showcase.display.interactiveCardDesc':
 			'Hover over this card or click on it to feel the neobrutalist tactile interaction physics.',
+		'showcase.display.collapsibleCardTitle': 'Collapsible Panel (Collapsible)',
+		'showcase.display.collapsibleCardDesc':
+			'Click the header to collapse or expand content with smooth chevron rotation.',
+		'showcase.display.cardActionsTitle': 'Panel with Header & Footer Actions',
+		'showcase.display.cardActionsDesc':
+			'Header and footer locked at 42px. 32px buttons fit perfectly without stretching the panel.',
+		'showcase.display.cardHeaderAction': 'Quick Action',
 		'showcase.feedback.infoTitle': 'Information',
 		'showcase.feedback.infoMsg': 'This is an informative alert banner with pure semantic tag.',
 		'showcase.feedback.successTitle': 'Success',

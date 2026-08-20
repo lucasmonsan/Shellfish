@@ -47,12 +47,15 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(propViolations, 'Componentes sem propagação de class ou restProps').toEqual([]);
 	});
 
-	it('Card.svelte deve usar tag <article> pura na raiz e física interativa', () => {
+	it('Card.svelte deve usar tag <article> pura na raiz, física interativa, header de 42px e suporte a collapsible', () => {
 		const content = fs.readFileSync(path.join(displayDir, 'Card.svelte'), 'utf-8');
 		expect(content).toMatch(/<article[\s\S]*>[\s\S]*<\/article>/);
 		expect(content).not.toContain('<div class="card-container"');
 		expect(content).toContain("article[data-interactive='true']:hover");
 		expect(content).toContain('transform: translate(-1px, -1px);');
+		expect(content).toContain('min-height: 42px;');
+		expect(content).toContain('collapsible = false');
+		expect(content).toContain('class="card-chevron"');
 	});
 
 	it('Badge.svelte deve renderizar <span> diretamente', () => {

@@ -285,6 +285,33 @@
 				</Card>
 			</Grid>
 
+			<Card radius="md" padding="md" collapsible={true}>
+				{#snippet header()}
+					<span>{t('showcase.display.collapsibleCardTitle')}</span>
+				{/snippet}
+				<p style="margin: 0; font-size: var(--text-sm);">
+					{t('showcase.display.collapsibleCardDesc')}
+				</p>
+			</Card>
+
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<Row fullWidth={true} justify="between" align="center">
+						<span>{t('showcase.display.cardActionsTitle')}</span>
+						<Button size="sm" variant="secondary">{t('showcase.display.cardHeaderAction')}</Button>
+					</Row>
+				{/snippet}
+				<p style="margin: 0; font-size: var(--text-sm);">
+					{t('showcase.display.cardActionsDesc')}
+				</p>
+				{#snippet footer()}
+					<Row fullWidth={true} justify="end" gap="sm">
+						<Button size="sm" variant="ghost">{t('common.cancel')}</Button>
+						<Button size="sm" variant="primary">{t('common.confirm')}</Button>
+					</Row>
+				{/snippet}
+			</Card>
+
 			<Card radius="md" padding="md" interactive={true}>
 				{#snippet header()}
 					<span>{t('showcase.display.interactiveCardTitle')}</span>

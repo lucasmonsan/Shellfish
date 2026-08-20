@@ -11,6 +11,8 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 	radius?: Radius;
 	interactive?: boolean;
 	fullWidth?: boolean;
+	collapsible?: boolean;
+	open?: boolean;
 }
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

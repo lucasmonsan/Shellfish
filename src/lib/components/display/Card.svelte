@@ -10,9 +10,17 @@
 		radius = 'md',
 		interactive = false,
 		fullWidth = false,
+		collapsible = false,
+		open = $bindable(true),
 		class: className,
 		...restProps
 	}: CardProps = $props();
+
+	function toggleCollapse() {
+		if (collapsible) {
+			open = !open;
+		}
+	}
 </script>
 
 <article
@@ -21,23 +29,56 @@
 	data-radius={radius}
 	data-interactive={interactive}
 	data-full-width={fullWidth}
+	data-collapsible={collapsible}
+	data-collapsed={collapsible && !open ? 'true' : undefined}
 	class={className}
 	{...restProps}
 >
 	{#if header}
 		<header>
-			{@render header()}
+			{#if collapsible}
+				<button
+					type="button"
+					class="card-header-toggle"
+					aria-expanded={open}
+					onclick={toggleCollapse}
+				>
+					<span class="card-header-content">
+						{@render header()}
+					</span>
+					<span class="card-chevron" class:open aria-hidden="true">
+						<svg
+							viewBox="0 0 24 24"
+							width="16"
+							height="16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<polyline points="6 9 12 15 18 9" />
+						</svg>
+					</span>
+				</button>
+			{:else}
+				<div class="card-header-content">
+					{@render header()}
+				</div>
+			{/if}
 		</header>
 	{/if}
 
-	<div class="card-body">
-		{@render children?.()}
-	</div>
+	{#if !collapsible || open}
+		<div class="card-body">
+			{@render children?.()}
+		</div>
 
-	{#if footer}
-		<footer>
-			{@render footer()}
-		</footer>
+		{#if footer}
+			<footer>
+				{@render footer()}
+			</footer>
+		{/if}
 	{/if}
 </article>
 
@@ -109,12 +150,65 @@
 	header {
 		display: flex;
 		align-items: center;
-		padding-block: var(--space-sm);
+		min-height: 42px;
+		box-sizing: border-box;
+		padding-block: var(--space-xs);
 		padding-inline: var(--space-md);
 		border-bottom: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
 		font-family: var(--font-display);
 		font-weight: 700;
+	}
+
+	article[data-collapsed='true'] header {
+		border-bottom: none;
+	}
+
+	.card-header-toggle {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		min-height: 42px;
+		margin-block: calc(var(--space-xs) * -1);
+		margin-inline: calc(var(--space-md) * -1);
+		padding-block: var(--space-xs);
+		padding-inline: var(--space-md);
+		background: transparent;
+		border: none;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+		text-align: left;
+		transition: background-color 0.12s ease;
+	}
+
+	.card-header-toggle:hover {
+		background-color: var(--bg-primary);
+	}
+
+	.card-header-toggle:focus-visible {
+		outline: none;
+		box-shadow: inset 0 0 0 2px var(--color-primary);
+	}
+
+	.card-header-content {
+		display: flex;
+		align-items: center;
+		flex: 1;
+		min-width: 0;
+	}
+
+	.card-chevron {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: var(--space-sm);
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		flex-shrink: 0;
+	}
+
+	.card-chevron.open {
+		transform: rotate(180deg);
 	}
 
 	.card-body {
@@ -124,7 +218,9 @@
 	footer {
 		display: flex;
 		align-items: center;
-		padding-block: var(--space-sm);
+		min-height: 42px;
+		box-sizing: border-box;
+		padding-block: var(--space-xs);
 		padding-inline: var(--space-md);
 		border-top: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
@@ -138,12 +234,20 @@
 	article[data-padding='none'] footer {
 		padding-inline: var(--space-md);
 	}
+	article[data-padding='none'] .card-header-toggle {
+		margin-inline: calc(var(--space-md) * -1);
+		padding-inline: var(--space-md);
+	}
 
 	article[data-padding='xs'] .card-body {
 		padding: var(--space-xs);
 	}
 	article[data-padding='xs'] header,
 	article[data-padding='xs'] footer {
+		padding-inline: var(--space-xs);
+	}
+	article[data-padding='xs'] .card-header-toggle {
+		margin-inline: calc(var(--space-xs) * -1);
 		padding-inline: var(--space-xs);
 	}
 
@@ -154,12 +258,20 @@
 	article[data-padding='sm'] footer {
 		padding-inline: var(--space-sm);
 	}
+	article[data-padding='sm'] .card-header-toggle {
+		margin-inline: calc(var(--space-sm) * -1);
+		padding-inline: var(--space-sm);
+	}
 
 	article[data-padding='md'] .card-body {
 		padding: var(--space-md);
 	}
 	article[data-padding='md'] header,
 	article[data-padding='md'] footer {
+		padding-inline: var(--space-md);
+	}
+	article[data-padding='md'] .card-header-toggle {
+		margin-inline: calc(var(--space-md) * -1);
 		padding-inline: var(--space-md);
 	}
 
@@ -170,12 +282,20 @@
 	article[data-padding='lg'] footer {
 		padding-inline: var(--space-lg);
 	}
+	article[data-padding='lg'] .card-header-toggle {
+		margin-inline: calc(var(--space-lg) * -1);
+		padding-inline: var(--space-lg);
+	}
 
 	article[data-padding='xl'] .card-body {
 		padding: var(--space-xl);
 	}
 	article[data-padding='xl'] header,
 	article[data-padding='xl'] footer {
+		padding-inline: var(--space-xl);
+	}
+	article[data-padding='xl'] .card-header-toggle {
+		margin-inline: calc(var(--space-xl) * -1);
 		padding-inline: var(--space-xl);
 	}
 
@@ -186,9 +306,14 @@
 	article[data-padding='2xl'] footer {
 		padding-inline: var(--space-2xl);
 	}
+	article[data-padding='2xl'] .card-header-toggle {
+		margin-inline: calc(var(--space-2xl) * -1);
+		padding-inline: var(--space-2xl);
+	}
 
 	@media (prefers-reduced-motion: reduce) {
-		article {
+		article,
+		.card-chevron {
 			transition: none;
 		}
 	}
