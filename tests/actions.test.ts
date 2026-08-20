@@ -20,12 +20,12 @@ describe('Actions & Interactive Tactile Physics Engine', () => {
 
 			const hasRestShadow =
 				content.includes('box-shadow: var(--shadow);') ||
-				content.includes('box-shadow: 2px 2px 0px');
+				content.includes('box-shadow: 1px 1px 0px');
 			const hasHoverElevation =
 				content.includes('transform: translate(-1px, -1px);') &&
-				content.includes('box-shadow: 3px 3px 0px var(--border-color);');
+				content.includes('box-shadow: 2px 2px 0px var(--border-color);');
 			const hasActiveCompression =
-				content.includes('transform: translate(2px, 2px);') &&
+				content.includes('transform: translate(1px, 1px);') &&
 				(content.includes('box-shadow: 0px 0px 0px') ||
 					content.includes('box-shadow: 0px 0px 0px var(--border-color);'));
 

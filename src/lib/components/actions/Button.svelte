@@ -87,11 +87,11 @@
 	/* Micro-interação tátil e física de clique */
 	button:hover:not(:disabled) {
 		transform: translate(-1px, -1px);
-		box-shadow: 3px 3px 0px var(--border-color);
+		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
 	button:active:not(:disabled) {
-		transform: translate(2px, 2px);
+		transform: translate(1px, 1px);
 		box-shadow: 0px 0px 0px var(--border-color);
 	}
 

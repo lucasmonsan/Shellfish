@@ -15,7 +15,7 @@ Use este arquivo como ponto de entrada conciso para agentes de IA. Use `README.m
 - **Fonte Única da Verdade Visual**: Consumidores da suíte não criam CSS local de sobrescrita; novas variantes e componentes são adicionados diretamente no Shellfish.
 - **Zero "Div-Soup"**: Uso obrigatório de tags HTML nativas semânticas (`<input>`, `<textarea>`, `<article>`, `<dialog>`, `<select>`, `<button>`, `<header>`, `<main>`, `<section>`, `<footer>`, `<hr>`). Proibido aninhar `<div>`s supérfluas.
 - **Estilização Direta de Tags Nativas**: Como o CSS no Svelte é estritamente isolado (scoped), estilizamos tags únicas diretamente em `<style>` (`button`, `input`, `textarea`, `select`, `article`, `dialog`, `hr`, `main`, `header`, `section`, `footer`) sem criar classes artificiais desnecessárias.
-- **1 Único Padrão de Sombra Sólida**: Padronização estrita em `--shadow: 2px 2px 0px var(--border-color)` (hover `3px 3px` com `translate(-1px, -1px)` e active `0px 0px` com `translate(2px, 2px)`).
+- **1 Único Padrão de Sombra Sólida**: Padronização estrita em `--shadow: 1px 1px 0px var(--border-color)` (hover `2px 2px` com `translate(-1px, -1px)` e active `0px 0px` com `translate(1px, 1px)`).
 - **Svelte 5 Runes**: Uso obrigatório de Runes (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Proibido Svelte 4 legado (`export let`, `$$props`, `<slot>`).
 - **TypeScript Estrito & a11y Nativo**: Todas as props são tipadas e repassam atributos HTML padrão via `...restProps`. Todos os componentes possuem foco visível e acessibilidade via teclado.
 - **Internacionalização Reativa (i18n)**: Suporte dinâmico a `pt-BR` e `en-US` via `i18n.svelte.ts` e componente `<LocaleSelector>`. Proibido strings estáticas em atributos de acessibilidade.

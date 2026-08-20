@@ -46,17 +46,17 @@
 	textarea:focus-visible {
 		outline: none;
 		border-color: var(--color-primary);
-		box-shadow: 3px 3px 0px var(--color-primary);
+		box-shadow: 2px 2px 0px var(--color-primary);
 		transform: translate(-1px, -1px);
 	}
 
 	textarea[data-invalid='true'] {
 		border-color: var(--color-danger);
-		box-shadow: 2px 2px 0px var(--color-danger);
+		box-shadow: 1px 1px 0px var(--color-danger);
 	}
 
 	textarea[data-invalid='true']:focus-visible {
-		box-shadow: 3px 3px 0px var(--color-danger);
+		box-shadow: 2px 2px 0px var(--color-danger);
 		transform: translate(-1px, -1px);
 	}
 

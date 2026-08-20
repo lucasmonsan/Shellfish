@@ -32,8 +32,8 @@ describe('Design Tokens & CSS Variables Dynamic Engine', () => {
 		declaredVariables.add(declMatch[1]);
 	}
 
-	it('deve ter 1 único padrão de sombra sólida (--shadow: 2px 2px 0px var(--border-color))', () => {
-		expect(variablesContent).toContain('--shadow: 2px 2px 0px var(--border-color);');
+	it('deve ter 1 único padrão de sombra sólida (--shadow: 1px 1px 0px var(--border-color))', () => {
+		expect(variablesContent).toContain('--shadow: 1px 1px 0px var(--border-color);');
 		expect(variablesContent).not.toContain('--shadow-sm');
 		expect(variablesContent).not.toContain('--shadow-md');
 		expect(variablesContent).not.toContain('--shadow-lg');

@@ -34,7 +34,7 @@ describe('Form Controls & Tactile Focus Engine', () => {
 			const content = fs.readFileSync(file, 'utf-8');
 			const relPath = path.relative(process.cwd(), file);
 
-			if (!content.includes('box-shadow: 3px 3px 0px var(--color-primary);')) {
+			if (!content.includes('box-shadow: 2px 2px 0px var(--color-primary);')) {
 				focusViolations.push(`${relPath}: Foco tátil com --color-primary ausente`);
 			}
 		}

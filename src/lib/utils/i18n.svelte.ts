@@ -25,7 +25,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.tabs.feedback': 'Feedback & Diálogos',
 		'showcase.buttonVariants.title': 'Variantes de Botão',
 		'showcase.buttonVariants.desc':
-			'Física mecânica real: sombra sólida de 2px no repouso, elevação de 3px no hover, e compressão no chão no clique.',
+			'Física mecânica real: sombra sólida de 1px no repouso, elevação de 2px no hover, e compressão no chão no clique.',
 		'showcase.buttons.primary': 'Principal',
 		'showcase.buttons.secondary': 'Secundário',
 		'showcase.buttons.outline': 'Contorno',
@@ -110,7 +110,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.tabs.feedback': 'Feedback & Dialogs',
 		'showcase.buttonVariants.title': 'Button Variants',
 		'showcase.buttonVariants.desc':
-			'Real mechanical physics: 2px solid shadow at rest, 3px elevation on hover, and ground compression on click.',
+			'Real mechanical physics: 1px solid shadow at rest, 2px elevation on hover, and ground compression on click.',
 		'showcase.buttons.primary': 'Primary',
 		'showcase.buttons.secondary': 'Secondary',
 		'showcase.buttons.outline': 'Outline',

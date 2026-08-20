@@ -105,12 +105,12 @@
 
 	button:hover {
 		transform: translate(-1px, -1px);
-		box-shadow: 3px 3px 0px var(--border-color);
+		box-shadow: 2px 2px 0px var(--border-color);
 		background-color: var(--bg-primary);
 	}
 
 	button:active {
-		transform: translate(2px, 2px);
+		transform: translate(1px, 1px);
 		box-shadow: 0px 0px 0px var(--border-color);
 	}
 
