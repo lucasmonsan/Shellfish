@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { AlertProps } from '$lib/types/index.js';
+	import { t } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		children,
 		variant = 'info',
 		title,
 		closable = false,
+		closeLabel,
 		onclose,
 		class: className,
 		...restProps
@@ -28,7 +30,12 @@
 			{@render children?.()}
 		</div>
 		{#if closable}
-			<button type="button" class="close-button" aria-label="Fechar alerta" onclick={handleClose}>
+			<button
+				type="button"
+				class="close-button"
+				aria-label={closeLabel ?? t('alert.close')}
+				onclick={handleClose}
+			>
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"
@@ -77,22 +84,22 @@
 	/* Variantes */
 	aside[data-variant='info'] {
 		background-color: var(--bg-primary);
-		border-left: calc(var(--border-width) * 3) solid var(--color-blue);
+		border-left: calc(var(--border-width) * 3) solid var(--color-blue-light);
 	}
 
 	aside[data-variant='success'] {
 		background-color: var(--bg-primary);
-		border-left: calc(var(--border-width) * 3) solid var(--color-green);
+		border-left: calc(var(--border-width) * 3) solid var(--color-green-light);
 	}
 
 	aside[data-variant='warning'] {
 		background-color: var(--bg-primary);
-		border-left: calc(var(--border-width) * 3) solid var(--color-orange);
+		border-left: calc(var(--border-width) * 3) solid var(--color-yellow);
 	}
 
 	aside[data-variant='danger'] {
 		background-color: var(--bg-primary);
-		border-left: calc(var(--border-width) * 3) solid var(--color-danger);
+		border-left: calc(var(--border-width) * 3) solid var(--color-red);
 	}
 
 	.close-button {

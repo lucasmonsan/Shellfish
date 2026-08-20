@@ -43,7 +43,7 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Dialog)'
 	it('Spinner.svelte deve renderizar SVG contínuo com a11y', () => {
 		const content = fs.readFileSync(path.join(feedbackDir, 'Spinner.svelte'), 'utf-8');
 		expect(content).toContain('role="status"');
-		expect(content).toContain('aria-label="Carregando"');
+		expect(content).toContain("aria-label={label ?? t('spinner.loading')}");
 		expect(content).toContain('animation: spin 0.75s linear infinite;');
 	});
 

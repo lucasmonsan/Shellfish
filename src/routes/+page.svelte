@@ -23,16 +23,18 @@
 		Spinner,
 		Dialog,
 		Toast,
-		ThemeSelector
+		ThemeSelector,
+		LocaleSelector,
+		t
 	} from '$lib/index.js';
 
 	let activeTab = $state('actions');
-	const tabItems = [
-		{ id: 'actions', label: 'Ações & Navegação' },
-		{ id: 'forms', label: 'Formulários' },
-		{ id: 'display', label: 'Superfícies & Exibição' },
-		{ id: 'feedback', label: 'Feedback & Diálogos' }
-	];
+	let tabItems = $derived([
+		{ id: 'actions', label: t('showcase.tabs.actions') },
+		{ id: 'forms', label: t('showcase.tabs.forms') },
+		{ id: 'display', label: t('showcase.tabs.display') },
+		{ id: 'feedback', label: t('showcase.tabs.feedback') }
+	]);
 
 	// Estados reativos para testes interativos
 	let buttonLoading = $state(false);
@@ -47,11 +49,11 @@
 	let isDialogOpen = $state(false);
 	let isToastOpen = $state(false);
 
-	const selectOptions = [
-		{ value: 'option-1', label: 'Opção 1 - Principal' },
-		{ value: 'option-2', label: 'Opção 2 - Secundária' },
-		{ value: 'option-3', label: 'Opção 3 - Desabilitada', disabled: true }
-	];
+	let selectOptions = $derived([
+		{ value: 'option-1', label: t('showcase.forms.selectOption1') },
+		{ value: 'option-2', label: t('showcase.forms.selectOption2') },
+		{ value: 'option-3', label: t('showcase.forms.selectOption3'), disabled: true }
+	]);
 </script>
 
 <Main fullHeight={true} padding="none" gap="none">
@@ -60,14 +62,15 @@
 			<Row align="center" gap="sm">
 				<Avatar name="Shellfish UI" size="md" square={true} />
 				<Column gap="none">
-					<h1 style="font-size: var(--text-lg); margin: 0;">Shellfish UI</h1>
+					<h1 style="font-size: var(--text-lg); margin: 0;">{t('showcase.title')}</h1>
 					<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-						Design System Tátil para a Suíte Zoo
+						{t('showcase.subtitle')}
 					</span>
 				</Column>
 			</Row>
 			<Row align="center" gap="sm">
 				<Badge variant="primary" pill={true}>v1.0.0</Badge>
+				<LocaleSelector size="md" />
 				<ThemeSelector size="md" />
 			</Row>
 		</Row>
@@ -81,32 +84,31 @@
 		{#if activeTab === 'actions'}
 			<Card radius="md" padding="lg">
 				{#snippet header()}
-					<span>Variantes de Botão</span>
+					<span>{t('showcase.buttonVariants.title')}</span>
 				{/snippet}
 				<Column gap="md">
 					<p style="font-size: var(--text-sm); color: var(--text-secondary);">
-						Física mecânica real: sombra sólida de 2px no repouso, elevação de 3px no hover, e
-						compressão no chão no clique.
+						{t('showcase.buttonVariants.desc')}
 					</p>
 					<Row wrap={true} gap="md">
-						<Button variant="primary">Principal</Button>
-						<Button variant="secondary">Secundário</Button>
-						<Button variant="outline">Contorno</Button>
-						<Button variant="ghost">Fantasma</Button>
-						<Button variant="danger">Perigo</Button>
+						<Button variant="primary">{t('showcase.buttons.primary')}</Button>
+						<Button variant="secondary">{t('showcase.buttons.secondary')}</Button>
+						<Button variant="outline">{t('showcase.buttons.outline')}</Button>
+						<Button variant="ghost">{t('showcase.buttons.ghost')}</Button>
+						<Button variant="danger">{t('showcase.buttons.danger')}</Button>
 					</Row>
 				</Column>
 			</Card>
 
 			<Card radius="md" padding="lg">
 				{#snippet header()}
-					<span>Tamanhos & Estados de Botão</span>
+					<span>{t('showcase.buttonSizes.title')}</span>
 				{/snippet}
 				<Column gap="md">
 					<Row wrap={true} align="center" gap="md">
-						<Button size="sm">Pequeno (SM)</Button>
-						<Button size="md">Médio (MD)</Button>
-						<Button size="lg">Grande (LG)</Button>
+						<Button size="sm">{t('showcase.buttons.small')}</Button>
+						<Button size="md">{t('showcase.buttons.medium')}</Button>
+						<Button size="lg">{t('showcase.buttons.large')}</Button>
 					</Row>
 
 					<Divider spacing="sm" />
@@ -121,10 +123,10 @@
 								}, 2000);
 							}}
 						>
-							{buttonLoading ? 'Carregando...' : 'Clique para Carregar'}
+							{buttonLoading ? t('showcase.buttons.loading') : t('showcase.buttons.clickToLoad')}
 						</Button>
-						<Button disabled={true}>Desabilitado</Button>
-						<Button iconOnly={true} aria-label="Ação rápida">
+						<Button disabled={true}>{t('showcase.buttons.disabled')}</Button>
+						<Button iconOnly={true} aria-label={t('showcase.buttons.quickAction')}>
 							<svg
 								viewBox="0 0 24 24"
 								width="18"
@@ -144,12 +146,12 @@
 
 			<Card radius="md" padding="lg">
 				{#snippet header()}
-					<span>Grupo de Botões (ButtonGroup)</span>
+					<span>{t('showcase.buttonGroup.title')}</span>
 				{/snippet}
 				<ButtonGroup>
-					<Button variant="secondary">Esquerda</Button>
-					<Button variant="secondary">Centro</Button>
-					<Button variant="secondary">Direita</Button>
+					<Button variant="secondary">{t('showcase.buttonGroup.left')}</Button>
+					<Button variant="secondary">{t('showcase.buttonGroup.center')}</Button>
+					<Button variant="secondary">{t('showcase.buttonGroup.right')}</Button>
 				</ButtonGroup>
 			</Card>
 		{/if}
@@ -157,11 +159,11 @@
 		{#if activeTab === 'forms'}
 			<Card radius="md" padding="lg">
 				{#snippet header()}
-					<span>Controles de Entrada</span>
+					<span>{t('showcase.forms.title')}</span>
 				{/snippet}
 				<Column gap="lg">
 					<Row align="center" gap="md">
-						<Checkbox bind:checked={isInvalid} label="Simular estado inválido nos campos" />
+						<Checkbox bind:checked={isInvalid} label={t('showcase.forms.simulateInvalid')} />
 					</Row>
 
 					<Grid columns={2} gap="lg">
@@ -170,13 +172,13 @@
 								for="demo-input"
 								style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
 							>
-								Campo de Texto
+								{t('showcase.forms.inputLabel')}
 							</label>
 							<Input
 								id="demo-input"
 								bind:value={inputValue}
 								invalid={isInvalid}
-								placeholder="Digite seu texto..."
+								placeholder={t('showcase.forms.inputPlaceholder')}
 								fullWidth={true}
 							/>
 						</Column>
@@ -186,7 +188,7 @@
 								for="demo-select"
 								style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
 							>
-								Seleção (Select)
+								{t('showcase.forms.selectLabel')}
 							</label>
 							<Select
 								id="demo-select"
@@ -203,7 +205,7 @@
 							for="demo-textarea"
 							style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
 						>
-							Área de Texto (Textarea)
+							{t('showcase.forms.textareaLabel')}
 						</label>
 						<Textarea
 							id="demo-textarea"
@@ -213,29 +215,46 @@
 						/>
 					</Column>
 
-					<Divider label="Seleções Táteis" spacing="sm" />
+					<Divider label={t('showcase.forms.tactileSelections')} spacing="sm" />
 
 					<Row wrap={true} gap="xl">
 						<Column gap="xs">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-								>Checkboxes</span
-							>
-							<Checkbox bind:checked={checkboxChecked} invalid={isInvalid} label="Opção marcada" />
-							<Checkbox bind:indeterminate={checkboxIndeterminate} label="Opção indeterminada" />
-							<Checkbox disabled={true} label="Opção desabilitada" />
+							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+								{t('showcase.forms.checkboxes')}
+							</span>
+							<Checkbox
+								bind:checked={checkboxChecked}
+								invalid={isInvalid}
+								label={t('showcase.forms.checkedOption')}
+							/>
+							<Checkbox
+								bind:indeterminate={checkboxIndeterminate}
+								label={t('showcase.forms.indeterminateOption')}
+							/>
+							<Checkbox disabled={true} label={t('showcase.forms.disabledOption')} />
 						</Column>
 
 						<Column gap="xs">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-								>Radios</span
-							>
-							<Radio bind:group={radioGroup} value="op-a" invalid={isInvalid} label="Opção A" />
-							<Radio bind:group={radioGroup} value="op-b" invalid={isInvalid} label="Opção B" />
+							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+								{t('showcase.forms.radios')}
+							</span>
+							<Radio
+								bind:group={radioGroup}
+								value="op-a"
+								invalid={isInvalid}
+								label={t('showcase.forms.radioA')}
+							/>
+							<Radio
+								bind:group={radioGroup}
+								value="op-b"
+								invalid={isInvalid}
+								label={t('showcase.forms.radioB')}
+							/>
 							<Radio
 								bind:group={radioGroup}
 								value="op-c"
 								disabled={true}
-								label="Opção C (Desabilitada)"
+								label={t('showcase.forms.radioCDisabled')}
 							/>
 						</Column>
 					</Row>
@@ -247,19 +266,19 @@
 			<Grid columns={2} gap="lg">
 				<Card radius="md" padding="lg">
 					{#snippet header()}
-						<span>Badges & Marcadores</span>
+						<span>{t('showcase.display.badgesTitle')}</span>
 					{/snippet}
 					<Column gap="md">
 						<Row wrap={true} gap="sm">
-							<Badge variant="primary">Primário</Badge>
-							<Badge variant="secondary">Secundário</Badge>
-							<Badge variant="outline">Contorno</Badge>
-							<Badge variant="ghost">Fantasma</Badge>
-							<Badge variant="danger">Perigo</Badge>
+							<Badge variant="primary">{t('showcase.buttons.primary')}</Badge>
+							<Badge variant="secondary">{t('showcase.buttons.secondary')}</Badge>
+							<Badge variant="outline">{t('showcase.buttons.outline')}</Badge>
+							<Badge variant="ghost">{t('showcase.buttons.ghost')}</Badge>
+							<Badge variant="danger">{t('showcase.buttons.danger')}</Badge>
 						</Row>
 						<Row wrap={true} gap="sm">
 							<Badge variant="primary" pill={true}>Pill</Badge>
-							<Badge variant="secondary" pill={true}>Sucesso</Badge>
+							<Badge variant="secondary" pill={true}>Badge</Badge>
 							<Badge variant="danger" pill={true}>99+</Badge>
 						</Row>
 					</Column>
@@ -267,7 +286,7 @@
 
 				<Card radius="md" padding="lg">
 					{#snippet header()}
-						<span>Avatares</span>
+						<span>{t('showcase.display.avatarsTitle')}</span>
 					{/snippet}
 					<Row wrap={true} align="center" gap="md">
 						<Avatar name="Lucas Monsan" size="sm" />
@@ -280,39 +299,40 @@
 
 			<Card radius="md" padding="lg" interactive={true}>
 				{#snippet header()}
-					<span>Card Interativo com Elevação Tátil</span>
+					<span>{t('showcase.display.interactiveCardTitle')}</span>
 				{/snippet}
 				<p style="margin: 0; font-size: var(--text-sm);">
-					Passe o cursor sobre este card ou clique nele para sentir a física de interação tátil
-					neobrutalista.
+					{t('showcase.display.interactiveCardDesc')}
 				</p>
 			</Card>
 		{/if}
 
 		{#if activeTab === 'feedback'}
 			<Column gap="lg">
-				<Alert variant="info" title="Informação">
-					Este é um banner de alerta informativo com tag semântica pura.
+				<Alert variant="info" title={t('showcase.feedback.infoTitle')}>
+					{t('showcase.feedback.infoMsg')}
 				</Alert>
-				<Alert variant="success" title="Sucesso" closable={true}>
-					Operação realizada com sucesso. Você pode fechar este alerta.
+				<Alert variant="success" title={t('showcase.feedback.successTitle')} closable={true}>
+					{t('showcase.feedback.successMsg')}
 				</Alert>
-				<Alert variant="warning" title="Atenção">
-					Verifique suas credenciais antes de continuar o processo.
+				<Alert variant="warning" title={t('showcase.feedback.warningTitle')}>
+					{t('showcase.feedback.warningMsg')}
 				</Alert>
-				<Alert variant="danger" title="Erro Crítico">
-					Falha ao conectar com o serviço remoto. Tente novamente.
+				<Alert variant="danger" title={t('showcase.feedback.dangerTitle')}>
+					{t('showcase.feedback.dangerMsg')}
 				</Alert>
 
 				<Card radius="md" padding="lg">
 					{#snippet header()}
-						<span>Diálogos Nativos & Notificações</span>
+						<span>{t('showcase.feedback.dialogsTitle')}</span>
 					{/snippet}
 					<Row wrap={true} gap="md" align="center">
-						<Button onclick={() => (isDialogOpen = true)}>Abrir Modal Nativo</Button>
-						<Button variant="secondary" onclick={() => (isToastOpen = true)}
-							>Disparar Notificação Toast</Button
-						>
+						<Button onclick={() => (isDialogOpen = true)}>
+							{t('showcase.feedback.openDialog')}
+						</Button>
+						<Button variant="secondary" onclick={() => (isToastOpen = true)}>
+							{t('showcase.feedback.triggerToast')}
+						</Button>
 						<Spinner size="md" />
 					</Row>
 				</Card>
@@ -323,27 +343,30 @@
 	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-				Shellfish UI — Design System Nativo do Zoo
+				{t('showcase.footer.tagline')}
 			</span>
-			<Badge variant="secondary">Porta 5172</Badge>
+			<Badge variant="secondary">{t('showcase.footer.port')}</Badge>
 		</Row>
 	</Footer>
 </Main>
 
 <!-- Modal Nativo HTML5 -->
-<Dialog bind:open={isDialogOpen} title="Diálogo Modal Nativo" size="md">
+<Dialog bind:open={isDialogOpen} title={t('showcase.dialog.title')} size="md">
 	<p style="margin: 0; font-size: var(--text-sm); line-height: 1.6;">
-		Este modal utiliza a tag nativa <code>&lt;dialog&gt;</code> do HTML5 com renderização na Top
-		Layer do navegador, eliminando conflitos de z-index e fornecendo acessibilidade nativa com
-		suporte à tecla <code>ESC</code>.
+		{t('showcase.dialog.desc')}
 	</p>
 	{#snippet footer()}
-		<Button variant="secondary" onclick={() => (isDialogOpen = false)}>Cancelar</Button>
-		<Button variant="primary" onclick={() => (isDialogOpen = false)}>Confirmar</Button>
+		<Button variant="secondary" onclick={() => (isDialogOpen = false)}>
+			{t('common.cancel')}
+		</Button>
+		<Button variant="primary" onclick={() => (isDialogOpen = false)}>
+			{t('common.confirm')}
+		</Button>
 	{/snippet}
 </Dialog>
 
 <!-- Toast Flutuante -->
 <Toast bind:open={isToastOpen} variant="success" duration={3500}>
-	<strong>Ação executada:</strong> Demonstração de notificação flutuante com auto-dismiss.
+	<strong>{t('showcase.toast.title')}</strong>
+	{t('showcase.toast.msg')}
 </Toast>

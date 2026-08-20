@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { ToastProps } from '$lib/types/index.js';
+	import { t } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		children,
 		variant = 'info',
 		duration = 4000,
 		open = $bindable(true),
+		closeLabel,
 		onclose,
 		class: className,
 		...restProps
@@ -31,7 +33,7 @@
 		<button
 			type="button"
 			class="close-button"
-			aria-label="Fechar notificação"
+			aria-label={closeLabel ?? t('toast.close')}
 			onclick={() => {
 				open = false;
 				onclose?.();
@@ -80,19 +82,19 @@
 
 	/* Variantes */
 	aside[data-variant='info'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-blue);
+		border-left: calc(var(--border-width) * 3) solid var(--color-blue-light);
 	}
 
 	aside[data-variant='success'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-green);
+		border-left: calc(var(--border-width) * 3) solid var(--color-green-light);
 	}
 
 	aside[data-variant='warning'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-orange);
+		border-left: calc(var(--border-width) * 3) solid var(--color-yellow);
 	}
 
 	aside[data-variant='danger'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-danger);
+		border-left: calc(var(--border-width) * 3) solid var(--color-red);
 	}
 
 	.close-button {

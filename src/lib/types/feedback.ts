@@ -9,12 +9,14 @@ export interface AlertProps extends HTMLAttributes<HTMLElement> {
 	variant?: AlertVariant;
 	title?: string;
 	closable?: boolean;
+	closeLabel?: string;
 	onclose?: () => void;
 }
 
 export interface SpinnerProps extends HTMLAttributes<SVGSVGElement> {
 	size?: Size;
 	color?: string;
+	label?: string;
 }
 
 export interface DialogProps extends HTMLDialogAttributes {
@@ -24,6 +26,7 @@ export interface DialogProps extends HTMLDialogAttributes {
 	footer?: Snippet;
 	size?: 'sm' | 'md' | 'lg' | 'full';
 	closeOnOutsideClick?: boolean;
+	closeLabel?: string;
 	onclose?: () => void;
 }
 
@@ -32,5 +35,6 @@ export interface ToastProps extends HTMLAttributes<HTMLElement> {
 	variant?: AlertVariant;
 	duration?: number;
 	open?: boolean;
+	closeLabel?: string;
 	onclose?: () => void;
 }

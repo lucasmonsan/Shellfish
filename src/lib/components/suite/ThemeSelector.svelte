@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ThemeSelectorProps } from '$lib/types/index.js';
 	import type { Theme } from '$lib/types/tokens.js';
+	import { t } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		size = 'md',
@@ -38,8 +39,8 @@
 <button
 	type="button"
 	data-size={size}
-	aria-label="Alternar tema claro/escuro"
-	title="Alternar tema"
+	aria-label={t('theme.toggle')}
+	title={t('theme.toggle')}
 	onclick={toggleTheme}
 	class={className}
 	{...restProps}

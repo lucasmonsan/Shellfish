@@ -1,6 +1,9 @@
 // Tipos
 export * from './types/index.js';
 
+// Utilitários Reativos de i18n
+export { i18n, t, translations } from './utils/i18n.svelte.js';
+
 // Containers Estruturais
 export { default as Main } from './components/containers/Main.svelte';
 export { default as Header } from './components/containers/Header.svelte';
@@ -38,3 +41,4 @@ export { default as Toast } from './components/feedback/Toast.svelte';
 
 // Suíte Zoo
 export { default as ThemeSelector } from './components/suite/ThemeSelector.svelte';
+export { default as LocaleSelector } from './components/suite/LocaleSelector.svelte';

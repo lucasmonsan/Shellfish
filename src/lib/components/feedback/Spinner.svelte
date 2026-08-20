@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { SpinnerProps } from '$lib/types/index.js';
+	import { t } from '$lib/utils/i18n.svelte.js';
 
-	let { size = 'md', color, class: className, ...restProps }: SpinnerProps = $props();
+	let { size = 'md', color, label, class: className, ...restProps }: SpinnerProps = $props();
 </script>
 
 <svg
@@ -11,7 +12,7 @@
 	stroke-width="3"
 	stroke-linecap="round"
 	role="status"
-	aria-label="Carregando"
+	aria-label={label ?? t('spinner.loading')}
 	data-size={size}
 	class={className}
 	{...restProps}

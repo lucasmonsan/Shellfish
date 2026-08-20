@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { DialogProps } from '$lib/types/index.js';
+	import { t } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		open = $bindable(false),
@@ -8,6 +9,7 @@
 		footer,
 		size = 'md',
 		closeOnOutsideClick = true,
+		closeLabel,
 		onclose,
 		class: className,
 		...restProps
@@ -62,7 +64,12 @@
 	{#if title}
 		<header>
 			<h3>{title}</h3>
-			<button type="button" class="close-button" aria-label="Fechar modal" onclick={closeDialog}>
+			<button
+				type="button"
+				class="close-button"
+				aria-label={closeLabel ?? t('dialog.close')}
+				onclick={closeDialog}
+			>
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"
