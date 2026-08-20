@@ -62,7 +62,7 @@
 					</span>
 				</button>
 			{:else}
-				<div class="card-header-content">
+				<div class="card-header-content-static">
 					{@render header()}
 				</div>
 			{/if}
@@ -152,20 +152,25 @@
 		align-items: center;
 		min-height: 42px;
 		box-sizing: border-box;
-		padding-block: var(--space-xs);
-		padding-inline: var(--space-md);
+		padding: 0;
 		border-bottom: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
 		font-family: var(--font-display);
 		font-weight: 700;
 	}
 
-	article[data-collapsible='true'] header {
-		padding: 0;
-	}
-
 	article[data-collapsed='true'] header {
 		border-bottom: none;
+	}
+
+	.card-header-content-static {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		min-height: 42px;
+		box-sizing: border-box;
+		padding-block: var(--space-xs);
+		padding-inline: var(--space-md);
 	}
 
 	.card-header-toggle {
@@ -234,63 +239,63 @@
 	article[data-padding='none'] .card-body {
 		padding: var(--space-none);
 	}
-	article[data-padding='none'] header,
-	article[data-padding='none'] footer,
-	article[data-padding='none'] .card-header-toggle {
+	article[data-padding='none'] .card-header-content-static,
+	article[data-padding='none'] .card-header-toggle,
+	article[data-padding='none'] footer {
 		padding-inline: var(--space-md);
 	}
 
 	article[data-padding='xs'] .card-body {
 		padding: var(--space-xs);
 	}
-	article[data-padding='xs'] header,
-	article[data-padding='xs'] footer,
-	article[data-padding='xs'] .card-header-toggle {
+	article[data-padding='xs'] .card-header-content-static,
+	article[data-padding='xs'] .card-header-toggle,
+	article[data-padding='xs'] footer {
 		padding-inline: var(--space-xs);
 	}
 
 	article[data-padding='sm'] .card-body {
 		padding: var(--space-sm);
 	}
-	article[data-padding='sm'] header,
-	article[data-padding='sm'] footer,
-	article[data-padding='sm'] .card-header-toggle {
+	article[data-padding='sm'] .card-header-content-static,
+	article[data-padding='sm'] .card-header-toggle,
+	article[data-padding='sm'] footer {
 		padding-inline: var(--space-sm);
 	}
 
 	article[data-padding='md'] .card-body {
 		padding: var(--space-md);
 	}
-	article[data-padding='md'] header,
-	article[data-padding='md'] footer,
-	article[data-padding='md'] .card-header-toggle {
+	article[data-padding='md'] .card-header-content-static,
+	article[data-padding='md'] .card-header-toggle,
+	article[data-padding='md'] footer {
 		padding-inline: var(--space-md);
 	}
 
 	article[data-padding='lg'] .card-body {
 		padding: var(--space-lg);
 	}
-	article[data-padding='lg'] header,
-	article[data-padding='lg'] footer,
-	article[data-padding='lg'] .card-header-toggle {
+	article[data-padding='lg'] .card-header-content-static,
+	article[data-padding='lg'] .card-header-toggle,
+	article[data-padding='lg'] footer {
 		padding-inline: var(--space-lg);
 	}
 
 	article[data-padding='xl'] .card-body {
 		padding: var(--space-xl);
 	}
-	article[data-padding='xl'] header,
-	article[data-padding='xl'] footer,
-	article[data-padding='xl'] .card-header-toggle {
+	article[data-padding='xl'] .card-header-content-static,
+	article[data-padding='xl'] .card-header-toggle,
+	article[data-padding='xl'] footer {
 		padding-inline: var(--space-xl);
 	}
 
 	article[data-padding='2xl'] .card-body {
 		padding: var(--space-2xl);
 	}
-	article[data-padding='2xl'] header,
-	article[data-padding='2xl'] footer,
-	article[data-padding='2xl'] .card-header-toggle {
+	article[data-padding='2xl'] .card-header-content-static,
+	article[data-padding='2xl'] .card-header-toggle,
+	article[data-padding='2xl'] footer {
 		padding-inline: var(--space-2xl);
 	}
 
