@@ -12,11 +12,6 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	casing?: 'uppercase' | 'none';
 }
 
-export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
-	children?: Snippet;
-	fullWidth?: boolean;
-}
-
 export interface TabItem {
 	id: string;
 	label: string;

@@ -17,7 +17,6 @@ export { default as Grid } from './components/layout/Grid.svelte';
 
 // Ações & Navegação
 export { default as Button } from './components/actions/Button.svelte';
-export { default as ButtonGroup } from './components/actions/ButtonGroup.svelte';
 export { default as Tabs } from './components/actions/Tabs.svelte';
 
 // Formulários & Entradas

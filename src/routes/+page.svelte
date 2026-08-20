@@ -8,7 +8,6 @@
 		Column,
 		Grid,
 		Button,
-		ButtonGroup,
 		Tabs,
 		Input,
 		Textarea,
@@ -142,17 +141,6 @@
 						</Button>
 					</Row>
 				</Column>
-			</Card>
-
-			<Card radius="md" padding="lg">
-				{#snippet header()}
-					<span>{t('showcase.buttonGroup.title')}</span>
-				{/snippet}
-				<ButtonGroup>
-					<Button variant="secondary">{t('showcase.buttonGroup.left')}</Button>
-					<Button variant="secondary">{t('showcase.buttonGroup.center')}</Button>
-					<Button variant="secondary">{t('showcase.buttonGroup.right')}</Button>
-				</ButtonGroup>
 			</Card>
 		{/if}
 
