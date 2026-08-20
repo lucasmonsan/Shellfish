@@ -14,6 +14,11 @@
 		align-items: center;
 		vertical-align: middle;
 		box-sizing: border-box;
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow);
+		overflow: hidden;
+		background-color: var(--bg-secondary);
 	}
 
 	div[role='group'][data-full-width='true'] {
@@ -25,19 +30,43 @@
 		flex: 1;
 	}
 
-	div[role='group'] > :global(button:not(:first-child)) {
-		margin-left: calc(var(--border-width) * -1);
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
+	/* Reset dos botões internos para se comportarem como segmentos do chassi */
+	div[role='group'] > :global(button) {
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		transform: none;
+		background-color: transparent;
+		color: var(--text-primary);
+		transition:
+			background-color 0.12s ease,
+			color 0.12s ease;
 	}
 
+	/* Divisória interna entre os segmentos */
 	div[role='group'] > :global(button:not(:last-child)) {
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
+		border-right: var(--border-width) solid var(--border-color);
 	}
 
-	div[role='group'] > :global(button:hover),
+	/* Hover no segmento interno */
+	div[role='group'] > :global(button:hover:not(:disabled)) {
+		transform: none;
+		box-shadow: none;
+		background-color: var(--bg-primary);
+	}
+
+	/* Clique no segmento interno */
+	div[role='group'] > :global(button:active:not(:disabled)) {
+		transform: none;
+		box-shadow: none;
+		background-color: var(--color-primary);
+		color: var(--color-primary-contrast);
+	}
+
+	/* Foco acessível no segmento */
 	div[role='group'] > :global(button:focus-visible) {
+		outline: none;
+		box-shadow: inset 0 0 0 2px var(--color-primary);
 		z-index: 1;
 	}
 </style>

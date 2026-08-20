@@ -52,10 +52,11 @@ describe('Actions & Interactive Tactile Physics Engine', () => {
 		expect(content).toContain('class="button-spinner"');
 	});
 
-	it('ButtonGroup.svelte deve agrupar botões com role="group"', () => {
+	it('ButtonGroup.svelte deve agrupar botões com role="group" e chassi único', () => {
 		const content = fs.readFileSync(path.join(actionsDir, 'ButtonGroup.svelte'), 'utf-8');
 		expect(content).toContain('role="group"');
-		expect(content).toContain('margin-left: calc(var(--border-width) * -1);');
+		expect(content).toContain('overflow: hidden;');
+		expect(content).toContain('border-right: var(--border-width) solid var(--border-color);');
 	});
 
 	it('Tabs.svelte deve usar role="tablist" e botões com role="tab" e aria-selected', () => {
