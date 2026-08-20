@@ -2,15 +2,72 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-describe('Form Controls (Pure Semantics & Tactile Focus)', () => {
+function getFilesRecursively(dir: string, extensions: string[]): string[] {
+	let results: string[] = [];
+	if (!fs.existsSync(dir)) return results;
+
+	const list = fs.readdirSync(dir, { withFileTypes: true });
+	for (const file of list) {
+		const fullPath = path.join(dir, file.name);
+		if (file.isDirectory()) {
+			results = results.concat(getFilesRecursively(fullPath, extensions));
+		} else if (extensions.some((ext) => file.name.endsWith(ext))) {
+			results.push(fullPath);
+		}
+	}
+	return results;
+}
+
+describe('Form Controls & Tactile Focus Engine', () => {
 	const formsDir = path.resolve(process.cwd(), 'src/lib/components/forms');
+	const allFormFiles = getFilesRecursively(formsDir, ['.svelte']);
+
+	it('garante que todos os campos de entrada de texto e seleção implementem o foco tátil padronizado', () => {
+		const focusViolations: string[] = [];
+		const focusEligible = [
+			path.join(formsDir, 'Input.svelte'),
+			path.join(formsDir, 'Textarea.svelte'),
+			path.join(formsDir, 'Select.svelte')
+		];
+
+		for (const file of focusEligible) {
+			const content = fs.readFileSync(file, 'utf-8');
+			const relPath = path.relative(process.cwd(), file);
+
+			if (!content.includes('box-shadow: 3px 3px 0px var(--color-primary);')) {
+				focusViolations.push(`${relPath}: Foco tátil com --color-primary ausente`);
+			}
+		}
+
+		expect(focusViolations, 'Controles de formulário sem foco tátil padronizado').toEqual([]);
+	});
+
+	it('garante que todos os componentes de formulário aceitem a prop class e repassem atributos', () => {
+		const propViolations: string[] = [];
+
+		for (const file of allFormFiles) {
+			const content = fs.readFileSync(file, 'utf-8');
+			const relPath = path.relative(process.cwd(), file);
+
+			if (!content.includes('class: className') && !content.includes('class={className}')) {
+				propViolations.push(`${relPath}: Não aceita ou não propaga prop class`);
+			}
+			if (!content.includes('...restProps')) {
+				propViolations.push(`${relPath}: Não repassa ...restProps`);
+			}
+		}
+
+		expect(
+			propViolations,
+			'Campos de formulário sem suporte padrão a class e ...restProps'
+		).toEqual([]);
+	});
 
 	it('Input.svelte deve renderizar <input> diretamente na raiz quando sem afixos e usar seletores de tag', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Input.svelte'), 'utf-8');
 		expect(content).toContain('class={className}');
 		expect(content).toContain("aria-invalid={invalid ? 'true' : undefined}");
 		expect(content).toContain('input:focus-visible');
-		expect(content).toContain('box-shadow: 3px 3px 0px var(--color-primary);');
 		expect(content).toContain('transform: translate(-1px, -1px);');
 	});
 
@@ -20,7 +77,6 @@ describe('Form Controls (Pure Semantics & Tactile Focus)', () => {
 		expect(content).not.toContain('<div');
 		expect(content).toContain('data-resize={resize}');
 		expect(content).toContain('textarea:focus-visible');
-		expect(content).toContain('box-shadow: 3px 3px 0px var(--color-primary);');
 	});
 
 	it('Select.svelte deve renderizar <select> com foco tátil e chevron SVG', () => {
@@ -28,7 +84,6 @@ describe('Form Controls (Pure Semantics & Tactile Focus)', () => {
 		expect(content).toContain('<select');
 		expect(content).toContain('class="arrow"');
 		expect(content).toContain('div:focus-within');
-		expect(content).toContain('box-shadow: 3px 3px 0px var(--color-primary);');
 	});
 
 	it('Checkbox.svelte deve renderizar input checkbox com indicador SVG e suporte a indeterminate', () => {

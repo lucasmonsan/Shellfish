@@ -2,10 +2,50 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-describe('Display, Feedback & Suite Components (Pure Semantics & Native Dialog)', () => {
+function getFilesRecursively(dir: string, extensions: string[]): string[] {
+	let results: string[] = [];
+	if (!fs.existsSync(dir)) return results;
+
+	const list = fs.readdirSync(dir, { withFileTypes: true });
+	for (const file of list) {
+		const fullPath = path.join(dir, file.name);
+		if (file.isDirectory()) {
+			results = results.concat(getFilesRecursively(fullPath, extensions));
+		} else if (extensions.some((ext) => file.name.endsWith(ext))) {
+			results.push(fullPath);
+		}
+	}
+	return results;
+}
+
+describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Layer)', () => {
 	const displayDir = path.resolve(process.cwd(), 'src/lib/components/display');
 	const feedbackDir = path.resolve(process.cwd(), 'src/lib/components/feedback');
 	const suiteDir = path.resolve(process.cwd(), 'src/lib/components/suite');
+
+	const allDisplayAndFeedback = [
+		...getFilesRecursively(displayDir, ['.svelte']),
+		...getFilesRecursively(feedbackDir, ['.svelte']),
+		...getFilesRecursively(suiteDir, ['.svelte'])
+	];
+
+	it('garante dinamicamente que todos os componentes de display, feedback e suíte aceitem e propaguem a prop class', () => {
+		const propViolations: string[] = [];
+
+		for (const file of allDisplayAndFeedback) {
+			const content = fs.readFileSync(file, 'utf-8');
+			const relPath = path.relative(process.cwd(), file);
+
+			if (!content.includes('class: className') && !content.includes('class={className}')) {
+				propViolations.push(`${relPath}: Não aceita ou não propaga prop class`);
+			}
+			if (!content.includes('...restProps')) {
+				propViolations.push(`${relPath}: Não propaga ...restProps`);
+			}
+		}
+
+		expect(propViolations, 'Componentes sem propagação de class ou restProps').toEqual([]);
+	});
 
 	it('Card.svelte deve usar tag <article> pura na raiz e física interativa', () => {
 		const content = fs.readFileSync(path.join(displayDir, 'Card.svelte'), 'utf-8');
