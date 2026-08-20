@@ -7,7 +7,7 @@
 	/* ==========================================================================
 	   2. PALETA DE 12 CORES (HARMONIA TERRACOTA)
 	   ========================================================================== */
-	--color-red: #e63946;
+	--color-red: #9b2226;
 	--color-orange: #d96b27;
 	--color-purple: #6f4c8a;
 	--color-pink: #c75c82;
@@ -105,4 +105,5 @@
 
 	--color-black: #f5f0eb;
 	--color-white: #181615;
+	--color-red: #e63946;
 }
