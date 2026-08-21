@@ -67,13 +67,13 @@
 	let checkboxVariant = $state('standard');
 	let checkboxVariantTabs = [
 		{ id: 'standard', label: 'Padrão' },
-		{ id: 'cards', label: 'Cards de Seleção' }
+		{ id: 'cards', label: 'Card' }
 	];
 
 	let radioVariant = $state('standard');
 	let radioVariantTabs = [
 		{ id: 'standard', label: 'Padrão' },
-		{ id: 'cards', label: 'Cards de Escolha' }
+		{ id: 'cards', label: 'Card' }
 	];
 
 	// Estados de Checkbox
