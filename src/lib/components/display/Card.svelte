@@ -77,17 +77,23 @@
 		</header>
 	{/if}
 
-	{#if !collapsible || open}
-		<div class="card-body">
-			{@render children?.()}
-		</div>
+	<div
+		class="card-collapse-wrapper"
+		class:collapsed={collapsible && !open}
+		aria-hidden={collapsible && !open ? 'true' : undefined}
+	>
+		<div class="card-collapse-inner">
+			<div class="card-body">
+				{@render children?.()}
+			</div>
 
-		{#if footer}
-			<footer>
-				{@render footer()}
-			</footer>
-		{/if}
-	{/if}
+			{#if footer}
+				<footer>
+					{@render footer()}
+				</footer>
+			{/if}
+		</div>
+	</div>
 </article>
 
 <style>
@@ -195,10 +201,11 @@
 		background-color: var(--bg-secondary);
 		font-family: var(--font-display);
 		font-weight: 700;
+		transition: border-bottom-color 0.25s ease;
 	}
 
 	article[data-collapsed='true'] header {
-		border-bottom: none;
+		border-bottom-color: transparent;
 	}
 
 	.card-header-content-static {
@@ -245,12 +252,30 @@
 		align-items: center;
 		justify-content: center;
 		margin-left: var(--space-sm);
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 		flex-shrink: 0;
 	}
 
 	.card-chevron.open {
 		transform: rotate(180deg);
+	}
+
+	/* Animação Fluida de Expansão / Colapso via CSS Grid 0fr -> 1fr */
+	.card-collapse-wrapper {
+		display: grid;
+		grid-template-rows: 1fr;
+		transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.card-collapse-wrapper.collapsed {
+		grid-template-rows: 0fr;
+	}
+
+	.card-collapse-inner {
+		overflow: hidden;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.card-body {
@@ -334,7 +359,8 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		article,
-		.card-chevron {
+		.card-chevron,
+		.card-collapse-wrapper {
 			transition: none;
 		}
 	}

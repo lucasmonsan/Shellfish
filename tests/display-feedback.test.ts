@@ -57,6 +57,7 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(content).toContain('collapsible = false');
 		expect(content).toContain('class="card-chevron"');
 		expect(content).toContain('card-straddled-badge');
+		expect(content).toContain('card-collapse-wrapper');
 	});
 
 	it('Badge.svelte deve renderizar <span> diretamente', () => {
