@@ -14,6 +14,7 @@ export interface AlertProps extends HTMLAttributes<HTMLElement> {
 }
 
 export interface SpinnerProps extends HTMLAttributes<SVGSVGElement> {
+	variant?: 'ratchet' | 'chaser';
 	size?: Size;
 	color?: string;
 	label?: string;

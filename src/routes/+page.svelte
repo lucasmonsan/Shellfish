@@ -324,16 +324,43 @@
 
 				<Card radius="md" padding="md">
 					{#snippet header()}
+						<span>{t('showcase.feedback.spinnersTitle')}</span>
+					{/snippet}
+					<Grid columns={2} gap="lg">
+						<Column gap="xs" align="start">
+							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+								{t('showcase.feedback.spinnerRatchet')}
+							</span>
+							<Row align="center" gap="md">
+								<Spinner size="sm" variant="ratchet" />
+								<Spinner size="md" variant="ratchet" />
+								<Spinner size="lg" variant="ratchet" />
+							</Row>
+						</Column>
+						<Column gap="xs" align="start">
+							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+								{t('showcase.feedback.spinnerChaser')}
+							</span>
+							<Row align="center" gap="md">
+								<Spinner size="sm" variant="chaser" />
+								<Spinner size="md" variant="chaser" />
+								<Spinner size="lg" variant="chaser" />
+							</Row>
+						</Column>
+					</Grid>
+				</Card>
+
+				<Card radius="md" padding="md">
+					{#snippet header()}
 						<span>{t('showcase.feedback.dialogsTitle')}</span>
 					{/snippet}
-					<Row wrap={true} gap="md" align="center">
+					<Row wrap={true} align="center" gap="md">
 						<Button onclick={() => (isDialogOpen = true)}>
 							{t('showcase.feedback.openDialog')}
 						</Button>
 						<Button variant="secondary" onclick={() => (isToastOpen = true)}>
 							{t('showcase.feedback.triggerToast')}
 						</Button>
-						<Spinner size="md" />
 					</Row>
 				</Card>
 			</Column>
