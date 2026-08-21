@@ -15,10 +15,6 @@
 <svg
 	viewBox="0 0 24 24"
 	fill="none"
-	stroke={color ?? 'currentColor'}
-	stroke-width="2.5"
-	stroke-linecap="square"
-	stroke-linejoin="miter"
 	role="status"
 	aria-label={label ?? t('spinner.loading')}
 	data-size={size}
@@ -27,11 +23,40 @@
 	{...restProps}
 >
 	{#if variant === 'ratchet'}
-		<rect class="ratchet-rect" x="4.5" y="4.5" width="15" height="15" rx="1" />
-		<rect class="ratchet-core" x="10" y="10" width="4" height="4" fill={color ?? 'currentColor'} />
+		<rect
+			class="ratchet-block"
+			x="6"
+			y="6"
+			width="12"
+			height="12"
+			rx="0"
+			fill={color ?? 'var(--color-primary)'}
+			stroke="var(--border-color)"
+			stroke-width="2"
+		/>
 	{:else}
-		<rect class="track-rect" x="4" y="4" width="16" height="16" rx="1" stroke-opacity="0.25" />
-		<rect class="chaser-rect" x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="16 48" />
+		<rect
+			class="track-rect"
+			x="4.5"
+			y="4.5"
+			width="15"
+			height="15"
+			rx="0"
+			stroke={color ?? 'currentColor'}
+			stroke-width="2"
+			stroke-opacity="0.25"
+		/>
+		<rect
+			class="chaser-rect"
+			x="4.5"
+			y="4.5"
+			width="15"
+			height="15"
+			rx="0"
+			stroke={color ?? 'currentColor'}
+			stroke-width="2"
+			stroke-dasharray="15 45"
+		/>
 	{/if}
 </svg>
 
@@ -43,7 +68,7 @@
 	}
 
 	svg[data-variant='ratchet'] {
-		animation: ratchet-spin 1.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+		animation: ratchet-steps 1s infinite steps(8);
 		transform-origin: center;
 	}
 
@@ -66,22 +91,9 @@
 		height: 36px;
 	}
 
-	@keyframes ratchet-spin {
-		0%,
-		15% {
+	@keyframes ratchet-steps {
+		0% {
 			transform: rotate(0deg);
-		}
-		25%,
-		40% {
-			transform: rotate(90deg);
-		}
-		50%,
-		65% {
-			transform: rotate(180deg);
-		}
-		75%,
-		90% {
-			transform: rotate(270deg);
 		}
 		100% {
 			transform: rotate(360deg);
@@ -93,13 +105,13 @@
 			stroke-dashoffset: 0;
 		}
 		to {
-			stroke-dashoffset: -64;
+			stroke-dashoffset: -60;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		svg[data-variant='ratchet'] {
-			animation-duration: 2.4s;
+			animation-duration: 2s;
 		}
 		svg[data-variant='chaser'] .chaser-rect {
 			animation-duration: 2.2s;
