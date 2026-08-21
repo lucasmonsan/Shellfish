@@ -18,6 +18,8 @@ export { default as Grid } from './components/layout/Grid.svelte';
 // Ações & Navegação
 export { default as Button } from './components/actions/Button.svelte';
 export { default as Tabs } from './components/actions/Tabs.svelte';
+export { default as Chip } from './components/actions/Chip.svelte';
+export { default as Dropdown } from './components/actions/Dropdown.svelte';
 
 // Formulários & Entradas
 export { default as Input } from './components/forms/Input.svelte';
@@ -25,6 +27,9 @@ export { default as Textarea } from './components/forms/Textarea.svelte';
 export { default as Select } from './components/forms/Select.svelte';
 export { default as Checkbox } from './components/forms/Checkbox.svelte';
 export { default as Radio } from './components/forms/Radio.svelte';
+export { default as Switch } from './components/forms/Switch.svelte';
+export { default as Slider } from './components/forms/Slider.svelte';
+export { default as Calendar } from './components/forms/Calendar.svelte';
 
 // Superfícies & Exibição
 export { default as Card } from './components/display/Card.svelte';
@@ -35,6 +40,7 @@ export { default as Avatar } from './components/display/Avatar.svelte';
 // Feedback & Diálogos
 export { default as Alert } from './components/feedback/Alert.svelte';
 export { default as Spinner } from './components/feedback/Spinner.svelte';
+export { default as ProgressBar } from './components/feedback/ProgressBar.svelte';
 export { default as Dialog } from './components/feedback/Dialog.svelte';
 export { default as Toast } from './components/feedback/Toast.svelte';
 

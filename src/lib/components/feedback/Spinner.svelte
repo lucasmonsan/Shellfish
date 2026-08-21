@@ -32,9 +32,9 @@
 				y="4"
 				width="16"
 				height="16"
-				stroke={color ?? 'currentColor'}
+				stroke={color ?? 'var(--border-color)'}
 				stroke-width="2.5"
-				stroke-opacity="0.25"
+				stroke-opacity="0.2"
 			/>
 			<rect
 				class="chaser-rect"
@@ -42,7 +42,7 @@
 				y="4"
 				width="16"
 				height="16"
-				stroke={color ?? 'currentColor'}
+				stroke={color ?? 'var(--color-primary)'}
 				stroke-width="2.5"
 				stroke-dasharray="16 48"
 			/>
@@ -95,14 +95,14 @@
 		}
 	}
 
-	/* 2. Catraca Mecânica com steps(8) */
+	/* 2. Catraca Mecânica com steps(8) compassado */
 	.spinner-ratchet {
 		width: 65%;
 		height: 65%;
 		background-color: var(--color-primary);
 		border: var(--border-width) solid var(--border-color);
 		box-sizing: border-box;
-		animation: ratchetSteps 1s infinite steps(8);
+		animation: ratchetSteps 1.6s infinite steps(8);
 		transform-origin: center;
 	}
 
@@ -115,7 +115,7 @@
 		}
 	}
 
-	/* 3. Trilha Perimetral (Chaser) */
+	/* 3. Trilha Perimetral (Chaser Terracota) */
 	.spinner-chaser-svg {
 		width: 100%;
 		height: 100%;
@@ -123,7 +123,7 @@
 	}
 
 	.spinner-chaser-svg .chaser-rect {
-		animation: chaserDash 1.1s linear infinite;
+		animation: chaserDash 1.2s linear infinite;
 	}
 
 	@keyframes chaserDash {

@@ -127,7 +127,7 @@
 
 	button:hover:not(:disabled):not([data-selected='true']) {
 		color: var(--text-primary);
-		background-color: var(--bg-primary);
+		background-color: transparent;
 	}
 
 	/* Aba Ativa */

@@ -14,11 +14,15 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 	collapsible?: boolean;
 	open?: boolean;
 	badgeTitle?: string;
+	back?: Snippet;
+	flipped?: boolean;
 }
+
+export type BadgeVariant = Variant | 'success' | 'warning' | 'neutral';
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 	children?: Snippet;
-	variant?: Variant;
+	variant?: BadgeVariant;
 	size?: 'sm' | 'md';
 	pill?: boolean;
 }

@@ -9,17 +9,22 @@
 		Grid,
 		Button,
 		Tabs,
+		Chip,
+		Dropdown,
 		Input,
 		Textarea,
 		Select,
 		Checkbox,
 		Radio,
+		Switch,
+		Slider,
+		Calendar,
 		Card,
 		Badge,
 		Divider,
 		Avatar,
-		Alert,
 		Spinner,
+		ProgressBar,
 		Dialog,
 		Toast,
 		ThemeSelector,
@@ -36,29 +41,45 @@
 	]);
 
 	// Estados reativos para testes interativos
-	let buttonLoading = $state(false);
 	let inputValue = $state('Texto de exemplo');
 	let textareaValue = $state('Área de texto com foco tátil e expansão vertical.');
 	let selectValue = $state('option-1');
-	let checkboxChecked = $state(true);
-	let checkboxIndeterminate = $state(false);
-	let radioGroup = $state('op-a');
+	let switchChecked = $state(true);
+	let sliderValue = $state(65);
+	let calendarValue = $state(new Date());
+	let selectedChip = $state('10:00am');
 	let isInvalid = $state(false);
+	let isCardFlipped = $state(false);
+
+	let choiceCardRadio = $state('service-1');
 
 	let isDialogOpen = $state(false);
 	let isToastOpen = $state(false);
+	let progressValue = $state(72);
 
 	let selectOptions = $derived([
 		{ value: 'option-1', label: t('showcase.forms.selectOption1') },
 		{ value: 'option-2', label: t('showcase.forms.selectOption2') },
 		{ value: 'option-3', label: t('showcase.forms.selectOption3'), disabled: true }
 	]);
+
+	let dropdownItems = [
+		{ id: 'opt-1', label: 'Editar Perfil', onclick: () => {} },
+		{ id: 'opt-2', label: 'Configurações de Rede', onclick: () => {} },
+		{ id: 'opt-3', label: 'Excluir Item', danger: true, onclick: () => {} }
+	];
 </script>
 
 <Main fullHeight={true} padding="none" gap="none">
+	<!-- Header com Logo clicável que reseta para a Home -->
 	<Header sticky={true} padding="md">
 		<Row fullWidth={true} justify="between" align="center">
-			<Row align="center" gap="sm">
+			<button
+				type="button"
+				class="header-logo-btn"
+				onclick={() => (activeTab = 'actions')}
+				aria-label="Ir para a Home do Shellfish"
+			>
 				<Avatar name="Shellfish UI" size="md" square={true} />
 				<Column gap="none">
 					<h1 style="font-size: var(--text-lg); margin: 0;">{t('showcase.title')}</h1>
@@ -66,9 +87,9 @@
 						{t('showcase.subtitle')}
 					</span>
 				</Column>
-			</Row>
+			</button>
 			<Row align="center" gap="sm">
-				<Badge variant="primary" pill={true}>v1.0.0</Badge>
+				<Badge variant="primary" pill={true}>v1.1.0</Badge>
 				<LocaleSelector size="md" />
 				<ThemeSelector size="md" />
 			</Row>
@@ -81,6 +102,7 @@
 		</Row>
 
 		{#if activeTab === 'actions'}
+			<!-- 1. Variantes de Botão -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.buttonVariants.title')}</span>
@@ -99,311 +121,321 @@
 				</Column>
 			</Card>
 
+			<!-- 2. Chips & Tags Interativas -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.buttonSizes.title')}</span>
+					<span>{t('showcase.chips.title')}</span>
 				{/snippet}
 				<Column gap="md">
-					<Row wrap={true} align="center" gap="md">
-						<Button size="sm">{t('showcase.buttons.small')}</Button>
-						<Button size="md">{t('showcase.buttons.medium')}</Button>
-						<Button size="lg">{t('showcase.buttons.large')}</Button>
-					</Row>
-
-					<Divider spacing="sm" />
-
-					<Row wrap={true} align="center" gap="md">
-						<Button
-							loading={buttonLoading}
-							onclick={() => {
-								buttonLoading = true;
-								setTimeout(() => {
-									buttonLoading = false;
-								}, 2000);
-							}}
-						>
-							{buttonLoading ? t('showcase.buttons.loading') : t('showcase.buttons.clickToLoad')}
-						</Button>
-						<Button disabled={true}>{t('showcase.buttons.disabled')}</Button>
-						<Button iconOnly={true} aria-label={t('showcase.buttons.quickAction')}>
-							<svg
-								viewBox="0 0 24 24"
-								width="18"
-								height="18"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2.5"
-								stroke-linecap="round"
-							>
-								<line x1="12" y1="5" x2="12" y2="19" />
-								<line x1="5" y1="12" x2="19" y2="12" />
-							</svg>
-						</Button>
+					<Row wrap={true} gap="sm" align="center">
+						<Chip selected={selectedChip === '9:00am'} onclick={() => (selectedChip = '9:00am')}>
+							9:00 AM
+						</Chip>
+						<Chip selected={selectedChip === '10:00am'} onclick={() => (selectedChip = '10:00am')}>
+							10:00 AM
+						</Chip>
+						<Chip selected={selectedChip === '11:00am'} onclick={() => (selectedChip = '11:00am')}>
+							11:00 AM
+						</Chip>
+						<Chip selected={selectedChip === '2:00pm'} onclick={() => (selectedChip = '2:00pm')}>
+							2:00 PM
+						</Chip>
+						<Chip removable={true} onremove={() => alert('Tag removida!')}>Filtro Removível</Chip>
 					</Row>
 				</Column>
 			</Card>
-		{/if}
 
-		{#if activeTab === 'forms'}
+			<!-- 3. Dropdowns & Menus Suspensos -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.forms.title')}</span>
+					<span>{t('showcase.dropdown.title')}</span>
+				{/snippet}
+				<Row wrap={true} gap="md" align="center">
+					<Dropdown label="Menu de Opções" items={dropdownItems} />
+					<Dropdown label="Alinhamento à Direita" placement="bottom-end" items={dropdownItems} />
+				</Row>
+			</Card>
+		{:else if activeTab === 'forms'}
+			<!-- 1. Campos com Notched Label -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<span>{t('showcase.forms.badgedInputsTitle')}</span>
 				{/snippet}
 				<Column gap="md">
-					<Row align="center" gap="md">
-						<Checkbox bind:checked={isInvalid} label={t('showcase.forms.simulateInvalid')} />
+					<Row align="center" gap="sm">
+						<Checkbox label={t('showcase.forms.simulateInvalid')} bind:checked={isInvalid} />
 					</Row>
-
-					<Grid columns={2} gap="lg">
+					<Grid columns={2} gap="md">
 						<Input
-							id="demo-input"
+							label={t('showcase.forms.inputLabel')}
 							bind:value={inputValue}
 							invalid={isInvalid}
-							label={t('showcase.forms.inputLabel')}
 							placeholder={t('showcase.forms.inputPlaceholder')}
 							fullWidth={true}
 						/>
-
 						<Select
-							id="demo-select"
+							label={t('showcase.forms.selectLabel')}
 							bind:value={selectValue}
 							options={selectOptions}
 							invalid={isInvalid}
-							label={t('showcase.forms.selectLabel')}
 							fullWidth={true}
 						/>
 					</Grid>
-
 					<Textarea
-						id="demo-textarea"
+						label={t('showcase.forms.textareaLabel')}
 						bind:value={textareaValue}
 						invalid={isInvalid}
-						label={t('showcase.forms.textareaLabel')}
 						fullWidth={true}
 					/>
+				</Column>
+			</Card>
 
-					<Divider label={t('showcase.forms.tactileSelections')} spacing="sm" />
+			<!-- 2. Switches, Sliders e Calendários -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<span>{t('showcase.forms.tactileSelections')}</span>
+				{/snippet}
+				<Column gap="lg">
+					<Row wrap={true} gap="lg" align="center">
+						<Switch label="Notificações Push (MD)" size="md" bind:checked={switchChecked} />
+						<Switch label="Modo Alta Fidelidade (SM)" size="sm" checked={true} />
+						<Switch label="Automação Ativa (LG)" size="lg" checked={false} />
+					</Row>
 
-					<Row wrap={true} gap="xl">
-						<Column gap="xs">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
-								{t('showcase.forms.checkboxes')}
-							</span>
-							<Checkbox
-								bind:checked={checkboxChecked}
-								invalid={isInvalid}
-								label={t('showcase.forms.checkedOption')}
-							/>
-							<Checkbox
-								bind:indeterminate={checkboxIndeterminate}
-								label={t('showcase.forms.indeterminateOption')}
-							/>
-							<Checkbox disabled={true} label={t('showcase.forms.disabledOption')} />
-						</Column>
+					<Divider />
 
-						<Column gap="xs">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
-								{t('showcase.forms.radios')}
-							</span>
-							<Radio
-								bind:group={radioGroup}
-								value="op-a"
-								invalid={isInvalid}
-								label={t('showcase.forms.radioA')}
-							/>
-							<Radio
-								bind:group={radioGroup}
-								value="op-b"
-								invalid={isInvalid}
-								label={t('showcase.forms.radioB')}
-							/>
-							<Radio
-								bind:group={radioGroup}
-								value="op-c"
-								disabled={true}
-								label={t('showcase.forms.radioCDisabled')}
-							/>
-						</Column>
+					<Slider
+						label="Ajuste de Volume / Intensidade"
+						bind:value={sliderValue}
+						min={0}
+						max={100}
+						showValue={true}
+						valueSuffix="%"
+					/>
+
+					<Divider />
+
+					<Column gap="sm">
+						<span style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase;">
+							{t('showcase.forms.calendar')}
+						</span>
+						<Row wrap={true} gap="md">
+							<Calendar mode="expandable" bind:value={calendarValue} />
+						</Row>
+					</Column>
+				</Column>
+			</Card>
+
+			<!-- 3. Choice Cards (Radio Card & Checkbox Card em Grade) -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<span>{t('showcase.forms.choiceCards')}</span>
+				{/snippet}
+				<Grid columns={2} gap="md">
+					<Radio variant="card" group={choiceCardRadio} value="service-1" name="showcase-choice">
+						<Row justify="between" align="center">
+							<Column gap="xs">
+								<span style="font-weight: 800;">Clipper Cut</span>
+								<span style="font-size: var(--text-xs); color: var(--text-secondary);">
+									Corte rápido e alinhamento
+								</span>
+							</Column>
+							<Badge variant="primary">$55.00</Badge>
+						</Row>
+					</Radio>
+
+					<Radio variant="card" group={choiceCardRadio} value="service-2" name="showcase-choice">
+						<Row justify="between" align="center">
+							<Column gap="xs">
+								<span style="font-weight: 800;">Haircut & Shave</span>
+								<span style="font-size: var(--text-xs); color: var(--text-secondary);">
+									Corte completo com toalha quente
+								</span>
+							</Column>
+							<Badge variant="primary">$90.00</Badge>
+						</Row>
+					</Radio>
+				</Grid>
+			</Card>
+		{:else if activeTab === 'display'}
+			<!-- 1. Badges & Avatares Neobrutalistas Quadrados -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<span>{t('showcase.display.badgesTitle')} & {t('showcase.display.avatarsTitle')}</span>
+				{/snippet}
+				<Column gap="md">
+					<Row wrap={true} gap="sm" align="center">
+						<Badge variant="primary">ONLINE</Badge>
+						<Badge variant="secondary">CACHE HIT</Badge>
+						<Badge variant="success">200 OK</Badge>
+						<Badge variant="warning">DEPRECATED</Badge>
+						<Badge variant="danger">DISCONNECTED</Badge>
+					</Row>
+					<Row wrap={true} gap="md" align="center">
+						<Avatar name="Lucas Monsan" size="lg" />
+						<Avatar name="Zoo Engine" size="md" />
+						<Avatar name="Dev Bot" size="sm" />
 					</Row>
 				</Column>
 			</Card>
-		{/if}
 
-		{#if activeTab === 'display'}
-			<Grid columns={2} gap="md">
-				<Card radius="md" padding="md">
-					{#snippet header()}
-						<span>{t('showcase.display.badgesTitle')}</span>
-					{/snippet}
-					<Column gap="md">
-						<Row wrap={true} gap="sm">
-							<Badge variant="primary">{t('showcase.buttons.primary')}</Badge>
-							<Badge variant="secondary">{t('showcase.buttons.secondary')}</Badge>
-							<Badge variant="outline">{t('showcase.buttons.outline')}</Badge>
-							<Badge variant="ghost">{t('showcase.buttons.ghost')}</Badge>
-							<Badge variant="danger">{t('showcase.buttons.danger')}</Badge>
-						</Row>
-						<Row wrap={true} gap="sm">
-							<Badge variant="primary" pill={true}>Pill</Badge>
-							<Badge variant="secondary" pill={true}>Badge</Badge>
-							<Badge variant="danger" pill={true}>99+</Badge>
+			<!-- 2. Flip Card 3D -->
+			<Card radius="md" padding="md" flipped={isCardFlipped}>
+				{#snippet header()}
+					<span>{t('showcase.display.flipCardTitle')}</span>
+				{/snippet}
+				<Column gap="md">
+					<p style="font-size: var(--text-sm); color: var(--text-secondary);">
+						{t('showcase.display.flipCardDesc')}
+					</p>
+					<Row>
+						<Button variant="primary" onclick={() => (isCardFlipped = !isCardFlipped)}>
+							{t('showcase.display.flipBtn')}
+						</Button>
+					</Row>
+				</Column>
+				{#snippet back()}
+					<Column gap="md" style="padding: var(--space-md);">
+						<span style="font-weight: 800;">{t('showcase.display.flipBackTitle')}</span>
+						<p style="font-size: var(--text-sm); color: var(--text-secondary);">
+							{t('showcase.display.flipBackDesc')}
+						</p>
+						<Row>
+							<Button variant="secondary" onclick={() => (isCardFlipped = false)}>
+								Voltar para a Frente
+							</Button>
 						</Row>
 					</Column>
-				</Card>
-
-				<Card radius="md" padding="md">
-					{#snippet header()}
-						<span>{t('showcase.display.avatarsTitle')}</span>
-					{/snippet}
-					<Row wrap={true} align="center" gap="md">
-						<Avatar name="Lucas Monsan" size="sm" />
-						<Avatar name="Lucas Monsan" size="md" />
-						<Avatar name="Lucas Monsan" size="lg" />
-						<Avatar name="Lucas Monsan" size="xl" square={true} />
-					</Row>
-				</Card>
-			</Grid>
-
-			<Card radius="md" padding="md" badgeTitle={t('showcase.display.badgeCardBadge')}>
-				<p style="margin: 0; font-size: var(--text-sm);">
-					{t('showcase.display.badgeCardDesc')}
-				</p>
-			</Card>
-
-			<Card radius="md" padding="md" collapsible={true}>
-				{#snippet header()}
-					<span>{t('showcase.display.collapsibleCardTitle')}</span>
 				{/snippet}
-				<p style="margin: 0; font-size: var(--text-sm);">
-					{t('showcase.display.collapsibleCardDesc')}
-				</p>
 			</Card>
-
+		{:else if activeTab === 'feedback'}
+			<!-- 1. Barras de Progresso -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<Row fullWidth={true} justify="between" align="center">
-						<span>{t('showcase.display.cardActionsTitle')}</span>
-						<Button size="sm" variant="secondary">{t('showcase.display.cardHeaderAction')}</Button>
-					</Row>
+					<span>{t('showcase.feedback.progressBarTitle')}</span>
 				{/snippet}
-				<p style="margin: 0; font-size: var(--text-sm);">
-					{t('showcase.display.cardActionsDesc')}
-				</p>
-				{#snippet footer()}
-					<Row fullWidth={true} justify="end" gap="sm">
-						<Button size="sm" variant="ghost">{t('common.cancel')}</Button>
-						<Button size="sm" variant="primary">{t('common.confirm')}</Button>
-					</Row>
-				{/snippet}
+				<Column gap="md">
+					<ProgressBar value={progressValue} showLabel={true} size="md" />
+					<ProgressBar value={45} striped={true} variant="success" size="lg" showLabel={true} />
+					<ProgressBar value={85} variant="warning" size="sm" />
+				</Column>
 			</Card>
 
-			<Card radius="md" padding="md" interactive={true}>
+			<!-- 2. Spinners Neobrutalistas -->
+			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.display.interactiveCardTitle')}</span>
+					<span>{t('showcase.feedback.spinnersTitle')}</span>
 				{/snippet}
-				<p style="margin: 0; font-size: var(--text-sm);">
-					{t('showcase.display.interactiveCardDesc')}
-				</p>
-			</Card>
-		{/if}
-
-		{#if activeTab === 'feedback'}
-			<Column gap="md">
-				<Alert variant="info" title={t('showcase.feedback.infoTitle')}>
-					{t('showcase.feedback.infoMsg')}
-				</Alert>
-				<Alert variant="success" title={t('showcase.feedback.successTitle')} closable={true}>
-					{t('showcase.feedback.successMsg')}
-				</Alert>
-				<Alert variant="warning" title={t('showcase.feedback.warningTitle')}>
-					{t('showcase.feedback.warningMsg')}
-				</Alert>
-				<Alert variant="danger" title={t('showcase.feedback.dangerTitle')}>
-					{t('showcase.feedback.dangerMsg')}
-				</Alert>
-
-				<Card radius="md" padding="md">
-					{#snippet header()}
-						<span>{t('showcase.feedback.spinnersTitle')}</span>
-					{/snippet}
-					<Grid columns={3} gap="lg">
-						<Column gap="xs" align="start">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+				<Grid columns={3} gap="md">
+					<Card radius="sm" padding="sm" variant="flat">
+						<Column align="center" gap="sm">
+							<Spinner variant="cube" size="lg" />
+							<span style="font-size: var(--text-xs); font-weight: 700; text-align: center;">
 								{t('showcase.feedback.spinnerCube')}
 							</span>
-							<Row align="center" gap="md">
-								<Spinner size="sm" variant="cube" />
-								<Spinner size="md" variant="cube" />
-								<Spinner size="lg" variant="cube" />
-							</Row>
 						</Column>
-						<Column gap="xs" align="start">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+					</Card>
+					<Card radius="sm" padding="sm" variant="flat">
+						<Column align="center" gap="sm">
+							<Spinner variant="ratchet" size="lg" />
+							<span style="font-size: var(--text-xs); font-weight: 700; text-align: center;">
 								{t('showcase.feedback.spinnerRatchet')}
 							</span>
-							<Row align="center" gap="md">
-								<Spinner size="sm" variant="ratchet" />
-								<Spinner size="md" variant="ratchet" />
-								<Spinner size="lg" variant="ratchet" />
-							</Row>
 						</Column>
-						<Column gap="xs" align="start">
-							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+					</Card>
+					<Card radius="sm" padding="sm" variant="flat">
+						<Column align="center" gap="sm">
+							<Spinner variant="chaser" size="lg" />
+							<span style="font-size: var(--text-xs); font-weight: 700; text-align: center;">
 								{t('showcase.feedback.spinnerChaser')}
 							</span>
-							<Row align="center" gap="md">
-								<Spinner size="sm" variant="chaser" />
-								<Spinner size="md" variant="chaser" />
-								<Spinner size="lg" variant="chaser" />
-							</Row>
 						</Column>
-					</Grid>
-				</Card>
+					</Card>
+				</Grid>
+			</Card>
 
-				<Card radius="md" padding="md">
-					{#snippet header()}
-						<span>{t('showcase.feedback.dialogsTitle')}</span>
-					{/snippet}
-					<Row wrap={true} align="center" gap="md">
-						<Button onclick={() => (isDialogOpen = true)}>
-							{t('showcase.feedback.openDialog')}
-						</Button>
-						<Button variant="secondary" onclick={() => (isToastOpen = true)}>
-							{t('showcase.feedback.triggerToast')}
-						</Button>
-					</Row>
-				</Card>
-			</Column>
+			<!-- 3. Diálogos Nativos & Toasts -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<span>{t('showcase.feedback.dialogsTitle')}</span>
+				{/snippet}
+				<Row wrap={true} gap="md">
+					<Button variant="primary" onclick={() => (isDialogOpen = true)}>
+						{t('showcase.feedback.openDialog')}
+					</Button>
+					<Button variant="secondary" onclick={() => (isToastOpen = true)}>
+						{t('showcase.feedback.triggerToast')}
+					</Button>
+				</Row>
+			</Card>
 		{/if}
 	</Section>
 
-	<Footer sticky={true} padding="md">
+	<!-- Rodapé da Aplicação -->
+	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
 				{t('showcase.footer.tagline')}
 			</span>
-			<Badge variant="secondary">{t('showcase.footer.port')}</Badge>
+			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
+				{t('showcase.footer.port')}
+			</span>
 		</Row>
 	</Footer>
 </Main>
 
-<!-- Modal Nativo HTML5 -->
-<Dialog bind:open={isDialogOpen} title={t('showcase.dialog.title')} size="md">
-	<p style="margin: 0; font-size: var(--text-sm); line-height: 1.6;">
-		{t('showcase.dialog.desc')}
-	</p>
+<!-- Modal Nativo com Saída Fluida e Zero Blur -->
+<Dialog
+	bind:open={isDialogOpen}
+	title={t('showcase.dialog.title')}
+	size="md"
+	closeOnOutsideClick={true}
+>
+	<Column gap="md">
+		<p style="margin: 0; font-size: var(--text-sm); line-height: 1.5;">
+			{t('showcase.dialog.desc')}
+		</p>
+	</Column>
 	{#snippet footer()}
-		<Button variant="secondary" onclick={() => (isDialogOpen = false)}>
-			{t('common.cancel')}
-		</Button>
-		<Button variant="primary" onclick={() => (isDialogOpen = false)}>
-			{t('common.confirm')}
-		</Button>
+		<Row justify="end" gap="sm">
+			<Button variant="outline" onclick={() => (isDialogOpen = false)}>
+				{t('common.cancel')}
+			</Button>
+			<Button variant="primary" onclick={() => (isDialogOpen = false)}>
+				{t('common.confirm')}
+			</Button>
+		</Row>
 	{/snippet}
 </Dialog>
 
-<!-- Toast Flutuante -->
+<!-- Toast Flutuante com Transição Fly -->
 <Toast bind:open={isToastOpen} variant="success" duration={3500}>
-	<strong>{t('showcase.toast.title')}</strong>
-	{t('showcase.toast.msg')}
+	<Column gap="none">
+		<strong>{t('showcase.toast.title')}</strong>
+		<span>{t('showcase.toast.msg')}</span>
+	</Column>
 </Toast>
+
+<style>
+	.header-logo-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-sm);
+		background: transparent;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		text-align: left;
+		color: inherit;
+		font: inherit;
+	}
+
+	.header-logo-btn:hover {
+		opacity: 0.85;
+	}
+
+	.header-logo-btn:focus-visible {
+		outline: 2px solid var(--color-primary);
+		border-radius: var(--radius-sm);
+	}
+</style>

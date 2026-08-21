@@ -26,3 +26,30 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLElement>, 'onchange'>
 	children?: Snippet;
 	onchange?: (value: string) => void;
 }
+
+export interface ChipProps extends HTMLButtonAttributes {
+	children?: Snippet;
+	selected?: boolean;
+	removable?: boolean;
+	size?: Size;
+	variant?: Variant;
+	onremove?: (event: MouseEvent) => void;
+}
+
+export interface DropdownItem {
+	id: string;
+	label: string;
+	icon?: Snippet;
+	danger?: boolean;
+	disabled?: boolean;
+	onclick?: () => void;
+}
+
+export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
+	label?: string;
+	trigger?: Snippet;
+	items?: DropdownItem[];
+	children?: Snippet;
+	open?: boolean;
+	placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+}

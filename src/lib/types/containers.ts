@@ -27,4 +27,6 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
 	children?: Snippet;
 	sticky?: boolean;
 	padding?: Space;
+	expandable?: boolean;
+	open?: boolean;
 }

@@ -5,8 +5,10 @@
 		checked = $bindable(false),
 		indeterminate = $bindable(false),
 		label,
+		variant = 'default',
 		invalid = false,
 		disabled = false,
+		children,
 		class: className,
 		...restProps
 	}: CheckboxProps = $props();
@@ -20,48 +22,102 @@
 	});
 </script>
 
-<label class={className} data-disabled={disabled} data-invalid={invalid}>
-	<input
-		bind:this={inputEl}
-		type="checkbox"
-		bind:checked
-		{disabled}
-		aria-invalid={invalid ? 'true' : undefined}
-		{...restProps}
-	/>
-	<span
-		class="box"
+{#if variant === 'card'}
+	<label
+		class={`checkbox-card ${className ?? ''}`}
 		data-checked={checked}
-		data-indeterminate={indeterminate}
+		data-disabled={disabled}
 		data-invalid={invalid}
 	>
-		{#if indeterminate}
-			<svg
-				viewBox="0 0 16 16"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="3"
-				stroke-linecap="round"
-			>
-				<line x1="3.5" y1="8" x2="12.5" y2="8" />
-			</svg>
-		{:else if checked}
-			<svg
-				viewBox="0 0 16 16"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="3"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<polyline points="3.5 8.5 6.5 11.5 12.5 4.5" />
-			</svg>
+		<input
+			bind:this={inputEl}
+			type="checkbox"
+			bind:checked
+			{disabled}
+			aria-invalid={invalid ? 'true' : undefined}
+			{...restProps}
+		/>
+		{#if children}
+			{@render children()}
+		{:else if label}
+			<span class="card-label-row">
+				<span
+					class="box"
+					data-checked={checked}
+					data-indeterminate={indeterminate}
+					data-invalid={invalid}
+				>
+					{#if indeterminate}
+						<svg
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="3"
+							stroke-linecap="round"
+						>
+							<line x1="3.5" y1="8" x2="12.5" y2="8" />
+						</svg>
+					{:else if checked}
+						<svg
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<polyline points="3.5 8.5 6.5 11.5 12.5 4.5" />
+						</svg>
+					{/if}
+				</span>
+				<span class="label">{label}</span>
+			</span>
 		{/if}
-	</span>
-	{#if label}
-		<span class="label">{label}</span>
-	{/if}
-</label>
+	</label>
+{:else}
+	<label class={className} data-disabled={disabled} data-invalid={invalid}>
+		<input
+			bind:this={inputEl}
+			type="checkbox"
+			bind:checked
+			{disabled}
+			aria-invalid={invalid ? 'true' : undefined}
+			{...restProps}
+		/>
+		<span
+			class="box"
+			data-checked={checked}
+			data-indeterminate={indeterminate}
+			data-invalid={invalid}
+		>
+			{#if indeterminate}
+				<svg
+					viewBox="0 0 16 16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="3"
+					stroke-linecap="round"
+				>
+					<line x1="3.5" y1="8" x2="12.5" y2="8" />
+				</svg>
+			{:else if checked}
+				<svg
+					viewBox="0 0 16 16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="3"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polyline points="3.5 8.5 6.5 11.5 12.5 4.5" />
+				</svg>
+			{/if}
+		</span>
+		{#if label}
+			<span class="label">{label}</span>
+		{/if}
+	</label>
+{/if}
 
 <style>
 	label {
@@ -147,8 +203,52 @@
 		line-height: 1.25;
 	}
 
+	/* Card Variant */
+	.checkbox-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: var(--space-md);
+		box-sizing: border-box;
+		background-color: var(--bg-primary);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow);
+		transition:
+			transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1),
+			border-color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.checkbox-card:hover:not([data-disabled='true']) {
+		border-color: var(--color-primary);
+		transform: translate(-1px, -1px);
+		box-shadow: 2px 2px 0px var(--border-color);
+	}
+
+	.checkbox-card:has(input:focus-visible) {
+		outline: none;
+		border-color: var(--color-primary);
+		box-shadow: 3px 3px 0px var(--color-primary);
+		transform: translate(-1px, -1px);
+	}
+
+	.checkbox-card[data-checked='true'] {
+		border-color: var(--color-primary);
+		box-shadow: 2px 2px 0px var(--color-primary);
+		background-color: var(--bg-primary);
+	}
+
+	.card-label-row {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.box {
+		.box,
+		.checkbox-card {
 			transition: none;
 		}
 	}

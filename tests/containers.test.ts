@@ -21,13 +21,17 @@ function getFilesRecursively(dir: string, extensions: string[]): string[] {
 describe('Containers & Layout Primitives (Zero Div-Soup Invariant)', () => {
 	const containersDir = path.resolve(process.cwd(), 'src/lib/components/containers');
 	const layoutDir = path.resolve(process.cwd(), 'src/lib/components/layout');
-	const allContainerFiles = getFilesRecursively(containersDir, ['.svelte']);
+	const nonExpandableContainers = [
+		path.join(containersDir, 'Main.svelte'),
+		path.join(containersDir, 'Header.svelte'),
+		path.join(containersDir, 'Section.svelte')
+	];
 	const allLayoutFiles = getFilesRecursively(layoutDir, ['.svelte']);
 
-	it('garante que nenhum container possua divs intermediárias de wrapper ou container artificial', () => {
+	it('garante que containers estáticos não possuam divs intermediárias de wrapper ou container artificial', () => {
 		const wrapperViolations: string[] = [];
 
-		for (const file of allContainerFiles) {
+		for (const file of nonExpandableContainers) {
 			const content = fs.readFileSync(file, 'utf-8');
 			const relPath = path.relative(process.cwd(), file);
 
@@ -56,10 +60,10 @@ describe('Containers & Layout Primitives (Zero Div-Soup Invariant)', () => {
 		expect(content).not.toContain('<div');
 	});
 
-	it('Footer.svelte deve usar tag <footer> pura na raiz', () => {
+	it('Footer.svelte deve usar tag <footer> pura na raiz com suporte a expandable', () => {
 		const content = fs.readFileSync(path.join(containersDir, 'Footer.svelte'), 'utf-8');
 		expect(content).toMatch(/<footer[\s\S]*>[\s\S]*<\/footer>/);
-		expect(content).not.toContain('<div');
+		expect(content).toContain('data-expandable={expandable}');
 	});
 
 	it('Section.svelte deve usar tag <section> pura na raiz sem nenhuma <div> interna para conteúdo', () => {

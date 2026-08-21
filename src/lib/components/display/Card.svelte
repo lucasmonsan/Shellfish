@@ -13,6 +13,8 @@
 		collapsible = false,
 		open = $bindable(true),
 		badgeTitle,
+		back,
+		flipped = false,
 		class: className,
 		...restProps
 	}: CardProps = $props();
@@ -24,18 +26,7 @@
 	}
 </script>
 
-<article
-	data-variant={variant}
-	data-padding={padding}
-	data-radius={radius}
-	data-interactive={interactive}
-	data-full-width={fullWidth}
-	data-collapsible={collapsible}
-	data-collapsed={collapsible && !open ? 'true' : undefined}
-	data-has-badge={badgeTitle ? 'true' : undefined}
-	class={className}
-	{...restProps}
->
+{#snippet frontContent()}
 	{#if badgeTitle}
 		<div class="card-straddled-badge">
 			{badgeTitle}
@@ -94,6 +85,33 @@
 			{/if}
 		</div>
 	</div>
+{/snippet}
+
+<article
+	data-variant={variant}
+	data-padding={padding}
+	data-radius={radius}
+	data-interactive={interactive}
+	data-full-width={fullWidth}
+	data-collapsible={collapsible}
+	data-collapsed={collapsible && !open ? 'true' : undefined}
+	data-has-badge={badgeTitle ? 'true' : undefined}
+	data-flippable={back ? 'true' : undefined}
+	class={className}
+	{...restProps}
+>
+	{#if back}
+		<div class="card-flip-flipper" class:flipped>
+			<div class="card-flip-front">
+				{@render frontContent()}
+			</div>
+			<div class="card-flip-back">
+				{@render back()}
+			</div>
+		</div>
+	{:else}
+		{@render frontContent()}
+	{/if}
 </article>
 
 <style>
@@ -117,6 +135,51 @@
 	article[data-has-badge='true'] {
 		overflow: visible;
 		margin-top: var(--space-sm);
+	}
+
+	/* Flip 3D (Ativado apenas quando snippet back existe) */
+	article[data-flippable='true'] {
+		perspective: 1000px;
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		overflow: visible;
+	}
+
+	.card-flip-flipper {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transform-style: preserve-3d;
+		transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.card-flip-flipper.flipped {
+		transform: rotateY(180deg);
+	}
+
+	.card-flip-front,
+	.card-flip-back {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+		box-sizing: border-box;
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow);
+		display: flex;
+		flex-direction: column;
+	}
+
+	.card-flip-back {
+		position: absolute;
+		inset: 0;
+		transform: rotateY(180deg);
+		background-color: var(--bg-secondary);
 	}
 
 	.card-straddled-badge {
@@ -294,7 +357,8 @@
 	}
 
 	/* Paddings do Body e Alinhamento Horizontal de Header/Footer/Toggle */
-	article[data-padding='none'] .card-body {
+	article[data-padding='none'] .card-body,
+	.card-flip-back {
 		padding: var(--space-none);
 	}
 	article[data-padding='none'] .card-header-content-static,
@@ -303,7 +367,8 @@
 		padding-inline: var(--space-md);
 	}
 
-	article[data-padding='xs'] .card-body {
+	article[data-padding='xs'] .card-body,
+	article[data-padding='xs'] .card-flip-back {
 		padding: var(--space-xs);
 	}
 	article[data-padding='xs'] .card-header-content-static,
@@ -312,7 +377,8 @@
 		padding-inline: var(--space-xs);
 	}
 
-	article[data-padding='sm'] .card-body {
+	article[data-padding='sm'] .card-body,
+	article[data-padding='sm'] .card-flip-back {
 		padding: var(--space-sm);
 	}
 	article[data-padding='sm'] .card-header-content-static,
@@ -321,7 +387,8 @@
 		padding-inline: var(--space-sm);
 	}
 
-	article[data-padding='md'] .card-body {
+	article[data-padding='md'] .card-body,
+	article[data-padding='md'] .card-flip-back {
 		padding: var(--space-md);
 	}
 	article[data-padding='md'] .card-header-content-static,
@@ -330,7 +397,8 @@
 		padding-inline: var(--space-md);
 	}
 
-	article[data-padding='lg'] .card-body {
+	article[data-padding='lg'] .card-body,
+	article[data-padding='lg'] .card-flip-back {
 		padding: var(--space-lg);
 	}
 	article[data-padding='lg'] .card-header-content-static,
@@ -339,7 +407,8 @@
 		padding-inline: var(--space-lg);
 	}
 
-	article[data-padding='xl'] .card-body {
+	article[data-padding='xl'] .card-body,
+	article[data-padding='xl'] .card-flip-back {
 		padding: var(--space-xl);
 	}
 	article[data-padding='xl'] .card-header-content-static,
@@ -348,7 +417,8 @@
 		padding-inline: var(--space-xl);
 	}
 
-	article[data-padding='2xl'] .card-body {
+	article[data-padding='2xl'] .card-body,
+	article[data-padding='2xl'] .card-flip-back {
 		padding: var(--space-2xl);
 	}
 	article[data-padding='2xl'] .card-header-content-static,
@@ -360,7 +430,8 @@
 	@media (prefers-reduced-motion: reduce) {
 		article,
 		.card-chevron,
-		.card-collapse-wrapper {
+		.card-collapse-wrapper,
+		.card-flip-flipper {
 			transition: none;
 		}
 	}

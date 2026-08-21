@@ -153,22 +153,18 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 2px;
-		padding: 1px 6px;
+		padding-inline: 4px;
 		background-color: var(--bg-primary);
 		color: var(--text-secondary);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-sm);
 		font-family: var(--font-display);
 		font-size: var(--text-xs);
 		font-weight: 700;
-		line-height: 1.2;
+		line-height: 1;
 		white-space: nowrap;
 		z-index: 2;
 		pointer-events: none;
 		user-select: none;
-		transition:
-			border-color 0.15s ease,
-			color 0.15s ease;
+		transition: color 0.15s ease;
 	}
 
 	.textarea-straddled-label .required {
@@ -176,7 +172,6 @@
 	}
 
 	.textarea-wrapper:focus-within .textarea-straddled-label {
-		border-color: var(--color-primary);
 		color: var(--color-primary);
 	}
 

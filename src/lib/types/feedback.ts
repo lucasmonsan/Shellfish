@@ -20,6 +20,18 @@ export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
 	label?: string;
 }
 
+export type ProgressVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+
+export interface ProgressBarProps extends HTMLAttributes<HTMLDivElement> {
+	value?: number;
+	max?: number;
+	size?: Size;
+	variant?: ProgressVariant;
+	striped?: boolean;
+	showLabel?: boolean;
+	label?: string;
+}
+
 export interface DialogProps extends HTMLDialogAttributes {
 	open?: boolean;
 	title?: string;

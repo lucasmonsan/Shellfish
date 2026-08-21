@@ -86,19 +86,43 @@ describe('Form Controls & Tactile Focus Engine', () => {
 		expect(content).toContain(':focus-within');
 	});
 
-	it('Checkbox.svelte deve renderizar input checkbox com indicador SVG e suporte a indeterminate', () => {
+	it('Checkbox.svelte deve suportar variant="card" e indeterminate', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Checkbox.svelte'), 'utf-8');
 		expect(content).toContain('type="checkbox"');
 		expect(content).toContain('inputEl.indeterminate = indeterminate;');
 		expect(content).toContain('class="box"');
+		expect(content).toContain("variant === 'card'");
 	});
 
-	it('Radio.svelte deve renderizar input radio com reatividade em bind:group', () => {
+	it('Radio.svelte deve suportar variant="card" e reatividade em bind:group', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Radio.svelte'), 'utf-8');
 		expect(content).toContain('type="radio"');
 		expect(content).toContain(
 			'let isChecked = $derived(group !== undefined && value !== undefined && group === value);'
 		);
 		expect(content).toContain('class="circle"');
+		expect(content).toContain("variant === 'card'");
+	});
+
+	it('Switch.svelte deve implementar role="switch" e física neobrutalista tátil', () => {
+		const content = fs.readFileSync(path.join(formsDir, 'Switch.svelte'), 'utf-8');
+		expect(content).toContain('role="switch"');
+		expect(content).toContain('aria-checked={checked}');
+		expect(content).toContain('switch-track');
+		expect(content).toContain('switch-thumb');
+	});
+
+	it('Slider.svelte deve implementar controle de range com feedback tátil', () => {
+		const content = fs.readFileSync(path.join(formsDir, 'Slider.svelte'), 'utf-8');
+		expect(content).toContain('type="range"');
+		expect(content).toContain('slider-value-display');
+	});
+
+	it('Calendar.svelte deve suportar modos week, month e expandable', () => {
+		const content = fs.readFileSync(path.join(formsDir, 'Calendar.svelte'), 'utf-8');
+		expect(content).toContain("mode = 'month'");
+		expect(content).toContain('calendar-strip');
+		expect(content).toContain('calendar-month-grid');
+		expect(content).toContain('toggleExpand');
 	});
 });

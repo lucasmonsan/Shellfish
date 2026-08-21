@@ -79,4 +79,19 @@
 		background-color: var(--color-danger);
 		color: #ffffff;
 	}
+
+	span[data-variant='success'] {
+		background-color: var(--color-green-light);
+		color: var(--color-green-dark);
+	}
+
+	span[data-variant='warning'] {
+		background-color: var(--color-yellow);
+		color: var(--text-primary);
+	}
+
+	span[data-variant='neutral'] {
+		background-color: var(--bg-secondary);
+		color: var(--text-secondary);
+	}
 </style>
