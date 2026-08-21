@@ -166,12 +166,14 @@
 	}
 
 	/* Flip 3D (Ativado apenas quando snippet back existe) */
-	article[data-flippable='true'] {
+	article[data-flippable='true'],
+	article[data-flippable='true'][data-variant] {
 		perspective: 1000px;
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
 		cursor: pointer;
+		overflow: visible;
 	}
 
 	.card-flip-flipper {
@@ -382,12 +384,9 @@
 
 	.card-collapse-inner {
 		min-height: 0;
+		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-	}
-
-	.card-collapse-wrapper.collapsed .card-collapse-inner {
-		overflow: hidden;
 	}
 
 	.card-body {

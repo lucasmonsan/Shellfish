@@ -127,6 +127,47 @@
 	];
 </script>
 
+{#snippet defaultHeader()}
+	<span>Card Padrão</span>
+{/snippet}
+
+{#snippet defaultFooter()}
+	<Row justify="end" gap="sm">
+		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Cancelar')}
+			>Cancelar</Button
+		>
+		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Confirmar')}
+			>Confirmar</Button
+		>
+	</Row>
+{/snippet}
+
+{#snippet collapsibleHeader()}
+	<span>Card Colapsável</span>
+{/snippet}
+
+{#snippet collapsibleFooter()}
+	<Row justify="end" gap="sm">
+		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Fechar')}>Fechar</Button>
+	</Row>
+{/snippet}
+
+{#snippet badgeFooter()}
+	<Row justify="end" gap="sm">
+		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Ação')}>Ação</Button>
+	</Row>
+{/snippet}
+
+{#snippet flipHeader()}
+	<span>Card Frente</span>
+{/snippet}
+
+{#snippet flipFooter()}
+	<Row justify="end" gap="sm">
+		<Badge variant="secondary">Lado A</Badge>
+	</Row>
+{/snippet}
+
 <Main fullHeight={true} padding="none" gap="none">
 	<!-- Header Limpo com Logo Oficial -->
 	<Header sticky={true} padding="md">
@@ -540,73 +581,71 @@
 
 					<!-- Renderização do Card Selecionado -->
 					{#if cardVariantTab === 'default'}
-						<Card radius={cardRadius} padding={cardPadding}>
-							{#snippet header()}
-								{#if cardHasHeader}
-									<span>Card Padrão</span>
-								{/if}
-							{/snippet}
-							<p style="margin: 0; font-size: var(--text-sm);">
-								Superfície tátil neobrutalista com elevação física sólida de 1px.
-							</p>
-							{#snippet footer()}
-								{#if cardHasFooter}
-									<Row justify="end" gap="sm">
-										<Button
-											size="sm"
-											variant="outline"
-											onclick={() => triggerAction('Card Cancelar')}>Cancelar</Button
-										>
-										<Button
-											size="sm"
-											variant="primary"
-											onclick={() => triggerAction('Card Confirmar')}>Confirmar</Button
-										>
-									</Row>
-								{/if}
-							{/snippet}
+						<Card
+							radius={cardRadius}
+							padding={cardPadding}
+							header={cardHasHeader ? defaultHeader : undefined}
+							footer={cardHasFooter ? defaultFooter : undefined}
+						>
+							<Column
+								gap="xs"
+								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
+							>
+								<strong style="font-size: var(--text-sm);">Conteúdo do Card</strong>
+								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
+									Distância entre este bloco e a borda externa do card: {cardPadding.toUpperCase()} ({cardPadding ===
+									'sm'
+										? '8px'
+										: cardPadding === 'md'
+											? '16px'
+											: '24px'}).
+								</p>
+							</Column>
 						</Card>
 					{:else if cardVariantTab === 'collapsible'}
-						<Card radius={cardRadius} padding={cardPadding} collapsible={true}>
-							{#snippet header()}
-								<span>Card Colapsável</span>
-							{/snippet}
-							<p style="margin: 0; font-size: var(--text-sm);">
-								Clique no cabeçalho para recolher ou expandir este painel com transição fluida.
-							</p>
-							{#snippet footer()}
-								{#if cardHasFooter}
-									<Row justify="end" gap="sm">
-										<Button size="sm" variant="outline" onclick={() => triggerAction('Card Fechar')}
-											>Fechar</Button
-										>
-									</Row>
-								{/if}
-							{/snippet}
+						<Card
+							radius={cardRadius}
+							padding={cardPadding}
+							collapsible={true}
+							header={collapsibleHeader}
+							footer={cardHasFooter ? collapsibleFooter : undefined}
+						>
+							<Column
+								gap="xs"
+								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
+							>
+								<strong style="font-size: var(--text-sm);">Painel Expansível Fluido</strong>
+								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
+									Clique no cabeçalho para recolher ou expandir este painel com transição fluida.
+								</p>
+							</Column>
 						</Card>
 					{:else if cardVariantTab === 'badge'}
-						<Card radius={cardRadius} padding={cardPadding} badgeTitle="Módulo #01">
-							<p style="margin: 0; font-size: var(--text-sm);">
-								A placa de identificação fica cravada a 50% na linha superior como uma etiqueta de
-								hardware.
-							</p>
-							{#snippet footer()}
-								{#if cardHasFooter}
-									<Row justify="end" gap="sm">
-										<Button size="sm" variant="primary" onclick={() => triggerAction('Card Ação')}
-											>Ação</Button
-										>
-									</Row>
-								{/if}
-							{/snippet}
+						<Card
+							radius={cardRadius}
+							padding={cardPadding}
+							badgeTitle="Módulo #01"
+							footer={cardHasFooter ? badgeFooter : undefined}
+						>
+							<Column
+								gap="xs"
+								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
+							>
+								<strong style="font-size: var(--text-sm);">Placa na Borda</strong>
+								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
+									A placa de identificação fica cravada na linha superior e substitui o header
+									padrão.
+								</p>
+							</Column>
 						</Card>
 					{:else if cardVariantTab === 'flip'}
-						<Card radius={cardRadius} padding={cardPadding} bind:flipped={isCardFlipped}>
-							{#snippet header()}
-								{#if cardHasHeader}
-									<span>Card Frente</span>
-								{/if}
-							{/snippet}
+						<Card
+							radius={cardRadius}
+							padding={cardPadding}
+							bind:flipped={isCardFlipped}
+							header={cardHasHeader ? flipHeader : undefined}
+							footer={cardHasFooter ? flipFooter : undefined}
+						>
 							<Column gap="md">
 								<p style="margin: 0; font-size: var(--text-sm);">
 									Clique em qualquer área do Card para girar em 3D.
@@ -615,13 +654,6 @@
 									<Badge variant="primary">Clique no Card para Virar ➔</Badge>
 								</Row>
 							</Column>
-							{#snippet footer()}
-								{#if cardHasFooter}
-									<Row justify="end" gap="sm">
-										<Badge variant="secondary">Lado A</Badge>
-									</Row>
-								{/if}
-							{/snippet}
 							{#snippet back()}
 								<Column gap="md" style="padding: var(--space-md);">
 									<strong style="font-size: var(--text-base);"
