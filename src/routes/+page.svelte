@@ -279,7 +279,8 @@
 					{#if showRemovableChip}
 						<div
 							style="display: inline-flex; align-items: center;"
-							transition:scale={{ duration: 180, start: 0.85 }}
+							in:scale={{ delay: 180, duration: 180, start: 0.85 }}
+							out:scale={{ duration: 180, start: 0.85 }}
 						>
 							<Chip
 								removable={true}
@@ -294,7 +295,8 @@
 					{:else}
 						<div
 							style="display: inline-flex; align-items: center;"
-							transition:scale={{ duration: 180, start: 0.85 }}
+							in:scale={{ delay: 180, duration: 180, start: 0.85 }}
+							out:scale={{ duration: 180, start: 0.85 }}
 						>
 							<Chip
 								variant="outline"
