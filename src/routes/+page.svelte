@@ -682,7 +682,7 @@
 				{/snippet}
 				<Column gap="md">
 					<ProgressBar value={progressValue} variant="primary" showLabel={true} size="md" />
-					<ProgressBar value={50} striped={true} variant="primary" size="lg" showLabel={true} />
+					<ProgressBar value={50} striped={true} variant="primary" size="md" showLabel={true} />
 					<ProgressBar value={85} variant="success" size="sm" />
 				</Column>
 			</Card>
