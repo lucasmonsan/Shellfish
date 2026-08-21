@@ -115,6 +115,30 @@
 	});
 </script>
 
+{#snippet monthGridContent()}
+	<div class="calendar-month-grid">
+		<div class="weekday-header-row">
+			{#each WEEKDAYS_SHORT as wd, i (i)}
+				<span class="weekday-header-cell">{wd.slice(0, 1)}</span>
+			{/each}
+		</div>
+		<div class="days-grid">
+			{#each monthDays as item (item.date.toISOString())}
+				{@const isSelected = isSameDay(item.date, selectedDate)}
+				<button
+					type="button"
+					class="month-day-cell"
+					data-selected={isSelected}
+					data-current-month={item.currentMonth}
+					onclick={() => selectDay(item.date)}
+				>
+					{item.date.getDate()}
+				</button>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
 <div
 	class={`shellfish-calendar ${className ?? ''}`}
 	data-mode={mode}
@@ -204,29 +228,15 @@
 		</div>
 	{/if}
 
-	<!-- Modo Grade Mensal (ou expansão no modo expandable) -->
-	{#if mode === 'month' || (mode === 'expandable' && isExpanded)}
-		<div class="calendar-month-grid">
-			<div class="weekday-header-row">
-				{#each WEEKDAYS_SHORT as wd, i (i)}
-					<span class="weekday-header-cell">{wd.slice(0, 1)}</span>
-				{/each}
-			</div>
-			<div class="days-grid">
-				{#each monthDays as item (item.date.toISOString())}
-					{@const isSelected = isSameDay(item.date, selectedDate)}
-					<button
-						type="button"
-						class="month-day-cell"
-						data-selected={isSelected}
-						data-current-month={item.currentMonth}
-						onclick={() => selectDay(item.date)}
-					>
-						{item.date.getDate()}
-					</button>
-				{/each}
+	<!-- Modo Grade Mensal (com animação fluida no expandable) -->
+	{#if mode === 'expandable'}
+		<div class="calendar-expand-wrapper" class:expanded={isExpanded}>
+			<div class="calendar-expand-inner">
+				{@render monthGridContent()}
 			</div>
 		</div>
+	{:else if mode === 'month'}
+		{@render monthGridContent()}
 	{/if}
 </div>
 
@@ -242,7 +252,7 @@
 		box-shadow: var(--shadow);
 		padding: var(--space-md);
 		width: 100%;
-		max-width: 360px;
+		max-width: 400px;
 	}
 
 	.calendar-header {
@@ -286,13 +296,12 @@
 	}
 
 	.icon-btn:hover {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
 	.chevron-toggle {
-		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+		transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.chevron-toggle.rotated {
@@ -304,11 +313,11 @@
 		height: 14px;
 	}
 
-	/* Faixa de Dias (Week Strip) */
+	/* Faixa de Dias (Week Strip) com gap maior */
 	.calendar-strip {
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
-		gap: var(--space-xs);
+		gap: var(--space-sm);
 	}
 
 	.strip-day-card {
@@ -326,12 +335,10 @@
 		transition:
 			transform 0.12s ease,
 			box-shadow 0.12s ease,
-			background-color 0.15s ease,
-			border-color 0.15s ease;
+			background-color 0.15s ease;
 	}
 
 	.strip-day-card:hover {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
@@ -358,23 +365,30 @@
 		opacity: 0.8;
 	}
 
+	/* Expansão Fluida CSS Grid 0fr -> 1fr */
+	.calendar-expand-wrapper {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.calendar-expand-wrapper.expanded {
+		grid-template-rows: 1fr;
+	}
+
+	.calendar-expand-inner {
+		overflow: hidden;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
 	/* Grade Mensal */
 	.calendar-month-grid {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-xs);
-		animation: monthFade 0.2s ease;
-	}
-
-	@keyframes monthFade {
-		from {
-			opacity: 0;
-			transform: translateY(-4px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+		padding-top: var(--space-xs);
 	}
 
 	.weekday-header-row {
@@ -409,7 +423,6 @@
 		cursor: pointer;
 		transition:
 			background-color 0.12s ease,
-			border-color 0.12s ease,
 			transform 0.12s ease;
 	}
 
@@ -434,9 +447,8 @@
 		.strip-day-card,
 		.month-day-cell,
 		.chevron-toggle,
-		.calendar-month-grid {
+		.calendar-expand-wrapper {
 			transition: none;
-			animation: none;
 		}
 	}
 </style>

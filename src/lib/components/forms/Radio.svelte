@@ -88,13 +88,11 @@
 		transition:
 			transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
 			background-color 0.15s ease,
-			border-color 0.15s ease,
 			box-shadow 0.15s ease;
 		flex-shrink: 0;
 	}
 
 	label:hover:not([data-disabled='true']) .circle {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
@@ -146,15 +144,14 @@
 		border: var(--border-width) solid var(--border-color);
 		border-radius: var(--radius-md);
 		box-shadow: var(--shadow);
+		cursor: pointer;
 		transition:
 			transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
 			box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1),
-			border-color 0.15s ease,
 			background-color 0.15s ease;
 	}
 
 	.radio-card:hover:not([data-disabled='true']) {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}

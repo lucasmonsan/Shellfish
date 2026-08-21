@@ -168,6 +168,18 @@
 		cursor: not-allowed;
 	}
 
+	option {
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
+		font-family: inherit;
+		font-weight: 700;
+	}
+
+	option:disabled {
+		color: var(--text-secondary);
+		opacity: 0.5;
+	}
+
 	/* Tamanhos */
 	.select-wrapper[data-size='sm'] {
 		height: var(--control-height-sm);

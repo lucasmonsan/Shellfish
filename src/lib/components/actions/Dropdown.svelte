@@ -181,7 +181,6 @@
 	}
 
 	.dropdown-trigger-btn:hover {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}

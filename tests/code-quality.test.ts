@@ -54,6 +54,8 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 			if (
 				content.includes('eslint-disable') ||
 				content.includes('@ts-ignore') ||
+				content.includes('@ts-expect-error') ||
+				content.includes('svelte-ignore') ||
 				content.includes('@ts-nocheck') ||
 				content.includes('prettier-ignore')
 			) {
@@ -61,7 +63,7 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 			}
 		}
 
-		expect(violations, 'Supressores de linter/TypeScript encontrados').toEqual([]);
+		expect(violations, 'Supressores de linter/TypeScript/Svelte encontrados').toEqual([]);
 	});
 
 	it('proíbe emojis hardcoded nos arquivos da biblioteca src/lib/', () => {

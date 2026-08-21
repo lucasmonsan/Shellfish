@@ -27,7 +27,7 @@
 		}
 	}
 
-	function handleArticleClick(e: MouseEvent) {
+	function handleArticleClick(e: MouseEvent & { currentTarget: EventTarget & HTMLElement }) {
 		if (back) {
 			const target = e.target as HTMLElement;
 			if (
@@ -36,11 +36,10 @@
 				flipped = !flipped;
 			}
 		}
-		// @ts-expect-error - Svelte 5 event dispatch compatibility
 		onclick?.(e);
 	}
 
-	function handleArticleKeydown(e: KeyboardEvent) {
+	function handleArticleKeydown(e: KeyboardEvent & { currentTarget: EventTarget & HTMLElement }) {
 		if (back && (e.key === ' ' || e.key === 'Enter')) {
 			const target = e.target as HTMLElement;
 			if (
@@ -50,7 +49,6 @@
 				flipped = !flipped;
 			}
 		}
-		// @ts-expect-error - Svelte 5 event dispatch compatibility
 		onkeydown?.(e);
 	}
 </script>
@@ -116,7 +114,6 @@
 	</div>
 {/snippet}
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <article
 	data-variant={variant}
 	data-padding={padding}
@@ -130,9 +127,6 @@
 	class={className}
 	onclick={handleArticleClick}
 	onkeydown={handleArticleKeydown}
-	tabindex={back ? 0 : undefined}
-	role={back ? 'button' : undefined}
-	aria-label={back ? (flipped ? 'Back side' : 'Front side') : undefined}
 	{...restProps}
 >
 	{#if back}
@@ -385,6 +379,7 @@
 	footer {
 		display: flex;
 		align-items: center;
+		justify-content: flex-end;
 		min-height: 42px;
 		box-sizing: border-box;
 		padding-block: var(--space-xs);
