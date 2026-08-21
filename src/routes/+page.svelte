@@ -89,11 +89,10 @@
 	let choiceRadio = $state('service-1');
 
 	// Calendário
-	let calendarMode = $state<CalendarMode>('expandable');
+	let calendarMode = $state<CalendarMode>('strip');
 	let calendarValue = $state(new Date());
 	let calendarTabs = [
-		{ id: 'expandable', label: 'Híbrido' },
-		{ id: 'week', label: 'Faixa' },
+		{ id: 'strip', label: 'Faixa' },
 		{ id: 'month', label: 'Mês' }
 	];
 

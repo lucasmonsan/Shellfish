@@ -75,7 +75,7 @@ export interface SliderProps extends Omit<HTMLInputAttributes, 'size' | 'type'> 
 	valueSuffix?: string;
 }
 
-export type CalendarMode = 'month' | 'week' | 'expandable';
+export type CalendarMode = 'month' | 'strip' | 'week' | 'expandable';
 
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onselect'> {
 	value?: string | Date;

@@ -127,21 +127,6 @@
 		return days;
 	});
 
-	// Faixa da Semana Completa (7 dias)
-	let weekDays = $derived.by(() => {
-		const current = new Date(selectedDate);
-		const dayOfWeek = current.getDay();
-		const startYear = current.getFullYear();
-		const startMonth = current.getMonth();
-		const startDate = current.getDate() - dayOfWeek;
-
-		const days: Date[] = [];
-		for (let i = 0; i < 7; i++) {
-			days.push(new Date(startYear, startMonth, startDate + i));
-		}
-		return days;
-	});
-
 	// Faixa Híbrida (5 dias consecutivos a partir do início da semana ou dia atual)
 	let fiveDays = $derived.by(() => {
 		const current = new Date(selectedDate);
@@ -235,8 +220,8 @@
 		</div>
 	</header>
 
-	<!-- Modo Híbrido: 5 Cards de Dias + 6º Card de Ação (Chevron) -->
-	{#if mode === 'expandable'}
+	<!-- Modo Faixa / Híbrido: 5 Cards de Dias + 6º Card de Ação (Chevron que abre o mês) -->
+	{#if mode === 'strip' || mode === 'expandable' || mode === 'week'}
 		<div class="calendar-strip hybrid-strip">
 			{#each fiveDays as day (day.toISOString())}
 				{@const isSelected = isSameDay(day, selectedDate)}
@@ -276,35 +261,15 @@
 				</svg>
 			</button>
 		</div>
-	{:else if mode === 'week'}
-		<!-- Modo Faixa: 7 Cards de Dias -->
-		<div class="calendar-strip week-strip">
-			{#each weekDays as day (day.toISOString())}
-				{@const isSelected = isSameDay(day, selectedDate)}
-				{@const disabled = isDayDisabled(day)}
-				<button
-					type="button"
-					class="strip-day-card"
-					data-selected={isSelected}
-					data-disabled={disabled}
-					{disabled}
-					onclick={() => selectDay(day)}
-				>
-					<span class="strip-day-num">{day.getDate()}</span>
-					<span class="strip-day-name">{WEEKDAYS_SHORT[day.getDay()]}</span>
-				</button>
-			{/each}
-		</div>
-	{/if}
 
-	<!-- Grade Mensal Fluida via CSS Grid 0fr -> 1fr -->
-	{#if mode === 'expandable'}
+		<!-- Grade Mensal Expansível Fluida -->
 		<div class="calendar-expand-wrapper" class:expanded={isExpanded}>
 			<div class="calendar-expand-inner">
 				{@render monthGridContent()}
 			</div>
 		</div>
-	{:else if mode === 'month'}
+	{:else}
+		<!-- Modo Mês: Grade Mensal de 7 Colunas -->
 		{@render monthGridContent()}
 	{/if}
 </div>
