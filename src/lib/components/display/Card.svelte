@@ -188,11 +188,6 @@
 		color: inherit;
 		cursor: pointer;
 		text-align: left;
-		transition: background-color 0.12s ease;
-	}
-
-	.card-header-toggle:hover {
-		background-color: var(--bg-primary);
 	}
 
 	.card-header-toggle:focus-visible {
