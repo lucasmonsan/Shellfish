@@ -201,6 +201,7 @@
 		box-shadow: var(--shadow);
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
 	}
 
 	.card-flip-back {
@@ -235,10 +236,27 @@
 	}
 
 	/* Radius */
+	article[data-radius='none'] {
+		border-radius: 0;
+	}
+	article[data-radius='none'] .card-flip-front,
+	article[data-radius='none'] .card-flip-back {
+		border-radius: 0;
+	}
+
 	article[data-radius='sm'] {
 		border-radius: var(--radius-sm);
 	}
+	article[data-radius='sm'] .card-flip-front,
+	article[data-radius='sm'] .card-flip-back {
+		border-radius: var(--radius-sm);
+	}
+
 	article[data-radius='md'] {
+		border-radius: var(--radius-md);
+	}
+	article[data-radius='md'] .card-flip-front,
+	article[data-radius='md'] .card-flip-back {
 		border-radius: var(--radius-md);
 	}
 
