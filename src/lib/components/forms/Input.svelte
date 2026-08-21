@@ -7,26 +7,41 @@
 		size = 'md',
 		invalid = false,
 		fullWidth = false,
+		label,
 		prefix,
 		suffix,
+		id,
 		class: className,
 		...restProps
 	}: InputProps = $props();
+
+	const autoId = `input-${Math.random().toString(36).slice(2, 9)}`;
+	let inputId = $derived(id || autoId);
 </script>
 
-{#if prefix || suffix}
+{#if label || prefix || suffix}
 	<div
-		class={className}
+		class={`input-wrapper ${className ?? ''}`}
 		data-size={size}
 		data-invalid={invalid}
 		data-full-width={fullWidth}
+		data-has-label={label ? 'true' : undefined}
 		data-disabled={restProps.disabled}
 	>
+		{#if label}
+			<label for={inputId} class="input-straddled-label">
+				{label}
+				{#if restProps.required}
+					<span class="required" aria-hidden="true">*</span>
+				{/if}
+			</label>
+		{/if}
 		{#if prefix}
 			<span class="prefix">{@render prefix()}</span>
 		{/if}
 		<input
 			{type}
+			id={inputId}
 			bind:value
 			aria-invalid={invalid ? 'true' : undefined}
 			data-size={size}
@@ -39,6 +54,7 @@
 {:else}
 	<input
 		{type}
+		id={inputId}
 		bind:value
 		aria-invalid={invalid ? 'true' : undefined}
 		data-size={size}
@@ -117,8 +133,9 @@
 		width: 100%;
 	}
 
-	/* Grupo de Input com Prefixo / Sufixo */
-	div {
+	/* Wrapper com Label Presilha / Prefixo / Sufixo */
+	.input-wrapper {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
 		box-sizing: border-box;
@@ -132,52 +149,101 @@
 			border-color 0.15s ease;
 	}
 
-	div:focus-within {
+	.input-wrapper[data-has-label='true'] {
+		margin-top: var(--space-xs);
+	}
+
+	.input-straddled-label {
+		position: absolute;
+		top: 0;
+		left: var(--space-sm);
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		padding: 1px 6px;
+		background-color: var(--bg-primary);
+		color: var(--text-secondary);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		line-height: 1.2;
+		white-space: nowrap;
+		z-index: 2;
+		pointer-events: none;
+		user-select: none;
+		transition:
+			border-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.input-straddled-label .required {
+		color: var(--color-danger);
+	}
+
+	.input-wrapper:focus-within {
 		border-color: var(--color-primary);
 		box-shadow: 2px 2px 0px var(--color-primary);
 		transform: translate(-1px, -1px);
 	}
 
-	div[data-invalid='true'] {
-		border-color: var(--color-danger);
-		box-shadow: 2px 2px 0px var(--color-danger);
+	.input-wrapper:focus-within .input-straddled-label {
+		border-color: var(--color-primary);
+		color: var(--color-primary);
 	}
 
-	div[data-invalid='true']:focus-within {
-		box-shadow: 3px 3px 0px var(--color-danger);
+	.input-wrapper[data-invalid='true'] {
+		border-color: var(--color-danger);
+		box-shadow: 1px 1px 0px var(--color-danger);
+	}
+
+	.input-wrapper[data-invalid='true']:focus-within {
+		box-shadow: 2px 2px 0px var(--color-danger);
 		transform: translate(-1px, -1px);
 	}
 
-	div input {
-		flex: 1;
-		width: 100%;
-		border: none;
-		outline: none;
-		background: transparent;
-		color: var(--text-primary);
-		font-family: inherit;
-		font-size: inherit;
-		padding-inline: var(--space-sm);
-		height: 100%;
+	.input-wrapper[data-invalid='true'] .input-straddled-label {
+		border-color: var(--color-danger);
+		color: var(--color-danger);
+	}
+
+	.input-wrapper[data-disabled='true'] {
+		opacity: 0.5;
+		cursor: not-allowed;
+		background-color: var(--bg-secondary);
 		box-shadow: none;
 		transform: none;
 	}
 
-	div[data-size='sm'] {
-		height: var(--control-height-sm);
-		font-size: var(--text-xs);
-	}
-	div[data-size='md'] {
-		height: var(--control-height-md);
-		font-size: var(--text-sm);
-	}
-	div[data-size='lg'] {
-		height: var(--control-height-lg);
-		font-size: var(--text-base);
+	.input-wrapper[data-full-width='true'] {
+		width: 100%;
 	}
 
-	div[data-full-width='true'] {
+	.input-wrapper input {
+		border: none;
+		box-shadow: none;
+		transform: none;
+		background: transparent;
+		flex: 1;
 		width: 100%;
+		height: 100%;
+	}
+
+	.input-wrapper input:focus-visible {
+		box-shadow: none;
+		transform: none;
+	}
+
+	.input-wrapper[data-size='sm'] {
+		height: var(--control-height-sm);
+	}
+	.input-wrapper[data-size='md'] {
+		height: var(--control-height-md);
+	}
+	.input-wrapper[data-size='lg'] {
+		height: var(--control-height-lg);
 	}
 
 	.prefix,
@@ -185,15 +251,9 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding-inline: var(--space-sm);
+		padding-inline: var(--space-xs);
 		color: var(--text-secondary);
+		user-select: none;
 		flex-shrink: 0;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		input,
-		div {
-			transition: none;
-		}
 	}
 </style>

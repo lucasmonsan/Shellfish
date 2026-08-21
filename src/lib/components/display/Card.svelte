@@ -12,6 +12,7 @@
 		fullWidth = false,
 		collapsible = false,
 		open = $bindable(true),
+		badgeTitle,
 		class: className,
 		...restProps
 	}: CardProps = $props();
@@ -31,9 +32,16 @@
 	data-full-width={fullWidth}
 	data-collapsible={collapsible}
 	data-collapsed={collapsible && !open ? 'true' : undefined}
+	data-has-badge={badgeTitle ? 'true' : undefined}
 	class={className}
 	{...restProps}
 >
+	{#if badgeTitle}
+		<div class="card-straddled-badge">
+			{badgeTitle}
+		</div>
+	{/if}
+
 	{#if header}
 		<header>
 			{#if collapsible}
@@ -84,6 +92,7 @@
 
 <style>
 	article {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		box-sizing: border-box;
@@ -97,6 +106,35 @@
 			box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1),
 			background-color 0.15s ease,
 			border-color 0.15s ease;
+	}
+
+	article[data-has-badge='true'] {
+		overflow: visible;
+		margin-top: var(--space-sm);
+	}
+
+	.card-straddled-badge {
+		position: absolute;
+		top: 0;
+		left: var(--space-md);
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		padding: 2px 8px;
+		background-color: var(--bg-secondary);
+		color: var(--text-primary);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		line-height: 1.2;
+		z-index: 1;
+		box-shadow: 1px 1px 0px var(--border-color);
+		user-select: none;
+		pointer-events: none;
 	}
 
 	/* Radius */

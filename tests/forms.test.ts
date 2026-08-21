@@ -71,10 +71,10 @@ describe('Form Controls & Tactile Focus Engine', () => {
 		expect(content).toContain('transform: translate(-1px, -1px);');
 	});
 
-	it('Textarea.svelte deve usar tag <textarea> pura na raiz sem wrappers e estilizar textarea diretamente', () => {
+	it('Textarea.svelte deve renderizar <textarea> na raiz quando sem label e suportar label montada com foco tátil', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Textarea.svelte'), 'utf-8');
 		expect(content).toMatch(/<textarea[\s\S]*>[\s\S]*<\/textarea>/);
-		expect(content).not.toContain('<div');
+		expect(content).toContain('textarea-straddled-label');
 		expect(content).toContain('data-resize={resize}');
 		expect(content).toContain('textarea:focus-visible');
 	});
@@ -83,7 +83,7 @@ describe('Form Controls & Tactile Focus Engine', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Select.svelte'), 'utf-8');
 		expect(content).toContain('<select');
 		expect(content).toContain('class="arrow"');
-		expect(content).toContain('div:focus-within');
+		expect(content).toContain(':focus-within');
 	});
 
 	it('Checkbox.svelte deve renderizar input checkbox com indicador SVG e suporte a indeterminate', () => {

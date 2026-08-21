@@ -13,6 +13,7 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 	fullWidth?: boolean;
 	collapsible?: boolean;
 	open?: boolean;
+	badgeTitle?: string;
 }
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

@@ -155,53 +155,32 @@
 					</Row>
 
 					<Grid columns={2} gap="lg">
-						<Column gap="xs">
-							<label
-								for="demo-input"
-								style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-							>
-								{t('showcase.forms.inputLabel')}
-							</label>
-							<Input
-								id="demo-input"
-								bind:value={inputValue}
-								invalid={isInvalid}
-								placeholder={t('showcase.forms.inputPlaceholder')}
-								fullWidth={true}
-							/>
-						</Column>
-
-						<Column gap="xs">
-							<label
-								for="demo-select"
-								style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-							>
-								{t('showcase.forms.selectLabel')}
-							</label>
-							<Select
-								id="demo-select"
-								bind:value={selectValue}
-								options={selectOptions}
-								invalid={isInvalid}
-								fullWidth={true}
-							/>
-						</Column>
-					</Grid>
-
-					<Column gap="xs">
-						<label
-							for="demo-textarea"
-							style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-						>
-							{t('showcase.forms.textareaLabel')}
-						</label>
-						<Textarea
-							id="demo-textarea"
-							bind:value={textareaValue}
+						<Input
+							id="demo-input"
+							bind:value={inputValue}
 							invalid={isInvalid}
+							label={t('showcase.forms.inputLabel')}
+							placeholder={t('showcase.forms.inputPlaceholder')}
 							fullWidth={true}
 						/>
-					</Column>
+
+						<Select
+							id="demo-select"
+							bind:value={selectValue}
+							options={selectOptions}
+							invalid={isInvalid}
+							label={t('showcase.forms.selectLabel')}
+							fullWidth={true}
+						/>
+					</Grid>
+
+					<Textarea
+						id="demo-textarea"
+						bind:value={textareaValue}
+						invalid={isInvalid}
+						label={t('showcase.forms.textareaLabel')}
+						fullWidth={true}
+					/>
 
 					<Divider label={t('showcase.forms.tactileSelections')} spacing="sm" />
 
@@ -284,6 +263,12 @@
 					</Row>
 				</Card>
 			</Grid>
+
+			<Card radius="md" padding="md" badgeTitle={t('showcase.display.badgeCardBadge')}>
+				<p style="margin: 0; font-size: var(--text-sm);">
+					{t('showcase.display.badgeCardDesc')}
+				</p>
+			</Card>
 
 			<Card radius="md" padding="md" collapsible={true}>
 				{#snippet header()}

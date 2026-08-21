@@ -70,6 +70,11 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.display.cardActionsDesc':
 			'Cabeçalho e rodapé travados em 42px. Botões de 32px se acomodam perfeitamente sem esticar o painel.',
 		'showcase.display.cardHeaderAction': 'Ação Rápida',
+		'showcase.display.badgeCardTitle': 'Painel com Placa na Borda (Straddled Badge)',
+		'showcase.display.badgeCardDesc':
+			'A placa de identificação fica cravada a 50% na linha da borda superior como uma etiqueta de hardware.',
+		'showcase.display.badgeCardBadge': 'Módulo de Telemetria #01',
+		'showcase.forms.badgedInputsTitle': 'Campos com Placa/Etiqueta Integrada na Borda',
 		'showcase.feedback.infoTitle': 'Informação',
 		'showcase.feedback.infoMsg': 'Este é um banner de alerta informativo com tag semântica pura.',
 		'showcase.feedback.successTitle': 'Sucesso',
@@ -158,6 +163,11 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.display.cardActionsDesc':
 			'Header and footer locked at 42px. 32px buttons fit perfectly without stretching the panel.',
 		'showcase.display.cardHeaderAction': 'Quick Action',
+		'showcase.display.badgeCardTitle': 'Panel with Straddled Plate (Straddled Badge)',
+		'showcase.display.badgeCardDesc':
+			'The identification plate is mounted 50% across the top border line as a hardware tag.',
+		'showcase.display.badgeCardBadge': 'Telemetry Module #01',
+		'showcase.forms.badgedInputsTitle': 'Fields with Straddled Plate Labels',
 		'showcase.feedback.infoTitle': 'Information',
 		'showcase.feedback.infoMsg': 'This is an informative alert banner with pure semantic tag.',
 		'showcase.feedback.successTitle': 'Success',

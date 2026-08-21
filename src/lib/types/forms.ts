@@ -7,6 +7,7 @@ import type {
 import type { Size } from './tokens.js';
 
 export interface InputProps extends Omit<HTMLInputAttributes, 'size' | 'prefix'> {
+	label?: string;
 	size?: Size;
 	invalid?: boolean;
 	fullWidth?: boolean;
@@ -15,6 +16,7 @@ export interface InputProps extends Omit<HTMLInputAttributes, 'size' | 'prefix'>
 }
 
 export interface TextareaProps extends HTMLTextareaAttributes {
+	label?: string;
 	size?: Size;
 	invalid?: boolean;
 	fullWidth?: boolean;
@@ -28,6 +30,7 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends Omit<HTMLSelectAttributes, 'size'> {
+	label?: string;
 	children?: Snippet;
 	size?: Size;
 	invalid?: boolean;
