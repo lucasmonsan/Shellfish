@@ -82,5 +82,6 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ons
 	mode?: CalendarMode;
 	minDate?: string | Date;
 	maxDate?: string | Date;
+	disablePast?: boolean;
 	onselect?: (date: Date) => void;
 }

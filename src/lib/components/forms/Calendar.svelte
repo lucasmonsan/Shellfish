@@ -5,6 +5,9 @@
 	let {
 		value = $bindable(new Date()),
 		mode = 'month',
+		minDate,
+		maxDate,
+		disablePast = false,
 		onselect,
 		class: className,
 		...restProps
@@ -48,7 +51,32 @@
 		isExpanded = !isExpanded;
 	}
 
+	function isDayDisabled(date: Date): boolean {
+		const checkTime = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+		if (disablePast) {
+			const now = new Date();
+			const todayTime = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+			if (checkTime < todayTime) return true;
+		}
+
+		if (minDate) {
+			const minD = minDate instanceof Date ? minDate : new Date(minDate);
+			const minTime = new Date(minD.getFullYear(), minD.getMonth(), minD.getDate()).getTime();
+			if (checkTime < minTime) return true;
+		}
+
+		if (maxDate) {
+			const maxD = maxDate instanceof Date ? maxDate : new Date(maxDate);
+			const maxTime = new Date(maxD.getFullYear(), maxD.getMonth(), maxD.getDate()).getTime();
+			if (checkTime > maxTime) return true;
+		}
+
+		return false;
+	}
+
 	function selectDay(date: Date) {
+		if (isDayDisabled(date)) return;
 		value = date;
 		onselect?.(date);
 	}
@@ -99,7 +127,7 @@
 		return days;
 	});
 
-	// Faixa da Semana (7 dias ao redor do dia selecionado)
+	// Faixa da Semana Completa (7 dias)
 	let weekDays = $derived.by(() => {
 		const current = new Date(selectedDate);
 		const dayOfWeek = current.getDay();
@@ -109,6 +137,21 @@
 
 		const days: Date[] = [];
 		for (let i = 0; i < 7; i++) {
+			days.push(new Date(startYear, startMonth, startDate + i));
+		}
+		return days;
+	});
+
+	// Faixa Híbrida (5 dias consecutivos a partir do início da semana ou dia atual)
+	let fiveDays = $derived.by(() => {
+		const current = new Date(selectedDate);
+		const dayOfWeek = current.getDay();
+		const startYear = current.getFullYear();
+		const startMonth = current.getMonth();
+		const startDate = current.getDate() - (dayOfWeek > 4 ? dayOfWeek - 4 : 0);
+
+		const days: Date[] = [];
+		for (let i = 0; i < 5; i++) {
 			days.push(new Date(startYear, startMonth, startDate + i));
 		}
 		return days;
@@ -125,11 +168,14 @@
 		<div class="days-grid">
 			{#each monthDays as item (item.date.toISOString())}
 				{@const isSelected = isSameDay(item.date, selectedDate)}
+				{@const disabled = isDayDisabled(item.date)}
 				<button
 					type="button"
 					class="month-day-cell"
 					data-selected={isSelected}
 					data-current-month={item.currentMonth}
+					data-disabled={disabled}
+					{disabled}
 					onclick={() => selectDay(item.date)}
 				>
 					{item.date.getDate()}
@@ -145,80 +191,104 @@
 	data-expanded={isExpanded}
 	{...restProps}
 >
-	<!-- Header do Calendário -->
+	<!-- Header do Calendário: Mês e Ano à esquerda, setas ‹ › à direita em todos os modos -->
 	<header class="calendar-header">
 		<span class="month-title">
 			{MONTH_NAMES[currentMonth.getMonth()]}
 			{currentMonth.getFullYear()}
 		</span>
 		<div class="calendar-controls">
-			{#if mode === 'expandable'}
-				<button
-					type="button"
-					class="icon-btn chevron-toggle"
-					class:rotated={isExpanded}
-					aria-label={t('calendar.toggleMonth')}
-					onclick={toggleExpand}
+			<button
+				type="button"
+				class="icon-btn"
+				aria-label={t('calendar.prevMonth')}
+				onclick={prevMonth}
+			>
+				<svg
+					viewBox="0 0 16 16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
 				>
-					<svg
-						viewBox="0 0 16 16"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<polyline points="4 6 8 10 12 6" />
-					</svg>
-				</button>
-			{:else if mode === 'month'}
-				<button
-					type="button"
-					class="icon-btn"
-					aria-label={t('calendar.prevMonth')}
-					onclick={prevMonth}
+					<polyline points="10 12 6 8 10 4" />
+				</svg>
+			</button>
+			<button
+				type="button"
+				class="icon-btn"
+				aria-label={t('calendar.nextMonth')}
+				onclick={nextMonth}
+			>
+				<svg
+					viewBox="0 0 16 16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
 				>
-					<svg
-						viewBox="0 0 16 16"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<polyline points="10 12 6 8 10 4" />
-					</svg>
-				</button>
-				<button
-					type="button"
-					class="icon-btn"
-					aria-label={t('calendar.nextMonth')}
-					onclick={nextMonth}
-				>
-					<svg
-						viewBox="0 0 16 16"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<polyline points="6 4 10 8 6 12" />
-					</svg>
-				</button>
-			{/if}
+					<polyline points="6 4 10 8 6 12" />
+				</svg>
+			</button>
 		</div>
 	</header>
 
-	<!-- Modo Faixa (Week Strip) -->
-	{#if mode === 'week' || mode === 'expandable'}
-		<div class="calendar-strip">
-			{#each weekDays as day (day.toISOString())}
+	<!-- Modo Híbrido: 5 Cards de Dias + 6º Card de Ação (Chevron) -->
+	{#if mode === 'expandable'}
+		<div class="calendar-strip hybrid-strip">
+			{#each fiveDays as day (day.toISOString())}
 				{@const isSelected = isSameDay(day, selectedDate)}
+				{@const disabled = isDayDisabled(day)}
 				<button
 					type="button"
 					class="strip-day-card"
 					data-selected={isSelected}
+					data-disabled={disabled}
+					{disabled}
+					onclick={() => selectDay(day)}
+				>
+					<span class="strip-day-num">{day.getDate()}</span>
+					<span class="strip-day-name">{WEEKDAYS_SHORT[day.getDay()]}</span>
+				</button>
+			{/each}
+
+			<!-- 6º Card: Botão de Expansão com Chevron -->
+			<button
+				type="button"
+				class="strip-day-card toggle-card"
+				class:active-toggle={isExpanded}
+				aria-label={t('calendar.toggleMonth')}
+				onclick={toggleExpand}
+			>
+				<svg
+					viewBox="0 0 16 16"
+					class="chevron-toggle"
+					class:rotated={isExpanded}
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<polyline points="4 6 8 10 12 6" />
+				</svg>
+				<span class="strip-day-name">{isExpanded ? 'Fechar' : 'Mês'}</span>
+			</button>
+		</div>
+	{:else if mode === 'week'}
+		<!-- Modo Faixa: 7 Cards de Dias -->
+		<div class="calendar-strip week-strip">
+			{#each weekDays as day (day.toISOString())}
+				{@const isSelected = isSameDay(day, selectedDate)}
+				{@const disabled = isDayDisabled(day)}
+				<button
+					type="button"
+					class="strip-day-card"
+					data-selected={isSelected}
+					data-disabled={disabled}
+					{disabled}
 					onclick={() => selectDay(day)}
 				>
 					<span class="strip-day-num">{day.getDate()}</span>
@@ -228,7 +298,7 @@
 		</div>
 	{/if}
 
-	<!-- Modo Grade Mensal (com animação fluida no expandable) -->
+	<!-- Grade Mensal Fluida via CSS Grid 0fr -> 1fr -->
 	{#if mode === 'expandable'}
 		<div class="calendar-expand-wrapper" class:expanded={isExpanded}>
 			<div class="calendar-expand-inner">
@@ -300,24 +370,23 @@
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
-	.chevron-toggle {
-		transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	.chevron-toggle.rotated {
-		transform: rotate(180deg);
-	}
-
 	.icon-btn svg {
 		width: 14px;
 		height: 14px;
 	}
 
-	/* Faixa de Dias (Week Strip) com gap maior */
+	/* Faixa de Dias (Week Strip & Hybrid Strip) */
 	.calendar-strip {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
 		gap: var(--space-sm);
+	}
+
+	.hybrid-strip {
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	.week-strip {
+		grid-template-columns: repeat(7, 1fr);
 	}
 
 	.strip-day-card {
@@ -326,6 +395,7 @@
 		align-items: center;
 		justify-content: center;
 		padding: var(--space-xs) 2px;
+		min-height: 52px;
 		box-sizing: border-box;
 		background-color: var(--bg-secondary);
 		border: var(--border-width) solid var(--border-color);
@@ -338,7 +408,7 @@
 			background-color 0.15s ease;
 	}
 
-	.strip-day-card:hover {
+	.strip-day-card:hover:not([data-disabled='true']) {
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
@@ -349,6 +419,33 @@
 		border-color: var(--border-color);
 		box-shadow: 2px 2px 0px var(--border-color);
 		transform: translate(-1px, -1px);
+	}
+
+	.strip-day-card[data-disabled='true'] {
+		opacity: 0.35;
+		cursor: not-allowed;
+		box-shadow: none;
+		transform: none;
+	}
+
+	.toggle-card {
+		gap: 2px;
+		background-color: var(--bg-primary);
+	}
+
+	.toggle-card.active-toggle {
+		background-color: var(--bg-secondary);
+		box-shadow: inset 1px 1px 0px var(--border-color);
+	}
+
+	.chevron-toggle {
+		width: 16px;
+		height: 16px;
+		transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.chevron-toggle.rotated {
+		transform: rotate(180deg);
 	}
 
 	.strip-day-num {
@@ -430,7 +527,12 @@
 		opacity: 0.35;
 	}
 
-	.month-day-cell:hover {
+	.month-day-cell[data-disabled='true'] {
+		opacity: 0.25;
+		cursor: not-allowed;
+	}
+
+	.month-day-cell:hover:not([data-disabled='true']) {
 		background-color: var(--bg-secondary);
 		border-color: var(--border-color);
 	}

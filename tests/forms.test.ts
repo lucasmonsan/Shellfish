@@ -118,10 +118,13 @@ describe('Form Controls & Tactile Focus Engine', () => {
 		expect(content).toContain('slider-value-display');
 	});
 
-	it('Calendar.svelte deve suportar modos week, month e expandable', () => {
+	it('Calendar.svelte deve suportar modos week, month e expandable com navegação e disablePast', () => {
 		const content = fs.readFileSync(path.join(formsDir, 'Calendar.svelte'), 'utf-8');
 		expect(content).toContain("mode = 'month'");
 		expect(content).toContain('calendar-strip');
+		expect(content).toContain('hybrid-strip');
+		expect(content).toContain('toggle-card');
+		expect(content).toContain('disablePast');
 		expect(content).toContain('calendar-month-grid');
 		expect(content).toContain('toggleExpand');
 	});
