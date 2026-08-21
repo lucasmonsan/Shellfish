@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ToastProps } from '$lib/types/index.js';
 	import { t } from '$lib/utils/i18n.svelte.js';
+	import { fly } from 'svelte/transition';
 
 	let {
 		children,
@@ -26,7 +27,14 @@
 </script>
 
 {#if open}
-	<aside role="status" aria-live="polite" data-variant={variant} class={className} {...restProps}>
+	<aside
+		role="status"
+		aria-live="polite"
+		data-variant={variant}
+		class={className}
+		transition:fly={{ y: 24, duration: 250 }}
+		{...restProps}
+	>
 		<div class="toast-content">
 			{@render children?.()}
 		</div>
@@ -107,6 +115,7 @@
 		padding: 2px;
 		color: var(--text-secondary);
 		border-radius: var(--radius-sm);
+		transition: color 0.15s ease;
 	}
 
 	.close-button:hover {

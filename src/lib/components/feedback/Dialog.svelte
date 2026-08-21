@@ -115,13 +115,41 @@
 		overflow: hidden;
 	}
 
-	dialog:not([open]) {
-		display: none;
+	dialog[open] {
+		animation: dialogPopIn 0.24s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
+	}
+
+	dialog[open]::backdrop {
+		animation: backdropFadeIn 0.2s ease forwards;
 	}
 
 	dialog::backdrop {
-		background-color: rgba(0, 0, 0, 0.5);
-		backdrop-filter: blur(2px);
+		background-color: rgba(0, 0, 0, 0.55);
+		backdrop-filter: blur(3px);
+	}
+
+	@keyframes dialogPopIn {
+		from {
+			opacity: 0;
+			transform: scale(0.92) translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	@keyframes backdropFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	dialog:not([open]) {
+		display: none;
 	}
 
 	/* Tamanhos */
@@ -170,6 +198,7 @@
 		padding: 4px;
 		color: var(--text-secondary);
 		border-radius: var(--radius-sm);
+		transition: color 0.15s ease;
 	}
 
 	.close-button:hover {
@@ -196,5 +225,12 @@
 	svg {
 		width: 16px;
 		height: 16px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		dialog[open],
+		dialog[open]::backdrop {
+			animation: none;
+		}
 	}
 </style>
