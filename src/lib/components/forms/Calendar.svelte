@@ -254,7 +254,7 @@
 				</button>
 			{/each}
 
-			<!-- 6º Card: Botão de Expansão com Chevron -->
+			<!-- 6º Card: Botão de Expansão com Chevron Centralizado -->
 			<button
 				type="button"
 				class="strip-day-card toggle-card"
@@ -274,7 +274,6 @@
 				>
 					<polyline points="4 6 8 10 12 6" />
 				</svg>
-				<span class="strip-day-name">{isExpanded ? 'Fechar' : 'Mês'}</span>
 			</button>
 		</div>
 	{:else if mode === 'week'}
@@ -429,7 +428,9 @@
 	}
 
 	.toggle-card {
-		gap: 2px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		background-color: var(--bg-primary);
 	}
 
@@ -439,8 +440,8 @@
 	}
 
 	.chevron-toggle {
-		width: 16px;
-		height: 16px;
+		width: 18px;
+		height: 18px;
 		transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
