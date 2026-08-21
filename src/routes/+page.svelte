@@ -277,7 +277,10 @@
 					</Chip>
 
 					{#if showRemovableChip}
-						<div transition:scale={{ duration: 180, start: 0.85 }}>
+						<div
+							style="display: inline-flex; align-items: center;"
+							transition:scale={{ duration: 180, start: 0.85 }}
+						>
 							<Chip
 								removable={true}
 								onremove={() => {
@@ -289,7 +292,10 @@
 							</Chip>
 						</div>
 					{:else}
-						<div transition:scale={{ duration: 180, start: 0.85 }}>
+						<div
+							style="display: inline-flex; align-items: center;"
+							transition:scale={{ duration: 180, start: 0.85 }}
+						>
 							<Chip
 								variant="outline"
 								onclick={() => {
@@ -297,7 +303,18 @@
 									triggerAction('Chip Restaurado');
 								}}
 							>
-								+ Restaurar Chip
+								<svg
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.5"
+									stroke-linecap="round"
+									style="width: 12px; height: 12px; margin-right: 2px;"
+								>
+									<line x1="8" y1="3" x2="8" y2="13" />
+									<line x1="3" y1="8" x2="13" y2="8" />
+								</svg>
+								Restaurar Chip
 							</Chip>
 						</div>
 					{/if}
