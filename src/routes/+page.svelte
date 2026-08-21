@@ -760,7 +760,7 @@
 	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-				Shellfish — Criado por <a
+				Criado por <a
 					href="https://github.com/lucasmonsan"
 					target="_blank"
 					rel="noreferrer"
