@@ -36,7 +36,7 @@
 	}
 
 	span[data-pill='true'] {
-		border-radius: 9999px;
+		border-radius: var(--radius-md);
 	}
 
 	/* Tamanhos */

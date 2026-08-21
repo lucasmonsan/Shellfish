@@ -16,30 +16,45 @@
 	}: DialogProps = $props();
 
 	let dialogEl = $state<HTMLDialogElement>();
+	let isClosing = $state(false);
 
 	$effect(() => {
 		if (!dialogEl) return;
 
-		if (open && !dialogEl.open) {
+		if (open && !dialogEl.open && !isClosing) {
 			dialogEl.showModal();
-		} else if (!open && dialogEl.open) {
-			dialogEl.close();
+		} else if (!open && dialogEl.open && !isClosing) {
+			requestClose();
 		}
 	});
 
-	function closeDialog() {
-		open = false;
-		dialogEl?.close();
-		onclose?.();
+	function requestClose() {
+		if (isClosing || !dialogEl?.open) return;
+		isClosing = true;
+
+		setTimeout(() => {
+			if (dialogEl?.open) {
+				dialogEl.close();
+			}
+			isClosing = false;
+			open = false;
+			onclose?.();
+		}, 180);
 	}
 
 	function handleNativeClose() {
+		isClosing = false;
 		open = false;
 		onclose?.();
 	}
 
+	function handleCancel(e: Event) {
+		e.preventDefault();
+		requestClose();
+	}
+
 	function handleBackdropClick(e: MouseEvent) {
-		if (!closeOnOutsideClick || !dialogEl) return;
+		if (!closeOnOutsideClick || !dialogEl || isClosing) return;
 		const rect = dialogEl.getBoundingClientRect();
 		const isInDialog =
 			rect.top <= e.clientY &&
@@ -48,7 +63,7 @@
 			e.clientX <= rect.left + rect.width;
 
 		if (!isInDialog) {
-			closeDialog();
+			requestClose();
 		}
 	}
 </script>
@@ -56,7 +71,9 @@
 <dialog
 	bind:this={dialogEl}
 	data-size={size}
+	data-closing={isClosing ? 'true' : undefined}
 	class={className}
+	oncancel={handleCancel}
 	onclose={handleNativeClose}
 	onclick={handleBackdropClick}
 	{...restProps}
@@ -68,7 +85,7 @@
 				type="button"
 				class="close-button"
 				aria-label={closeLabel ?? t('dialog.close')}
-				onclick={closeDialog}
+				onclick={requestClose}
 			>
 				<svg
 					viewBox="0 0 16 16"
@@ -116,26 +133,44 @@
 	}
 
 	dialog[open] {
-		animation: dialogPopIn 0.24s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
+		animation: dialogPopIn 0.22s cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
 	}
 
 	dialog[open]::backdrop {
 		animation: backdropFadeIn 0.2s ease forwards;
 	}
 
+	dialog[open][data-closing='true'] {
+		animation: dialogPopOut 0.18s cubic-bezier(0.4, 0, 1, 1) forwards;
+	}
+
+	dialog[open][data-closing='true']::backdrop {
+		animation: backdropFadeOut 0.18s ease forwards;
+	}
+
 	dialog::backdrop {
-		background-color: rgba(0, 0, 0, 0.55);
-		backdrop-filter: blur(3px);
+		background-color: rgba(28, 25, 23, 0.65);
 	}
 
 	@keyframes dialogPopIn {
 		from {
 			opacity: 0;
-			transform: scale(0.92) translateY(16px);
+			transform: scale(0.92) translateY(14px);
 		}
 		to {
 			opacity: 1;
 			transform: scale(1) translateY(0);
+		}
+	}
+
+	@keyframes dialogPopOut {
+		from {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: scale(0.94) translateY(10px);
 		}
 	}
 
@@ -145,6 +180,15 @@
 		}
 		to {
 			opacity: 1;
+		}
+	}
+
+	@keyframes backdropFadeOut {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
 		}
 	}
 
@@ -229,7 +273,9 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		dialog[open],
-		dialog[open]::backdrop {
+		dialog[open]::backdrop,
+		dialog[open][data-closing='true'],
+		dialog[open][data-closing='true']::backdrop {
 			animation: none;
 		}
 	}

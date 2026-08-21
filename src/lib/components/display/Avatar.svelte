@@ -6,7 +6,8 @@
 		alt = '',
 		name,
 		size = 'md',
-		square = false,
+		square = true,
+		circle = false,
 		class: className,
 		...restProps
 	}: AvatarProps = $props();
@@ -23,7 +24,13 @@
 	);
 </script>
 
-<span data-size={size} data-square={square} class={className} {...restProps}>
+<span
+	data-size={size}
+	data-square={square && !circle}
+	data-circle={circle}
+	class={className}
+	{...restProps}
+>
 	{#if src}
 		<img {src} {alt} />
 	{:else if initials}
@@ -51,7 +58,7 @@
 		justify-content: center;
 		box-sizing: border-box;
 		border: var(--border-width) solid var(--border-color);
-		border-radius: 50%;
+		border-radius: var(--radius-sm);
 		background-color: var(--bg-secondary);
 		color: var(--text-primary);
 		box-shadow: 1px 1px 0px var(--border-color);
@@ -62,8 +69,8 @@
 		font-weight: 800;
 	}
 
-	span[data-square='true'] {
-		border-radius: var(--radius-sm);
+	span[data-circle='true'] {
+		border-radius: 50%;
 	}
 
 	/* Tamanhos */

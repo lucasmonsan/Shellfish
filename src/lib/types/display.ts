@@ -35,4 +35,5 @@ export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
 	name?: string;
 	size?: 'sm' | 'md' | 'lg' | 'xl';
 	square?: boolean;
+	circle?: boolean;
 }
