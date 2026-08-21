@@ -84,13 +84,14 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(content).toContain('<aside');
 	});
 
-	it('Spinner.svelte deve renderizar SVG quadrado com variantes ratchet (steps 8) e chaser e a11y', () => {
+	it('Spinner.svelte deve renderizar cubo neobrutalista com spinCube, ratchetSteps e chaserDash com a11y', () => {
 		const content = fs.readFileSync(path.join(feedbackDir, 'Spinner.svelte'), 'utf-8');
 		expect(content).toContain('role="status"');
 		expect(content).toContain("aria-label={label ?? t('spinner.loading')}");
-		expect(content).toContain('ratchet-steps');
+		expect(content).toContain('spinCube');
+		expect(content).toContain('ratchetSteps');
 		expect(content).toContain('steps(8)');
-		expect(content).toContain('chaser-dash');
+		expect(content).toContain('chaserDash');
 	});
 
 	it('Dialog.svelte deve usar tag HTML5 <dialog> nativa com .showModal() e backdrop', () => {

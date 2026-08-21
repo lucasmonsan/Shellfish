@@ -3,7 +3,7 @@
 	import { t } from '$lib/utils/i18n.svelte.js';
 
 	let {
-		variant = 'ratchet',
+		variant = 'cube',
 		size = 'md',
 		color,
 		label,
@@ -12,86 +12,81 @@
 	}: SpinnerProps = $props();
 </script>
 
-<svg
-	viewBox="0 0 24 24"
-	fill="none"
+<span
 	role="status"
 	aria-label={label ?? t('spinner.loading')}
 	data-size={size}
 	data-variant={variant}
-	class={className}
+	class={`shellfish-spinner ${className ?? ''}`}
 	{...restProps}
 >
-	{#if variant === 'ratchet'}
-		<rect
-			class="ratchet-block"
-			x="6"
-			y="6"
-			width="12"
-			height="12"
-			rx="0"
-			fill={color ?? 'var(--color-primary)'}
-			stroke="var(--border-color)"
-			stroke-width="2"
-		/>
+	{#if variant === 'cube'}
+		<span class="spinner-cube" style:background-color={color}></span>
+	{:else if variant === 'ratchet'}
+		<span class="spinner-ratchet" style:background-color={color}></span>
 	{:else}
-		<rect
-			class="track-rect"
-			x="4.5"
-			y="4.5"
-			width="15"
-			height="15"
-			rx="0"
-			stroke={color ?? 'currentColor'}
-			stroke-width="2"
-			stroke-opacity="0.25"
-		/>
-		<rect
-			class="chaser-rect"
-			x="4.5"
-			y="4.5"
-			width="15"
-			height="15"
-			rx="0"
-			stroke={color ?? 'currentColor'}
-			stroke-width="2"
-			stroke-dasharray="15 45"
-		/>
+		<svg viewBox="0 0 24 24" fill="none" class="spinner-chaser-svg">
+			<rect
+				class="track-rect"
+				x="4"
+				y="4"
+				width="16"
+				height="16"
+				stroke={color ?? 'currentColor'}
+				stroke-width="2.5"
+				stroke-opacity="0.25"
+			/>
+			<rect
+				class="chaser-rect"
+				x="4"
+				y="4"
+				width="16"
+				height="16"
+				stroke={color ?? 'currentColor'}
+				stroke-width="2.5"
+				stroke-dasharray="16 48"
+			/>
+		</svg>
 	{/if}
-</svg>
+</span>
 
 <style>
-	svg {
-		display: inline-block;
+	.shellfish-spinner {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		flex-shrink: 0;
 		vertical-align: middle;
+		box-sizing: border-box;
 	}
 
-	svg[data-variant='ratchet'] {
-		animation: ratchet-steps 1s infinite steps(8);
-		transform-origin: center;
-	}
-
-	svg[data-variant='chaser'] .chaser-rect {
-		animation: chaser-dash 1.1s linear infinite;
-	}
-
-	svg[data-size='sm'] {
+	.shellfish-spinner[data-size='sm'] {
 		width: 16px;
 		height: 16px;
 	}
 
-	svg[data-size='md'] {
+	.shellfish-spinner[data-size='md'] {
 		width: 24px;
 		height: 24px;
 	}
 
-	svg[data-size='lg'] {
+	.shellfish-spinner[data-size='lg'] {
 		width: 36px;
 		height: 36px;
 	}
 
-	@keyframes ratchet-steps {
+	/* 1. O Cubo Neobrutalista do MonsanUI (Giro Fluido ease-in-out) */
+	.spinner-cube {
+		width: 65%;
+		height: 65%;
+		background-color: var(--color-primary);
+		border: var(--border-width) solid var(--border-color);
+		box-sizing: border-box;
+		animation: spinCube 1.2s infinite ease-in-out;
+		transform-origin: center;
+	}
+
+	@keyframes spinCube {
 		0% {
 			transform: rotate(0deg);
 		}
@@ -100,21 +95,51 @@
 		}
 	}
 
-	@keyframes chaser-dash {
+	/* 2. Catraca Mecânica com steps(8) */
+	.spinner-ratchet {
+		width: 65%;
+		height: 65%;
+		background-color: var(--color-primary);
+		border: var(--border-width) solid var(--border-color);
+		box-sizing: border-box;
+		animation: ratchetSteps 1s infinite steps(8);
+		transform-origin: center;
+	}
+
+	@keyframes ratchetSteps {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	/* 3. Trilha Perimetral (Chaser) */
+	.spinner-chaser-svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	.spinner-chaser-svg .chaser-rect {
+		animation: chaserDash 1.1s linear infinite;
+	}
+
+	@keyframes chaserDash {
 		from {
 			stroke-dashoffset: 0;
 		}
 		to {
-			stroke-dashoffset: -60;
+			stroke-dashoffset: -64;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		svg[data-variant='ratchet'] {
-			animation-duration: 2s;
-		}
-		svg[data-variant='chaser'] .chaser-rect {
-			animation-duration: 2.2s;
+		.spinner-cube,
+		.spinner-ratchet,
+		.spinner-chaser-svg .chaser-rect {
+			animation: none;
 		}
 	}
 </style>

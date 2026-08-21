@@ -13,8 +13,8 @@ export interface AlertProps extends HTMLAttributes<HTMLElement> {
 	onclose?: () => void;
 }
 
-export interface SpinnerProps extends HTMLAttributes<SVGSVGElement> {
-	variant?: 'ratchet' | 'chaser';
+export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
+	variant?: 'cube' | 'ratchet' | 'chaser';
 	size?: Size;
 	color?: string;
 	label?: string;

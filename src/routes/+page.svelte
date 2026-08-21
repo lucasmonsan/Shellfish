@@ -326,7 +326,17 @@
 					{#snippet header()}
 						<span>{t('showcase.feedback.spinnersTitle')}</span>
 					{/snippet}
-					<Grid columns={2} gap="lg">
+					<Grid columns={3} gap="lg">
+						<Column gap="xs" align="start">
+							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
+								{t('showcase.feedback.spinnerCube')}
+							</span>
+							<Row align="center" gap="md">
+								<Spinner size="sm" variant="cube" />
+								<Spinner size="md" variant="cube" />
+								<Spinner size="lg" variant="cube" />
+							</Row>
+						</Column>
 						<Column gap="xs" align="start">
 							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;">
 								{t('showcase.feedback.spinnerRatchet')}
