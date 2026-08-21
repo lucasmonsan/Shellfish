@@ -31,6 +31,7 @@
 		LocaleSelector,
 		t
 	} from '$lib/index.js';
+	import { scale } from 'svelte/transition';
 	import type { CalendarMode, Space, Radius } from '$lib/types/index.js';
 
 	let activeTab = $state('actions');
@@ -277,26 +278,29 @@
 					</Chip>
 
 					{#if showRemovableChip}
-						<Chip
-							removable={true}
-							onremove={() => {
-								showRemovableChip = false;
-								triggerAction('Chip Removido');
-							}}
-						>
-							Filtro Ativo
-						</Chip>
+						<div transition:scale={{ duration: 180, start: 0.85 }}>
+							<Chip
+								removable={true}
+								onremove={() => {
+									showRemovableChip = false;
+									triggerAction('Chip Removido');
+								}}
+							>
+								Filtro Ativo
+							</Chip>
+						</div>
 					{:else}
-						<Button
-							size="sm"
-							variant="outline"
-							onclick={() => {
-								showRemovableChip = true;
-								triggerAction('Chip Restaurado');
-							}}
-						>
-							+ Restaurar Chip
-						</Button>
+						<div transition:scale={{ duration: 180, start: 0.85 }}>
+							<Chip
+								variant="outline"
+								onclick={() => {
+									showRemovableChip = true;
+									triggerAction('Chip Restaurado');
+								}}
+							>
+								+ Restaurar Chip
+							</Chip>
+						</div>
 					{/if}
 				</Row>
 			</Card>
@@ -539,7 +543,7 @@
 						<Checkbox
 							label="Com Header"
 							bind:checked={cardHasHeader}
-							disabled={cardVariantTab === 'badge'}
+							disabled={cardVariantTab === 'badge' || cardVariantTab === 'collapsible'}
 						/>
 						<Checkbox label="Com Footer" bind:checked={cardHasFooter} />
 						<Row align="center" gap="xs">
@@ -587,18 +591,13 @@
 							header={cardHasHeader ? defaultHeader : undefined}
 							footer={cardHasFooter ? defaultFooter : undefined}
 						>
-							<Column
-								gap="xs"
-								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
-							>
-								<strong style="font-size: var(--text-sm);">Conteúdo do Card</strong>
-								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
-									Distância entre este bloco e a borda externa do card: {cardPadding.toUpperCase()} ({cardPadding ===
-									'sm'
-										? '8px'
-										: cardPadding === 'md'
-											? '16px'
-											: '24px'}).
+							<Column gap="xs">
+								<strong style="font-size: var(--text-base); margin: 0;">Superfície Padrão</strong>
+								<p
+									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
+								>
+									Superfície tátil neobrutalista com elevação física sólida e contenção pura de
+									conteúdo ({cardPadding.toUpperCase()}).
 								</p>
 							</Column>
 						</Card>
@@ -610,13 +609,13 @@
 							header={collapsibleHeader}
 							footer={cardHasFooter ? collapsibleFooter : undefined}
 						>
-							<Column
-								gap="xs"
-								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
-							>
-								<strong style="font-size: var(--text-sm);">Painel Expansível Fluido</strong>
-								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
-									Clique no cabeçalho para recolher ou expandir este painel com transição fluida.
+							<Column gap="xs">
+								<strong style="font-size: var(--text-base); margin: 0;">Painel Expansível</strong>
+								<p
+									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
+								>
+									Clique no cabeçalho acima para recolher ou expandir este painel de forma contínua
+									e suave ({cardPadding.toUpperCase()}).
 								</p>
 							</Column>
 						</Card>
@@ -627,14 +626,15 @@
 							badgeTitle="Módulo #01"
 							footer={cardHasFooter ? badgeFooter : undefined}
 						>
-							<Column
-								gap="xs"
-								style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm);"
-							>
-								<strong style="font-size: var(--text-sm);">Placa na Borda</strong>
-								<p style="margin: 0; font-size: var(--text-xs); color: var(--text-secondary);">
-									A placa de identificação fica cravada na linha superior e substitui o header
-									padrão.
+							<Column gap="xs">
+								<strong style="font-size: var(--text-base); margin: 0;"
+									>Placa na Borda Superior</strong
+								>
+								<p
+									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
+								>
+									A placa de identificação fica cravada a 50% na linha superior como uma etiqueta de
+									hardware ({cardPadding.toUpperCase()}).
 								</p>
 							</Column>
 						</Card>
@@ -646,9 +646,12 @@
 							header={cardHasHeader ? flipHeader : undefined}
 							footer={cardHasFooter ? flipFooter : undefined}
 						>
-							<Column gap="md">
-								<p style="margin: 0; font-size: var(--text-sm);">
-									Clique em qualquer área do Card para girar em 3D.
+							<Column gap="sm">
+								<strong style="font-size: var(--text-base); margin: 0;">Card Interativo 3D</strong>
+								<p
+									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
+								>
+									Clique em qualquer área do Card para girar em 3D e revelar o verso ({cardPadding.toUpperCase()}).
 								</p>
 								<Row>
 									<Badge variant="primary">Clique no Card para Virar ➔</Badge>

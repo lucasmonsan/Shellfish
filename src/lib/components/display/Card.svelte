@@ -167,13 +167,19 @@
 
 	/* Flip 3D (Ativado apenas quando snippet back existe) */
 	article[data-flippable='true'],
-	article[data-flippable='true'][data-variant] {
+	article[data-flippable='true'][data-variant],
+	article[data-flippable='true'][data-interactive='true'],
+	article[data-flippable='true']:hover,
+	article[data-flippable='true']:active,
+	article[data-flippable='true']:focus {
 		perspective: 1000px;
-		background-color: transparent;
+		background: transparent;
 		border: none;
+		border-color: transparent;
 		box-shadow: none;
 		cursor: pointer;
 		overflow: visible;
+		transform: none;
 	}
 
 	.card-flip-flipper {
@@ -204,6 +210,9 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
+		transition:
+			box-shadow 0.15s ease,
+			transform 0.15s ease;
 	}
 
 	.card-flip-back {
@@ -281,19 +290,24 @@
 	}
 
 	/* Interatividade Tátil */
-	article[data-interactive='true'] {
+	article[data-interactive='true']:not([data-flippable='true']) {
 		cursor: pointer;
 		user-select: none;
 	}
 
-	article[data-interactive='true']:hover {
+	article[data-interactive='true']:not([data-flippable='true']):hover {
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
-	article[data-interactive='true']:active {
+	article[data-interactive='true']:not([data-flippable='true']):active {
 		transform: translate(1px, 1px);
 		box-shadow: 0px 0px 0px var(--border-color);
+	}
+
+	article[data-flippable='true']:hover .card-flip-front,
+	article[data-flippable='true']:hover .card-flip-back {
+		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
 	/* Full Width */
@@ -305,7 +319,6 @@
 	header {
 		display: flex;
 		align-items: center;
-		min-height: 42px;
 		box-sizing: border-box;
 		padding: 0;
 		border-bottom: var(--border-width) solid var(--border-color);
@@ -319,36 +332,29 @@
 		border-bottom-color: transparent;
 	}
 
-	.card-header-content-static {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		min-height: 42px;
-		box-sizing: border-box;
-		padding-block: var(--space-xs);
-		padding-inline: var(--space-md);
-	}
-
+	.card-header-content-static,
 	.card-header-toggle {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		width: 100%;
-		min-height: 42px;
 		box-sizing: border-box;
-		margin: 0;
-		padding-block: var(--space-xs);
-		padding-inline: var(--space-md);
-		background: transparent;
-		border: none;
-		font: inherit;
-		color: inherit;
-		cursor: pointer;
-		text-align: left;
 	}
 
-	.card-header-toggle:focus-visible {
-		outline: none;
-		box-shadow: inset 0 0 0 2px var(--color-primary);
+	.card-header-toggle {
+		background: transparent;
+		border: none;
+		color: inherit;
+		cursor: pointer;
+		font-family: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		text-align: left;
+		transition: background-color 0.15s ease;
+	}
+
+	.card-header-toggle:hover {
+		background-color: rgba(0, 0, 0, 0.04);
 	}
 
 	.card-header-content {
@@ -397,15 +403,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-		min-height: 42px;
 		box-sizing: border-box;
-		padding-block: var(--space-xs);
-		padding-inline: var(--space-md);
 		border-top: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-secondary);
 	}
 
-	/* Paddings do Body e Alinhamento Horizontal de Header/Footer/Toggle */
+	/* Paddings Dinâmicos do Body, Header e Footer */
 	article[data-padding='none'] .card-body,
 	article[data-padding='none'] .card-flip-back {
 		padding: var(--space-none);
@@ -413,7 +416,7 @@
 	article[data-padding='none'] .card-header-content-static,
 	article[data-padding='none'] .card-header-toggle,
 	article[data-padding='none'] footer {
-		padding-inline: var(--space-sm);
+		padding: var(--space-xs) var(--space-sm);
 	}
 
 	article[data-padding='xs'] .card-body,
@@ -423,7 +426,7 @@
 	article[data-padding='xs'] .card-header-content-static,
 	article[data-padding='xs'] .card-header-toggle,
 	article[data-padding='xs'] footer {
-		padding-inline: var(--space-xs);
+		padding: var(--space-xs);
 	}
 
 	article[data-padding='sm'] .card-body,
@@ -433,7 +436,7 @@
 	article[data-padding='sm'] .card-header-content-static,
 	article[data-padding='sm'] .card-header-toggle,
 	article[data-padding='sm'] footer {
-		padding-inline: var(--space-sm);
+		padding: var(--space-xs) var(--space-sm);
 	}
 
 	article[data-padding='md'] .card-body,
@@ -443,7 +446,7 @@
 	article[data-padding='md'] .card-header-content-static,
 	article[data-padding='md'] .card-header-toggle,
 	article[data-padding='md'] footer {
-		padding-inline: var(--space-md);
+		padding: var(--space-sm) var(--space-md);
 	}
 
 	article[data-padding='lg'] .card-body,
@@ -453,7 +456,7 @@
 	article[data-padding='lg'] .card-header-content-static,
 	article[data-padding='lg'] .card-header-toggle,
 	article[data-padding='lg'] footer {
-		padding-inline: var(--space-lg);
+		padding: var(--space-md) var(--space-lg);
 	}
 
 	article[data-padding='xl'] .card-body,
@@ -463,7 +466,7 @@
 	article[data-padding='xl'] .card-header-content-static,
 	article[data-padding='xl'] .card-header-toggle,
 	article[data-padding='xl'] footer {
-		padding-inline: var(--space-xl);
+		padding: var(--space-lg) var(--space-xl);
 	}
 
 	article[data-padding='2xl'] .card-body,
@@ -473,7 +476,7 @@
 	article[data-padding='2xl'] .card-header-content-static,
 	article[data-padding='2xl'] .card-header-toggle,
 	article[data-padding='2xl'] footer {
-		padding-inline: var(--space-2xl);
+		padding: var(--space-xl) var(--space-2xl);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

@@ -533,7 +533,7 @@
 		cursor: not-allowed;
 	}
 
-	.month-day-cell:hover:not([data-disabled='true']) {
+	.month-day-cell:hover:not([data-disabled='true']):not([data-selected='true']) {
 		background-color: var(--bg-secondary);
 		border-color: var(--border-color);
 	}
