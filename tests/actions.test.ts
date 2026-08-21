@@ -7,7 +7,6 @@ describe('Actions & Interactive Tactile Physics Engine', () => {
 	const suiteDir = path.resolve(process.cwd(), 'src/lib/components/suite');
 	const interactiveFiles = [
 		path.join(actionsDir, 'Button.svelte'),
-		path.join(actionsDir, 'Chip.svelte'),
 		path.join(suiteDir, 'ThemeSelector.svelte'),
 		path.join(suiteDir, 'LocaleSelector.svelte')
 	];
@@ -60,13 +59,6 @@ describe('Actions & Interactive Tactile Physics Engine', () => {
 		expect(content).toContain('aria-selected={isSelected}');
 		expect(content).toContain('tabindex={isSelected ? 0 : -1}');
 		expect(content).toContain('handleKeydown');
-	});
-
-	it('Chip.svelte deve suportar estados de seleção e botão de remoção', () => {
-		const content = fs.readFileSync(path.join(actionsDir, 'Chip.svelte'), 'utf-8');
-		expect(content).toContain('shellfish-chip');
-		expect(content).toContain('data-selected={selected}');
-		expect(content).toContain('chip-remove-btn');
 	});
 
 	it('Dropdown.svelte deve suportar menu flutuante neobrutalista com fechamento em clique fora', () => {

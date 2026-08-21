@@ -85,3 +85,16 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ons
 	disablePast?: boolean;
 	onselect?: (date: Date) => void;
 }
+
+export interface ChipsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'value'> {
+	value?: string[];
+	label?: string;
+	placeholder?: string;
+	disabled?: boolean;
+	invalid?: boolean;
+	suggestions?: string[];
+	fullWidth?: boolean;
+	name?: string;
+	onadd?: (tag: string) => void;
+	onremove?: (tag: string) => void;
+}

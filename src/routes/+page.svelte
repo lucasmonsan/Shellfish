@@ -9,7 +9,6 @@
 		Grid,
 		Button,
 		Tabs,
-		Chip,
 		Dropdown,
 		Input,
 		Textarea,
@@ -19,6 +18,7 @@
 		Switch,
 		Slider,
 		Calendar,
+		Chips,
 		Card,
 		Badge,
 		Divider,
@@ -31,7 +31,6 @@
 		LocaleSelector,
 		t
 	} from '$lib/index.js';
-	import { scale } from 'svelte/transition';
 	import type { CalendarMode, Space, Radius } from '$lib/types/index.js';
 
 	let activeTab = $state('actions');
@@ -51,9 +50,9 @@
 		isActionToastOpen = true;
 	}
 
-	// Estados de Ações
-	let selectedChip = $state('10:00');
-	let showRemovableChip = $state(true);
+	// Estados de Chips / Tags
+	let tagsValue = $state(['Design System', 'Svelte 5', 'Neobrutalismo', 'Shellfish']);
+	let tagSuggestions = ['SvelteKit', 'TypeScript', 'Vite', 'Tailwind', 'Accessibility', 'Tokens'];
 
 	// Estados de Formulários
 	let inputValue = $state('Exemplo de texto');
@@ -233,94 +232,28 @@
 				</Column>
 			</Card>
 
-			<!-- 2. Chips -->
+			<!-- 2. Chips (Entrada de Tags) -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.chips.title')}</span>
+					<Row fullWidth={true} justify="between" align="center">
+						<span>{t('showcase.chips.title')}</span>
+						<Badge variant="secondary">{tagsValue.length} tags</Badge>
+					</Row>
 				{/snippet}
-				<Row wrap={true} gap="sm" align="center">
-					<Chip
-						selected={selectedChip === '09:00'}
-						onclick={() => {
-							selectedChip = '09:00';
-							triggerAction('Chip 09:00');
-						}}
-					>
-						09:00
-					</Chip>
-					<Chip
-						selected={selectedChip === '10:00'}
-						onclick={() => {
-							selectedChip = '10:00';
-							triggerAction('Chip 10:00');
-						}}
-					>
-						10:00
-					</Chip>
-					<Chip
-						selected={selectedChip === '11:00'}
-						onclick={() => {
-							selectedChip = '11:00';
-							triggerAction('Chip 11:00');
-						}}
-					>
-						11:00
-					</Chip>
-					<Chip
-						selected={selectedChip === '14:00'}
-						onclick={() => {
-							selectedChip = '14:00';
-							triggerAction('Chip 14:00');
-						}}
-					>
-						14:00
-					</Chip>
-
-					{#if showRemovableChip}
-						<div
-							style="display: inline-flex; align-items: center;"
-							in:scale={{ delay: 180, duration: 180, start: 0.85 }}
-							out:scale={{ duration: 180, start: 0.85 }}
-						>
-							<Chip
-								removable={true}
-								onremove={() => {
-									showRemovableChip = false;
-									triggerAction('Chip Removido');
-								}}
-							>
-								Filtro Ativo
-							</Chip>
-						</div>
-					{:else}
-						<div
-							style="display: inline-flex; align-items: center;"
-							in:scale={{ delay: 180, duration: 180, start: 0.85 }}
-							out:scale={{ duration: 180, start: 0.85 }}
-						>
-							<Chip
-								variant="outline"
-								onclick={() => {
-									showRemovableChip = true;
-									triggerAction('Chip Restaurado');
-								}}
-							>
-								<svg
-									viewBox="0 0 16 16"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2.5"
-									stroke-linecap="round"
-									style="width: 12px; height: 12px; margin-right: 2px;"
-								>
-									<line x1="8" y1="3" x2="8" y2="13" />
-									<line x1="3" y1="8" x2="13" y2="8" />
-								</svg>
-								Restaurar Chip
-							</Chip>
-						</div>
-					{/if}
-				</Row>
+				<Column gap="sm">
+					<Chips
+						bind:value={tagsValue}
+						suggestions={tagSuggestions}
+						placeholder="Digite uma tag e pressione Enter..."
+						fullWidth={true}
+						onadd={(tag) => triggerAction(`Tag "${tag}" adicionada`)}
+						onremove={(tag) => triggerAction(`Tag "${tag}" removida`)}
+					/>
+					<span style="font-size: var(--text-xs); color: var(--text-secondary);">
+						Pressione <strong>Enter</strong> ou <strong>,</strong> para criar tags. Clique no
+						<strong>✕</strong> ou pressione <strong>Backspace</strong> para remover.
+					</span>
+				</Column>
 			</Card>
 
 			<!-- 3. Dropdowns -->

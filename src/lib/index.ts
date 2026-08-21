@@ -18,7 +18,6 @@ export { default as Grid } from './components/layout/Grid.svelte';
 // Ações & Navegação
 export { default as Button } from './components/actions/Button.svelte';
 export { default as Tabs } from './components/actions/Tabs.svelte';
-export { default as Chip } from './components/actions/Chip.svelte';
 export { default as Dropdown } from './components/actions/Dropdown.svelte';
 
 // Formulários & Entradas
@@ -30,6 +29,7 @@ export { default as Radio } from './components/forms/Radio.svelte';
 export { default as Switch } from './components/forms/Switch.svelte';
 export { default as Slider } from './components/forms/Slider.svelte';
 export { default as Calendar } from './components/forms/Calendar.svelte';
+export { default as Chips } from './components/forms/Chips.svelte';
 
 // Superfícies & Exibição
 export { default as Card } from './components/display/Card.svelte';

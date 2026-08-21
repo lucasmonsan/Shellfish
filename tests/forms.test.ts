@@ -128,4 +128,15 @@ describe('Form Controls & Tactile Focus Engine', () => {
 		expect(content).toContain('calendar-month-grid');
 		expect(content).toContain('toggleExpand');
 	});
+
+	it('Chips.svelte deve suportar tag input com digitação, sugestões, remoção e física neobrutalista', () => {
+		const content = fs.readFileSync(path.join(formsDir, 'Chips.svelte'), 'utf-8');
+		expect(content).toContain('shellfish-chips-container');
+		expect(content).toContain('chip-remove-btn');
+		expect(content).toContain('chips-input');
+		expect(content).toContain('datalist');
+		expect(content).toContain('handleKeyDown');
+		expect(content).toContain('addTag');
+		expect(content).toContain('removeTag');
+	});
 });
