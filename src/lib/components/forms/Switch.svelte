@@ -131,7 +131,6 @@
 
 	/* Hover & Focus */
 	.shellfish-switch-label:hover:not([data-disabled='true']) .switch-track {
-		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
 	}
@@ -148,7 +147,7 @@
 	}
 
 	.switch-track[data-checked='true'] .switch-thumb {
-		background-color: #ffffff;
+		background-color: var(--bg-primary);
 		border-color: var(--border-color);
 	}
 

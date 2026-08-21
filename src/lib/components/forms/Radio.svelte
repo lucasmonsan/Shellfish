@@ -166,10 +166,15 @@
 		transform: translate(-1px, -1px);
 	}
 
+	.radio-card:active:not([data-disabled='true']) {
+		transform: translate(1px, 1px);
+		box-shadow: 0px 0px 0px var(--border-color);
+	}
+
 	.radio-card[data-checked='true'] {
 		border-color: var(--color-primary);
 		box-shadow: 2px 2px 0px var(--color-primary);
-		background-color: var(--bg-primary);
+		background-color: var(--bg-secondary);
 	}
 
 	.card-label-row {

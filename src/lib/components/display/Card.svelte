@@ -14,8 +14,10 @@
 		open = $bindable(true),
 		badgeTitle,
 		back,
-		flipped = false,
+		flipped = $bindable(false),
 		class: className,
+		onclick,
+		onkeydown,
 		...restProps
 	}: CardProps = $props();
 
@@ -23,6 +25,33 @@
 		if (collapsible) {
 			open = !open;
 		}
+	}
+
+	function handleArticleClick(e: MouseEvent) {
+		if (back) {
+			const target = e.target as HTMLElement;
+			if (
+				!target.closest('button, a, input, select, textarea, [role="button"], [role="menuitem"]')
+			) {
+				flipped = !flipped;
+			}
+		}
+		// @ts-expect-error - Svelte 5 event dispatch compatibility
+		onclick?.(e);
+	}
+
+	function handleArticleKeydown(e: KeyboardEvent) {
+		if (back && (e.key === ' ' || e.key === 'Enter')) {
+			const target = e.target as HTMLElement;
+			if (
+				!target.closest('button, a, input, select, textarea, [role="button"], [role="menuitem"]')
+			) {
+				e.preventDefault();
+				flipped = !flipped;
+			}
+		}
+		// @ts-expect-error - Svelte 5 event dispatch compatibility
+		onkeydown?.(e);
 	}
 </script>
 
@@ -87,17 +116,23 @@
 	</div>
 {/snippet}
 
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <article
 	data-variant={variant}
 	data-padding={padding}
 	data-radius={radius}
-	data-interactive={interactive}
+	data-interactive={interactive || !!back}
 	data-full-width={fullWidth}
 	data-collapsible={collapsible}
 	data-collapsed={collapsible && !open ? 'true' : undefined}
 	data-has-badge={badgeTitle ? 'true' : undefined}
 	data-flippable={back ? 'true' : undefined}
 	class={className}
+	onclick={handleArticleClick}
+	onkeydown={handleArticleKeydown}
+	tabindex={back ? 0 : undefined}
+	role={back ? 'button' : undefined}
+	aria-label={back ? (flipped ? 'Back side' : 'Front side') : undefined}
 	{...restProps}
 >
 	{#if back}
@@ -124,7 +159,7 @@
 		color: var(--text-primary);
 		border: var(--border-width) solid var(--border-color);
 		box-shadow: var(--shadow);
-		overflow: hidden;
+		overflow: visible;
 		transition:
 			transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
 			box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1),
@@ -133,7 +168,6 @@
 	}
 
 	article[data-has-badge='true'] {
-		overflow: visible;
 		margin-top: var(--space-sm);
 	}
 
@@ -143,7 +177,7 @@
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
-		overflow: visible;
+		cursor: pointer;
 	}
 
 	.card-flip-flipper {
@@ -335,10 +369,13 @@
 	}
 
 	.card-collapse-inner {
-		overflow: hidden;
 		min-height: 0;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.card-collapse-wrapper.collapsed .card-collapse-inner {
+		overflow: hidden;
 	}
 
 	.card-body {
@@ -358,13 +395,13 @@
 
 	/* Paddings do Body e Alinhamento Horizontal de Header/Footer/Toggle */
 	article[data-padding='none'] .card-body,
-	.card-flip-back {
+	article[data-padding='none'] .card-flip-back {
 		padding: var(--space-none);
 	}
 	article[data-padding='none'] .card-header-content-static,
 	article[data-padding='none'] .card-header-toggle,
 	article[data-padding='none'] footer {
-		padding-inline: var(--space-md);
+		padding-inline: var(--space-sm);
 	}
 
 	article[data-padding='xs'] .card-body,

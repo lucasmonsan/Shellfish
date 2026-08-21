@@ -338,7 +338,7 @@
 
 	.strip-day-card[data-selected='true'] {
 		background-color: var(--color-primary);
-		color: #ffffff;
+		color: var(--color-primary-contrast);
 		border-color: var(--border-color);
 		box-shadow: 2px 2px 0px var(--border-color);
 		transform: translate(-1px, -1px);
@@ -424,7 +424,7 @@
 
 	.month-day-cell[data-selected='true'] {
 		background-color: var(--color-primary);
-		color: #ffffff;
+		color: var(--color-primary-contrast);
 		border-color: var(--border-color);
 		box-shadow: 1px 1px 0px var(--border-color);
 		transform: translate(-1px, -1px);

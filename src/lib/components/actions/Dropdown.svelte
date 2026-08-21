@@ -7,6 +7,8 @@
 		items = [],
 		children,
 		open = $bindable(false),
+		variant = 'secondary',
+		size = 'md',
 		placement = 'bottom-start',
 		class: className,
 		...restProps
@@ -48,6 +50,8 @@
 	<button
 		type="button"
 		class="dropdown-trigger-btn"
+		data-variant={variant}
+		data-size={size}
 		aria-haspopup="true"
 		aria-expanded={open}
 		onclick={toggle}
@@ -112,8 +116,8 @@
 		box-sizing: border-box;
 		border: var(--border-width) solid var(--border-color);
 		border-radius: var(--radius-sm);
-		background-color: var(--color-blue-light);
-		color: var(--color-blue-dark);
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
 		box-shadow: var(--shadow);
 		font-family: inherit;
 		font-weight: 700;
@@ -129,9 +133,62 @@
 			border-color 0.15s ease;
 	}
 
+	/* Variantes */
+	.dropdown-trigger-btn[data-variant='primary'] {
+		background-color: var(--color-primary);
+		color: var(--color-primary-contrast);
+	}
+
+	.dropdown-trigger-btn[data-variant='secondary'] {
+		background-color: var(--bg-secondary);
+		color: var(--text-primary);
+	}
+
+	.dropdown-trigger-btn[data-variant='outline'] {
+		background-color: transparent;
+		color: var(--text-primary);
+	}
+
+	.dropdown-trigger-btn[data-variant='ghost'] {
+		background-color: transparent;
+		border-color: transparent;
+		box-shadow: none;
+		color: var(--text-secondary);
+	}
+
+	.dropdown-trigger-btn[data-variant='danger'] {
+		background-color: var(--color-danger);
+		color: var(--color-primary-contrast);
+	}
+
+	/* Tamanhos */
+	.dropdown-trigger-btn[data-size='sm'] {
+		height: var(--control-height-sm);
+		padding: 0 var(--space-sm);
+		font-size: var(--text-xs);
+	}
+
+	.dropdown-trigger-btn[data-size='md'] {
+		height: var(--control-height-md);
+		padding: 0 var(--space-md);
+		font-size: var(--text-sm);
+	}
+
+	.dropdown-trigger-btn[data-size='lg'] {
+		height: var(--control-height-lg);
+		padding: 0 var(--space-lg);
+		font-size: var(--text-base);
+	}
+
 	.dropdown-trigger-btn:hover {
+		border-color: var(--color-primary);
 		transform: translate(-1px, -1px);
 		box-shadow: 2px 2px 0px var(--border-color);
+	}
+
+	.dropdown-trigger-btn:active {
+		transform: translate(1px, 1px);
+		box-shadow: 0px 0px 0px var(--border-color);
 	}
 
 	.dropdown-trigger-btn:focus-visible {
@@ -145,7 +202,6 @@
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-xs);
-		font-size: var(--text-sm);
 	}
 
 	.dropdown-chevron {

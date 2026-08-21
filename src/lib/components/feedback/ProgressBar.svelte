@@ -106,10 +106,9 @@
 		font-family: var(--font-display);
 		font-size: var(--text-xs);
 		font-weight: 800;
-		color: #ffffff;
+		color: var(--color-primary-contrast);
 		line-height: 1;
 		user-select: none;
-		text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

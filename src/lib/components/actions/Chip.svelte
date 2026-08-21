@@ -85,17 +85,17 @@
 	/* Tamanhos */
 	.shellfish-chip[data-size='sm'] {
 		height: 24px;
-		padding-inline: var(--space-xs) var(--space-sm);
+		padding: 0 var(--space-xs);
 		font-size: var(--text-xs);
 	}
 	.shellfish-chip[data-size='md'] {
 		height: 30px;
-		padding-inline: var(--space-sm) var(--space-md);
+		padding: 0 var(--space-sm);
 		font-size: var(--text-xs);
 	}
 	.shellfish-chip[data-size='lg'] {
 		height: 36px;
-		padding-inline: var(--space-md) var(--space-lg);
+		padding: 0 var(--space-md);
 		font-size: var(--text-sm);
 	}
 
@@ -138,9 +138,8 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 2px;
-		border-radius: var(--radius-sm);
-		margin-left: 2px;
+		padding: 0;
+		margin: 0 0 0 2px;
 		cursor: pointer;
 		opacity: 0.75;
 		transition: opacity 0.15s ease;

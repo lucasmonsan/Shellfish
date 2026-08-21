@@ -51,5 +51,7 @@ export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
 	items?: DropdownItem[];
 	children?: Snippet;
 	open?: boolean;
+	variant?: Variant;
+	size?: Size;
 	placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
 }

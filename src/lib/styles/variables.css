@@ -16,14 +16,14 @@
 	--color-blue-dark: #274c77;
 	--color-blue-light: #4f86c6;
 	--color-yellow: #dca130;
-	--color-white: #ffffff;
+	--color-white: #faf7f2;
 	--color-gray: #71717a;
-	--color-black: #18181b;
+	--color-black: #1c1917;
 
 	/* Identidade Principal */
 	--color-primary: #b94b38;
 	--color-primary-hover: #9c3f2f;
-	--color-primary-contrast: #ffffff;
+	--color-primary-contrast: #faf7f2;
 
 	/* Status Semânticos */
 	--color-success: var(--color-green-light);
@@ -101,9 +101,9 @@
 
 	--color-primary: #d9624c;
 	--color-primary-hover: #b94b38;
-	--color-primary-contrast: #181615;
+	--color-primary-contrast: #faf7f2;
 
-	--color-black: #f5f0eb;
-	--color-white: #181615;
+	--color-black: #181615;
+	--color-white: #faf7f2;
 	--color-red: #e63946;
 }

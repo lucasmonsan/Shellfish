@@ -77,7 +77,7 @@
 
 	span[data-variant='danger'] {
 		background-color: var(--color-danger);
-		color: #ffffff;
+		color: var(--color-primary-contrast);
 	}
 
 	span[data-variant='success'] {

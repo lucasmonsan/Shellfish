@@ -156,7 +156,7 @@
 		border: var(--border-width) solid var(--border-color);
 		border-radius: var(--radius-sm);
 		background-color: var(--bg-primary);
-		color: #ffffff;
+		color: var(--color-primary-contrast);
 		box-shadow: 1px 1px 0px var(--border-color);
 		transition:
 			transform 0.12s cubic-bezier(0.4, 0, 0.2, 1),
@@ -234,10 +234,15 @@
 		transform: translate(-1px, -1px);
 	}
 
+	.checkbox-card:active:not([data-disabled='true']) {
+		transform: translate(1px, 1px);
+		box-shadow: 0px 0px 0px var(--border-color);
+	}
+
 	.checkbox-card[data-checked='true'] {
 		border-color: var(--color-primary);
 		box-shadow: 2px 2px 0px var(--color-primary);
-		background-color: var(--bg-primary);
+		background-color: var(--bg-secondary);
 	}
 
 	.card-label-row {

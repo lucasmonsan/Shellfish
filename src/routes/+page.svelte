@@ -31,6 +31,7 @@
 		LocaleSelector,
 		t
 	} from '$lib/index.js';
+	import type { CalendarMode } from '$lib/types/index.js';
 
 	let activeTab = $state('actions');
 	let tabItems = $derived([
@@ -40,18 +41,38 @@
 		{ id: 'feedback', label: t('showcase.tabs.feedback') }
 	]);
 
-	// Estados reativos para testes interativos
-	let inputValue = $state('Texto de exemplo');
-	let textareaValue = $state('Área de texto com foco tátil e expansão vertical.');
+	// Estados de Formulários & Interações
+	let inputValue = $state('Exemplo de texto');
+	let textareaValue = $state('Área de texto neobrutalista.');
 	let selectValue = $state('option-1');
+	let isInvalid = $state(false);
+
 	let switchChecked = $state(true);
 	let sliderValue = $state(65);
-	let calendarValue = $state(new Date());
-	let selectedChip = $state('10:00am');
-	let isInvalid = $state(false);
-	let isCardFlipped = $state(false);
 
+	// Seletor de Modos do Calendário
+	let calendarMode = $state<CalendarMode>('expandable');
+	let calendarValue = $state(new Date());
+	let calendarTabs = [
+		{ id: 'expandable', label: 'Híbrido' },
+		{ id: 'week', label: 'Faixa' },
+		{ id: 'month', label: 'Mês' }
+	];
+
+	// Seletor de Modos do Card
+	let cardVariantTab = $state('default');
+	let isCardFlipped = $state(false);
+	let cardTabs = [
+		{ id: 'default', label: 'Padrão' },
+		{ id: 'collapsible', label: 'Colapsável' },
+		{ id: 'badge', label: 'Placa' },
+		{ id: 'flip', label: 'Flip 3D' }
+	];
+
+	let selectedChip = $state('10:00');
 	let choiceCardRadio = $state('service-1');
+	let choiceCardCheck1 = $state(true);
+	let choiceCardCheck2 = $state(false);
 
 	let isDialogOpen = $state(false);
 	let isToastOpen = $state(false);
@@ -64,14 +85,14 @@
 	]);
 
 	let dropdownItems = [
-		{ id: 'opt-1', label: 'Editar Perfil', onclick: () => {} },
-		{ id: 'opt-2', label: 'Configurações de Rede', onclick: () => {} },
-		{ id: 'opt-3', label: 'Excluir Item', danger: true, onclick: () => {} }
+		{ id: 'opt-1', label: 'Perfil', onclick: () => {} },
+		{ id: 'opt-2', label: 'Configurações', onclick: () => {} },
+		{ id: 'opt-3', label: 'Excluir', danger: true, onclick: () => {} }
 	];
 </script>
 
 <Main fullHeight={true} padding="none" gap="none">
-	<!-- Header com Logo clicável que reseta para a Home -->
+	<!-- Header com Logo Oficial da Concha Terracota -->
 	<Header sticky={true} padding="md">
 		<Row fullWidth={true} justify="between" align="center">
 			<button
@@ -80,9 +101,17 @@
 				onclick={() => (activeTab = 'actions')}
 				aria-label="Ir para a Home do Shellfish"
 			>
-				<Avatar name="Shellfish UI" size="md" square={true} />
+				<img
+					src="/favicon.svg"
+					alt="Shellfish Logo"
+					width="36"
+					height="36"
+					class="header-logo-img"
+				/>
 				<Column gap="none">
-					<h1 style="font-size: var(--text-lg); margin: 0;">{t('showcase.title')}</h1>
+					<h1 style="font-size: var(--text-lg); margin: 0; line-height: 1.1;">
+						{t('showcase.title')}
+					</h1>
 					<span style="font-size: var(--text-xs); color: var(--text-secondary);">
 						{t('showcase.subtitle')}
 					</span>
@@ -102,15 +131,12 @@
 		</Row>
 
 		{#if activeTab === 'actions'}
-			<!-- 1. Variantes de Botão -->
+			<!-- 1. Botões -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.buttonVariants.title')}</span>
 				{/snippet}
 				<Column gap="md">
-					<p style="font-size: var(--text-sm); color: var(--text-secondary);">
-						{t('showcase.buttonVariants.desc')}
-					</p>
 					<Row wrap={true} gap="md">
 						<Button variant="primary">{t('showcase.buttons.primary')}</Button>
 						<Button variant="secondary">{t('showcase.buttons.secondary')}</Button>
@@ -121,45 +147,49 @@
 				</Column>
 			</Card>
 
-			<!-- 2. Chips & Tags Interativas -->
+			<!-- 2. Chips -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.chips.title')}</span>
 				{/snippet}
-				<Column gap="md">
-					<Row wrap={true} gap="sm" align="center">
-						<Chip selected={selectedChip === '9:00am'} onclick={() => (selectedChip = '9:00am')}>
-							9:00 AM
-						</Chip>
-						<Chip selected={selectedChip === '10:00am'} onclick={() => (selectedChip = '10:00am')}>
-							10:00 AM
-						</Chip>
-						<Chip selected={selectedChip === '11:00am'} onclick={() => (selectedChip = '11:00am')}>
-							11:00 AM
-						</Chip>
-						<Chip selected={selectedChip === '2:00pm'} onclick={() => (selectedChip = '2:00pm')}>
-							2:00 PM
-						</Chip>
-						<Chip removable={true} onremove={() => alert('Tag removida!')}>Filtro Removível</Chip>
-					</Row>
-				</Column>
+				<Row wrap={true} gap="sm" align="center">
+					<Chip selected={selectedChip === '09:00'} onclick={() => (selectedChip = '09:00')}>
+						09:00
+					</Chip>
+					<Chip selected={selectedChip === '10:00'} onclick={() => (selectedChip = '10:00')}>
+						10:00
+					</Chip>
+					<Chip selected={selectedChip === '11:00'} onclick={() => (selectedChip = '11:00')}>
+						11:00
+					</Chip>
+					<Chip selected={selectedChip === '14:00'} onclick={() => (selectedChip = '14:00')}>
+						14:00
+					</Chip>
+					<Chip removable={true} onremove={() => (isToastOpen = true)}>Filtro Ativo</Chip>
+				</Row>
 			</Card>
 
-			<!-- 3. Dropdowns & Menus Suspensos -->
+			<!-- 3. Dropdowns -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.dropdown.title')}</span>
 				{/snippet}
 				<Row wrap={true} gap="md" align="center">
-					<Dropdown label="Menu de Opções" items={dropdownItems} />
-					<Dropdown label="Alinhamento à Direita" placement="bottom-end" items={dropdownItems} />
+					<Dropdown label="Opções (Neutro)" variant="secondary" items={dropdownItems} />
+					<Dropdown label="Ação (Terracota)" variant="primary" items={dropdownItems} />
+					<Dropdown
+						label="Menu à Direita"
+						placement="bottom-end"
+						variant="outline"
+						items={dropdownItems}
+					/>
 				</Row>
 			</Card>
 		{:else if activeTab === 'forms'}
-			<!-- 1. Campos com Notched Label -->
+			<!-- 1. Entradas de Texto -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.forms.badgedInputsTitle')}</span>
+					<span>{t('showcase.forms.title')}</span>
 				{/snippet}
 				<Column gap="md">
 					<Row align="center" gap="sm">
@@ -190,138 +220,229 @@
 				</Column>
 			</Card>
 
-			<!-- 2. Switches, Sliders e Calendários -->
+			<!-- 2. Switches & Slider -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.forms.tactileSelections')}</span>
+					<span>{t('showcase.forms.switches')} & {t('showcase.forms.slider')}</span>
 				{/snippet}
 				<Column gap="lg">
 					<Row wrap={true} gap="lg" align="center">
-						<Switch label="Notificações Push (MD)" size="md" bind:checked={switchChecked} />
-						<Switch label="Modo Alta Fidelidade (SM)" size="sm" checked={true} />
-						<Switch label="Automação Ativa (LG)" size="lg" checked={false} />
+						<Switch label="Notificações" size="md" bind:checked={switchChecked} />
+						<Switch label="Sincronização" size="sm" checked={true} />
+						<Switch label="Backup Automático" size="lg" checked={false} />
 					</Row>
 
 					<Divider />
 
 					<Slider
-						label="Ajuste de Volume / Intensidade"
+						label="Intensidade"
 						bind:value={sliderValue}
 						min={0}
 						max={100}
 						showValue={true}
 						valueSuffix="%"
 					/>
-
-					<Divider />
-
-					<Column gap="sm">
-						<span style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase;">
-							{t('showcase.forms.calendar')}
-						</span>
-						<Row wrap={true} gap="md">
-							<Calendar mode="expandable" bind:value={calendarValue} />
-						</Row>
-					</Column>
 				</Column>
 			</Card>
 
-			<!-- 3. Choice Cards (Radio Card & Checkbox Card em Grade) -->
+			<!-- 3. Calendário com Seletor no Header -->
+			<Card radius="md" padding="md">
+				{#snippet header()}
+					<Row fullWidth={true} justify="between" align="center">
+						<span>{t('showcase.forms.calendar')}</span>
+						<Tabs size="sm" items={calendarTabs} bind:value={calendarMode as unknown as string} />
+					</Row>
+				{/snippet}
+				<Row justify="center" style="padding-top: var(--space-xs);">
+					<Calendar mode={calendarMode} bind:value={calendarValue} />
+				</Row>
+			</Card>
+
+			<!-- 4. Cards de Seleção (Radio e Checkbox Card) -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.forms.choiceCards')}</span>
 				{/snippet}
-				<Grid columns={2} gap="md">
-					<Radio variant="card" group={choiceCardRadio} value="service-1" name="showcase-choice">
-						<Row justify="between" align="center">
-							<Column gap="xs">
-								<span style="font-weight: 800;">Clipper Cut</span>
-								<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-									Corte rápido e alinhamento
-								</span>
-							</Column>
-							<Badge variant="primary">$55.00</Badge>
-						</Row>
-					</Radio>
+				<Column gap="md">
+					<span
+						style="font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary); text-transform: uppercase;"
+					>
+						Seleção Única (Radio)
+					</span>
+					<Grid columns={2} gap="md">
+						<Radio variant="card" group={choiceCardRadio} value="service-1" name="showcase-choice">
+							<Row justify="between" align="center">
+								<Column gap="none">
+									<strong style="font-size: var(--text-sm);">Corte Rápido</strong>
+									<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+										>30 min</span
+									>
+								</Column>
+								<Badge variant="primary">R$ 45</Badge>
+							</Row>
+						</Radio>
 
-					<Radio variant="card" group={choiceCardRadio} value="service-2" name="showcase-choice">
-						<Row justify="between" align="center">
-							<Column gap="xs">
-								<span style="font-weight: 800;">Haircut & Shave</span>
-								<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-									Corte completo com toalha quente
-								</span>
-							</Column>
-							<Badge variant="primary">$90.00</Badge>
-						</Row>
-					</Radio>
-				</Grid>
+						<Radio variant="card" group={choiceCardRadio} value="service-2" name="showcase-choice">
+							<Row justify="between" align="center">
+								<Column gap="none">
+									<strong style="font-size: var(--text-sm);">Corte & Barba</strong>
+									<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+										>60 min</span
+									>
+								</Column>
+								<Badge variant="primary">R$ 80</Badge>
+							</Row>
+						</Radio>
+					</Grid>
+
+					<span
+						style="font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-top: var(--space-xs);"
+					>
+						Múltipla Seleção (Checkbox)
+					</span>
+					<Grid columns={2} gap="md">
+						<Checkbox variant="card" bind:checked={choiceCardCheck1}>
+							<Row justify="between" align="center">
+								<Column gap="none">
+									<strong style="font-size: var(--text-sm);">Toalha Quente</strong>
+									<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+										>Adicional</span
+									>
+								</Column>
+								<Badge variant="secondary">+ R$ 15</Badge>
+							</Row>
+						</Checkbox>
+
+						<Checkbox variant="card" bind:checked={choiceCardCheck2}>
+							<Row justify="between" align="center">
+								<Column gap="none">
+									<strong style="font-size: var(--text-sm);">Lavagem Especial</strong>
+									<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+										>Adicional</span
+									>
+								</Column>
+								<Badge variant="secondary">+ R$ 20</Badge>
+							</Row>
+						</Checkbox>
+					</Grid>
+				</Column>
 			</Card>
 		{:else if activeTab === 'display'}
-			<!-- 1. Badges & Avatares Neobrutalistas Quadrados -->
+			<!-- 1. Badges & Avatares -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
-					<span>{t('showcase.display.badgesTitle')} & {t('showcase.display.avatarsTitle')}</span>
+					<span>{t('showcase.display.badgesTitle')}</span>
 				{/snippet}
 				<Column gap="md">
 					<Row wrap={true} gap="sm" align="center">
 						<Badge variant="primary">ONLINE</Badge>
-						<Badge variant="secondary">CACHE HIT</Badge>
+						<Badge variant="secondary">CACHE</Badge>
 						<Badge variant="success">200 OK</Badge>
-						<Badge variant="warning">DEPRECATED</Badge>
-						<Badge variant="danger">DISCONNECTED</Badge>
+						<Badge variant="warning">AVISO</Badge>
+						<Badge variant="danger">ERRO</Badge>
 					</Row>
 					<Row wrap={true} gap="md" align="center">
 						<Avatar name="Lucas Monsan" size="lg" />
 						<Avatar name="Zoo Engine" size="md" />
-						<Avatar name="Dev Bot" size="sm" />
+						<Avatar name="Bot" size="sm" />
 					</Row>
 				</Column>
 			</Card>
 
-			<!-- 2. Flip Card 3D -->
-			<Card radius="md" padding="md" flipped={isCardFlipped}>
-				{#snippet header()}
-					<span>{t('showcase.display.flipCardTitle')}</span>
-				{/snippet}
-				<Column gap="md">
-					<p style="font-size: var(--text-sm); color: var(--text-secondary);">
-						{t('showcase.display.flipCardDesc')}
-					</p>
-					<Row>
-						<Button variant="primary" onclick={() => (isCardFlipped = !isCardFlipped)}>
-							{t('showcase.display.flipBtn')}
-						</Button>
-					</Row>
-				</Column>
-				{#snippet back()}
-					<Column gap="md" style="padding: var(--space-md);">
-						<span style="font-weight: 800;">{t('showcase.display.flipBackTitle')}</span>
-						<p style="font-size: var(--text-sm); color: var(--text-secondary);">
-							{t('showcase.display.flipBackDesc')}
+			<!-- 2. Cards com Seletor de Variantes no Header -->
+			{#if cardVariantTab === 'default'}
+				<Card radius="md" padding="md">
+					{#snippet header()}
+						<Row fullWidth={true} justify="between" align="center">
+							<span>{t('showcase.display.cardsTitle')}</span>
+							<Tabs size="sm" items={cardTabs} bind:value={cardVariantTab} />
+						</Row>
+					{/snippet}
+					<Column gap="sm">
+						<p style="margin: 0; font-size: var(--text-sm);">
+							Card neobrutalista padrão com elevação sólida de 1px.
+						</p>
+					</Column>
+					{#snippet footer()}
+						<Row justify="end" gap="sm">
+							<Button size="sm" variant="outline">Cancelar</Button>
+							<Button size="sm" variant="primary">Salvar</Button>
+						</Row>
+					{/snippet}
+				</Card>
+			{:else if cardVariantTab === 'collapsible'}
+				<Card radius="md" padding="md" collapsible={true}>
+					{#snippet header()}
+						<Row fullWidth={true} justify="between" align="center">
+							<span>Card Colapsável</span>
+							<Tabs size="sm" items={cardTabs} bind:value={cardVariantTab} />
+						</Row>
+					{/snippet}
+					<Column gap="sm">
+						<p style="margin: 0; font-size: var(--text-sm);">
+							Clique no cabeçalho para recolher ou expandir este painel fluidamente.
+						</p>
+					</Column>
+				</Card>
+			{:else if cardVariantTab === 'badge'}
+				<Card radius="md" padding="md" badgeTitle="Módulo #01">
+					{#snippet header()}
+						<Row fullWidth={true} justify="between" align="center">
+							<span>Card com Placa na Borda</span>
+							<Tabs size="sm" items={cardTabs} bind:value={cardVariantTab} />
+						</Row>
+					{/snippet}
+					<Column gap="sm">
+						<p style="margin: 0; font-size: var(--text-sm);">
+							Placa cravada a 50% na linha superior como uma etiqueta física.
+						</p>
+					</Column>
+				</Card>
+			{:else if cardVariantTab === 'flip'}
+				<Card radius="md" padding="md" bind:flipped={isCardFlipped}>
+					{#snippet header()}
+						<Row fullWidth={true} justify="between" align="center">
+							<span>Card Flip 3D</span>
+							<Tabs size="sm" items={cardTabs} bind:value={cardVariantTab} />
+						</Row>
+					{/snippet}
+					<Column gap="md">
+						<p style="margin: 0; font-size: var(--text-sm);">
+							Clique em qualquer área do Card para girar e ver o verso.
 						</p>
 						<Row>
-							<Button variant="secondary" onclick={() => (isCardFlipped = false)}>
-								Voltar para a Frente
-							</Button>
+							<Badge variant="primary">Clique no Card para Virar ➔</Badge>
 						</Row>
 					</Column>
-				{/snippet}
-			</Card>
+					{#snippet back()}
+						<Column gap="md" style="padding: var(--space-md);">
+							<strong style="font-size: var(--text-base);"
+								>{t('showcase.display.flipBackTitle')}</strong
+							>
+							<p style="margin: 0; font-size: var(--text-sm);">
+								{t('showcase.display.flipBackDesc')}
+							</p>
+							<Row>
+								<Badge variant="secondary">Clique novamente para desvirar</Badge>
+							</Row>
+						</Column>
+					{/snippet}
+				</Card>
+			{/if}
 		{:else if activeTab === 'feedback'}
-			<!-- 1. Barras de Progresso -->
+			<!-- 1. Progresso -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.feedback.progressBarTitle')}</span>
 				{/snippet}
 				<Column gap="md">
-					<ProgressBar value={progressValue} showLabel={true} size="md" />
-					<ProgressBar value={45} striped={true} variant="success" size="lg" showLabel={true} />
-					<ProgressBar value={85} variant="warning" size="sm" />
+					<ProgressBar value={progressValue} variant="primary" showLabel={true} size="md" />
+					<ProgressBar value={50} striped={true} variant="primary" size="lg" showLabel={true} />
+					<ProgressBar value={85} variant="success" size="sm" />
 				</Column>
 			</Card>
 
-			<!-- 2. Spinners Neobrutalistas -->
+			<!-- 2. Spinners -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.feedback.spinnersTitle')}</span>
@@ -354,7 +475,7 @@
 				</Grid>
 			</Card>
 
-			<!-- 3. Diálogos Nativos & Toasts -->
+			<!-- 3. Modais & Toasts -->
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<span>{t('showcase.feedback.dialogsTitle')}</span>
@@ -371,7 +492,7 @@
 		{/if}
 	</Section>
 
-	<!-- Rodapé da Aplicação -->
+	<!-- Rodapé -->
 	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
@@ -384,7 +505,7 @@
 	</Footer>
 </Main>
 
-<!-- Modal Nativo com Saída Fluida e Zero Blur -->
+<!-- Modal Nativo -->
 <Dialog
 	bind:open={isDialogOpen}
 	title={t('showcase.dialog.title')}
@@ -408,7 +529,7 @@
 	{/snippet}
 </Dialog>
 
-<!-- Toast Flutuante com Transição Fly -->
+<!-- Toast Flutuante -->
 <Toast bind:open={isToastOpen} variant="success" duration={3500}>
 	<Column gap="none">
 		<strong>{t('showcase.toast.title')}</strong>
@@ -437,5 +558,10 @@
 	.header-logo-btn:focus-visible {
 		outline: 2px solid var(--color-primary);
 		border-radius: var(--radius-sm);
+	}
+
+	.header-logo-img {
+		display: block;
+		flex-shrink: 0;
 	}
 </style>
