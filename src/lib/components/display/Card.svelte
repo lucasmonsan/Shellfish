@@ -95,23 +95,35 @@
 		</header>
 	{/if}
 
-	<div
-		class="card-collapse-wrapper"
-		class:collapsed={collapsible && !open}
-		aria-hidden={collapsible && !open ? 'true' : undefined}
-	>
-		<div class="card-collapse-inner">
-			<div class="card-body">
-				{@render children?.()}
-			</div>
+	{#if collapsible}
+		<div
+			class="card-collapse-wrapper"
+			class:collapsed={!open}
+			aria-hidden={!open ? 'true' : undefined}
+		>
+			<div class="card-collapse-inner">
+				<div class="card-body">
+					{@render children?.()}
+				</div>
 
-			{#if footer}
-				<footer>
-					{@render footer()}
-				</footer>
-			{/if}
+				{#if footer}
+					<footer>
+						{@render footer()}
+					</footer>
+				{/if}
+			</div>
 		</div>
-	</div>
+	{:else}
+		<div class="card-body">
+			{@render children?.()}
+		</div>
+
+		{#if footer}
+			<footer>
+				{@render footer()}
+			</footer>
+		{/if}
+	{/if}
 {/snippet}
 
 <article
