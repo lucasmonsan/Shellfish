@@ -105,8 +105,8 @@
 	let cardTabs = [
 		{ id: 'default', label: 'Padrão' },
 		{ id: 'collapsible', label: 'Colapsável' },
-		{ id: 'badge', label: 'Placa na Borda' },
-		{ id: 'flip', label: 'Flip 3D' }
+		{ id: 'badge', label: 'Placa' },
+		{ id: 'flip', label: 'Flip' }
 	];
 
 	// Feedback

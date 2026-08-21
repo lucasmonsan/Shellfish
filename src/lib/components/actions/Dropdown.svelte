@@ -222,7 +222,7 @@
 		background-color: var(--bg-primary);
 		border: var(--border-width) solid var(--border-color);
 		border-radius: var(--radius-md);
-		box-shadow: 4px 4px 0px var(--border-color);
+		box-shadow: 2px 2px 0px var(--border-color);
 		padding: var(--space-xs);
 		display: flex;
 		flex-direction: column;
