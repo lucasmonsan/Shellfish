@@ -22,6 +22,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		// Showcase / Catálogo (Nomes Diretos)
 		'showcase.title': 'Shellfish',
 		'showcase.subtitle': 'Design System',
+		'showcase.logo.aria': 'Ir para a Home do Shellfish',
 		'showcase.tabs.actions': 'Ações',
 		'showcase.tabs.forms': 'Formulários',
 		'showcase.tabs.display': 'Superfícies',
@@ -40,7 +41,17 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.buttons.loading': 'Carregando...',
 		'showcase.buttons.disabled': 'Desabilitado',
 		'showcase.chips.title': 'Chips',
+		'showcase.chips.activeTags': 'Tags Ativas',
+		'showcase.chips.placeholder': 'Digite uma tag e pressione Enter...',
+		'showcase.chips.helper':
+			'Pressione Enter ou vírgula para criar tags. Clique no X ou pressione Backspace para remover.',
 		'showcase.dropdown.title': 'Dropdowns',
+		'showcase.dropdown.neutral': 'Opções (Neutro)',
+		'showcase.dropdown.terracotta': 'Ação (Terracota)',
+		'showcase.dropdown.rightMenu': 'Menu à Direita',
+		'showcase.dropdown.profile': 'Perfil',
+		'showcase.dropdown.settings': 'Configurações',
+		'showcase.dropdown.delete': 'Excluir',
 		'showcase.forms.title': 'Entradas de Texto',
 		'showcase.forms.simulateInvalid': 'Simular estado inválido',
 		'showcase.forms.inputLabel': 'Texto',
@@ -50,24 +61,77 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.selectOption2': 'Opção 2',
 		'showcase.forms.selectOption3': 'Opção 3 (Desabilitada)',
 		'showcase.forms.textareaLabel': 'Área de Texto',
-		'showcase.forms.textareaDefault': 'Texto de exemplo.',
+		'showcase.forms.textareaDefault': 'Área de texto neobrutalista.',
 		'showcase.forms.switches': 'Switches',
 		'showcase.forms.slider': 'Slider',
+		'showcase.forms.switchNotifications': 'Notificações',
+		'showcase.forms.switchSync': 'Sincronização',
+		'showcase.forms.switchBackup': 'Backup Automático',
+		'showcase.forms.sliderIntensity': 'Intensidade',
 		'showcase.forms.calendar': 'Calendário',
 		'showcase.forms.choiceCards': 'Card',
 		'showcase.forms.checkboxes': 'Checkboxes',
 		'showcase.forms.checkedOption': 'Marcado',
+		'showcase.forms.uncheckedOption': 'Desmarcado',
 		'showcase.forms.indeterminateOption': 'Indeterminado',
 		'showcase.forms.disabledOption': 'Desabilitado',
+		'showcase.forms.serviceHotTowel': 'Toalha Quente',
+		'showcase.forms.serviceHotTowelDesc': 'Tratamento facial',
+		'showcase.forms.serviceWash': 'Lavagem Especial',
+		'showcase.forms.serviceWashDesc': 'Shampoo premium',
+		'showcase.forms.serviceMassage': 'Massagem Capilar',
+		'showcase.forms.serviceUnavailable': 'Indisponível',
+		'showcase.forms.serviceSoldOut': 'Esgotado',
+		'showcase.forms.serviceQuickCut': 'Corte Rápido',
+		'showcase.forms.serviceCutBeard': 'Corte & Barba',
+		'showcase.forms.serviceVip': 'Completo VIP',
 		'showcase.forms.radios': 'Radios',
 		'showcase.forms.radioA': 'Opção A',
 		'showcase.forms.radioB': 'Opção B',
 		'showcase.forms.radioCDisabled': 'Opção C (Desabilitada)',
+		'showcase.variant.standard': 'Padrão',
+		'showcase.variant.card': 'Card',
+		'showcase.variant.collapsible': 'Colapsável',
+		'showcase.variant.badge': 'Placa',
+		'showcase.variant.flip': 'Flip',
+		'showcase.calendar.strip': 'Faixa',
+		'showcase.calendar.month': 'Mês',
+		'showcase.card.defaultHeader': 'Card Padrão',
+		'showcase.card.collapsibleHeader': 'Card Colapsável',
+		'showcase.card.flipHeader': 'Card Frente',
+		'showcase.card.sideA': 'Lado A',
+		'showcase.card.action': 'Ação',
+		'showcase.card.module': 'Módulo #01',
+		'showcase.card.topBadgeTitle': 'Placa na Borda Superior',
+		'showcase.card.topBadgeDesc':
+			'A placa de identificação fica cravada a 50% na linha superior como uma etiqueta de hardware ({padding}).',
+		'showcase.card.interactive3d': 'Card Interativo 3D',
+		'showcase.card.interactive3dDesc':
+			'Clique em qualquer área do Card para girar em 3D e revelar o verso ({padding}).',
+		'showcase.card.clickToFlip': 'Clique no Card para Virar',
+		'showcase.card.standardTitle': 'Superfície Padrão',
+		'showcase.card.standardDesc':
+			'Superfície tátil neobrutalista com elevação física sólida e contenção pura de conteúdo ({padding}).',
+		'showcase.card.collapsibleTitle': 'Painel Expansível',
+		'showcase.card.collapsibleDesc':
+			'Clique no cabeçalho acima para recolher ou expandir este painel de forma contínua e suave ({padding}).',
+		'showcase.card.controlsTitle': 'Configurações',
+		'showcase.card.withHeader': 'Com Header',
+		'showcase.card.withFooter': 'Com Footer',
+		'showcase.card.padding': 'Padding:',
+		'showcase.card.radius': 'Radius:',
 		'showcase.display.badgesTitle': 'Badges & Avatares',
+		'showcase.display.badgeOnline': 'ONLINE',
+		'showcase.display.badgeCache': 'CACHE',
+		'showcase.display.badgeSuccess': '200 OK',
+		'showcase.display.badgeWarning': 'AVISO',
+		'showcase.display.badgeError': 'ERRO',
 		'showcase.display.cardsTitle': 'Cards',
 		'showcase.display.flipBtn': 'Virar',
 		'showcase.display.flipBackTitle': 'Verso do Card',
 		'showcase.display.flipBackDesc': 'Renderizado via snippet back().',
+		'showcase.display.flipBackUnflip': 'Clique para desvirar',
+		'showcase.display.flipBackSideB': 'Lado B',
 		'showcase.feedback.progressBarTitle': 'Progresso',
 		'showcase.feedback.infoTitle': 'Informação',
 		'showcase.feedback.infoMsg': 'Alerta informativo.',
@@ -88,6 +152,8 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.dialog.desc': 'Modal nativo com animação pop-out.',
 		'showcase.toast.title': 'Notificação',
 		'showcase.toast.msg': 'Ação executada com sucesso.',
+		'showcase.footer.createdWith': 'Criado por',
+		'showcase.footer.with': 'com',
 		'showcase.footer.tagline': 'Shellfish — Design System Zoo',
 		'showcase.footer.port': 'Porta 5172'
 	},
@@ -112,6 +178,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		// Showcase / Catalog (Direct Nouns)
 		'showcase.title': 'Shellfish',
 		'showcase.subtitle': 'Design System',
+		'showcase.logo.aria': 'Go to Shellfish Home',
 		'showcase.tabs.actions': 'Actions',
 		'showcase.tabs.forms': 'Forms',
 		'showcase.tabs.display': 'Surfaces',
@@ -130,7 +197,17 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.buttons.loading': 'Loading...',
 		'showcase.buttons.disabled': 'Disabled',
 		'showcase.chips.title': 'Chips',
+		'showcase.chips.activeTags': 'Active Tags',
+		'showcase.chips.placeholder': 'Type a tag and press Enter...',
+		'showcase.chips.helper':
+			'Press Enter or comma to create tags. Click X or press Backspace to remove.',
 		'showcase.dropdown.title': 'Dropdowns',
+		'showcase.dropdown.neutral': 'Options (Neutral)',
+		'showcase.dropdown.terracotta': 'Action (Terracotta)',
+		'showcase.dropdown.rightMenu': 'Right Menu',
+		'showcase.dropdown.profile': 'Profile',
+		'showcase.dropdown.settings': 'Settings',
+		'showcase.dropdown.delete': 'Delete',
 		'showcase.forms.title': 'Text Inputs',
 		'showcase.forms.simulateInvalid': 'Simulate invalid state',
 		'showcase.forms.inputLabel': 'Text',
@@ -140,24 +217,77 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.selectOption2': 'Option 2',
 		'showcase.forms.selectOption3': 'Option 3 (Disabled)',
 		'showcase.forms.textareaLabel': 'Textarea',
-		'showcase.forms.textareaDefault': 'Sample text.',
+		'showcase.forms.textareaDefault': 'Neobrutalist textarea.',
 		'showcase.forms.switches': 'Switches',
 		'showcase.forms.slider': 'Slider',
+		'showcase.forms.switchNotifications': 'Notifications',
+		'showcase.forms.switchSync': 'Sync',
+		'showcase.forms.switchBackup': 'Auto Backup',
+		'showcase.forms.sliderIntensity': 'Intensity',
 		'showcase.forms.calendar': 'Calendar',
 		'showcase.forms.choiceCards': 'Card',
 		'showcase.forms.checkboxes': 'Checkboxes',
 		'showcase.forms.checkedOption': 'Checked',
+		'showcase.forms.uncheckedOption': 'Unchecked',
 		'showcase.forms.indeterminateOption': 'Indeterminate',
 		'showcase.forms.disabledOption': 'Disabled',
+		'showcase.forms.serviceHotTowel': 'Hot Towel',
+		'showcase.forms.serviceHotTowelDesc': 'Facial treatment',
+		'showcase.forms.serviceWash': 'Special Wash',
+		'showcase.forms.serviceWashDesc': 'Premium shampoo',
+		'showcase.forms.serviceMassage': 'Head Massage',
+		'showcase.forms.serviceUnavailable': 'Unavailable',
+		'showcase.forms.serviceSoldOut': 'Sold Out',
+		'showcase.forms.serviceQuickCut': 'Quick Cut',
+		'showcase.forms.serviceCutBeard': 'Cut & Beard',
+		'showcase.forms.serviceVip': 'Full VIP',
 		'showcase.forms.radios': 'Radios',
 		'showcase.forms.radioA': 'Option A',
 		'showcase.forms.radioB': 'Option B',
 		'showcase.forms.radioCDisabled': 'Option C (Disabled)',
+		'showcase.variant.standard': 'Standard',
+		'showcase.variant.card': 'Card',
+		'showcase.variant.collapsible': 'Collapsible',
+		'showcase.variant.badge': 'Badge',
+		'showcase.variant.flip': 'Flip',
+		'showcase.calendar.strip': 'Strip',
+		'showcase.calendar.month': 'Month',
+		'showcase.card.defaultHeader': 'Standard Card',
+		'showcase.card.collapsibleHeader': 'Collapsible Card',
+		'showcase.card.flipHeader': 'Card Front',
+		'showcase.card.sideA': 'Side A',
+		'showcase.card.action': 'Action',
+		'showcase.card.module': 'Module #01',
+		'showcase.card.topBadgeTitle': 'Top Edge Badge',
+		'showcase.card.topBadgeDesc':
+			'The ID badge is anchored 50% on the top edge like a hardware tag ({padding}).',
+		'showcase.card.interactive3d': '3D Interactive Card',
+		'showcase.card.interactive3dDesc':
+			'Click anywhere on the Card to rotate in 3D and reveal the back ({padding}).',
+		'showcase.card.clickToFlip': 'Click Card to Flip',
+		'showcase.card.standardTitle': 'Standard Surface',
+		'showcase.card.standardDesc':
+			'Tactile neobrutalist surface with solid physical elevation and pure content containment ({padding}).',
+		'showcase.card.collapsibleTitle': 'Collapsible Panel',
+		'showcase.card.collapsibleDesc':
+			'Click the header above to smoothly expand or collapse this panel ({padding}).',
+		'showcase.card.controlsTitle': 'Controls',
+		'showcase.card.withHeader': 'With Header',
+		'showcase.card.withFooter': 'With Footer',
+		'showcase.card.padding': 'Padding:',
+		'showcase.card.radius': 'Radius:',
 		'showcase.display.badgesTitle': 'Badges & Avatars',
+		'showcase.display.badgeOnline': 'ONLINE',
+		'showcase.display.badgeCache': 'CACHE',
+		'showcase.display.badgeSuccess': '200 OK',
+		'showcase.display.badgeWarning': 'WARNING',
+		'showcase.display.badgeError': 'ERROR',
 		'showcase.display.cardsTitle': 'Cards',
 		'showcase.display.flipBtn': 'Flip',
 		'showcase.display.flipBackTitle': 'Card Reverse',
 		'showcase.display.flipBackDesc': 'Rendered via back() snippet.',
+		'showcase.display.flipBackUnflip': 'Click to unflip',
+		'showcase.display.flipBackSideB': 'Side B',
 		'showcase.feedback.progressBarTitle': 'Progress',
 		'showcase.feedback.infoTitle': 'Information',
 		'showcase.feedback.infoMsg': 'Informative alert.',
@@ -178,6 +308,8 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.dialog.desc': 'Native modal with pop-out transition.',
 		'showcase.toast.title': 'Notification',
 		'showcase.toast.msg': 'Action executed successfully.',
+		'showcase.footer.createdWith': 'Created by',
+		'showcase.footer.with': 'with',
 		'showcase.footer.tagline': 'Shellfish — Zoo Design System',
 		'showcase.footer.port': 'Port 5172'
 	}
@@ -202,24 +334,25 @@ export const i18n = {
 	set storageKey(val: string) {
 		activeStorageKey = val;
 	},
-	setLocale(val: Locale) {
+	setLocale(val: Locale, persist = true) {
 		if (translations[val]) {
 			currentLocale = val;
-			if (typeof window !== 'undefined') {
-				try {
-					localStorage.setItem(activeStorageKey, val);
-				} catch {
-					// Ignora indisponibilidade do localStorage
-				}
-			}
 			if (typeof document !== 'undefined') {
 				document.documentElement.lang = val;
+			}
+			if (persist && typeof window !== 'undefined') {
+				try {
+					localStorage.setItem(activeStorageKey, val);
+					document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
+				} catch {
+					// Ignora indisponibilidade do storage
+				}
 			}
 		}
 	},
 	toggleLocale(): Locale {
 		const next: Locale = currentLocale === 'pt-BR' ? 'en-US' : 'pt-BR';
-		this.setLocale(next);
+		this.setLocale(next, true);
 		return next;
 	},
 	t(key: string, params?: Record<string, string | number>): string {

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { i18n, t, translations } from '../src/lib/utils/i18n.svelte.js';
+import { load as layoutServerLoad } from '../src/routes/+layout.server.js';
 import type { Locale } from '../src/lib/types/i18n.js';
 
 function getFilesRecursively(dir: string, extensions: string[]): string[] {
@@ -121,7 +122,6 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 			while ((match = hardcodedAttrRegex.exec(content)) !== null) {
 				const attr = match[1];
 				const val = match[2].trim();
-				// Permite valores técnicos vazios ou estruturais se houver
 				if (val.length > 0) {
 					hardcodedViolations.push(`${relativePath}: ${attr}="${val}"`);
 				}
@@ -132,6 +132,39 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 			hardcodedViolations,
 			'Atributos de acessibilidade estáticos não internacionalizados encontrados em componentes'
 		).toEqual([]);
+	});
+
+	it('valida que +layout.server.ts detecta preferência de cookie e cabeçalho Accept-Language no SSR', () => {
+		type LayoutLoader = (event: unknown) => { locale: Locale };
+		const loader = layoutServerLoad as unknown as LayoutLoader;
+
+		// 1. Caso com cookie definido
+		const mockCookies = {
+			get: (key: string) => (key === 'zoo_locale' ? 'en-US' : undefined)
+		};
+		const res1 = loader({
+			cookies: mockCookies,
+			request: { headers: new Headers() }
+		});
+		expect(res1.locale).toBe('en-US');
+
+		// 2. Caso sem cookie com Accept-Language em inglês
+		const mockHeadersEn = new Headers();
+		mockHeadersEn.set('accept-language', 'en-US,en;q=0.9');
+		const res2 = loader({
+			cookies: { get: () => undefined },
+			request: { headers: mockHeadersEn }
+		});
+		expect(res2.locale).toBe('en-US');
+
+		// 3. Caso sem cookie com Accept-Language em português
+		const mockHeadersPt = new Headers();
+		mockHeadersPt.set('accept-language', 'pt-BR,pt;q=0.9');
+		const res3 = loader({
+			cookies: { get: () => undefined },
+			request: { headers: mockHeadersPt }
+		});
+		expect(res3.locale).toBe('pt-BR');
 	});
 
 	it('deve traduzir corretamente para pt-BR e en-US dinamicamente em tempo de execução', () => {

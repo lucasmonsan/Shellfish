@@ -62,4 +62,4 @@ pnpm run build:package
 
 ## 📄 Licença
 
-Distribuído sob a licença **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). Veja [LICENSE](file:///home/lucasmonsan/Documentos/Projetos/Zoo/Shellfish/LICENSE) para mais detalhes.
+Distribuído sob a licença **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). Veja [LICENSE](./LICENSE) para mais detalhes.

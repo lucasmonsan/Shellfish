@@ -366,7 +366,7 @@
 	}
 
 	.card-header-toggle:hover {
-		background-color: rgba(0, 0, 0, 0.04);
+		background-color: color-mix(in srgb, var(--border-color) 4%, transparent);
 	}
 
 	.card-header-content {

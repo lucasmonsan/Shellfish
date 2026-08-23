@@ -4,7 +4,7 @@
 
 	let {
 		size = 'md',
-		storageKey = 'shellfish-locale',
+		storageKey = 'zoo_locale',
 		class: className,
 		...restProps
 	}: LocaleSelectorProps = $props();

@@ -149,7 +149,7 @@
 	}
 
 	dialog::backdrop {
-		background-color: rgba(28, 25, 23, 0.65);
+		background-color: color-mix(in srgb, var(--border-color) 65%, transparent);
 	}
 
 	@keyframes dialogPopIn {

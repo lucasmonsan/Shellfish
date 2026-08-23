@@ -86,8 +86,8 @@
 			45deg,
 			transparent,
 			transparent 8px,
-			rgba(0, 0, 0, 0.15) 8px,
-			rgba(0, 0, 0, 0.15) 16px
+			color-mix(in srgb, var(--border-color) 15%, transparent) 8px,
+			color-mix(in srgb, var(--border-color) 15%, transparent) 16px
 		);
 	}
 

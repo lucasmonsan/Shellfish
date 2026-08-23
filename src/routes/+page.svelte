@@ -65,16 +65,16 @@
 
 	// Seletor de Variantes de Checkbox e Radio
 	let checkboxVariant = $state('standard');
-	let checkboxVariantTabs = [
-		{ id: 'standard', label: 'Padrão' },
-		{ id: 'cards', label: 'Card' }
-	];
+	let checkboxVariantTabs = $derived([
+		{ id: 'standard', label: t('showcase.variant.standard') },
+		{ id: 'cards', label: t('showcase.variant.card') }
+	]);
 
 	let radioVariant = $state('standard');
-	let radioVariantTabs = [
-		{ id: 'standard', label: 'Padrão' },
-		{ id: 'cards', label: 'Card' }
-	];
+	let radioVariantTabs = $derived([
+		{ id: 'standard', label: t('showcase.variant.standard') },
+		{ id: 'cards', label: t('showcase.variant.card') }
+	]);
 
 	// Estados de Checkbox
 	let standardCheck1 = $state(true);
@@ -90,10 +90,10 @@
 	// Calendário
 	let calendarMode = $state<CalendarMode>('strip');
 	let calendarValue = $state(new Date());
-	let calendarTabs = [
-		{ id: 'strip', label: 'Faixa' },
-		{ id: 'month', label: 'Mês' }
-	];
+	let calendarTabs = $derived([
+		{ id: 'strip', label: t('showcase.calendar.strip') },
+		{ id: 'month', label: t('showcase.calendar.month') }
+	]);
 
 	// Painel de Superfícies & Cards
 	let cardVariantTab = $state('default');
@@ -102,12 +102,12 @@
 	let cardPadding = $state<Space>('md');
 	let cardRadius = $state<Radius>('md');
 	let isCardFlipped = $state(false);
-	let cardTabs = [
-		{ id: 'default', label: 'Padrão' },
-		{ id: 'collapsible', label: 'Colapsável' },
-		{ id: 'badge', label: 'Placa' },
-		{ id: 'flip', label: 'Flip' }
-	];
+	let cardTabs = $derived([
+		{ id: 'default', label: t('showcase.variant.standard') },
+		{ id: 'collapsible', label: t('showcase.variant.collapsible') },
+		{ id: 'badge', label: t('showcase.variant.badge') },
+		{ id: 'flip', label: t('showcase.variant.flip') }
+	]);
 
 	// Feedback
 	let isDialogOpen = $state(false);
@@ -119,51 +119,68 @@
 		{ value: 'option-3', label: t('showcase.forms.selectOption3'), disabled: true }
 	]);
 
-	let dropdownItems = [
-		{ id: 'opt-1', label: 'Perfil', onclick: () => triggerAction('Opção Perfil') },
-		{ id: 'opt-2', label: 'Configurações', onclick: () => triggerAction('Opção Configurações') },
-		{ id: 'opt-3', label: 'Excluir', danger: true, onclick: () => triggerAction('Opção Excluir') }
-	];
+	let dropdownItems = $derived([
+		{
+			id: 'opt-1',
+			label: t('showcase.dropdown.profile'),
+			onclick: () => triggerAction(t('showcase.dropdown.profile'))
+		},
+		{
+			id: 'opt-2',
+			label: t('showcase.dropdown.settings'),
+			onclick: () => triggerAction(t('showcase.dropdown.settings'))
+		},
+		{
+			id: 'opt-3',
+			label: t('showcase.dropdown.delete'),
+			danger: true,
+			onclick: () => triggerAction(t('showcase.dropdown.delete'))
+		}
+	]);
 </script>
 
 {#snippet defaultHeader()}
-	<span>Card Padrão</span>
+	<span>{t('showcase.card.defaultHeader')}</span>
 {/snippet}
 
 {#snippet defaultFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Cancelar')}
-			>Cancelar</Button
-		>
-		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Confirmar')}
-			>Confirmar</Button
-		>
+		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Cancelar')}>
+			{t('common.cancel')}
+		</Button>
+		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Confirmar')}>
+			{t('common.confirm')}
+		</Button>
 	</Row>
 {/snippet}
 
 {#snippet collapsibleHeader()}
-	<span>Card Colapsável</span>
+	<span>{t('showcase.card.collapsibleHeader')}</span>
 {/snippet}
 
 {#snippet collapsibleFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Fechar')}>Fechar</Button>
+		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Fechar')}>
+			{t('common.close')}
+		</Button>
 	</Row>
 {/snippet}
 
 {#snippet badgeFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Ação')}>Ação</Button>
+		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Ação')}>
+			{t('showcase.card.action')}
+		</Button>
 	</Row>
 {/snippet}
 
 {#snippet flipHeader()}
-	<span>Card Frente</span>
+	<span>{t('showcase.card.flipHeader')}</span>
 {/snippet}
 
 {#snippet flipFooter()}
 	<Row justify="end" gap="sm">
-		<Badge variant="secondary">Lado A</Badge>
+		<Badge variant="secondary">{t('showcase.card.sideA')}</Badge>
 	</Row>
 {/snippet}
 
@@ -175,7 +192,7 @@
 				type="button"
 				class="header-logo-btn"
 				onclick={() => (activeTab = 'actions')}
-				aria-label="Ir para a Home do Shellfish"
+				aria-label={t('showcase.logo.aria')}
 			>
 				<img
 					src="/favicon.svg"
@@ -237,21 +254,22 @@
 				{#snippet header()}
 					<Row fullWidth={true} justify="between" align="center">
 						<span>{t('showcase.chips.title')}</span>
-						<Badge variant="secondary">{tagsValue.length} tags</Badge>
+						<Badge variant="secondary"
+							>{tagsValue.length} {t('showcase.chips.activeTags').toLowerCase()}</Badge
+						>
 					</Row>
 				{/snippet}
 				<Column gap="sm">
 					<Chips
 						bind:value={tagsValue}
 						suggestions={tagSuggestions}
-						placeholder="Digite uma tag e pressione Enter..."
+						placeholder={t('showcase.chips.placeholder')}
 						fullWidth={true}
 						onadd={(tag) => triggerAction(`Tag "${tag}" adicionada`)}
 						onremove={(tag) => triggerAction(`Tag "${tag}" removida`)}
 					/>
 					<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-						Pressione <strong>Enter</strong> ou <strong>,</strong> para criar tags. Clique no
-						<strong>✕</strong> ou pressione <strong>Backspace</strong> para remover.
+						{t('showcase.chips.helper')}
 					</span>
 				</Column>
 			</Card>
@@ -262,10 +280,18 @@
 					<span>{t('showcase.dropdown.title')}</span>
 				{/snippet}
 				<Row wrap={true} gap="md" align="center">
-					<Dropdown label="Opções (Neutro)" variant="secondary" items={dropdownItems} />
-					<Dropdown label="Ação (Terracota)" variant="primary" items={dropdownItems} />
 					<Dropdown
-						label="Menu à Direita"
+						label={t('showcase.dropdown.neutral')}
+						variant="secondary"
+						items={dropdownItems}
+					/>
+					<Dropdown
+						label={t('showcase.dropdown.terracotta')}
+						variant="primary"
+						items={dropdownItems}
+					/>
+					<Dropdown
+						label={t('showcase.dropdown.rightMenu')}
 						placement="bottom-end"
 						variant="outline"
 						items={dropdownItems}
@@ -314,15 +340,19 @@
 				{/snippet}
 				<Column gap="lg">
 					<Row wrap={true} gap="lg" align="center">
-						<Switch label="Notificações" size="md" bind:checked={switchChecked} />
-						<Switch label="Sincronização" size="sm" checked={true} />
-						<Switch label="Backup Automático" size="lg" checked={false} />
+						<Switch
+							label={t('showcase.forms.switchNotifications')}
+							size="md"
+							bind:checked={switchChecked}
+						/>
+						<Switch label={t('showcase.forms.switchSync')} size="sm" checked={true} />
+						<Switch label={t('showcase.forms.switchBackup')} size="lg" checked={false} />
 					</Row>
 
 					<Divider />
 
 					<Slider
-						label="Intensidade"
+						label={t('showcase.forms.sliderIntensity')}
 						bind:value={sliderValue}
 						min={0}
 						max={100}
@@ -349,25 +379,31 @@
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<Row fullWidth={true} justify="between" align="center">
-						<span>Checkboxes</span>
+						<span>{t('showcase.forms.checkboxes')}</span>
 						<Tabs size="sm" items={checkboxVariantTabs} bind:value={checkboxVariant} />
 					</Row>
 				{/snippet}
 
 				{#if checkboxVariant === 'standard'}
 					<Row wrap={true} gap="md" align="center">
-						<Checkbox label="Marcado" bind:checked={standardCheck1} />
-						<Checkbox label="Desmarcado" bind:checked={standardCheck2} />
-						<Checkbox label="Indeterminado" indeterminate={true} bind:checked={standardCheck3} />
-						<Checkbox label="Desabilitado" disabled={true} checked={true} />
+						<Checkbox label={t('showcase.forms.checkedOption')} bind:checked={standardCheck1} />
+						<Checkbox label={t('showcase.forms.uncheckedOption')} bind:checked={standardCheck2} />
+						<Checkbox
+							label={t('showcase.forms.indeterminateOption')}
+							indeterminate={true}
+							bind:checked={standardCheck3}
+						/>
+						<Checkbox label={t('showcase.forms.disabledOption')} disabled={true} checked={true} />
 					</Row>
 				{:else}
 					<Grid columns={3} gap="md">
 						<Checkbox variant="card" bind:checked={choiceCheck1}>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Toalha Quente</strong>
+								<strong style="font-size: var(--text-sm);"
+									>{t('showcase.forms.serviceHotTowel')}</strong
+								>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
-									>Tratamento facial</span
+									>{t('showcase.forms.serviceHotTowelDesc')}</span
 								>
 							</Column>
 							<Badge variant="secondary" style="margin-top: var(--space-xs);">+ R$ 15</Badge>
@@ -375,9 +411,10 @@
 
 						<Checkbox variant="card" bind:checked={choiceCheck2}>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Lavagem Especial</strong>
+								<strong style="font-size: var(--text-sm);">{t('showcase.forms.serviceWash')}</strong
+								>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
-									>Shampoo premium</span
+									>{t('showcase.forms.serviceWashDesc')}</span
 								>
 							</Column>
 							<Badge variant="secondary" style="margin-top: var(--space-xs);">+ R$ 20</Badge>
@@ -385,12 +422,16 @@
 
 						<Checkbox variant="card" disabled={true} checked={false}>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Massagem Capilar</strong>
+								<strong style="font-size: var(--text-sm);"
+									>{t('showcase.forms.serviceMassage')}</strong
+								>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
-									>Indisponível</span
+									>{t('showcase.forms.serviceUnavailable')}</span
 								>
 							</Column>
-							<Badge variant="ghost" style="margin-top: var(--space-xs);">Esgotado</Badge>
+							<Badge variant="ghost" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.serviceSoldOut')}</Badge
+							>
 						</Checkbox>
 					</Grid>
 				{/if}
@@ -400,17 +441,27 @@
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<Row fullWidth={true} justify="between" align="center">
-						<span>Radios</span>
+						<span>{t('showcase.forms.radios')}</span>
 						<Tabs size="sm" items={radioVariantTabs} bind:value={radioVariant} />
 					</Row>
 				{/snippet}
 
 				{#if radioVariant === 'standard'}
 					<Row wrap={true} gap="md" align="center">
-						<Radio label="Opção A" name="std-radio" value="opt-a" bind:group={standardRadio} />
-						<Radio label="Opção B" name="std-radio" value="opt-b" bind:group={standardRadio} />
 						<Radio
-							label="Opção C (Desabilitada)"
+							label={t('showcase.forms.radioA')}
+							name="std-radio"
+							value="opt-a"
+							bind:group={standardRadio}
+						/>
+						<Radio
+							label={t('showcase.forms.radioB')}
+							name="std-radio"
+							value="opt-b"
+							bind:group={standardRadio}
+						/>
+						<Radio
+							label={t('showcase.forms.radioCDisabled')}
 							name="std-radio"
 							value="opt-c"
 							disabled={true}
@@ -421,7 +472,9 @@
 					<Grid columns={3} gap="md">
 						<Radio variant="card" name="service-choice" value="service-1" bind:group={choiceRadio}>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Corte Rápido</strong>
+								<strong style="font-size: var(--text-sm);"
+									>{t('showcase.forms.serviceQuickCut')}</strong
+								>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);">30 min</span>
 							</Column>
 							<Badge variant="primary" style="margin-top: var(--space-xs);">R$ 45</Badge>
@@ -429,7 +482,9 @@
 
 						<Radio variant="card" name="service-choice" value="service-2" bind:group={choiceRadio}>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Corte & Barba</strong>
+								<strong style="font-size: var(--text-sm);"
+									>{t('showcase.forms.serviceCutBeard')}</strong
+								>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);">60 min</span>
 							</Column>
 							<Badge variant="primary" style="margin-top: var(--space-xs);">R$ 80</Badge>
@@ -443,9 +498,9 @@
 							bind:group={choiceRadio}
 						>
 							<Column gap="none">
-								<strong style="font-size: var(--text-sm);">Completo VIP</strong>
+								<strong style="font-size: var(--text-sm);">{t('showcase.forms.serviceVip')}</strong>
 								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
-									>Indisponível</span
+									>{t('showcase.forms.serviceUnavailable')}</span
 								>
 							</Column>
 							<Badge variant="ghost" style="margin-top: var(--space-xs);">R$ 130</Badge>
@@ -461,11 +516,11 @@
 				{/snippet}
 				<Column gap="md">
 					<Row wrap={true} gap="sm" align="center">
-						<Badge variant="primary">ONLINE</Badge>
-						<Badge variant="secondary">CACHE</Badge>
-						<Badge variant="success">200 OK</Badge>
-						<Badge variant="warning">AVISO</Badge>
-						<Badge variant="danger">ERRO</Badge>
+						<Badge variant="primary">{t('showcase.display.badgeOnline')}</Badge>
+						<Badge variant="secondary">{t('showcase.display.badgeCache')}</Badge>
+						<Badge variant="success">{t('showcase.display.badgeSuccess')}</Badge>
+						<Badge variant="warning">{t('showcase.display.badgeWarning')}</Badge>
+						<Badge variant="danger">{t('showcase.display.badgeError')}</Badge>
 					</Row>
 					<Row wrap={true} gap="md" align="center">
 						<Avatar name="Lucas Monsan" size="lg" />
@@ -479,7 +534,7 @@
 			<Card radius="md" padding="md">
 				{#snippet header()}
 					<Row fullWidth={true} justify="between" align="center">
-						<span>Cards</span>
+						<span>{t('showcase.display.cardsTitle')}</span>
 						<Tabs size="sm" items={cardTabs} bind:value={cardVariantTab} />
 					</Row>
 				{/snippet}
@@ -492,14 +547,14 @@
 						style="background-color: var(--bg-secondary); padding: var(--space-sm); border: var(--border-width) solid var(--border-color); border-radius: var(--radius-sm);"
 					>
 						<Checkbox
-							label="Com Header"
+							label={t('showcase.card.withHeader')}
 							bind:checked={cardHasHeader}
 							disabled={cardVariantTab === 'badge' || cardVariantTab === 'collapsible'}
 						/>
-						<Checkbox label="Com Footer" bind:checked={cardHasFooter} />
+						<Checkbox label={t('showcase.card.withFooter')} bind:checked={cardHasFooter} />
 						<Row align="center" gap="xs">
 							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-								>Padding:</span
+								>{t('showcase.card.padding')}</span
 							>
 							<Button
 								size="sm"
@@ -519,7 +574,7 @@
 						</Row>
 						<Row align="center" gap="xs">
 							<span style="font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;"
-								>Radius:</span
+								>{t('showcase.card.radius')}</span
 							>
 							<Button
 								size="sm"
@@ -543,12 +598,17 @@
 							footer={cardHasFooter ? defaultFooter : undefined}
 						>
 							<Column gap="xs">
-								<strong style="font-size: var(--text-base); margin: 0;">Superfície Padrão</strong>
+								<strong style="font-size: var(--text-base); margin: 0;"
+									>{t('showcase.card.standardTitle', {
+										padding: cardPadding.toUpperCase()
+									})}</strong
+								>
 								<p
 									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
 								>
-									Superfície tátil neobrutalista com elevação física sólida e contenção pura de
-									conteúdo ({cardPadding.toUpperCase()}).
+									{t('showcase.card.standardDesc', {
+										padding: cardPadding.toUpperCase()
+									})}
 								</p>
 							</Column>
 						</Card>
@@ -561,12 +621,15 @@
 							footer={cardHasFooter ? collapsibleFooter : undefined}
 						>
 							<Column gap="xs">
-								<strong style="font-size: var(--text-base); margin: 0;">Painel Expansível</strong>
+								<strong style="font-size: var(--text-base); margin: 0;"
+									>{t('showcase.card.collapsibleTitle')}</strong
+								>
 								<p
 									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
 								>
-									Clique no cabeçalho acima para recolher ou expandir este painel de forma contínua
-									e suave ({cardPadding.toUpperCase()}).
+									{t('showcase.card.collapsibleDesc', {
+										padding: cardPadding.toUpperCase()
+									})}
 								</p>
 							</Column>
 						</Card>
@@ -574,18 +637,19 @@
 						<Card
 							radius={cardRadius}
 							padding={cardPadding}
-							badgeTitle="Módulo #01"
+							badgeTitle={t('showcase.card.module')}
 							footer={cardHasFooter ? badgeFooter : undefined}
 						>
 							<Column gap="xs">
 								<strong style="font-size: var(--text-base); margin: 0;"
-									>Placa na Borda Superior</strong
+									>{t('showcase.card.topBadgeTitle')}</strong
 								>
 								<p
 									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
 								>
-									A placa de identificação fica cravada a 50% na linha superior como uma etiqueta de
-									hardware ({cardPadding.toUpperCase()}).
+									{t('showcase.card.topBadgeDesc', {
+										padding: cardPadding.toUpperCase()
+									})}
 								</p>
 							</Column>
 						</Card>
@@ -598,14 +662,18 @@
 							footer={cardHasFooter ? flipFooter : undefined}
 						>
 							<Column gap="sm">
-								<strong style="font-size: var(--text-base); margin: 0;">Card Interativo 3D</strong>
+								<strong style="font-size: var(--text-base); margin: 0;"
+									>{t('showcase.card.interactive3d')}</strong
+								>
 								<p
 									style="margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.5;"
 								>
-									Clique em qualquer área do Card para girar em 3D e revelar o verso ({cardPadding.toUpperCase()}).
+									{t('showcase.card.interactive3dDesc', {
+										padding: cardPadding.toUpperCase()
+									})}
 								</p>
 								<Row>
-									<Badge variant="primary">Clique no Card para Virar ➔</Badge>
+									<Badge variant="primary">{t('showcase.card.clickToFlip')}</Badge>
 								</Row>
 							</Column>
 							{#snippet back()}
@@ -617,8 +685,8 @@
 										{t('showcase.display.flipBackDesc')}
 									</p>
 									<Row justify="between" align="center">
-										<Badge variant="secondary">Clique para desvirar</Badge>
-										<Badge variant="primary">Lado B</Badge>
+										<Badge variant="secondary">{t('showcase.display.flipBackUnflip')}</Badge>
+										<Badge variant="primary">{t('showcase.display.flipBackSideB')}</Badge>
 									</Row>
 								</Column>
 							{/snippet}
@@ -693,18 +761,19 @@
 	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
-				Criado por <a
+				{t('showcase.footer.createdWith')}
+				<a
 					href="https://github.com/lucasmonsan"
 					target="_blank"
 					rel="noreferrer"
 					class="footer-link">Monsan</a
 				>
-				com
+				{t('showcase.footer.with')}
 				<a href="https://svelte.dev" target="_blank" rel="noreferrer" class="footer-link">Svelte</a
 				>!
 			</span>
 			<span style="font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary);">
-				v1.1.0
+				v0.1.0
 			</span>
 		</Row>
 	</Footer>
@@ -778,9 +847,5 @@
 		font-weight: 700;
 		text-decoration: underline;
 		text-underline-offset: 2px;
-	}
-
-	.footer-link:hover {
-		color: var(--color-primary);
 	}
 </style>
