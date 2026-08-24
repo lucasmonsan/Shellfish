@@ -10,10 +10,12 @@
 	const i18n = createI18n(() => data.locale, 'zoo_locale');
 	setI18n(i18n);
 
+	let lastDataLocale = $state<string>();
 	$effect(() => {
-		if (data?.locale) {
+		if (lastDataLocale !== undefined && data.locale !== lastDataLocale) {
 			i18n.setLocale(data.locale, false);
 		}
+		lastDataLocale = data.locale;
 	});
 
 	onMount(() => {

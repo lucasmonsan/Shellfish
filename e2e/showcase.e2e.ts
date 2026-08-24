@@ -2,9 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Showcase SSR & i18n E2E Behavior', () => {
 	test('renderiza SSR inicialmente em português quando Accept-Language for pt-BR (sem JS, provando ausência de FOUC)', async ({
-		browser
+		browser,
+		baseURL
 	}) => {
+		const targetUrl = baseURL ?? 'http://127.0.0.1:5172';
 		const context = await browser.newContext({
+			baseURL: targetUrl,
 			locale: 'pt-BR',
 			extraHTTPHeaders: {
 				'Accept-Language': 'pt-BR,pt;q=0.9'
@@ -12,7 +15,7 @@ test.describe('Showcase SSR & i18n E2E Behavior', () => {
 			javaScriptEnabled: false
 		});
 		const page = await context.newPage();
-		await page.goto('/');
+		await page.goto(targetUrl);
 
 		// Valida atributo lang no SSR puro
 		const htmlTag = page.locator('html');
@@ -33,9 +36,12 @@ test.describe('Showcase SSR & i18n E2E Behavior', () => {
 	});
 
 	test('renderiza SSR inicialmente em inglês quando Accept-Language for en-US (sem JS, provando ausência de FOUC)', async ({
-		browser
+		browser,
+		baseURL
 	}) => {
+		const targetUrl = baseURL ?? 'http://127.0.0.1:5172';
 		const context = await browser.newContext({
+			baseURL: targetUrl,
 			locale: 'en-US',
 			extraHTTPHeaders: {
 				'Accept-Language': 'en-US,en;q=0.9'
@@ -43,7 +49,7 @@ test.describe('Showcase SSR & i18n E2E Behavior', () => {
 			javaScriptEnabled: false
 		});
 		const page = await context.newPage();
-		await page.goto('/');
+		await page.goto(targetUrl);
 
 		// Valida atributo lang no SSR puro
 		const htmlTag = page.locator('html');
@@ -67,18 +73,29 @@ test.describe('Showcase SSR & i18n E2E Behavior', () => {
 		page,
 		context
 	}) => {
+		// Garante estado inicial determinístico em português
+		await context.clearCookies();
+		await context.setExtraHTTPHeaders({
+			'Accept-Language': 'pt-BR,pt;q=0.9'
+		});
+
 		await page.goto('/');
 
-		// Botão seletor de idioma inicial
-		const localeButton = page.locator('button[title="Português"], button[title="English"]');
+		// Localiza botão seletor de idioma
+		const localeButton = page.locator(
+			'button[aria-label="Alternar idioma"], button[aria-label="Toggle language"]'
+		);
 		await expect(localeButton).toBeVisible();
 
-		// Se estiver em PT, clica para alternar para EN
-		if ((await localeButton.getAttribute('title')) === 'Português') {
-			await localeButton.click();
-			await expect(page.locator('body')).toContainText('Actions');
-			await expect(page.locator('body')).toContainText('Buttons');
-		}
+		// Garante que iniciou em PT
+		await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+		await expect(page.locator('body')).toContainText('Ações');
+
+		// Clica para alternar para EN
+		await localeButton.click();
+		await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+		await expect(page.locator('body')).toContainText('Actions');
+		await expect(page.locator('body')).toContainText('Buttons');
 
 		// Verifica se o cookie zoo_locale foi gravado
 		const cookies = await context.cookies();
@@ -91,5 +108,48 @@ test.describe('Showcase SSR & i18n E2E Behavior', () => {
 		await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
 		await expect(page.locator('body')).toContainText('Actions');
 		await expect(page.locator('body')).toContainText('Buttons');
+	});
+
+	test('preserva dados customizados digitados pelo usuário em input e textarea ao alternar idioma', async ({
+		page,
+		context
+	}) => {
+		await context.clearCookies();
+		await context.setExtraHTTPHeaders({
+			'Accept-Language': 'pt-BR,pt;q=0.9'
+		});
+
+		await page.goto('/');
+
+		// Navega para a aba de Formulários
+		const formsTab = page.locator(
+			'button[role="tab"]:has-text("Formulários"), button[role="tab"]:has-text("Forms")'
+		);
+		await formsTab.click();
+
+		// Digita valores personalizados do usuário
+		const customInputText = 'Texto digitado pelo usuário 12345';
+		const customTextareaText = 'Observação personalizada que deve permanecer intacta!';
+
+		const textInput = page.locator(
+			'input[placeholder="Digite aqui..."], input[placeholder="Type here..."]'
+		);
+		await textInput.fill(customInputText);
+
+		const textarea = page.locator('textarea');
+		await textarea.fill(customTextareaText);
+
+		// Alterna idioma
+		const localeButton = page.locator(
+			'button[aria-label="Alternar idioma"], button[aria-label="Toggle language"]'
+		);
+		await localeButton.click();
+
+		// Confirma que o idioma da página mudou (rótulo da aba mudou para "Forms" e header para "Text Inputs")
+		await expect(page.locator('body')).toContainText('Text Inputs');
+
+		// Valida que os valores inseridos pelo usuário NÃO foram sobrescritos pela tradução dos exemplos
+		await expect(textInput).toHaveValue(customInputText);
+		await expect(textarea).toHaveValue(customTextareaText);
 	});
 });

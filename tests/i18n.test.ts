@@ -274,6 +274,54 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		});
 	});
 
+	it('deve persistir cookie zoo_locale com sucesso mesmo se window.localStorage estiver indisponível ou lançar erro', () => {
+		let cookieValue = '';
+		const originalWindow = globalThis.window;
+		const originalDoc = globalThis.document;
+
+		// Mock de localStorage lançando erro (ex: SecurityError / cookies desativados)
+		Object.defineProperty(globalThis, 'window', {
+			value: {
+				get localStorage(): Storage {
+					throw new Error('SecurityError: The operation is insecure.');
+				}
+			},
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: {
+				documentElement: { lang: 'pt-BR' },
+				get cookie() {
+					return cookieValue;
+				},
+				set cookie(val: string) {
+					cookieValue = val;
+				}
+			},
+			configurable: true,
+			writable: true
+		});
+
+		const instance = createI18n('pt-BR', 'zoo_locale');
+		// Ao trocar de idioma, o cookie deve ser salvo mesmo com erro no storage
+		instance.setLocale('en-US', true);
+		expect(instance.currentLocale).toBe('en-US');
+		expect(cookieValue).toContain('zoo_locale=en-US');
+
+		// Restaura ambiente
+		Object.defineProperty(globalThis, 'window', {
+			value: originalWindow,
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: originalDoc,
+			configurable: true,
+			writable: true
+		});
+	});
+
 	it('deve renderizar SSR do catálogo integralmente em inglês quando data.locale for en-US', () => {
 		const rendered = render(TestLayoutWrapper, {
 			props: {

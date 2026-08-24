@@ -405,12 +405,20 @@ export function createI18n(
 				if (typeof document !== 'undefined') {
 					document.documentElement.lang = val;
 				}
-				if (persist && typeof window !== 'undefined' && window.localStorage) {
-					try {
-						window.localStorage.setItem(activeStorageKey, val);
-						document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
-					} catch {
-						// Ignora indisponibilidade do storage
+				if (persist) {
+					if (typeof document !== 'undefined') {
+						try {
+							document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
+						} catch {
+							// Ignora indisponibilidade de cookie
+						}
+					}
+					if (typeof window !== 'undefined') {
+						try {
+							window.localStorage?.setItem(activeStorageKey, val);
+						} catch {
+							// Ignora indisponibilidade do storage (ex: SecurityError)
+						}
 					}
 				}
 			}
@@ -431,16 +439,23 @@ export function createI18n(
 			return msg;
 		},
 		hydrateFromLocalStorage() {
-			if (typeof window === 'undefined' || !window.localStorage) return;
-			try {
-				const stored = window.localStorage.getItem(activeStorageKey) as Locale | null;
-				if (stored && (stored === 'pt-BR' || stored === 'en-US') && stored !== currentLocale) {
-					this.setLocale(stored, true);
-				} else if (currentLocale) {
-					document.cookie = `${activeStorageKey}=${currentLocale}; path=/; max-age=31536000; SameSite=Lax`;
+			let stored: Locale | null = null;
+			if (typeof window !== 'undefined') {
+				try {
+					stored = window.localStorage?.getItem(activeStorageKey) as Locale | null;
+				} catch {
+					// Ignora indisponibilidade do storage (ex: SecurityError)
 				}
-			} catch {
-				// Ignora indisponibilidade do storage
+			}
+
+			if (stored && (stored === 'pt-BR' || stored === 'en-US') && stored !== currentLocale) {
+				this.setLocale(stored, true);
+			} else if (currentLocale && typeof document !== 'undefined') {
+				try {
+					document.cookie = `${activeStorageKey}=${currentLocale}; path=/; max-age=31536000; SameSite=Lax`;
+				} catch {
+					// Ignora indisponibilidade de cookie
+				}
 			}
 		}
 	};
