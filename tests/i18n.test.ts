@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { render } from 'svelte/server';
 import {
 	i18n,
 	t,
@@ -10,6 +11,7 @@ import {
 } from '../src/lib/utils/i18n.svelte.js';
 import { handle as serverHandle } from '../src/hooks.server.js';
 import { load as layoutServerLoad } from '../src/routes/+layout.server.js';
+import TestLayoutWrapper from './TestLayoutWrapper.svelte';
 import type { Locale } from '../src/lib/types/i18n.js';
 import pkg from '../package.json' with { type: 'json' };
 
@@ -113,7 +115,7 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(mismatchedPlaceholders, 'Incompatibilidade de parâmetros entre idiomas').toEqual([]);
 	});
 
-	it('parseAcceptLanguage deve respeitar estritamente pesos q e preferências', () => {
+	it('parseAcceptLanguage deve respeitar pesos q e descartar estritamente q=0', () => {
 		expect(parseAcceptLanguage('')).toBe('pt-BR');
 		expect(parseAcceptLanguage(null)).toBe('pt-BR');
 		expect(parseAcceptLanguage(undefined)).toBe('pt-BR');
@@ -132,7 +134,12 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(parseAcceptLanguage('es;q=0.9,de;q=0.8,en;q=0.7,pt;q=0.6')).toBe('en-US');
 		expect(parseAcceptLanguage('es;q=0.9,de;q=0.8,pt;q=0.7,en;q=0.6')).toBe('pt-BR');
 
-		// 5. Idiomas desconhecidos sem nenhum suportado devem retornar o padrão pt-BR
+		// 5. Descarte estrito de q=0 ("not acceptable")
+		expect(parseAcceptLanguage('en;q=0,pt;q=0')).toBe('pt-BR');
+		expect(parseAcceptLanguage('en;q=0,pt;q=0.5')).toBe('pt-BR');
+		expect(parseAcceptLanguage('pt;q=0,en;q=0.8')).toBe('en-US');
+
+		// 6. Idiomas desconhecidos sem nenhum suportado devem retornar o padrão pt-BR
 		expect(parseAcceptLanguage('zh-CN,zh;q=0.9,ja;q=0.8')).toBe('pt-BR');
 	});
 
@@ -213,6 +220,80 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(instanceB.currentLocale).toBe('pt-BR');
 	});
 
+	it('hydrateFromLocalStorage deve migrar preferências salvas no localStorage e sincronizar cookie', () => {
+		const store: Record<string, string> = { zoo_locale: 'en-US' };
+		let cookieValue = '';
+
+		const mockLocalStorage = {
+			getItem: (k: string) => store[k] ?? null,
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			}
+		};
+
+		const originalWindow = globalThis.window;
+		const originalDoc = globalThis.document;
+
+		// Mock de ambiente de navegador sem any
+		Object.defineProperty(globalThis, 'window', {
+			value: { localStorage: mockLocalStorage },
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: {
+				documentElement: { lang: 'pt-BR' },
+				get cookie() {
+					return cookieValue;
+				},
+				set cookie(val: string) {
+					cookieValue = val;
+				}
+			},
+			configurable: true,
+			writable: true
+		});
+
+		const instance = createI18n('pt-BR', 'zoo_locale');
+		expect(instance.currentLocale).toBe('pt-BR');
+
+		instance.hydrateFromLocalStorage();
+		expect(instance.currentLocale).toBe('en-US');
+		expect(cookieValue).toContain('zoo_locale=en-US');
+
+		// Restaura ambiente
+		Object.defineProperty(globalThis, 'window', {
+			value: originalWindow,
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: originalDoc,
+			configurable: true,
+			writable: true
+		});
+	});
+
+	it('deve renderizar SSR do catálogo integralmente em inglês quando data.locale for en-US', () => {
+		const rendered = render(TestLayoutWrapper, {
+			props: {
+				data: {
+					locale: 'en-US' as Locale,
+					version: pkg.version
+				}
+			}
+		});
+
+		const body = rendered.body;
+		expect(body).toContain('Buttons');
+		expect(body).toContain('Actions');
+		expect(body).toContain('Forms');
+		expect(body).toContain('Surfaces');
+		expect(body).toContain('Dropdowns');
+		expect(body).toContain('Shellfish Logo');
+		expect(body).toContain(`v${pkg.version}`);
+	});
+
 	it('LocaleSelector.svelte deve usar tag <button> pura e exibir código do idioma da instância', () => {
 		const filePath = path.resolve(process.cwd(), 'src/lib/components/suite/LocaleSelector.svelte');
 		const content = fs.readFileSync(filePath, 'utf-8');
@@ -240,6 +321,7 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 			path.resolve(process.cwd(), 'src/lib/components/feedback/Spinner.svelte'),
 			'utf-8'
 		);
+
 		expect(dialogContent).toContain("closeLabel ?? t('dialog.close')");
 		expect(alertContent).toContain("closeLabel ?? t('alert.close')");
 		expect(toastContent).toContain("closeLabel ?? t('toast.close')");

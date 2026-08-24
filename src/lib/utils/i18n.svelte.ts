@@ -47,6 +47,9 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.chips.title': 'Chips',
 		'showcase.chips.activeTags': 'Tags Ativas',
 		'showcase.chips.placeholder': 'Digite uma tag e pressione Enter...',
+		'showcase.chips.tagDesignSystem': 'Design System',
+		'showcase.chips.tagNeobrutalism': 'Neobrutalismo',
+		'showcase.chips.tagAccessibility': 'Acessibilidade',
 		'showcase.chips.helper':
 			'Pressione Enter ou vírgula para criar tags. Clique no X ou pressione Backspace para remover.',
 		'showcase.dropdown.title': 'Dropdowns',
@@ -60,6 +63,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.simulateInvalid': 'Simular estado inválido',
 		'showcase.forms.inputLabel': 'Texto',
 		'showcase.forms.inputPlaceholder': 'Digite aqui...',
+		'showcase.forms.inputSample': 'Exemplo de texto',
 		'showcase.forms.selectLabel': 'Seleção',
 		'showcase.forms.selectOption1': 'Opção 1',
 		'showcase.forms.selectOption2': 'Opção 2',
@@ -212,6 +216,9 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.chips.title': 'Chips',
 		'showcase.chips.activeTags': 'Active Tags',
 		'showcase.chips.placeholder': 'Type a tag and press Enter...',
+		'showcase.chips.tagDesignSystem': 'Design System',
+		'showcase.chips.tagNeobrutalism': 'Neobrutalism',
+		'showcase.chips.tagAccessibility': 'Accessibility',
 		'showcase.chips.helper':
 			'Press Enter or comma to create tags. Click X or press Backspace to remove.',
 		'showcase.dropdown.title': 'Dropdowns',
@@ -225,6 +232,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.simulateInvalid': 'Simulate invalid state',
 		'showcase.forms.inputLabel': 'Text',
 		'showcase.forms.inputPlaceholder': 'Type here...',
+		'showcase.forms.inputSample': 'Sample text',
 		'showcase.forms.selectLabel': 'Select',
 		'showcase.forms.selectOption1': 'Option 1',
 		'showcase.forms.selectOption2': 'Option 2',
@@ -355,7 +363,7 @@ export function parseAcceptLanguage(header: string | null | undefined): Locale {
 			}
 			return { tag: tag.trim().toLowerCase(), q };
 		})
-		.filter((item) => item.tag.length > 0)
+		.filter((item) => item.tag.length > 0 && item.q > 0)
 		.sort((a, b) => b.q - a.q);
 
 	for (const item of parsed) {
@@ -397,9 +405,9 @@ export function createI18n(
 				if (typeof document !== 'undefined') {
 					document.documentElement.lang = val;
 				}
-				if (persist && typeof window !== 'undefined') {
+				if (persist && typeof window !== 'undefined' && window.localStorage) {
 					try {
-						localStorage.setItem(activeStorageKey, val);
+						window.localStorage.setItem(activeStorageKey, val);
 						document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
 					} catch {
 						// Ignora indisponibilidade do storage
@@ -423,9 +431,9 @@ export function createI18n(
 			return msg;
 		},
 		hydrateFromLocalStorage() {
-			if (typeof window === 'undefined') return;
+			if (typeof window === 'undefined' || !window.localStorage) return;
 			try {
-				const stored = localStorage.getItem(activeStorageKey) as Locale | null;
+				const stored = window.localStorage.getItem(activeStorageKey) as Locale | null;
 				if (stored && (stored === 'pt-BR' || stored === 'en-US') && stored !== currentLocale) {
 					this.setLocale(stored, true);
 				} else if (currentLocale) {
@@ -454,15 +462,7 @@ export function getI18n(): I18nContext {
 	return defaultInstance;
 }
 
-// Helper global para inicialização estática em scripts de componentes: const { t } = getI18n();
+// Fallback standalone de módulo (para uso isolado fora de componentes Svelte)
 export const i18n = defaultInstance;
-export const t = (key: string, params?: Record<string, string | number>) => {
-	try {
-		if (hasContext(I18N_CONTEXT_KEY)) {
-			return getContext<I18nContext>(I18N_CONTEXT_KEY).t(key, params);
-		}
-	} catch {
-		// fora da fase de inicialização
-	}
-	return defaultInstance.t(key, params);
-};
+export const t = (key: string, params?: Record<string, string | number>) =>
+	defaultInstance.t(key, params);

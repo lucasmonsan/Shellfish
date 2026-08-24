@@ -57,15 +57,57 @@
 		isActionToastOpen = true;
 	}
 
+	let previousLocale = $state(i18n.currentLocale);
+
 	// Estados de Chips / Tags
-	let tagsValue = $state(['Design System', 'Svelte 5', 'Neobrutalismo', 'Shellfish']);
-	let tagSuggestions = ['SvelteKit', 'TypeScript', 'Vite', 'Tailwind', 'Accessibility', 'Tokens'];
+	let tagsValue = $state([
+		'Design System',
+		'Svelte 5',
+		t('showcase.chips.tagNeobrutalism'),
+		'Shellfish'
+	]);
+	let tagSuggestions = $derived([
+		'SvelteKit',
+		'TypeScript',
+		'Vite',
+		'Tailwind',
+		t('showcase.chips.tagAccessibility'),
+		'Tokens'
+	]);
 
 	// Estados de Formulários
-	let inputValue = $state('Exemplo de texto');
-	let textareaValue = $state('Área de texto neobrutalista.');
+	let inputValue = $state(t('showcase.forms.inputSample'));
+	let textareaValue = $state(t('showcase.forms.textareaDefault'));
 	let selectValue = $state('option-1');
 	let isInvalid = $state(false);
+
+	$effect(() => {
+		const cur = i18n.currentLocale;
+		if (cur !== previousLocale) {
+			const oldPtInput = 'Exemplo de texto';
+			const oldEnInput = 'Sample text';
+			if (inputValue === oldPtInput || inputValue === oldEnInput) {
+				inputValue = t('showcase.forms.inputSample');
+			}
+
+			const oldPtTextarea = 'Área de texto neobrutalista.';
+			const oldEnTextarea = 'Neobrutalist textarea.';
+			if (textareaValue === oldPtTextarea || textareaValue === oldEnTextarea) {
+				textareaValue = t('showcase.forms.textareaDefault');
+			}
+
+			const oldPtTags = ['Design System', 'Svelte 5', 'Neobrutalismo', 'Shellfish'];
+			const oldEnTags = ['Design System', 'Svelte 5', 'Neobrutalism', 'Shellfish'];
+			const isDefaultTags =
+				JSON.stringify(tagsValue) === JSON.stringify(oldPtTags) ||
+				JSON.stringify(tagsValue) === JSON.stringify(oldEnTags);
+			if (isDefaultTags) {
+				tagsValue = ['Design System', 'Svelte 5', t('showcase.chips.tagNeobrutalism'), 'Shellfish'];
+			}
+
+			previousLocale = cur;
+		}
+	});
 
 	let switchChecked = $state(true);
 	let sliderValue = $state(65);
