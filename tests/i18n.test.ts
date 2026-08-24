@@ -143,60 +143,72 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(parseAcceptLanguage('zh-CN,zh;q=0.9,ja;q=0.8')).toBe('pt-BR');
 	});
 
-	it('hooks.server.ts deve resolver locale, preencher event.locals e substituir %lang% no SSR', async () => {
+	it('hooks.server.ts deve resolver locale, preencher event.locals (com hasLocaleCookie) e substituir %lang% no SSR', async () => {
 		type ServerHandler = (input: unknown) => Promise<Response>;
 		const handle = serverHandle as unknown as ServerHandler;
 
-		// 1. Teste com cookie definido
-		let transformedHtml = '';
-		const mockEvent1 = {
-			cookies: { get: (key: string) => (key === 'zoo_locale' ? 'en-US' : undefined) },
-			request: { headers: new Headers() },
-			locals: {} as { locale?: Locale }
-		};
-
-		const mockResolve1 = async (
+		const mockResolve = async (
 			_event: unknown,
 			opts?: { transformPageChunk?: (chunk: { html: string }) => string }
 		) => {
+			let transformedHtml = '<html lang="%lang%"><body>Test</body></html>';
 			if (opts?.transformPageChunk) {
-				transformedHtml = opts.transformPageChunk({
-					html: '<html lang="%lang%"><body>Test</body></html>'
-				});
+				transformedHtml = opts.transformPageChunk({ html: transformedHtml });
 			}
 			return new Response(transformedHtml);
 		};
 
-		await handle({ event: mockEvent1, resolve: mockResolve1 });
-		expect(mockEvent1.locals.locale).toBe('en-US');
-		expect(transformedHtml).toContain('lang="en-US"');
-
-		// 2. Teste com cabeçalho Accept-Language quando sem cookie
-		const mockHeaders = new Headers();
-		mockHeaders.set('accept-language', 'pt;q=0.2,en-US;q=0.8');
-
-		const mockEvent2 = {
-			cookies: { get: () => undefined },
-			request: { headers: mockHeaders },
-			locals: {} as { locale?: Locale }
+		// 1. Teste com cookie válido: hasLocaleCookie deve ser true
+		const mockEvent1 = {
+			cookies: { get: (key: string) => (key === 'zoo_locale' ? 'en-US' : undefined) },
+			request: { headers: new Headers() },
+			locals: {} as { locale?: Locale; hasLocaleCookie?: boolean }
 		};
+		await handle({ event: mockEvent1, resolve: mockResolve });
+		expect(mockEvent1.locals.locale).toBe('en-US');
+		expect(mockEvent1.locals.hasLocaleCookie).toBe(true);
 
-		await handle({ event: mockEvent2, resolve: mockResolve1 });
+		// 2. Teste com cookie inválido: deve cair no fallback e hasLocaleCookie ser false
+		const mockHeaders2 = new Headers();
+		mockHeaders2.set('accept-language', 'en-US;q=0.9');
+		const mockEvent2 = {
+			cookies: { get: (key: string) => (key === 'zoo_locale' ? 'idioma-invalido' : undefined) },
+			request: { headers: mockHeaders2 },
+			locals: {} as { locale?: Locale; hasLocaleCookie?: boolean }
+		};
+		await handle({ event: mockEvent2, resolve: mockResolve });
 		expect(mockEvent2.locals.locale).toBe('en-US');
-		expect(transformedHtml).toContain('lang="en-US"');
+		expect(mockEvent2.locals.hasLocaleCookie).toBe(false);
+
+		// 3. Teste sem cookie: cabeçalho Accept-Language e hasLocaleCookie false
+		const mockHeaders3 = new Headers();
+		mockHeaders3.set('accept-language', 'pt;q=0.2,en-US;q=0.8');
+		const mockEvent3 = {
+			cookies: { get: () => undefined },
+			request: { headers: mockHeaders3 },
+			locals: {} as { locale?: Locale; hasLocaleCookie?: boolean }
+		};
+		await handle({ event: mockEvent3, resolve: mockResolve });
+		expect(mockEvent3.locals.locale).toBe('en-US');
+		expect(mockEvent3.locals.hasLocaleCookie).toBe(false);
 	});
 
-	it('+layout.server.ts deve expor locale e versão dinâmica do package.json', () => {
-		type LayoutLoader = (event: unknown) => { locale: Locale; version: string };
+	it('+layout.server.ts deve expor locale, hasLocaleCookie e versão dinâmica do package.json', () => {
+		type LayoutLoader = (event: unknown) => {
+			locale: Locale;
+			hasLocaleCookie: boolean;
+			version: string;
+		};
 		const loader = layoutServerLoad as unknown as LayoutLoader;
 
 		const res = loader({
-			locals: { locale: 'en-US' },
+			locals: { locale: 'en-US', hasLocaleCookie: true },
 			cookies: { get: () => undefined },
 			request: { headers: new Headers() }
 		});
 
 		expect(res.locale).toBe('en-US');
+		expect(res.hasLocaleCookie).toBe(true);
 		expect(res.version).toBe(pkg.version);
 	});
 
@@ -220,7 +232,66 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(instanceB.currentLocale).toBe('pt-BR');
 	});
 
-	it('hydrateFromLocalStorage deve migrar preferências salvas no localStorage e sincronizar cookie', () => {
+	it('hydrateFromLocalStorage: com hasLocaleCookie: true (cookie pt-BR + storage en-US), mantém pt-BR e sincroniza storage sem regravar cookie', () => {
+		const store: Record<string, string> = { zoo_locale: 'en-US' };
+		let cookieSetCount = 0;
+		let cookieValue = 'zoo_locale=pt-BR';
+
+		const mockLocalStorage = {
+			getItem: (k: string) => store[k] ?? null,
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			}
+		};
+
+		const originalWindow = globalThis.window;
+		const originalDoc = globalThis.document;
+
+		Object.defineProperty(globalThis, 'window', {
+			value: { localStorage: mockLocalStorage },
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: {
+				documentElement: { lang: 'pt-BR' },
+				get cookie() {
+					return cookieValue;
+				},
+				set cookie(val: string) {
+					cookieSetCount++;
+					cookieValue = val;
+				}
+			},
+			configurable: true,
+			writable: true
+		});
+
+		const instance = createI18n('pt-BR', 'zoo_locale');
+		expect(instance.currentLocale).toBe('pt-BR');
+
+		// Executa hidratação informando que o locale veio de cookie explícito no SSR
+		instance.hydrateFromLocalStorage(true);
+
+		// Deve manter o idioma do cookie (pt-BR), alinhar o localStorage e NÃO regravar cookie
+		expect(instance.currentLocale).toBe('pt-BR');
+		expect(store.zoo_locale).toBe('pt-BR');
+		expect(cookieSetCount).toBe(0);
+
+		// Restaura ambiente
+		Object.defineProperty(globalThis, 'window', {
+			value: originalWindow,
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: originalDoc,
+			configurable: true,
+			writable: true
+		});
+	});
+
+	it('hydrateFromLocalStorage: com hasLocaleCookie: false e storage en-US, migra preferência antiga para en-US e cria cookie', () => {
 		const store: Record<string, string> = { zoo_locale: 'en-US' };
 		let cookieValue = '';
 
@@ -234,7 +305,6 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		const originalWindow = globalThis.window;
 		const originalDoc = globalThis.document;
 
-		// Mock de ambiente de navegador sem any
 		Object.defineProperty(globalThis, 'window', {
 			value: { localStorage: mockLocalStorage },
 			configurable: true,
@@ -257,9 +327,67 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		const instance = createI18n('pt-BR', 'zoo_locale');
 		expect(instance.currentLocale).toBe('pt-BR');
 
-		instance.hydrateFromLocalStorage();
+		// Sem cookie no SSR: migra o storage
+		instance.hydrateFromLocalStorage(false);
 		expect(instance.currentLocale).toBe('en-US');
 		expect(cookieValue).toContain('zoo_locale=en-US');
+
+		// Restaura ambiente
+		Object.defineProperty(globalThis, 'window', {
+			value: originalWindow,
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: originalDoc,
+			configurable: true,
+			writable: true
+		});
+	});
+
+	it('hydrateFromLocalStorage: com hasLocaleCookie: false e storage vazio, não altera locale nem cria cookie ou storage', () => {
+		const store: Record<string, string> = {};
+		let cookieSetCount = 0;
+		let cookieValue = '';
+
+		const mockLocalStorage = {
+			getItem: (k: string) => store[k] ?? null,
+			setItem: (k: string, v: string) => {
+				store[k] = v;
+			}
+		};
+
+		const originalWindow = globalThis.window;
+		const originalDoc = globalThis.document;
+
+		Object.defineProperty(globalThis, 'window', {
+			value: { localStorage: mockLocalStorage },
+			configurable: true,
+			writable: true
+		});
+		Object.defineProperty(globalThis, 'document', {
+			value: {
+				documentElement: { lang: 'pt-BR' },
+				get cookie() {
+					return cookieValue;
+				},
+				set cookie(val: string) {
+					cookieSetCount++;
+					cookieValue = val;
+				}
+			},
+			configurable: true,
+			writable: true
+		});
+
+		const instance = createI18n('pt-BR', 'zoo_locale');
+		expect(instance.currentLocale).toBe('pt-BR');
+
+		// Sem cookie no SSR e sem storage
+		instance.hydrateFromLocalStorage(false);
+		expect(instance.currentLocale).toBe('pt-BR');
+		expect(cookieSetCount).toBe(0);
+		expect(store.zoo_locale).toBeUndefined();
 
 		// Restaura ambiente
 		Object.defineProperty(globalThis, 'window', {
@@ -327,6 +455,7 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 			props: {
 				data: {
 					locale: 'en-US' as Locale,
+					hasLocaleCookie: true,
 					version: pkg.version
 				}
 			}

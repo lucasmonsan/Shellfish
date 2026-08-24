@@ -19,8 +19,8 @@
 	});
 
 	onMount(() => {
-		// Fallback de migração se houver preferência anterior no localStorage
-		i18n.hydrateFromLocalStorage();
+		// Fallback de migração se houver preferência anterior no localStorage e SSR não veio de cookie explícito
+		i18n.hydrateFromLocalStorage(data.hasLocaleCookie);
 	});
 </script>
 

@@ -438,7 +438,7 @@ export function createI18n(
 			}
 			return msg;
 		},
-		hydrateFromLocalStorage() {
+		hydrateFromLocalStorage(hasLocaleCookie = false) {
 			let stored: Locale | null = null;
 			if (typeof window !== 'undefined') {
 				try {
@@ -448,15 +448,23 @@ export function createI18n(
 				}
 			}
 
+			if (hasLocaleCookie) {
+				// Cookie é a autoridade do SSR. Se o storage tiver valor diferente, sincroniza o storage para o cookie sem regravar o cookie.
+				if (stored && stored !== currentLocale && typeof window !== 'undefined') {
+					try {
+						window.localStorage?.setItem(activeStorageKey, currentLocale);
+					} catch {
+						// Ignora indisponibilidade do storage
+					}
+				}
+				return;
+			}
+
+			// Sem cookie no SSR (origem Accept-Language): se houver preferência anterior no storage, migra e grava cookie
 			if (stored && (stored === 'pt-BR' || stored === 'en-US') && stored !== currentLocale) {
 				this.setLocale(stored, true);
-			} else if (currentLocale && typeof document !== 'undefined') {
-				try {
-					document.cookie = `${activeStorageKey}=${currentLocale}; path=/; max-age=31536000; SameSite=Lax`;
-				} catch {
-					// Ignora indisponibilidade de cookie
-				}
 			}
+			// Se storage estiver vazio ou igual, não altera locale, cookie ou storage.
 		}
 	};
 

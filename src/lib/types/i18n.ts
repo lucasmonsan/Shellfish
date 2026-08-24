@@ -15,5 +15,5 @@ export interface I18nContext {
 	setLocale(val: Locale, persist?: boolean): void;
 	toggleLocale(): Locale;
 	t(key: string, params?: Record<string, string | number>): string;
-	hydrateFromLocalStorage(): void;
+	hydrateFromLocalStorage(hasLocaleCookie?: boolean): void;
 }

@@ -5,6 +5,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			locale: Locale;
+			hasLocaleCookie: boolean;
 		}
 		// interface PageData {}
 		// interface PageState {}
