@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CalendarProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		value = $bindable(new Date()),
@@ -12,6 +12,8 @@
 		class: className,
 		...restProps
 	}: CalendarProps = $props();
+
+	const { t } = getI18n();
 
 	let selectedDate = $derived(value instanceof Date ? value : new Date(value ?? Date.now()));
 	let currentMonth = $state(

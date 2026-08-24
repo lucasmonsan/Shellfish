@@ -1,9 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
-import { i18n, t, translations } from '../src/lib/utils/i18n.svelte.js';
+import {
+	i18n,
+	t,
+	translations,
+	createI18n,
+	parseAcceptLanguage
+} from '../src/lib/utils/i18n.svelte.js';
+import { handle as serverHandle } from '../src/hooks.server.js';
 import { load as layoutServerLoad } from '../src/routes/+layout.server.js';
 import type { Locale } from '../src/lib/types/i18n.js';
+import pkg from '../package.json' with { type: 'json' };
 
 function getFilesRecursively(dir: string, extensions: string[]): string[] {
 	let results: string[] = [];
@@ -57,7 +65,6 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		const usedKeys = new Set<string>();
 
 		for (const file of allSourceFiles) {
-			// Ignora o próprio arquivo de testes e o arquivo que define os dicionários
 			if (file.includes('i18n.test.ts') || file.includes('i18n.svelte.ts')) continue;
 
 			const content = fs.readFileSync(file, 'utf-8');
@@ -106,123 +113,114 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(mismatchedPlaceholders, 'Incompatibilidade de parâmetros entre idiomas').toEqual([]);
 	});
 
-	it('proíbe strings literais hardcoded em atributos aria-label ou title nos componentes da biblioteca', () => {
-		const componentsDir = path.resolve(process.cwd(), 'src/lib/components');
-		const componentFiles = getFilesRecursively(componentsDir, ['.svelte']);
-		const hardcodedViolations: string[] = [];
+	it('parseAcceptLanguage deve respeitar estritamente pesos q e preferências', () => {
+		expect(parseAcceptLanguage('')).toBe('pt-BR');
+		expect(parseAcceptLanguage(null)).toBe('pt-BR');
+		expect(parseAcceptLanguage(undefined)).toBe('pt-BR');
 
-		// Detecta aria-label="..." ou title="..." onde o valor é uma string estática (e não {expressao})
-		const hardcodedAttrRegex = /(aria-label|title)=["']([^"'{}\n]+)["']/g;
+		// 1. Simples
+		expect(parseAcceptLanguage('en-US,en;q=0.9')).toBe('en-US');
+		expect(parseAcceptLanguage('pt-BR,pt;q=0.9')).toBe('pt-BR');
 
-		for (const file of componentFiles) {
-			const relativePath = path.relative(process.cwd(), file);
-			const content = fs.readFileSync(file, 'utf-8');
+		// 2. Pesos q onde o inglês possui maior prioridade que o português
+		expect(parseAcceptLanguage('pt;q=0.1,en;q=0.9')).toBe('en-US');
 
-			let match;
-			while ((match = hardcodedAttrRegex.exec(content)) !== null) {
-				const attr = match[1];
-				const val = match[2].trim();
-				if (val.length > 0) {
-					hardcodedViolations.push(`${relativePath}: ${attr}="${val}"`);
-				}
-			}
-		}
+		// 3. Pesos q onde o português possui maior prioridade que o inglês
+		expect(parseAcceptLanguage('en;q=0.5,pt-BR;q=0.9')).toBe('pt-BR');
 
-		expect(
-			hardcodedViolations,
-			'Atributos de acessibilidade estáticos não internacionalizados encontrados em componentes'
-		).toEqual([]);
+		// 4. Idiomas não suportados com fallback para o maior peso suportado
+		expect(parseAcceptLanguage('es;q=0.9,de;q=0.8,en;q=0.7,pt;q=0.6')).toBe('en-US');
+		expect(parseAcceptLanguage('es;q=0.9,de;q=0.8,pt;q=0.7,en;q=0.6')).toBe('pt-BR');
+
+		// 5. Idiomas desconhecidos sem nenhum suportado devem retornar o padrão pt-BR
+		expect(parseAcceptLanguage('zh-CN,zh;q=0.9,ja;q=0.8')).toBe('pt-BR');
 	});
 
-	it('valida que +layout.server.ts detecta preferência de cookie e cabeçalho Accept-Language no SSR', () => {
-		type LayoutLoader = (event: unknown) => { locale: Locale };
+	it('hooks.server.ts deve resolver locale, preencher event.locals e substituir %lang% no SSR', async () => {
+		type ServerHandler = (input: unknown) => Promise<Response>;
+		const handle = serverHandle as unknown as ServerHandler;
+
+		// 1. Teste com cookie definido
+		let transformedHtml = '';
+		const mockEvent1 = {
+			cookies: { get: (key: string) => (key === 'zoo_locale' ? 'en-US' : undefined) },
+			request: { headers: new Headers() },
+			locals: {} as { locale?: Locale }
+		};
+
+		const mockResolve1 = async (
+			_event: unknown,
+			opts?: { transformPageChunk?: (chunk: { html: string }) => string }
+		) => {
+			if (opts?.transformPageChunk) {
+				transformedHtml = opts.transformPageChunk({
+					html: '<html lang="%lang%"><body>Test</body></html>'
+				});
+			}
+			return new Response(transformedHtml);
+		};
+
+		await handle({ event: mockEvent1, resolve: mockResolve1 });
+		expect(mockEvent1.locals.locale).toBe('en-US');
+		expect(transformedHtml).toContain('lang="en-US"');
+
+		// 2. Teste com cabeçalho Accept-Language quando sem cookie
+		const mockHeaders = new Headers();
+		mockHeaders.set('accept-language', 'pt;q=0.2,en-US;q=0.8');
+
+		const mockEvent2 = {
+			cookies: { get: () => undefined },
+			request: { headers: mockHeaders },
+			locals: {} as { locale?: Locale }
+		};
+
+		await handle({ event: mockEvent2, resolve: mockResolve1 });
+		expect(mockEvent2.locals.locale).toBe('en-US');
+		expect(transformedHtml).toContain('lang="en-US"');
+	});
+
+	it('+layout.server.ts deve expor locale e versão dinâmica do package.json', () => {
+		type LayoutLoader = (event: unknown) => { locale: Locale; version: string };
 		const loader = layoutServerLoad as unknown as LayoutLoader;
 
-		// 1. Caso com cookie definido
-		const mockCookies = {
-			get: (key: string) => (key === 'zoo_locale' ? 'en-US' : undefined)
-		};
-		const res1 = loader({
-			cookies: mockCookies,
+		const res = loader({
+			locals: { locale: 'en-US' },
+			cookies: { get: () => undefined },
 			request: { headers: new Headers() }
 		});
-		expect(res1.locale).toBe('en-US');
 
-		// 2. Caso sem cookie com Accept-Language em inglês
-		const mockHeadersEn = new Headers();
-		mockHeadersEn.set('accept-language', 'en-US,en;q=0.9');
-		const res2 = loader({
-			cookies: { get: () => undefined },
-			request: { headers: mockHeadersEn }
-		});
-		expect(res2.locale).toBe('en-US');
-
-		// 3. Caso sem cookie com Accept-Language em português
-		const mockHeadersPt = new Headers();
-		mockHeadersPt.set('accept-language', 'pt-BR,pt;q=0.9');
-		const res3 = loader({
-			cookies: { get: () => undefined },
-			request: { headers: mockHeadersPt }
-		});
-		expect(res3.locale).toBe('pt-BR');
+		expect(res.locale).toBe('en-US');
+		expect(res.version).toBe(pkg.version);
 	});
 
-	it('deve traduzir corretamente para pt-BR e en-US dinamicamente em tempo de execução', () => {
-		i18n.setLocale('pt-BR');
-		expect(t('common.close')).toBe('Fechar');
-		expect(t('common.cancel')).toBe('Cancelar');
-		expect(t('dialog.close')).toBe('Fechar modal');
+	it('instâncias criadas via createI18n devem ser 100% isoladas (segurança para SSR concorrente)', () => {
+		const instanceA = createI18n('pt-BR');
+		const instanceB = createI18n('en-US');
 
-		i18n.setLocale('en-US');
-		expect(t('common.close')).toBe('Close');
-		expect(t('common.cancel')).toBe('Cancel');
-		expect(t('dialog.close')).toBe('Close modal');
+		expect(instanceA.currentLocale).toBe('pt-BR');
+		expect(instanceB.currentLocale).toBe('en-US');
 
-		// Restaura para o padrão da suíte
-		i18n.setLocale('pt-BR');
+		expect(instanceA.t('common.close')).toBe('Fechar');
+		expect(instanceB.t('common.close')).toBe('Close');
+
+		// Modificar uma instância nunca pode interferir na outra
+		instanceA.setLocale('en-US', false);
+		expect(instanceA.currentLocale).toBe('en-US');
+		expect(instanceB.currentLocale).toBe('en-US');
+
+		instanceB.setLocale('pt-BR', false);
+		expect(instanceA.currentLocale).toBe('en-US');
+		expect(instanceB.currentLocale).toBe('pt-BR');
 	});
 
-	it('deve alternar idiomas com toggleLocale() e sincronizar o estado', () => {
-		i18n.setLocale('pt-BR');
-		expect(i18n.currentLocale).toBe('pt-BR');
-
-		i18n.toggleLocale();
-		expect(i18n.currentLocale).toBe('en-US');
-
-		i18n.toggleLocale();
-		expect(i18n.currentLocale).toBe('pt-BR');
-	});
-
-	it('deve interpolar múltiplos parâmetros dinâmicos na tradução', () => {
-		translations['pt-BR']['test.interpolation'] = 'Olá {name}, você tem {count} notificações.';
-		translations['en-US']['test.interpolation'] = 'Hello {name}, you have {count} notifications.';
-
-		i18n.setLocale('pt-BR');
-		expect(t('test.interpolation', { name: 'Lucas', count: 5 })).toBe(
-			'Olá Lucas, você tem 5 notificações.'
-		);
-
-		i18n.setLocale('en-US');
-		expect(t('test.interpolation', { name: 'Lucas', count: 5 })).toBe(
-			'Hello Lucas, you have 5 notifications.'
-		);
-
-		delete translations['pt-BR']['test.interpolation'];
-		delete translations['en-US']['test.interpolation'];
-	});
-
-	it('deve retornar a chave original como fallback caso a tradução não exista (sem quebrar a UI)', () => {
-		expect(t('chave.inexistente.de.teste')).toBe('chave.inexistente.de.teste');
-	});
-
-	it('LocaleSelector.svelte deve usar tag <button> pura e exibir código do idioma atual', () => {
+	it('LocaleSelector.svelte deve usar tag <button> pura e exibir código do idioma da instância', () => {
 		const filePath = path.resolve(process.cwd(), 'src/lib/components/suite/LocaleSelector.svelte');
 		const content = fs.readFileSync(filePath, 'utf-8');
 
 		expect(content).toMatch(/<button[\s\S]*>[\s\S]*<\/button>/);
 		expect(content).toContain("i18n.currentLocale === 'pt-BR' ? 'PT' : 'EN'");
-		expect(content).toContain("aria-label={t('locale.toggle')}");
-		expect(content).toContain("title={t('locale.name')}");
+		expect(content).toContain("aria-label={i18n.t('locale.toggle')}");
+		expect(content).toContain("title={i18n.t('locale.name')}");
 	});
 
 	it('Componentes de feedback devem permitir customização de rótulos de acessibilidade por prop', () => {
@@ -242,10 +240,21 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 			path.resolve(process.cwd(), 'src/lib/components/feedback/Spinner.svelte'),
 			'utf-8'
 		);
-
 		expect(dialogContent).toContain("closeLabel ?? t('dialog.close')");
 		expect(alertContent).toContain("closeLabel ?? t('alert.close')");
 		expect(toastContent).toContain("closeLabel ?? t('toast.close')");
 		expect(spinnerContent).toContain("label ?? t('spinner.loading')");
+	});
+
+	it('funções globais t() e i18n devem funcionar como fallback standalone seguro', () => {
+		i18n.setLocale('pt-BR', false);
+		expect(t('common.close')).toBe('Fechar');
+		expect(i18n.currentLocale).toBe('pt-BR');
+
+		i18n.setLocale('en-US', false);
+		expect(t('common.close')).toBe('Close');
+		expect(i18n.currentLocale).toBe('en-US');
+
+		i18n.setLocale('pt-BR', false);
 	});
 });

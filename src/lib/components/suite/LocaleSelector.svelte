@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LocaleSelectorProps } from '$lib/types/index.js';
-	import { i18n, t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		size = 'md',
@@ -8,6 +8,8 @@
 		class: className,
 		...restProps
 	}: LocaleSelectorProps = $props();
+
+	const i18n = getI18n();
 
 	$effect(() => {
 		if (typeof window === 'undefined') return;
@@ -22,8 +24,8 @@
 <button
 	type="button"
 	data-size={size}
-	aria-label={t('locale.toggle')}
-	title={t('locale.name')}
+	aria-label={i18n.t('locale.toggle')}
+	title={i18n.t('locale.name')}
 	onclick={handleClick}
 	class={className}
 	{...restProps}
@@ -64,32 +66,33 @@
 		box-shadow: 0px 0px 0px var(--border-color);
 	}
 
-	/* Tamanhos */
+	button:focus-visible {
+		outline: none;
+		border-color: var(--color-primary);
+		box-shadow: 3px 3px 0px var(--color-primary);
+	}
+
 	button[data-size='sm'] {
 		width: var(--control-height-sm);
 		height: var(--control-height-sm);
 		font-size: var(--text-xs);
 	}
+
 	button[data-size='md'] {
 		width: var(--control-height-md);
 		height: var(--control-height-md);
-		font-size: var(--text-xs);
-	}
-	button[data-size='lg'] {
-		width: var(--control-height-lg);
-		height: var(--control-height-lg);
 		font-size: var(--text-sm);
 	}
 
-	.locale-code {
-		letter-spacing: 0.05em;
-		line-height: 1;
-		user-select: none;
+	button[data-size='lg'] {
+		width: var(--control-height-lg);
+		height: var(--control-height-lg);
+		font-size: var(--text-base);
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		button {
-			transition: none;
-		}
+	.locale-code {
+		line-height: 1;
+		letter-spacing: -0.02em;
+		user-select: none;
 	}
 </style>

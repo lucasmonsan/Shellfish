@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ChipsProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		value = $bindable([]),
@@ -16,6 +16,8 @@
 		onremove,
 		...restProps
 	}: ChipsProps = $props();
+
+	const { t } = getI18n();
 
 	let inputValue = $state('');
 	let inputEl = $state<HTMLInputElement>();

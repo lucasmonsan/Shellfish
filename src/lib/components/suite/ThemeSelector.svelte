@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ThemeSelectorProps } from '$lib/types/index.js';
 	import type { Theme } from '$lib/types/tokens.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		size = 'md',
@@ -9,6 +9,8 @@
 		class: className,
 		...restProps
 	}: ThemeSelectorProps = $props();
+
+	const { t } = getI18n();
 
 	let currentTheme = $state<Theme>('light');
 

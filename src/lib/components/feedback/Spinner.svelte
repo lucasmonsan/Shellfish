@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { SpinnerProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		variant = 'cube',
@@ -10,6 +10,8 @@
 		class: className,
 		...restProps
 	}: SpinnerProps = $props();
+
+	const { t } = getI18n();
 </script>
 
 <span

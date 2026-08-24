@@ -152,16 +152,21 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 		expect(viteConfig).toContain('port: 5172');
 	});
 
-	it('garante que a versão de package.json seja a fonte da verdade e o README não use links file://', () => {
+	it('garante que a versão de package.json seja a fonte da verdade evolutiva e o README não use links file://', () => {
 		const pkg = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8'));
 		const readmeContent = fs.readFileSync(path.resolve(process.cwd(), 'README.md'), 'utf-8');
 		const showcaseContent = fs.readFileSync(
 			path.resolve(process.cwd(), 'src/routes/+page.svelte'),
 			'utf-8'
 		);
+		const layoutServerContent = fs.readFileSync(
+			path.resolve(process.cwd(), 'src/routes/+layout.server.ts'),
+			'utf-8'
+		);
 
-		expect(pkg.version).toBe('0.1.0');
-		expect(showcaseContent).toContain(`v${pkg.version}`);
+		expect(pkg.version).toBeDefined();
+		expect(layoutServerContent).toContain('version: pkg.version');
+		expect(showcaseContent).toContain('v{data.version}');
 		expect(readmeContent).not.toContain('file://');
 		expect(readmeContent).toContain('[LICENSE](./LICENSE)');
 	});

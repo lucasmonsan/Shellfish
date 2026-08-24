@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DialogProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		open = $bindable(false),
@@ -14,6 +14,8 @@
 		class: className,
 		...restProps
 	}: DialogProps = $props();
+
+	const { t } = getI18n();
 
 	let dialogEl = $state<HTMLDialogElement>();
 	let isClosing = $state(false);

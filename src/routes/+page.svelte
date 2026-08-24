@@ -29,9 +29,16 @@
 		Toast,
 		ThemeSelector,
 		LocaleSelector,
-		t
+		getI18n
 	} from '$lib/index.js';
 	import type { CalendarMode, Space, Radius } from '$lib/types/index.js';
+	import type { LayoutData } from './$types.js';
+
+	let { data }: { data: LayoutData } = $props();
+
+	// Instância contextual inicializada no top-level do componente
+	const i18n = getI18n();
+	const t = (key: string, params?: Record<string, string | number>) => i18n.t(key, params);
 
 	let activeTab = $state('actions');
 	let tabItems = $derived([
@@ -46,7 +53,7 @@
 	let isActionToastOpen = $state(false);
 
 	function triggerAction(actionName: string) {
-		toastMessage = `${actionName} acionado!`;
+		toastMessage = t('showcase.toast.actionTriggered', { action: actionName });
 		isActionToastOpen = true;
 	}
 
@@ -145,10 +152,10 @@
 
 {#snippet defaultFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Cancelar')}>
+		<Button size="sm" variant="outline" onclick={() => triggerAction(t('common.cancel'))}>
 			{t('common.cancel')}
 		</Button>
-		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Confirmar')}>
+		<Button size="sm" variant="primary" onclick={() => triggerAction(t('common.confirm'))}>
 			{t('common.confirm')}
 		</Button>
 	</Row>
@@ -160,7 +167,7 @@
 
 {#snippet collapsibleFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="outline" onclick={() => triggerAction('Card Fechar')}>
+		<Button size="sm" variant="outline" onclick={() => triggerAction(t('common.close'))}>
 			{t('common.close')}
 		</Button>
 	</Row>
@@ -168,7 +175,7 @@
 
 {#snippet badgeFooter()}
 	<Row justify="end" gap="sm">
-		<Button size="sm" variant="primary" onclick={() => triggerAction('Card Ação')}>
+		<Button size="sm" variant="primary" onclick={() => triggerAction(t('showcase.card.action'))}>
 			{t('showcase.card.action')}
 		</Button>
 	</Row>
@@ -196,7 +203,7 @@
 			>
 				<img
 					src="/favicon.svg"
-					alt="Shellfish Logo"
+					alt={t('showcase.logo.alt')}
 					width="36"
 					height="36"
 					class="header-logo-img"
@@ -230,19 +237,22 @@
 				{/snippet}
 				<Column gap="md">
 					<Row wrap={true} gap="md">
-						<Button variant="primary" onclick={() => triggerAction('Botão Primário')}>
+						<Button variant="primary" onclick={() => triggerAction(t('showcase.buttons.primary'))}>
 							{t('showcase.buttons.primary')}
 						</Button>
-						<Button variant="secondary" onclick={() => triggerAction('Botão Secundário')}>
+						<Button
+							variant="secondary"
+							onclick={() => triggerAction(t('showcase.buttons.secondary'))}
+						>
 							{t('showcase.buttons.secondary')}
 						</Button>
-						<Button variant="outline" onclick={() => triggerAction('Botão Contorno')}>
+						<Button variant="outline" onclick={() => triggerAction(t('showcase.buttons.outline'))}>
 							{t('showcase.buttons.outline')}
 						</Button>
-						<Button variant="ghost" onclick={() => triggerAction('Botão Fantasma')}>
+						<Button variant="ghost" onclick={() => triggerAction(t('showcase.buttons.ghost'))}>
 							{t('showcase.buttons.ghost')}
 						</Button>
-						<Button variant="danger" onclick={() => triggerAction('Botão Perigo')}>
+						<Button variant="danger" onclick={() => triggerAction(t('showcase.buttons.danger'))}>
 							{t('showcase.buttons.danger')}
 						</Button>
 					</Row>
@@ -265,8 +275,8 @@
 						suggestions={tagSuggestions}
 						placeholder={t('showcase.chips.placeholder')}
 						fullWidth={true}
-						onadd={(tag) => triggerAction(`Tag "${tag}" adicionada`)}
-						onremove={(tag) => triggerAction(`Tag "${tag}" removida`)}
+						onadd={(tag) => triggerAction(`Tag "${tag}"`)}
+						onremove={(tag) => triggerAction(`Tag "${tag}"`)}
 					/>
 					<span style="font-size: var(--text-xs); color: var(--text-secondary);">
 						{t('showcase.chips.helper')}
@@ -406,7 +416,9 @@
 									>{t('showcase.forms.serviceHotTowelDesc')}</span
 								>
 							</Column>
-							<Badge variant="secondary" style="margin-top: var(--space-xs);">+ R$ 15</Badge>
+							<Badge variant="secondary" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.servicePrice15')}</Badge
+							>
 						</Checkbox>
 
 						<Checkbox variant="card" bind:checked={choiceCheck2}>
@@ -417,7 +429,9 @@
 									>{t('showcase.forms.serviceWashDesc')}</span
 								>
 							</Column>
-							<Badge variant="secondary" style="margin-top: var(--space-xs);">+ R$ 20</Badge>
+							<Badge variant="secondary" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.servicePrice20')}</Badge
+							>
 						</Checkbox>
 
 						<Checkbox variant="card" disabled={true} checked={false}>
@@ -475,9 +489,13 @@
 								<strong style="font-size: var(--text-sm);"
 									>{t('showcase.forms.serviceQuickCut')}</strong
 								>
-								<span style="font-size: var(--text-xs); color: var(--text-secondary);">30 min</span>
+								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+									>{t('showcase.forms.time30min')}</span
+								>
 							</Column>
-							<Badge variant="primary" style="margin-top: var(--space-xs);">R$ 45</Badge>
+							<Badge variant="primary" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.servicePrice45')}</Badge
+							>
 						</Radio>
 
 						<Radio variant="card" name="service-choice" value="service-2" bind:group={choiceRadio}>
@@ -485,9 +503,13 @@
 								<strong style="font-size: var(--text-sm);"
 									>{t('showcase.forms.serviceCutBeard')}</strong
 								>
-								<span style="font-size: var(--text-xs); color: var(--text-secondary);">60 min</span>
+								<span style="font-size: var(--text-xs); color: var(--text-secondary);"
+									>{t('showcase.forms.time60min')}</span
+								>
 							</Column>
-							<Badge variant="primary" style="margin-top: var(--space-xs);">R$ 80</Badge>
+							<Badge variant="primary" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.servicePrice80')}</Badge
+							>
 						</Radio>
 
 						<Radio
@@ -503,7 +525,9 @@
 									>{t('showcase.forms.serviceUnavailable')}</span
 								>
 							</Column>
-							<Badge variant="ghost" style="margin-top: var(--space-xs);">R$ 130</Badge>
+							<Badge variant="ghost" style="margin-top: var(--space-xs);"
+								>{t('showcase.forms.servicePrice130')}</Badge
+							>
 						</Radio>
 					</Grid>
 				{/if}
@@ -749,7 +773,10 @@
 					<Button variant="primary" onclick={() => (isDialogOpen = true)}>
 						{t('showcase.feedback.openDialog')}
 					</Button>
-					<Button variant="secondary" onclick={() => triggerAction('Toast Disparado')}>
+					<Button
+						variant="secondary"
+						onclick={() => triggerAction(t('showcase.feedback.triggerToast'))}
+					>
 						{t('showcase.feedback.triggerToast')}
 					</Button>
 				</Row>
@@ -757,7 +784,7 @@
 		{/if}
 	</Section>
 
-	<!-- Rodapé Canônico com Links e Versão -->
+	<!-- Rodapé Canônico com Links e Versão Dinâmica do package.json -->
 	<Footer sticky={true} padding="sm">
 		<Row fullWidth={true} justify="between" align="center">
 			<span style="font-size: var(--text-xs); color: var(--text-secondary);">
@@ -773,7 +800,7 @@
 				>!
 			</span>
 			<span style="font-size: var(--text-xs); font-weight: 700; color: var(--text-secondary);">
-				v0.1.0
+				v{data.version}
 			</span>
 		</Row>
 	</Footer>
@@ -800,7 +827,7 @@
 				variant="primary"
 				onclick={() => {
 					isDialogOpen = false;
-					triggerAction('Modal Confirmado');
+					triggerAction(t('common.confirm'));
 				}}
 			>
 				{t('common.confirm')}

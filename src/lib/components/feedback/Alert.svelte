@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { AlertProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		children,
@@ -12,6 +12,8 @@
 		class: className,
 		...restProps
 	}: AlertProps = $props();
+
+	const { t } = getI18n();
 
 	let isVisible = $state(true);
 

@@ -8,4 +8,12 @@ export interface LocaleSelectorProps extends HTMLButtonAttributes {
 	storageKey?: string;
 }
 
-export type TranslationDictionary = Record<string, string | Record<string, string>>;
+export interface I18nContext {
+	readonly currentLocale: Locale;
+	readonly locale: Locale;
+	storageKey: string;
+	setLocale(val: Locale, persist?: boolean): void;
+	toggleLocale(): Locale;
+	t(key: string, params?: Record<string, string | number>): string;
+	hydrateFromLocalStorage(): void;
+}

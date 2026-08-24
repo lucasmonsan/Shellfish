@@ -1,4 +1,7 @@
-import type { Locale } from '$lib/types/i18n.js';
+import { getContext, setContext, hasContext } from 'svelte';
+import type { Locale, I18nContext } from '$lib/types/i18n.js';
+
+export const I18N_CONTEXT_KEY = Symbol('shellfish-i18n');
 
 export const translations: Record<Locale, Record<string, string>> = {
 	'pt-BR': {
@@ -23,6 +26,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.title': 'Shellfish',
 		'showcase.subtitle': 'Design System',
 		'showcase.logo.aria': 'Ir para a Home do Shellfish',
+		'showcase.logo.alt': 'Shellfish Logo',
 		'showcase.tabs.actions': 'Ações',
 		'showcase.tabs.forms': 'Formulários',
 		'showcase.tabs.display': 'Superfícies',
@@ -85,6 +89,13 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.serviceQuickCut': 'Corte Rápido',
 		'showcase.forms.serviceCutBeard': 'Corte & Barba',
 		'showcase.forms.serviceVip': 'Completo VIP',
+		'showcase.forms.servicePrice15': '+ R$ 15',
+		'showcase.forms.servicePrice20': '+ R$ 20',
+		'showcase.forms.servicePrice45': 'R$ 45',
+		'showcase.forms.servicePrice80': 'R$ 80',
+		'showcase.forms.servicePrice130': 'R$ 130',
+		'showcase.forms.time30min': '30 min',
+		'showcase.forms.time60min': '60 min',
 		'showcase.forms.radios': 'Radios',
 		'showcase.forms.radioA': 'Opção A',
 		'showcase.forms.radioB': 'Opção B',
@@ -152,6 +163,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.dialog.desc': 'Modal nativo com animação pop-out.',
 		'showcase.toast.title': 'Notificação',
 		'showcase.toast.msg': 'Ação executada com sucesso.',
+		'showcase.toast.actionTriggered': '{action} acionado!',
 		'showcase.footer.createdWith': 'Criado por',
 		'showcase.footer.with': 'com',
 		'showcase.footer.tagline': 'Shellfish — Design System Zoo',
@@ -179,6 +191,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.title': 'Shellfish',
 		'showcase.subtitle': 'Design System',
 		'showcase.logo.aria': 'Go to Shellfish Home',
+		'showcase.logo.alt': 'Shellfish Logo',
 		'showcase.tabs.actions': 'Actions',
 		'showcase.tabs.forms': 'Forms',
 		'showcase.tabs.display': 'Surfaces',
@@ -241,6 +254,13 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.forms.serviceQuickCut': 'Quick Cut',
 		'showcase.forms.serviceCutBeard': 'Cut & Beard',
 		'showcase.forms.serviceVip': 'Full VIP',
+		'showcase.forms.servicePrice15': '+ $15',
+		'showcase.forms.servicePrice20': '+ $20',
+		'showcase.forms.servicePrice45': '$45',
+		'showcase.forms.servicePrice80': '$80',
+		'showcase.forms.servicePrice130': '$130',
+		'showcase.forms.time30min': '30 mins',
+		'showcase.forms.time60min': '60 mins',
 		'showcase.forms.radios': 'Radios',
 		'showcase.forms.radioA': 'Option A',
 		'showcase.forms.radioB': 'Option B',
@@ -308,6 +328,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'showcase.dialog.desc': 'Native modal with pop-out transition.',
 		'showcase.toast.title': 'Notification',
 		'showcase.toast.msg': 'Action executed successfully.',
+		'showcase.toast.actionTriggered': '{action} triggered!',
 		'showcase.footer.createdWith': 'Created by',
 		'showcase.footer.with': 'with',
 		'showcase.footer.tagline': 'Shellfish — Zoo Design System',
@@ -315,56 +336,133 @@ export const translations: Record<Locale, Record<string, string>> = {
 	}
 };
 
-let currentLocale = $state<Locale>('pt-BR');
-let activeStorageKey = 'zoo_locale';
+export function parseAcceptLanguage(header: string | null | undefined): Locale {
+	if (!header) return 'pt-BR';
 
-export const i18n = {
-	get currentLocale(): Locale {
-		return currentLocale;
-	},
-	get locale(): Locale {
-		return currentLocale;
-	},
-	set locale(val: Locale) {
-		this.setLocale(val);
-	},
-	get storageKey(): string {
-		return activeStorageKey;
-	},
-	set storageKey(val: string) {
-		activeStorageKey = val;
-	},
-	setLocale(val: Locale, persist = true) {
-		if (translations[val]) {
-			currentLocale = val;
-			if (typeof document !== 'undefined') {
-				document.documentElement.lang = val;
-			}
-			if (persist && typeof window !== 'undefined') {
-				try {
-					localStorage.setItem(activeStorageKey, val);
-					document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
-				} catch {
-					// Ignora indisponibilidade do storage
+	const parsed = header
+		.split(',')
+		.map((item) => {
+			const [tag, ...params] = item.trim().split(';');
+			let q = 1.0;
+			for (const param of params) {
+				const trimmed = param.trim();
+				if (trimmed.startsWith('q=')) {
+					const val = parseFloat(trimmed.slice(2));
+					if (!Number.isNaN(val)) {
+						q = Math.max(0, Math.min(1, val));
+					}
 				}
 			}
+			return { tag: tag.trim().toLowerCase(), q };
+		})
+		.filter((item) => item.tag.length > 0)
+		.sort((a, b) => b.q - a.q);
+
+	for (const item of parsed) {
+		if (item.tag === 'en' || item.tag.startsWith('en-') || item.tag.startsWith('en_')) {
+			return 'en-US';
 		}
-	},
-	toggleLocale(): Locale {
-		const next: Locale = currentLocale === 'pt-BR' ? 'en-US' : 'pt-BR';
-		this.setLocale(next, true);
-		return next;
-	},
-	t(key: string, params?: Record<string, string | number>): string {
-		const dict = translations[currentLocale] || translations['pt-BR'];
-		let msg = dict[key] || translations['pt-BR']?.[key] || key;
-		if (params) {
-			for (const [k, v] of Object.entries(params)) {
-				msg = msg.replaceAll(`{${k}}`, String(v));
+		if (item.tag === 'pt' || item.tag.startsWith('pt-') || item.tag.startsWith('pt_')) {
+			return 'pt-BR';
+		}
+	}
+
+	return 'pt-BR';
+}
+
+export function createI18n(
+	initialLocale: Locale | (() => Locale) = 'pt-BR',
+	storageKey = 'zoo_locale'
+): I18nContext {
+	const getInitial = typeof initialLocale === 'function' ? initialLocale() : initialLocale;
+	let currentLocale = $state<Locale>(getInitial || 'pt-BR');
+	let activeStorageKey = storageKey;
+
+	const instance: I18nContext = {
+		get currentLocale(): Locale {
+			return currentLocale;
+		},
+		get locale(): Locale {
+			return currentLocale;
+		},
+		get storageKey(): string {
+			return activeStorageKey;
+		},
+		set storageKey(val: string) {
+			activeStorageKey = val;
+		},
+		setLocale(val: Locale, persist = true) {
+			if (translations[val]) {
+				currentLocale = val;
+				if (typeof document !== 'undefined') {
+					document.documentElement.lang = val;
+				}
+				if (persist && typeof window !== 'undefined') {
+					try {
+						localStorage.setItem(activeStorageKey, val);
+						document.cookie = `${activeStorageKey}=${val}; path=/; max-age=31536000; SameSite=Lax`;
+					} catch {
+						// Ignora indisponibilidade do storage
+					}
+				}
+			}
+		},
+		toggleLocale(): Locale {
+			const next: Locale = currentLocale === 'pt-BR' ? 'en-US' : 'pt-BR';
+			this.setLocale(next, true);
+			return next;
+		},
+		t(key: string, params?: Record<string, string | number>): string {
+			const dict = translations[currentLocale] || translations['pt-BR'];
+			let msg = dict[key] || translations['pt-BR']?.[key] || key;
+			if (params) {
+				for (const [k, v] of Object.entries(params)) {
+					msg = msg.replaceAll(`{${k}}`, String(v));
+				}
+			}
+			return msg;
+		},
+		hydrateFromLocalStorage() {
+			if (typeof window === 'undefined') return;
+			try {
+				const stored = localStorage.getItem(activeStorageKey) as Locale | null;
+				if (stored && (stored === 'pt-BR' || stored === 'en-US') && stored !== currentLocale) {
+					this.setLocale(stored, true);
+				} else if (currentLocale) {
+					document.cookie = `${activeStorageKey}=${currentLocale}; path=/; max-age=31536000; SameSite=Lax`;
+				}
+			} catch {
+				// Ignora indisponibilidade do storage
 			}
 		}
-		return msg;
-	}
-};
+	};
 
-export const t = (key: string, params?: Record<string, string | number>) => i18n.t(key, params);
+	return instance;
+}
+
+// Instância padrão para componentes renderizados fora de contexto (ex: testes unitários isolados)
+const defaultInstance = createI18n('pt-BR');
+
+export function setI18n(instance: I18nContext): I18nContext {
+	return setContext(I18N_CONTEXT_KEY, instance);
+}
+
+export function getI18n(): I18nContext {
+	if (hasContext(I18N_CONTEXT_KEY)) {
+		return getContext<I18nContext>(I18N_CONTEXT_KEY);
+	}
+	return defaultInstance;
+}
+
+// Helper global para inicialização estática em scripts de componentes: const { t } = getI18n();
+export const i18n = defaultInstance;
+export const t = (key: string, params?: Record<string, string | number>) => {
+	try {
+		if (hasContext(I18N_CONTEXT_KEY)) {
+			return getContext<I18nContext>(I18N_CONTEXT_KEY).t(key, params);
+		}
+	} catch {
+		// fora da fase de inicialização
+	}
+	return defaultInstance.t(key, params);
+};

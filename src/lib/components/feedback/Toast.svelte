@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ToastProps } from '$lib/types/index.js';
-	import { t } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 	import { fly } from 'svelte/transition';
 
 	let {
@@ -13,6 +13,8 @@
 		class: className,
 		...restProps
 	}: ToastProps = $props();
+
+	const { t } = getI18n();
 
 	$effect(() => {
 		if (!open || duration <= 0) return;

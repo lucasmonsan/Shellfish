@@ -2,7 +2,16 @@
 export * from './types/index.js';
 
 // Utilitários Reativos de i18n
-export { i18n, t, translations } from './utils/i18n.svelte.js';
+export {
+	i18n,
+	t,
+	translations,
+	createI18n,
+	setI18n,
+	getI18n,
+	parseAcceptLanguage,
+	I18N_CONTEXT_KEY
+} from './utils/i18n.svelte.js';
 
 // Containers Estruturais
 export { default as Main } from './components/containers/Main.svelte';
