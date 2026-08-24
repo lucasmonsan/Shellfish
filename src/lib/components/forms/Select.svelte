@@ -7,21 +7,41 @@
 		size = 'md',
 		invalid = false,
 		fullWidth = false,
+		label,
 		options,
 		placeholder,
+		id,
 		class: className,
 		...restProps
 	}: SelectProps = $props();
+
+	const autoId = `select-${Math.random().toString(36).slice(2, 9)}`;
+	let selectId = $derived(id || autoId);
 </script>
 
 <div
-	class={className}
+	class={`select-wrapper ${className ?? ''}`}
 	data-size={size}
 	data-invalid={invalid}
 	data-full-width={fullWidth}
+	data-has-label={label ? 'true' : undefined}
 	data-disabled={restProps.disabled}
 >
-	<select bind:value aria-invalid={invalid ? 'true' : undefined} data-size={size} {...restProps}>
+	{#if label}
+		<label for={selectId} class="select-straddled-label">
+			{label}
+			{#if restProps.required}
+				<span class="required" aria-hidden="true">*</span>
+			{/if}
+		</label>
+	{/if}
+	<select
+		id={selectId}
+		bind:value
+		aria-invalid={invalid ? 'true' : undefined}
+		data-size={size}
+		{...restProps}
+	>
 		{#if placeholder}
 			<option value="" disabled selected={value === undefined || value === ''}>
 				{placeholder}
@@ -50,7 +70,7 @@
 </div>
 
 <style>
-	div {
+	.select-wrapper {
 		position: relative;
 		display: inline-flex;
 		align-items: center;
@@ -66,23 +86,62 @@
 			background-color 0.15s ease;
 	}
 
-	div:focus-within {
+	.select-wrapper[data-has-label='true'] {
+		margin-top: var(--space-xs);
+	}
+
+	.select-straddled-label {
+		position: absolute;
+		top: 0;
+		left: var(--space-sm);
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		padding-inline: 4px;
+		background-color: var(--bg-primary);
+		color: var(--text-secondary);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		line-height: 1;
+		white-space: nowrap;
+		z-index: 2;
+		pointer-events: none;
+		user-select: none;
+		transition: color 0.15s ease;
+	}
+
+	.select-straddled-label .required {
+		color: var(--color-danger);
+	}
+
+	.select-wrapper:focus-within {
 		border-color: var(--color-primary);
-		box-shadow: 3px 3px 0px var(--color-primary);
+		box-shadow: 2px 2px 0px var(--color-primary);
 		transform: translate(-1px, -1px);
 	}
 
-	div[data-invalid='true'] {
+	.select-wrapper:focus-within .select-straddled-label {
+		color: var(--color-primary);
+	}
+
+	.select-wrapper[data-invalid='true'] {
 		border-color: var(--color-danger);
-		box-shadow: 2px 2px 0px var(--color-danger);
+		box-shadow: 1px 1px 0px var(--color-danger);
 	}
 
-	div[data-invalid='true']:focus-within {
-		box-shadow: 3px 3px 0px var(--color-danger);
+	.select-wrapper[data-invalid='true']:focus-within {
+		box-shadow: 2px 2px 0px var(--color-danger);
 		transform: translate(-1px, -1px);
 	}
 
-	div[data-disabled='true'] {
+	.select-wrapper[data-invalid='true'] .select-straddled-label {
+		border-color: var(--color-danger);
+		color: var(--color-danger);
+	}
+
+	.select-wrapper[data-disabled='true'] {
 		opacity: 0.5;
 		cursor: not-allowed;
 		background-color: var(--bg-secondary);
@@ -109,56 +168,64 @@
 		cursor: not-allowed;
 	}
 
+	option {
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
+		font-family: inherit;
+		font-weight: 700;
+	}
+
+	option:disabled {
+		color: var(--text-secondary);
+		opacity: 0.5;
+	}
+
 	/* Tamanhos */
-	div[data-size='sm'] {
+	.select-wrapper[data-size='sm'] {
 		height: var(--control-height-sm);
 	}
-	div[data-size='sm'] select {
+	.select-wrapper[data-size='sm'] select {
 		height: 100%;
 		padding-left: var(--space-sm);
 		font-size: var(--text-xs);
 	}
 
-	div[data-size='md'] {
+	.select-wrapper[data-size='md'] {
 		height: var(--control-height-md);
 	}
-	div[data-size='md'] select {
+	.select-wrapper[data-size='md'] select {
 		height: 100%;
 		padding-left: var(--space-md);
 		font-size: var(--text-sm);
 	}
 
-	div[data-size='lg'] {
+	.select-wrapper[data-size='lg'] {
 		height: var(--control-height-lg);
 	}
-	div[data-size='lg'] select {
+	.select-wrapper[data-size='lg'] select {
 		height: 100%;
 		padding-left: var(--space-lg);
 		font-size: var(--text-base);
 	}
 
-	div[data-full-width='true'] {
+	.select-wrapper[data-full-width='true'] {
 		width: 100%;
 	}
 
 	.arrow {
 		position: absolute;
 		right: var(--space-sm);
-		pointer-events: none;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		pointer-events: none;
 		color: var(--text-secondary);
+		width: 16px;
+		height: 16px;
 	}
 
-	svg {
-		width: 14px;
-		height: 14px;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		div {
-			transition: none;
-		}
+	.arrow svg {
+		width: 100%;
+		height: 100%;
 	}
 </style>

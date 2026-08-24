@@ -7,20 +7,50 @@
 		invalid = false,
 		fullWidth = false,
 		resize = 'vertical',
+		label,
+		id,
 		class: className,
 		...restProps
 	}: TextareaProps = $props();
+
+	const autoId = `textarea-${Math.random().toString(36).slice(2, 9)}`;
+	let textareaId = $derived(id || autoId);
 </script>
 
-<textarea
-	bind:value
-	aria-invalid={invalid ? 'true' : undefined}
-	data-size={size}
-	data-invalid={invalid}
-	data-full-width={fullWidth}
-	data-resize={resize}
-	class={className}
-	{...restProps}></textarea>
+{#if label}
+	<div
+		class={`textarea-wrapper ${className ?? ''}`}
+		data-size={size}
+		data-invalid={invalid}
+		data-full-width={fullWidth}
+		data-disabled={restProps.disabled}
+	>
+		<label for={textareaId} class="textarea-straddled-label">
+			{label}
+			{#if restProps.required}
+				<span class="required" aria-hidden="true">*</span>
+			{/if}
+		</label>
+		<textarea
+			id={textareaId}
+			bind:value
+			aria-invalid={invalid ? 'true' : undefined}
+			data-size={size}
+			data-resize={resize}
+			{...restProps}></textarea>
+	</div>
+{:else}
+	<textarea
+		id={textareaId}
+		bind:value
+		aria-invalid={invalid ? 'true' : undefined}
+		data-size={size}
+		data-invalid={invalid}
+		data-full-width={fullWidth}
+		data-resize={resize}
+		class={className}
+		{...restProps}></textarea>
+{/if}
 
 <style>
 	textarea {
@@ -46,17 +76,17 @@
 	textarea:focus-visible {
 		outline: none;
 		border-color: var(--color-primary);
-		box-shadow: 3px 3px 0px var(--color-primary);
+		box-shadow: 2px 2px 0px var(--color-primary);
 		transform: translate(-1px, -1px);
 	}
 
 	textarea[data-invalid='true'] {
 		border-color: var(--color-danger);
-		box-shadow: 2px 2px 0px var(--color-danger);
+		box-shadow: 1px 1px 0px var(--color-danger);
 	}
 
 	textarea[data-invalid='true']:focus-visible {
-		box-shadow: 3px 3px 0px var(--color-danger);
+		box-shadow: 2px 2px 0px var(--color-danger);
 		transform: translate(-1px, -1px);
 	}
 
@@ -102,9 +132,51 @@
 		resize: both;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		textarea {
-			transition: none;
-		}
+	/* Wrapper com Label Straddled */
+	.textarea-wrapper {
+		position: relative;
+		display: inline-flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		margin-top: var(--space-xs);
+	}
+
+	.textarea-wrapper[data-full-width='true'] {
+		width: 100%;
+	}
+
+	.textarea-straddled-label {
+		position: absolute;
+		top: 0;
+		left: var(--space-sm);
+		transform: translateY(-50%);
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		padding-inline: 4px;
+		background-color: var(--bg-primary);
+		color: var(--text-secondary);
+		font-family: var(--font-display);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		line-height: 1;
+		white-space: nowrap;
+		z-index: 2;
+		pointer-events: none;
+		user-select: none;
+		transition: color 0.15s ease;
+	}
+
+	.textarea-straddled-label .required {
+		color: var(--color-danger);
+	}
+
+	.textarea-wrapper:focus-within .textarea-straddled-label {
+		color: var(--color-primary);
+	}
+
+	.textarea-wrapper[data-invalid='true'] .textarea-straddled-label {
+		border-color: var(--color-danger);
+		color: var(--color-danger);
 	}
 </style>

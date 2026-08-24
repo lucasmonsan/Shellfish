@@ -6,3 +6,4 @@ export * from './forms.js';
 export * from './display.js';
 export * from './feedback.js';
 export * from './theme.js';
+export * from './i18n.js';

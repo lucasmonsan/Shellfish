@@ -5,7 +5,7 @@ Biblioteca de componentes de interface e primitivas de layout em **Svelte 5** pa
 O Shellfish foi desenhado para ser a evolução direta e simplificada do MonsanUI:
 
 - **Zero Div-Soup**: Foco estrito em tags HTML nativas semânticas e acessíveis.
-- **Sombra Sólida Padronizada**: 1 único padrão de sombra física tátil (`--shadow: 2px 2px 0px var(--border-color)`).
+- **Sombra Sólida Padronizada**: 1 único padrão de sombra física tátil (`--shadow: 1px 1px 0px var(--border-color)`).
 - **Sem complexidades desnecessárias**: Código direto, leve, reativo e tipado via TypeScript.
 
 ---
@@ -62,4 +62,4 @@ pnpm run build:package
 
 ## 📄 Licença
 
-Distribuído sob a licença **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). Veja [LICENSE](file:///home/lucasmonsan/Documentos/Projetos/Zoo/Shellfish/LICENSE) para mais detalhes.
+Distribuído sob a licença **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). Veja [LICENSE](./LICENSE) para mais detalhes.

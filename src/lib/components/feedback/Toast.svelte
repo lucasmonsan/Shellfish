@@ -1,15 +1,20 @@
 <script lang="ts">
 	import type { ToastProps } from '$lib/types/index.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
+	import { fly } from 'svelte/transition';
 
 	let {
 		children,
 		variant = 'info',
 		duration = 4000,
 		open = $bindable(true),
+		closeLabel,
 		onclose,
 		class: className,
 		...restProps
 	}: ToastProps = $props();
+
+	const { t } = getI18n();
 
 	$effect(() => {
 		if (!open || duration <= 0) return;
@@ -24,14 +29,21 @@
 </script>
 
 {#if open}
-	<aside role="status" aria-live="polite" data-variant={variant} class={className} {...restProps}>
+	<aside
+		role="status"
+		aria-live="polite"
+		data-variant={variant}
+		class={className}
+		transition:fly={{ y: 24, duration: 250 }}
+		{...restProps}
+	>
 		<div class="toast-content">
 			{@render children?.()}
 		</div>
 		<button
 			type="button"
 			class="close-button"
-			aria-label="Fechar notificação"
+			aria-label={closeLabel ?? t('toast.close')}
 			onclick={() => {
 				open = false;
 				onclose?.();
@@ -80,19 +92,19 @@
 
 	/* Variantes */
 	aside[data-variant='info'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-blue);
+		border-left: calc(var(--border-width) * 3) solid var(--color-blue-light);
 	}
 
 	aside[data-variant='success'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-green);
+		border-left: calc(var(--border-width) * 3) solid var(--color-green-light);
 	}
 
 	aside[data-variant='warning'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-orange);
+		border-left: calc(var(--border-width) * 3) solid var(--color-yellow);
 	}
 
 	aside[data-variant='danger'] {
-		border-left: calc(var(--border-width) * 3) solid var(--color-danger);
+		border-left: calc(var(--border-width) * 3) solid var(--color-red);
 	}
 
 	.close-button {
@@ -105,6 +117,7 @@
 		padding: 2px;
 		color: var(--text-secondary);
 		border-radius: var(--radius-sm);
+		transition: color 0.15s ease;
 	}
 
 	.close-button:hover {

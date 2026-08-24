@@ -94,39 +94,37 @@
 		scrollbar-color: var(--border-color) transparent;
 	}
 
-	/* Fade de Rolagem Sutil via Pseudo-elementos (Zero Div-Soup) */
-	section[data-scrollable='true']::before,
-	section[data-scrollable='true']::after {
-		content: '';
-		position: sticky;
-		left: 0;
-		right: 0;
-		height: 24px;
-		pointer-events: none;
-		z-index: var(--z-sticky);
-		opacity: 0;
-		transition: opacity 0.2s ease;
-		flex-shrink: 0;
+	/* Fade de Rolagem Sutil via CSS mask-image (Perfeitamente alinhado, sem deslocamento de padding/gap) */
+	section[data-scrollable='true'][data-overflow-top='true'][data-overflow-bottom='true'] {
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black 20px,
+			black calc(100% - 20px),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black 20px,
+			black calc(100% - 20px),
+			transparent 100%
+		);
 	}
 
-	section[data-scrollable='true']::before {
-		top: 0;
-		margin-bottom: -24px;
-		background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+	section[data-scrollable='true'][data-overflow-top='true']:not([data-overflow-bottom='true']) {
+		mask-image: linear-gradient(to bottom, transparent 0%, black 20px, black 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20px, black 100%);
 	}
 
-	section[data-scrollable='true']::after {
-		bottom: 0;
-		margin-top: -24px;
-		background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
-	}
-
-	section[data-scrollable='true'][data-overflow-top='true']::before {
-		opacity: 1;
-	}
-
-	section[data-scrollable='true'][data-overflow-bottom='true']::after {
-		opacity: 1;
+	section[data-scrollable='true']:not([data-overflow-top='true'])[data-overflow-bottom='true'] {
+		mask-image: linear-gradient(to bottom, black 0%, black calc(100% - 20px), transparent 100%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			black 0%,
+			black calc(100% - 20px),
+			transparent 100%
+		);
 	}
 
 	/* Paddings */
@@ -176,9 +174,9 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		section[data-scrollable='true']::before,
-		section[data-scrollable='true']::after {
-			transition: none;
+		section[data-scrollable='true'] {
+			mask-image: none;
+			-webkit-mask-image: none;
 		}
 	}
 </style>

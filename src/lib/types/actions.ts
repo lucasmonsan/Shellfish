@@ -12,11 +12,6 @@ export interface ButtonProps extends HTMLButtonAttributes {
 	casing?: 'uppercase' | 'none';
 }
 
-export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
-	children?: Snippet;
-	fullWidth?: boolean;
-}
-
 export interface TabItem {
 	id: string;
 	label: string;
@@ -30,4 +25,24 @@ export interface TabsProps extends Omit<HTMLAttributes<HTMLElement>, 'onchange'>
 	fullWidth?: boolean;
 	children?: Snippet;
 	onchange?: (value: string) => void;
+}
+
+export interface DropdownItem {
+	id: string;
+	label: string;
+	icon?: Snippet;
+	danger?: boolean;
+	disabled?: boolean;
+	onclick?: () => void;
+}
+
+export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
+	label?: string;
+	trigger?: Snippet;
+	items?: DropdownItem[];
+	children?: Snippet;
+	open?: boolean;
+	variant?: Variant;
+	size?: Size;
+	placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
 }

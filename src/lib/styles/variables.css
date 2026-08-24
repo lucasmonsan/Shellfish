@@ -2,12 +2,12 @@
 	/* ==========================================================================
 	   1. SOMBRA SÓLIDA TÁTIL (PADRÃO ÚNICO GLOBAL)
 	   ========================================================================== */
-	--shadow: 2px 2px 0px var(--border-color);
+	--shadow: 1px 1px 0px var(--border-color);
 
 	/* ==========================================================================
 	   2. PALETA DE 12 CORES (HARMONIA TERRACOTA)
 	   ========================================================================== */
-	--color-red: #c94038;
+	--color-red: #9b2226;
 	--color-orange: #d96b27;
 	--color-purple: #6f4c8a;
 	--color-pink: #c75c82;
@@ -16,14 +16,14 @@
 	--color-blue-dark: #274c77;
 	--color-blue-light: #4f86c6;
 	--color-yellow: #dca130;
-	--color-white: #ffffff;
+	--color-white: #faf7f2;
 	--color-gray: #71717a;
-	--color-black: #18181b;
+	--color-black: #1c1917;
 
 	/* Identidade Principal */
 	--color-primary: #b94b38;
 	--color-primary-hover: #9c3f2f;
-	--color-primary-contrast: #ffffff;
+	--color-primary-contrast: #faf7f2;
 
 	/* Status Semânticos */
 	--color-success: var(--color-green-light);
@@ -44,8 +44,8 @@
 	/* ==========================================================================
 	   4. ARREDONDAMENTO DE CANTOS (APENAS SM E MD)
 	   ========================================================================== */
-	--radius-sm: 2px;
-	--radius-md: 4px;
+	--radius-sm: 1px;
+	--radius-md: 2px;
 
 	/* ==========================================================================
 	   5. ESPAÇAMENTO (6 NÍVEIS BASEADOS NA GRADE DE 4/8PX)
@@ -94,15 +94,16 @@
    ========================================================================== */
 :root[data-theme='dark'] {
 	--bg-primary: #181615;
-	--bg-secondary: #24201e;
+	--bg-secondary: #2a2624;
 	--text-primary: #f5f0eb;
 	--text-secondary: #a8a29e;
 	--border-color: #f5f0eb;
 
 	--color-primary: #d9624c;
 	--color-primary-hover: #b94b38;
-	--color-primary-contrast: #181615;
+	--color-primary-contrast: #faf7f2;
 
-	--color-black: #f5f0eb;
-	--color-white: #181615;
+	--color-black: #181615;
+	--color-white: #faf7f2;
+	--color-red: #e63946;
 }

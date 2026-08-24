@@ -11,11 +11,18 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 	radius?: Radius;
 	interactive?: boolean;
 	fullWidth?: boolean;
+	collapsible?: boolean;
+	open?: boolean;
+	badgeTitle?: string;
+	back?: Snippet;
+	flipped?: boolean;
 }
+
+export type BadgeVariant = Variant | 'success' | 'warning' | 'neutral';
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 	children?: Snippet;
-	variant?: Variant;
+	variant?: BadgeVariant;
 	size?: 'sm' | 'md';
 	pill?: boolean;
 }
@@ -32,4 +39,5 @@ export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
 	name?: string;
 	size?: 'sm' | 'md' | 'lg' | 'xl';
 	square?: boolean;
+	circle?: boolean;
 }

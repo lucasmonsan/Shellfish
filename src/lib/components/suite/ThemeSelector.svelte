@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ThemeSelectorProps } from '$lib/types/index.js';
 	import type { Theme } from '$lib/types/tokens.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		size = 'md',
@@ -8,6 +9,8 @@
 		class: className,
 		...restProps
 	}: ThemeSelectorProps = $props();
+
+	const { t } = getI18n();
 
 	let currentTheme = $state<Theme>('light');
 
@@ -38,8 +41,8 @@
 <button
 	type="button"
 	data-size={size}
-	aria-label="Alternar tema claro/escuro"
-	title="Alternar tema"
+	aria-label={t('theme.toggle')}
+	title={t('theme.toggle')}
 	onclick={toggleTheme}
 	class={className}
 	{...restProps}
@@ -104,12 +107,11 @@
 
 	button:hover {
 		transform: translate(-1px, -1px);
-		box-shadow: 3px 3px 0px var(--border-color);
-		background-color: var(--bg-primary);
+		box-shadow: 2px 2px 0px var(--border-color);
 	}
 
 	button:active {
-		transform: translate(2px, 2px);
+		transform: translate(1px, 1px);
 		box-shadow: 0px 0px 0px var(--border-color);
 	}
 
