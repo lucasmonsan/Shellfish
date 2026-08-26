@@ -25,7 +25,8 @@
 </script>
 
 <svelte:head>
-	<title>Shellfish UI</title>
+	<title>{i18n.t('document.title')}</title>
+	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 {@render children()}

@@ -21,6 +21,8 @@
 		...restProps
 	}: CardProps = $props();
 
+	const actionable = $derived(!!back || !!onclick);
+
 	function toggleCollapse() {
 		if (collapsible) {
 			open = !open;
@@ -40,13 +42,13 @@
 	}
 
 	function handleArticleKeydown(e: KeyboardEvent & { currentTarget: EventTarget & HTMLElement }) {
-		if (back && (e.key === ' ' || e.key === 'Enter')) {
+		if (actionable && (e.key === ' ' || e.key === 'Enter')) {
 			const target = e.target as HTMLElement;
 			if (
 				!target.closest('button, a, input, select, textarea, [role="button"], [role="menuitem"]')
 			) {
 				e.preventDefault();
-				flipped = !flipped;
+				e.currentTarget.click();
 			}
 		}
 		onkeydown?.(e);
@@ -126,21 +128,7 @@
 	{/if}
 {/snippet}
 
-<article
-	data-variant={variant}
-	data-padding={padding}
-	data-radius={radius}
-	data-interactive={interactive || !!back}
-	data-full-width={fullWidth}
-	data-collapsible={collapsible}
-	data-collapsed={collapsible && !open ? 'true' : undefined}
-	data-has-badge={badgeTitle ? 'true' : undefined}
-	data-flippable={back ? 'true' : undefined}
-	class={className}
-	onclick={handleArticleClick}
-	onkeydown={handleArticleKeydown}
-	{...restProps}
->
+{#snippet cardContent()}
 	{#if back}
 		<div class="card-flip-flipper" class:flipped>
 			<div class="card-flip-front">
@@ -153,7 +141,45 @@
 	{:else}
 		{@render frontContent()}
 	{/if}
-</article>
+{/snippet}
+
+{#if actionable}
+	<article
+		data-variant={variant}
+		data-padding={padding}
+		data-radius={radius}
+		data-interactive={interactive || !!back}
+		data-full-width={fullWidth}
+		data-collapsible={collapsible}
+		data-collapsed={collapsible && !open ? 'true' : undefined}
+		data-has-badge={badgeTitle ? 'true' : undefined}
+		data-flippable={back ? 'true' : undefined}
+		role="button"
+		tabindex="0"
+		aria-pressed={back ? flipped : undefined}
+		class={className}
+		onclick={handleArticleClick}
+		onkeydown={handleArticleKeydown}
+		{...restProps}
+	>
+		{@render cardContent()}
+	</article>
+{:else}
+	<article
+		data-variant={variant}
+		data-padding={padding}
+		data-radius={radius}
+		data-interactive={interactive}
+		data-full-width={fullWidth}
+		data-collapsible={collapsible}
+		data-collapsed={collapsible && !open ? 'true' : undefined}
+		data-has-badge={badgeTitle ? 'true' : undefined}
+		class={className}
+		{...restProps}
+	>
+		{@render cardContent()}
+	</article>
+{/if}
 
 <style>
 	article {
@@ -221,7 +247,7 @@
 		box-shadow: var(--shadow);
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
+		overflow: visible;
 		transition:
 			box-shadow 0.15s ease,
 			transform 0.15s ease;
@@ -252,7 +278,7 @@
 		letter-spacing: 0.05em;
 		text-transform: uppercase;
 		line-height: 1.2;
-		z-index: 1;
+		z-index: var(--z-raised);
 		box-shadow: 1px 1px 0px var(--border-color);
 		user-select: none;
 		pointer-events: none;
@@ -402,9 +428,13 @@
 
 	.card-collapse-inner {
 		min-height: 0;
-		overflow: hidden;
+		overflow: visible;
 		display: flex;
 		flex-direction: column;
+	}
+
+	.card-collapse-wrapper.collapsed .card-collapse-inner {
+		overflow: hidden;
 	}
 
 	.card-body {

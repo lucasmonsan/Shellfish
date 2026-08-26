@@ -31,20 +31,46 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 		(f) => !f.endsWith('index.ts')
 	);
 
-	it('proíbe expressamente o uso de !important em todos os componentes e estilos da biblioteca', () => {
+	it('proíbe !important, exceto no reset global de movimento reduzido', () => {
 		const violations: string[] = [];
+		const allowedReducedMotionDeclarations = new Set([
+			'animation-duration: 0.01ms !important;',
+			'animation-iteration-count: 1 !important;',
+			'transition-duration: 0.01ms !important;',
+			'scroll-behavior: auto !important;'
+		]);
 
 		for (const file of allSourceFiles) {
-			// Ignora reset global
-			if (file.endsWith('index.css') || file.endsWith('modern-normalize.css')) continue;
+			if (file.endsWith('modern-normalize.css')) continue;
 
 			const content = fs.readFileSync(file, 'utf-8');
-			if (content.includes('!important')) {
-				violations.push(path.relative(process.cwd(), file));
+			const relPath = path.relative(process.cwd(), file);
+
+			for (const line of content.split('\n')) {
+				if (!line.includes('!important')) continue;
+
+				if (file.endsWith('index.css') && allowedReducedMotionDeclarations.has(line.trim())) {
+					continue;
+				}
+
+				violations.push(`${relPath}: ${line.trim()}`);
 			}
 		}
 
 		expect(violations, 'Arquivos contendo !important não permitido').toEqual([]);
+	});
+
+	it('proíbe z-index numérico em componentes', () => {
+		const violations: string[] = [];
+
+		for (const file of allComponentFiles) {
+			const content = fs.readFileSync(file, 'utf-8');
+			if (/z-index:\s*\d/.test(content)) {
+				violations.push(path.relative(process.cwd(), file));
+			}
+		}
+
+		expect(violations, 'Componentes com z-index numérico').toEqual([]);
 	});
 
 	it('proíbe desativadores de linter e supressores de TypeScript em todo o projeto (src/)', () => {

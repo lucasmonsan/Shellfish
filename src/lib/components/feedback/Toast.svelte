@@ -79,7 +79,7 @@
 		position: fixed;
 		bottom: var(--space-lg);
 		right: var(--space-lg);
-		z-index: var(--z-toast);
+		z-index: var(--z-floating);
 		max-width: min(420px, 90vw);
 	}
 

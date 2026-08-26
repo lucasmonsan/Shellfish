@@ -79,14 +79,20 @@
 	--text-2xl: 1.5rem;
 
 	/* ==========================================================================
-	   7. ESCALA SEMÂNTICA DE CAMADAS (Z-INDEX)
+	   7. ESCALA SEMÂNTICA DE CAMADAS (CONTRATO DA SUÍTE)
 	   ========================================================================== */
-	--z-below: -1;
 	--z-base: 0;
-	--z-sticky: 10;
-	--z-popover: 20;
-	--z-drawer: 30;
-	--z-toast: 40;
+	--z-background: 10;
+	--z-content: 20;
+	--z-raised: 30;
+	--z-sticky: 40;
+	--z-shell-top: 50;
+	--z-shell-header: 60;
+	--z-popover: 70;
+	--z-floating: 80;
+	--z-drawer: 90;
+	--z-modal: 100;
+	--z-critical: 110;
 }
 
 /* ==========================================================================

@@ -12,6 +12,19 @@
 	}: SpinnerProps = $props();
 
 	const { t } = getI18n();
+	const colorToken = $derived(
+		color === 'primary'
+			? 'var(--color-primary)'
+			: color === 'success'
+				? 'var(--color-success)'
+				: color === 'warning'
+					? 'var(--color-warning)'
+					: color === 'danger'
+						? 'var(--color-danger)'
+						: color === 'info'
+							? 'var(--color-info)'
+							: undefined
+	);
 </script>
 
 <span
@@ -23,9 +36,9 @@
 	{...restProps}
 >
 	{#if variant === 'cube'}
-		<span class="spinner-cube" style:background-color={color}></span>
+		<span class="spinner-cube" style:background-color={colorToken}></span>
 	{:else if variant === 'ratchet'}
-		<span class="spinner-ratchet" style:background-color={color}></span>
+		<span class="spinner-ratchet" style:background-color={colorToken}></span>
 	{:else}
 		<svg viewBox="0 0 24 24" fill="none" class="spinner-chaser-svg">
 			<rect
@@ -34,7 +47,7 @@
 				y="4"
 				width="16"
 				height="16"
-				stroke={color ?? 'var(--border-color)'}
+				stroke={colorToken ?? 'var(--border-color)'}
 				stroke-width="2.5"
 				stroke-opacity="0.2"
 			/>
@@ -44,7 +57,7 @@
 				y="4"
 				width="16"
 				height="16"
-				stroke={color ?? 'var(--color-primary)'}
+				stroke={colorToken ?? 'var(--color-primary)'}
 				stroke-width="2.5"
 				stroke-dasharray="16 48"
 			/>

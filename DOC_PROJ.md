@@ -4,6 +4,9 @@ Shellfish é a biblioteca oficial de componentes de interface e primitivas de la
 
 Use este arquivo como ponto de entrada conciso para agentes de IA. Use `README.md` para comandos de desenvolvimento e `AGENTS.md` na raiz do Zoo para as regras canônicas de workflow.
 
+As regras completas, critérios de validação, exceções técnicas e estado de
+conformidade ficam em `docs/STANDARDS.md`.
+
 ## Papel Arquitetural do Shellfish na Suíte Zoo
 
 1. **Pacote de UI Canônico (`shellfish`)**: Fornece componentes primitivos, containers semânticos, tokens CSS e utilitário reativo de i18n para todos os apps consumidores da suíte (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
@@ -13,11 +16,11 @@ Use este arquivo como ponto de entrada conciso para agentes de IA. Use `README.m
 ## Diretrizes e Regras Não-Negociáveis
 
 - **Fonte Única da Verdade Visual**: Consumidores da suíte não criam CSS local de sobrescrita; novas variantes e componentes são adicionados diretamente no Shellfish.
-- **Zero "Div-Soup"**: Uso obrigatório de tags HTML nativas semânticas (`<input>`, `<textarea>`, `<article>`, `<dialog>`, `<select>`, `<button>`, `<header>`, `<main>`, `<section>`, `<footer>`, `<hr>`). Proibido aninhar `<div>`s supérfluas.
-- **Estilização Direta de Tags Nativas**: Como o CSS no Svelte é estritamente isolado (scoped), estilizamos tags únicas diretamente em `<style>` (`button`, `input`, `textarea`, `select`, `article`, `dialog`, `hr`, `main`, `header`, `section`, `footer`) sem criar classes artificiais desnecessárias.
+- **Sem "Div-Soup"**: Uso obrigatório de HTML semântico. `<div>` é permitido somente quando necessário para layout, associação de controles, animação, menu ou acessibilidade; veja `docs/STANDARDS.md`.
+- **Estilização Direta de Tags Nativas**: Estilize raízes semânticas diretamente; classes são permitidas para subelementos e estados necessários.
 - **1 Único Padrão de Sombra Sólida**: Padronização estrita em `--shadow: 1px 1px 0px var(--border-color)` (hover `2px 2px` com `translate(-1px, -1px)` e active `0px 0px` com `translate(1px, 1px)`).
 - **Svelte 5 Runes**: Uso obrigatório de Runes (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Proibido Svelte 4 legado (`export let`, `$$props`, `<slot>`).
-- **TypeScript Estrito & a11y Nativo**: Todas as props são tipadas e repassam atributos HTML padrão via `...restProps`. Todos os componentes possuem foco visível e acessibilidade via teclado.
+- **TypeScript Estrito & a11y Nativo**: Todas as props são tipadas e repassam atributos HTML padrão via `...restProps`. Todo componente com interação real possui foco visível e acessibilidade via teclado.
 - **Internacionalização Reativa (i18n)**: Suporte dinâmico a `pt-BR` e `en-US` via `i18n.svelte.ts` e componente `<LocaleSelector>`. Proibido strings estáticas em atributos de acessibilidade.
 - **Testes Escaláveis Dinâmicos**: Todas as suítes de teste varrem dinamicamente o código e validam invariantes de arquitetura, exportações, variáveis CSS e paridade de i18n sem necessidade de ajustes manuais por arquivo.
 - **Padrão de Commits**: Conventional Commits em inglês no formato `<type>(<scope>): <description>` (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`).

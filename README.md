@@ -31,6 +31,11 @@ Importe os estilos globais no seu `+layout.svelte` raiz:
 </script>
 ```
 
+## 📐 Padrões
+
+As regras canônicas, exceções técnicas, critérios de validação e estado de
+conformidade estão em [docs/STANDARDS.md](./docs/STANDARDS.md).
+
 Importe os componentes:
 
 ```svelte

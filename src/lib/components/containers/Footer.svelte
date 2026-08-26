@@ -66,11 +66,15 @@
 	}
 
 	.footer-expand-inner {
-		overflow: hidden;
+		overflow: visible;
 		min-height: 0;
 		display: flex;
 		align-items: center;
 		width: 100%;
+	}
+
+	.footer-expand-wrapper.collapsed .footer-expand-inner {
+		overflow: hidden;
 	}
 
 	/* Paddings */

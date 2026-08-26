@@ -29,7 +29,7 @@
 	let suggestionsId = $derived(`${activeId}-suggestions`);
 
 	let activePlaceholder = $derived(
-		placeholder ?? (value.length === 0 ? t('showcase.forms.inputPlaceholder') : '')
+		placeholder ?? (value.length === 0 ? t('chips.placeholder') : '')
 	);
 
 	let availableSuggestions = $derived(
@@ -115,7 +115,7 @@
 						class="chip-remove-btn"
 						{disabled}
 						onclick={(e) => removeTag(index, e)}
-						aria-label={`Remover ${tag}`}
+						aria-label={t('chips.remove', { tag })}
 					>
 						<svg
 							viewBox="0 0 16 16"

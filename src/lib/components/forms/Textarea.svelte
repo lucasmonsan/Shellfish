@@ -161,7 +161,7 @@
 		font-weight: 700;
 		line-height: 1;
 		white-space: nowrap;
-		z-index: 2;
+		z-index: var(--z-raised);
 		pointer-events: none;
 		user-select: none;
 		transition: color 0.15s ease;

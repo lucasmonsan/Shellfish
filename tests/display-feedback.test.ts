@@ -58,6 +58,9 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(content).toContain('card-straddled-badge');
 		expect(content).toContain('card-collapse-wrapper');
 		expect(content).toContain('card-flip-flipper');
+		expect(content).toContain('role="button"');
+		expect(content).toContain('tabindex="0"');
+		expect(content).toContain('e.currentTarget.click()');
 	});
 
 	it('Badge.svelte deve renderizar <span> diretamente', () => {
@@ -114,7 +117,7 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		const content = fs.readFileSync(path.join(feedbackDir, 'Toast.svelte'), 'utf-8');
 		expect(content).toContain('role="status"');
 		expect(content).toContain('aria-live="polite"');
-		expect(content).toContain('z-index: var(--z-toast);');
+		expect(content).toContain('z-index: var(--z-floating);');
 	});
 
 	it('ThemeSelector.svelte deve alternar tema e sincronizar com localStorage e data-theme', () => {
