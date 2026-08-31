@@ -11,6 +11,13 @@ Shellfish is the single visual and interaction source for Zoo applications.
 Consumer applications must not override Shellfish CSS. A missing variant, token
 or behavior is added here first, then consumed through its public API.
 
+## Change authority
+
+No Shellfish creation, edit, removal or other change — including code,
+components, content, files and these standards — is permitted without the
+user's prior explicit approval. Approval must be specific to the proposed
+change; silence, context or previous requests do not constitute approval.
+
 The interactive catalog is internal. It runs on port `5172` and must not be
 indexed. Shellfish is a package, not a consumer product: app-only rules such as
 `AppShell`, `/up`, landing pages, SSO and public SEO do not apply here.

@@ -7,6 +7,13 @@ Use este arquivo como ponto de entrada conciso para agentes de IA. Use `README.m
 As regras completas, critérios de validação, exceções técnicas e estado de
 conformidade ficam em `docs/STANDARDS.md`.
 
+## Autoridade para alterações
+
+Nenhuma criação, edição, remoção ou alteração no Shellfish — incluindo código,
+componentes, conteúdo, arquivos e regras — pode ser realizada sem aprovação
+explícita prévia do usuário. A autorização deve ser específica para a mudança
+proposta; silêncio, contexto ou pedidos anteriores não constituem aprovação.
+
 ## Papel Arquitetural do Shellfish na Suíte Zoo
 
 1. **Pacote de UI Canônico (`shellfish`)**: Fornece componentes primitivos, containers semânticos, tokens CSS e utilitário reativo de i18n para todos os apps consumidores da suíte (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
