@@ -33,6 +33,7 @@ silence, context or previous requests do not constitute approval.
 - **Commit Standard**: Use Conventional Commits in English: `<type>(<scope>): <description>` (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`).
 - **Reserved Local Port**: `http://localhost:5172` (port `5172`).
 - **AI Dev-Server Prohibition**: No AI may run `pnpm dev`, `vite dev` or `preview` without the user's explicit permission.
+- **Catalog Contract**: Every public component requires a typed API, a stable catalog route, a playground, generated code, i18n content and browser-test contract before it can be considered complete.
 
 ## Directory Structure
 
@@ -42,6 +43,7 @@ silence, context or previous requests do not constitute approval.
 - `src/lib/utils/`: Reactive utilities (`i18n.svelte.ts`).
 - `src/lib/types/`: TypeScript definitions for library props and types.
 - `src/routes/`: Internal showcase and visual reference for components.
+- `src/routes/components/`: Catalog index, category and component routes. Catalog-only code stays under this route tree.
 - `tests/`: Scalable automated tests for implementation quality, tokens, semantics, tactile behavior, forms, feedback and i18n.
 
 ## Quality Commands

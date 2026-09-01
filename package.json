@@ -50,7 +50,7 @@
 		"lint:package": "publint run --pack false",
 		"format": "prettier --write .",
 		"test:unit": "vitest run",
-		"test": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm run lint:package",
+		"test": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm run lint:package && pnpm test:e2e",
 		"test:e2e": "playwright test"
 	},
 	"peerDependencies": {
@@ -58,6 +58,7 @@
 		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.13.0",
 		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.60.0",
 		"@sveltejs/adapter-auto": "^7.0.1",
