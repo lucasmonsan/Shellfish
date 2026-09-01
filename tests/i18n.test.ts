@@ -460,7 +460,7 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		});
 	});
 
-	it('deve renderizar SSR do catálogo integralmente em inglês quando data.locale for en-US', () => {
+	it('deve renderizar SSR do overview em inglês quando data.locale for en-US', () => {
 		const rendered = render(TestLayoutWrapper, {
 			props: {
 				data: {
@@ -472,12 +472,9 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		});
 
 		const body = rendered.body;
-		expect(body).toContain('Buttons');
-		expect(body).toContain('Actions');
-		expect(body).toContain('Forms');
-		expect(body).toContain('Surfaces');
-		expect(body).toContain('Dropdowns');
-		expect(body).toContain('Shellfish Logo');
+		expect(body).toContain('Svelte 5 component library for the Zoo suite.');
+		expect(body).toContain('Open catalog');
+		expect(body).toContain('Toggle language');
 		expect(body).toContain(`v${pkg.version}`);
 	});
 

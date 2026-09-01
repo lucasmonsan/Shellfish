@@ -22,6 +22,19 @@ The interactive catalog is internal. It runs on port `5172` and must not be
 indexed. Shellfish is a package, not a consumer product: app-only rules such as
 `AppShell`, `/up`, landing pages, SSO and public SEO do not apply here.
 
+## Catalog contract
+
+The catalog uses stable, non-localized routes: `/components`,
+`/components/[category]` and `/components/[category]/[component]`. Its registry
+is the audited inventory of public components. A public component is incomplete
+without a documented `*Props` interface, catalog entry, dynamic playground,
+generated example, route and browser-test contract.
+
+Catalog content is localized in `pt-BR` and `en-US`; API identifiers, types and
+copied Svelte code remain English. Components load individually through dynamic
+imports. An entry's name, category or slug must not be removed or changed
+without the user's explicit approval.
+
 ## Mandatory rules
 
 ### Architecture
@@ -48,13 +61,14 @@ indexed. Shellfish is a package, not a consumer product: app-only rules such as
 
 ### Semantics and accessibility
 
-| ID     | Rule                                                                                                                                   | Validation                             |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| SF-X01 | Every interaction is keyboard-operable, exposes visible focus and has correct native semantics or ARIA.                                | component tests + manual browser check |
-| SF-X02 | Interactive non-native surfaces are focusable and implement Enter/Space consistently.                                                  | component tests                        |
-| SF-X03 | Labels, state and feedback use native HTML where possible (`label`, `button`, `dialog`, `input`, `select`, `textarea`, `aside`, `hr`). | component tests                        |
-| SF-X04 | User-facing and accessibility text is localized; components must not embed translatable strings. Callers may provide localized props.  | `i18n.test.ts` + review                |
-| SF-X05 | Support `prefers-reduced-motion`.                                                                                                      | global CSS + review                    |
+| ID     | Rule                                                                                                                                   | Validation                              |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| SF-X01 | Every interaction is keyboard-operable, exposes visible focus and has correct native semantics or ARIA.                                | component tests + manual browser check  |
+| SF-X02 | Interactive non-native surfaces are focusable and implement Enter/Space consistently.                                                  | component tests                         |
+| SF-X03 | Labels, state and feedback use native HTML where possible (`label`, `button`, `dialog`, `input`, `select`, `textarea`, `aside`, `hr`). | component tests                         |
+| SF-X04 | User-facing and accessibility text is localized; components must not embed translatable strings. Callers may provide localized props.  | `i18n.test.ts` + review                 |
+| SF-X05 | Support `prefers-reduced-motion`.                                                                                                      | global CSS + review                     |
+| SF-X06 | Assertive and polite live regions use neutral `div` roots with `role="alert"` or `role="status"`; do not put either role on `aside`.   | browser accessibility + component tests |
 
 ### Internationalization and theme
 
@@ -67,14 +81,16 @@ indexed. Shellfish is a package, not a consumer product: app-only rules such as
 
 ### Repository, release and operations
 
-| ID     | Rule                                                                                         | Validation                     |
-| ------ | -------------------------------------------------------------------------------------------- | ------------------------------ |
-| SF-R01 | Use pnpm, Svelte 5, strict TypeScript, ESLint and Prettier.                                  | package metadata + `pnpm lint` |
-| SF-R02 | Keep AGPL-3.0-only, the required PWA assets and package export map.                          | package metadata + tests       |
-| SF-R03 | Keep source, tests and component audit documentation under `src/lib/`, `tests/` and `docs/`. | baseline audit                 |
-| SF-R04 | Do not commit secrets or generated artifacts.                                                | review + `.gitignore`          |
-| SF-R05 | Use Conventional Commits in English: `<type>(<scope>): <description>`.                       | review                         |
-| SF-R06 | Do not start `dev`, `preview` or a server without explicit user permission.                  | workflow                       |
+| ID     | Rule                                                                                                                  | Validation                     |
+| ------ | --------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| SF-R01 | Use pnpm, Svelte 5, strict TypeScript, ESLint and Prettier.                                                           | package metadata + `pnpm lint` |
+| SF-R02 | Keep AGPL-3.0-only, the required PWA assets and package export map.                                                   | package metadata + tests       |
+| SF-R03 | Keep source, tests and component audit documentation under `src/lib/`, `tests/` and `docs/`.                          | baseline audit                 |
+| SF-R04 | Do not commit secrets or generated artifacts.                                                                         | review + `.gitignore`          |
+| SF-R05 | Use Conventional Commits in English: `<type>(<scope>): <description>`.                                                | review                         |
+| SF-R06 | Do not start `dev`, `preview` or a server without explicit user permission.                                           | workflow                       |
+| SF-R07 | `pnpm test` includes browser and Playwright E2E checks. Every new public component needs a catalog and test contract. | CI + contract tests            |
+| SF-R08 | Visual snapshots are versioned test fixtures. Updating one is a deliberate visual change requiring explicit approval. | review + Playwright            |
 
 ## Canonical layer scale
 
@@ -104,6 +120,7 @@ indexed. Shellfish is a package, not a consumer product: app-only rules such as
 | Card and Footer clipping open overlay content                     | Open state is visible; clipping stays only when collapsed.                                                                  | Fixed                         |
 | Keyboard access for clickable/flippable Cards                     | Focus/role/Enter/Space added when there is click behavior.                                                                  | Fixed                         |
 | Catalog indexation                                                | `robots.txt` and page metadata set to noindex.                                                                              | Fixed                         |
+| `Alert` and `Toast` live-region semantics                         | Use `div` roots because `aside` does not permit `alert` or `status` roles; catalog guides and tests record this decision.   | Fixed                         |
 | Theme flash                                                       | Theme initialized before hydration.                                                                                         | Fixed                         |
 | Missing component/audit documentation                             | This document added.                                                                                                        | Fixed                         |
 | Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                          | Pending external audit        |
@@ -113,5 +130,5 @@ indexed. Shellfish is a package, not a consumer product: app-only rules such as
 ## Quality gate
 
 Run, in order: `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, `pnpm build`,
-`pnpm run lint:package`. `pnpm test` runs this complete gate and requires the
-user's explicit approval under Zoo workflow.
+`pnpm run lint:package`, `pnpm test:e2e`. `pnpm test` runs this complete gate
+and requires the user's explicit approval under Zoo workflow.

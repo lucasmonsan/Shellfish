@@ -82,10 +82,10 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(content).toContain('aria-hidden="true"');
 	});
 
-	it('Alert.svelte deve usar <aside role="alert"> diretamente', () => {
+	it('Alert.svelte must use a valid div alert live region', () => {
 		const content = fs.readFileSync(path.join(feedbackDir, 'Alert.svelte'), 'utf-8');
-		expect(content).toContain('role="alert"');
-		expect(content).toContain('<aside');
+		expect(content).toContain('<div role="alert"');
+		expect(content).not.toContain('<aside');
 	});
 
 	it('Spinner.svelte deve renderizar cubo neobrutalista com spinCube, ratchetSteps e chaserDash com a11y', () => {
@@ -113,9 +113,10 @@ describe('Display, Feedback & Suite Components (Pure Semantics & Native Top Laye
 		expect(content).toContain('dialog::backdrop');
 	});
 
-	it('Toast.svelte deve renderizar <aside role="status"> com auto-dismiss', () => {
+	it('Toast.svelte must use a valid div status live region with auto-dismiss', () => {
 		const content = fs.readFileSync(path.join(feedbackDir, 'Toast.svelte'), 'utf-8');
-		expect(content).toContain('role="status"');
+		expect(content).toContain('<div\n\t\trole="status"');
+		expect(content).not.toContain('<aside');
 		expect(content).toContain('aria-live="polite"');
 		expect(content).toContain('z-index: var(--z-floating);');
 	});

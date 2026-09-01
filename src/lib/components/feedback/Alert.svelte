@@ -24,7 +24,7 @@
 </script>
 
 {#if isVisible}
-	<aside role="alert" data-variant={variant} class={className} {...restProps}>
+	<div role="alert" data-variant={variant} class={className} {...restProps}>
 		<div class="content">
 			{#if title}
 				<h4>{title}</h4>
@@ -50,11 +50,11 @@
 				</svg>
 			</button>
 		{/if}
-	</aside>
+	</div>
 {/if}
 
 <style>
-	aside {
+	div[role='alert'] {
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
@@ -84,22 +84,22 @@
 	}
 
 	/* Variantes */
-	aside[data-variant='info'] {
+	div[role='alert'][data-variant='info'] {
 		background-color: var(--bg-primary);
 		border-left: calc(var(--border-width) * 3) solid var(--color-blue-light);
 	}
 
-	aside[data-variant='success'] {
+	div[role='alert'][data-variant='success'] {
 		background-color: var(--bg-primary);
 		border-left: calc(var(--border-width) * 3) solid var(--color-green-light);
 	}
 
-	aside[data-variant='warning'] {
+	div[role='alert'][data-variant='warning'] {
 		background-color: var(--bg-primary);
 		border-left: calc(var(--border-width) * 3) solid var(--color-yellow);
 	}
 
-	aside[data-variant='danger'] {
+	div[role='alert'][data-variant='danger'] {
 		background-color: var(--bg-primary);
 		border-left: calc(var(--border-width) * 3) solid var(--color-red);
 	}
