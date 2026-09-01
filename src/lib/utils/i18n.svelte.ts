@@ -21,6 +21,10 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'locale.toggle': 'Alternar idioma',
 		'locale.current': 'PT',
 		'locale.name': 'Português',
+		'dropdown.label': 'Opções',
+		'chips.placeholder': 'Digite uma tag e pressione Enter...',
+		'chips.remove': 'Remover {tag}',
+		'document.title': 'Shellfish UI',
 
 		// Showcase / Catálogo (Nomes Diretos)
 		'showcase.title': 'Shellfish',
@@ -190,6 +194,10 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'locale.toggle': 'Toggle language',
 		'locale.current': 'EN',
 		'locale.name': 'English',
+		'dropdown.label': 'Options',
+		'chips.placeholder': 'Type a tag and press Enter...',
+		'chips.remove': 'Remove {tag}',
+		'document.title': 'Shellfish UI',
 
 		// Showcase / Catalog (Direct Nouns)
 		'showcase.title': 'Shellfish',

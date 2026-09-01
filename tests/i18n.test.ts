@@ -115,6 +115,16 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 		expect(mismatchedPlaceholders, 'Incompatibilidade de parâmetros entre idiomas').toEqual([]);
 	});
 
+	it('componentes não devem fixar texto de acessibilidade traduzível', () => {
+		const chipsContent = fs.readFileSync(
+			path.resolve(process.cwd(), 'src/lib/components/forms/Chips.svelte'),
+			'utf-8'
+		);
+
+		expect(chipsContent).toContain("t('chips.remove', { tag })");
+		expect(chipsContent).not.toContain('aria-label={`Remover ${tag}`}');
+	});
+
 	it('parseAcceptLanguage deve respeitar pesos q e descartar estritamente q=0', () => {
 		expect(parseAcceptLanguage('')).toBe('pt-BR');
 		expect(parseAcceptLanguage(null)).toBe('pt-BR');

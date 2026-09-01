@@ -91,14 +91,20 @@ describe('Design Tokens & CSS Variables Dynamic Engine', () => {
 		expect(variablesContent).not.toContain('--space-xxxl:');
 	});
 
-	it('deve conter a escala semântica de z-index de 6 posições', () => {
+	it('deve conter a escala semântica de camadas da suíte', () => {
 		const expectedZIndexes = [
-			'--z-below:',
 			'--z-base:',
+			'--z-background:',
+			'--z-content:',
+			'--z-raised:',
 			'--z-sticky:',
+			'--z-shell-top:',
+			'--z-shell-header:',
 			'--z-popover:',
+			'--z-floating:',
 			'--z-drawer:',
-			'--z-toast:'
+			'--z-modal:',
+			'--z-critical:'
 		];
 
 		for (const z of expectedZIndexes) {

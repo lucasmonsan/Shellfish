@@ -16,7 +16,7 @@ export interface AlertProps extends HTMLAttributes<HTMLElement> {
 export interface SpinnerProps extends HTMLAttributes<HTMLElement> {
 	variant?: 'cube' | 'ratchet' | 'chaser';
 	size?: Size;
-	color?: string;
+	color?: 'primary' | 'success' | 'warning' | 'danger' | 'info';
 	label?: string;
 }
 

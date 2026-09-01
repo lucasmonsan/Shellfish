@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { DropdownProps, DropdownItem } from '$lib/types/index.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
-		label = 'Options',
+		label,
 		trigger,
 		items = [],
 		children,
@@ -15,6 +16,8 @@
 	}: DropdownProps = $props();
 
 	let containerEl = $state<HTMLDivElement>();
+	const { t } = getI18n();
+	const triggerLabel = $derived(label ?? t('dropdown.label'));
 
 	function toggle() {
 		open = !open;
@@ -60,7 +63,7 @@
 			{@render trigger()}
 		{:else}
 			<span class="dropdown-trigger-inner">
-				{label}
+				{triggerLabel}
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"

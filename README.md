@@ -1,29 +1,29 @@
 # 🐚 Shellfish
 
-Biblioteca de componentes de interface e primitivas de layout em **Svelte 5** para a suíte Monsan.
+A **Svelte 5** interface-component and layout-primitive library for the Monsan suite.
 
-O Shellfish foi desenhado para ser a evolução direta e simplificada do MonsanUI:
+Shellfish is designed as the direct, simplified evolution of MonsanUI:
 
-- **Zero Div-Soup**: Foco estrito em tags HTML nativas semânticas e acessíveis.
-- **Sombra Sólida Padronizada**: 1 único padrão de sombra física tátil (`--shadow: 1px 1px 0px var(--border-color)`).
-- **Sem complexidades desnecessárias**: Código direto, leve, reativo e tipado via TypeScript.
+- **No Div Soup**: Strict focus on semantic, accessible native HTML elements.
+- **Standardized Solid Shadow**: One tactile physical-shadow pattern (`--shadow: 1px 1px 0px var(--border-color)`).
+- **No unnecessary complexity**: Direct, lightweight, reactive and TypeScript-typed code.
 
 ---
 
 ## 🛠️ Stack
 
-- **Framework**: Svelte 5 (modo Runes obrigatório)
+- **Framework**: Svelte 5 (Runes mode required)
 - **Kit**: SvelteKit + `@sveltejs/package`
-- **Linguagem**: TypeScript (Strict Mode)
-- **Estilos**: CSS Nativo com variáveis de design system
-- **Testes**: Vitest + Playwright Component Testing
-- **Porta Local**: `5172` (`http://localhost:5172`)
+- **Language**: TypeScript (strict mode)
+- **Styles**: Native CSS with design-system variables
+- **Tests**: Vitest + Playwright Component Testing
+- **Local Port**: `5172` (`http://localhost:5172`)
 
 ---
 
-## 📦 Instalação e Uso em Apps da Suíte
+## 📦 Installation and Usage in Suite Apps
 
-Importe os estilos globais no seu `+layout.svelte` raiz:
+Import global styles in the root `+layout.svelte`:
 
 ```svelte
 <script>
@@ -31,7 +31,12 @@ Importe os estilos globais no seu `+layout.svelte` raiz:
 </script>
 ```
 
-Importe os componentes:
+## 📐 Standards
+
+Canonical rules, technical exceptions, validation criteria and compliance
+status are in [docs/STANDARDS.md](./docs/STANDARDS.md).
+
+Import components:
 
 ```svelte
 <script>
@@ -41,25 +46,25 @@ Importe os componentes:
 
 ---
 
-## 🚀 Comandos
+## 🚀 Commands
 
 ```bash
-# Executar todos os testes e gates de qualidade
+# Run every test and quality gate
 pnpm test
 
-# Executar checagem de tipos
+# Run type checking
 pnpm run typecheck
 
-# Executar linter e formatação
+# Run linting and formatting
 pnpm run lint
 pnpm run format
 
-# Gerar build do pacote (dist/)
+# Build the package (dist/)
 pnpm run build:package
 ```
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Distribuído sob a licença **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). Veja [LICENSE](./LICENSE) para mais detalhes.
+Distributed under the **GNU Affero General Public License v3.0** (`AGPL-3.0-only`). See [LICENSE](./LICENSE) for details.
