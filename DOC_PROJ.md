@@ -1,50 +1,50 @@
 # Shellfish Project Context
 
-Shellfish é a biblioteca oficial de componentes de interface e primitivas de layout em Svelte 5 para os produtos da suíte Monsan/Zoo, sendo a refatoração simplificada, tátil e estritamente padronizada do MonsanUI.
+Shellfish is the official Svelte 5 interface-component and layout-primitive library for Monsan/Zoo suite products. It is the simplified, tactile and strictly standardized refactor of MonsanUI.
 
-Use este arquivo como ponto de entrada conciso para agentes de IA. Use `README.md` para comandos de desenvolvimento e `AGENTS.md` na raiz do Zoo para as regras canônicas de workflow.
+Use this file as the concise entry point for AI agents. Use `README.md` for development commands and the Zoo root `AGENTS.md` for canonical workflow rules.
 
-As regras completas, critérios de validação, exceções técnicas e estado de
-conformidade ficam em `docs/STANDARDS.md`.
+The complete rules, validation criteria, technical exceptions and compliance
+status are in `docs/STANDARDS.md`.
 
-## Autoridade para alterações
+## Change Authority
 
-Nenhuma criação, edição, remoção ou alteração no Shellfish — incluindo código,
-componentes, conteúdo, arquivos e regras — pode ser realizada sem aprovação
-explícita prévia do usuário. A autorização deve ser específica para a mudança
-proposta; silêncio, contexto ou pedidos anteriores não constituem aprovação.
+No Shellfish creation, edit, removal or other change — including code,
+components, content, files and rules — may be made without the user's prior
+explicit approval. Authorization must be specific to the proposed change;
+silence, context or previous requests do not constitute approval.
 
-## Papel Arquitetural do Shellfish na Suíte Zoo
+## Shellfish Architectural Role in the Zoo Suite
 
-1. **Pacote de UI Canônico (`shellfish`)**: Fornece componentes primitivos, containers semânticos, tokens CSS e utilitário reativo de i18n para todos os apps consumidores da suíte (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
-2. **Guia Visual Vivo & Catálogo Interativo**: A rota `src/routes/+page.svelte` (na porta reservada `5172`) serve como o catálogo interativo (Storybook nativo) para demonstração e consulta de uso de cada componente.
-3. **Padrão Ouro de Implementação & Testes Dinâmicos**: O Shellfish serve como a referência técnica de código limpo em Svelte 5 e de suítes de testes automatizados dinâmicos (invariantes de qualidade, tokens, i18n dinâmico e Zero Div-Soup que escalam de 1 a 10.000 arquivos).
+1. **Canonical UI package (`shellfish`)**: Provides primitive components, semantic containers, CSS tokens and a reactive i18n utility for every suite consumer app (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
+2. **Living Visual Guide & Interactive Catalog**: The `src/routes/+page.svelte` route, on reserved port `5172`, is the interactive catalog (a native Storybook) for demonstrating and consulting each component's usage.
+3. **Gold Standard for Implementation & Dynamic Tests**: Shellfish is the technical reference for clean Svelte 5 code and scalable dynamic test suites that enforce quality invariants, tokens, dynamic i18n and semantic markup across 1 to 10,000 files.
 
-## Diretrizes e Regras Não-Negociáveis
+## Non-Negotiable Guidelines and Rules
 
-- **Fonte Única da Verdade Visual**: Consumidores da suíte não criam CSS local de sobrescrita; novas variantes e componentes são adicionados diretamente no Shellfish.
-- **Sem "Div-Soup"**: Uso obrigatório de HTML semântico. `<div>` é permitido somente quando necessário para layout, associação de controles, animação, menu ou acessibilidade; veja `docs/STANDARDS.md`.
-- **Estilização Direta de Tags Nativas**: Estilize raízes semânticas diretamente; classes são permitidas para subelementos e estados necessários.
-- **1 Único Padrão de Sombra Sólida**: Padronização estrita em `--shadow: 1px 1px 0px var(--border-color)` (hover `2px 2px` com `translate(-1px, -1px)` e active `0px 0px` com `translate(1px, 1px)`).
-- **Svelte 5 Runes**: Uso obrigatório de Runes (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Proibido Svelte 4 legado (`export let`, `$$props`, `<slot>`).
-- **TypeScript Estrito & a11y Nativo**: Todas as props são tipadas e repassam atributos HTML padrão via `...restProps`. Todo componente com interação real possui foco visível e acessibilidade via teclado.
-- **Internacionalização Reativa (i18n)**: Suporte dinâmico a `pt-BR` e `en-US` via `i18n.svelte.ts` e componente `<LocaleSelector>`. Proibido strings estáticas em atributos de acessibilidade.
-- **Testes Escaláveis Dinâmicos**: Todas as suítes de teste varrem dinamicamente o código e validam invariantes de arquitetura, exportações, variáveis CSS e paridade de i18n sem necessidade de ajustes manuais por arquivo.
-- **Padrão de Commits**: Conventional Commits em inglês no formato `<type>(<scope>): <description>` (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`).
-- **Porta Local Reservada**: `http://localhost:5172` (Porta `5172`).
-- **Proibição de Execução de Dev Server por IA**: Nenhuma IA pode executar `pnpm dev`, `vite dev` ou `preview` sem permissão expressa do usuário.
+- **Single Visual Source of Truth**: Suite consumers do not create local CSS overrides; new variants and components are added directly to Shellfish.
+- **No Div Soup**: Semantic HTML is mandatory. A `<div>` is allowed only when required for layout, control association, animation, a menu or accessibility; see `docs/STANDARDS.md`.
+- **Direct Native-Tag Styling**: Style semantic roots directly; classes are allowed for required sub-elements and states.
+- **One Solid-Shadow Pattern**: Strictly use `--shadow: 1px 1px 0px var(--border-color)`; on hover use `2px 2px` with `translate(-1px, -1px)`, and on active use `0px 0px` with `translate(1px, 1px)`.
+- **Svelte 5 Runes**: Runes are mandatory (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Legacy Svelte 4 patterns (`export let`, `$$props`, `<slot>`) are forbidden.
+- **Strict TypeScript & Native a11y**: Every prop is typed and standard HTML attributes are forwarded through `...restProps`. Every component with real interaction provides visible focus and keyboard accessibility.
+- **Reactive Internationalization (i18n)**: Dynamically support `pt-BR` and `en-US` through `i18n.svelte.ts` and `<LocaleSelector>`. Static strings in accessibility attributes are forbidden.
+- **Scalable Dynamic Tests**: All test suites dynamically scan source code and validate architecture invariants, exports, CSS variables and i18n parity without per-file manual adjustments.
+- **Commit Standard**: Use Conventional Commits in English: `<type>(<scope>): <description>` (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`).
+- **Reserved Local Port**: `http://localhost:5172` (port `5172`).
+- **AI Dev-Server Prohibition**: No AI may run `pnpm dev`, `vite dev` or `preview` without the user's explicit permission.
 
-## Estrutura de Diretórios
+## Directory Structure
 
-- `src/lib/index.ts`: Ponto de entrada público do pacote e re-exports de componentes e tipos.
-- `src/lib/components/`: Componentes organizados por categoria (`containers/`, `actions/`, `forms/`, `display/`, `feedback/`, `suite/`).
-- `src/lib/styles/`: Design tokens (`variables.css`), reset (`modern-normalize.css`) e normalização (`index.css`).
-- `src/lib/utils/`: Utilitários reativos (`i18n.svelte.ts`).
-- `src/lib/types/`: Definições TypeScript de props e tipos da biblioteca.
-- `src/routes/`: Showcase interno e referência visual dos componentes.
-- `tests/`: Testes automatizados escaláveis (qualidade anti-gambiarra, tokens, semântica, física tátil, formulários, feedback e i18n).
+- `src/lib/index.ts`: Public package entry point and component/type re-exports.
+- `src/lib/components/`: Components organized by category (`containers/`, `actions/`, `forms/`, `display/`, `feedback/`, `suite/`).
+- `src/lib/styles/`: Design tokens (`variables.css`), reset (`modern-normalize.css`) and normalization (`index.css`).
+- `src/lib/utils/`: Reactive utilities (`i18n.svelte.ts`).
+- `src/lib/types/`: TypeScript definitions for library props and types.
+- `src/routes/`: Internal showcase and visual reference for components.
+- `tests/`: Scalable automated tests for implementation quality, tokens, semantics, tactile behavior, forms, feedback and i18n.
 
-## Comandos de Qualidade
+## Quality Commands
 
 ```bash
 pnpm test
