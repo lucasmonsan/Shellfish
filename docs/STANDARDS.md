@@ -61,13 +61,14 @@ without the user's explicit approval.
 
 ### Semantics and accessibility
 
-| ID     | Rule                                                                                                                                   | Validation                             |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| SF-X01 | Every interaction is keyboard-operable, exposes visible focus and has correct native semantics or ARIA.                                | component tests + manual browser check |
-| SF-X02 | Interactive non-native surfaces are focusable and implement Enter/Space consistently.                                                  | component tests                        |
-| SF-X03 | Labels, state and feedback use native HTML where possible (`label`, `button`, `dialog`, `input`, `select`, `textarea`, `aside`, `hr`). | component tests                        |
-| SF-X04 | User-facing and accessibility text is localized; components must not embed translatable strings. Callers may provide localized props.  | `i18n.test.ts` + review                |
-| SF-X05 | Support `prefers-reduced-motion`.                                                                                                      | global CSS + review                    |
+| ID     | Rule                                                                                                                                   | Validation                              |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| SF-X01 | Every interaction is keyboard-operable, exposes visible focus and has correct native semantics or ARIA.                                | component tests + manual browser check  |
+| SF-X02 | Interactive non-native surfaces are focusable and implement Enter/Space consistently.                                                  | component tests                         |
+| SF-X03 | Labels, state and feedback use native HTML where possible (`label`, `button`, `dialog`, `input`, `select`, `textarea`, `aside`, `hr`). | component tests                         |
+| SF-X04 | User-facing and accessibility text is localized; components must not embed translatable strings. Callers may provide localized props.  | `i18n.test.ts` + review                 |
+| SF-X05 | Support `prefers-reduced-motion`.                                                                                                      | global CSS + review                     |
+| SF-X06 | Assertive and polite live regions use neutral `div` roots with `role="alert"` or `role="status"`; do not put either role on `aside`.   | browser accessibility + component tests |
 
 ### Internationalization and theme
 
@@ -119,6 +120,7 @@ without the user's explicit approval.
 | Card and Footer clipping open overlay content                     | Open state is visible; clipping stays only when collapsed.                                                                  | Fixed                         |
 | Keyboard access for clickable/flippable Cards                     | Focus/role/Enter/Space added when there is click behavior.                                                                  | Fixed                         |
 | Catalog indexation                                                | `robots.txt` and page metadata set to noindex.                                                                              | Fixed                         |
+| `Alert` and `Toast` live-region semantics                         | Use `div` roots because `aside` does not permit `alert` or `status` roles; catalog guides and tests record this decision.   | Fixed                         |
 | Theme flash                                                       | Theme initialized before hydration.                                                                                         | Fixed                         |
 | Missing component/audit documentation                             | This document added.                                                                                                        | Fixed                         |
 | Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                          | Pending external audit        |

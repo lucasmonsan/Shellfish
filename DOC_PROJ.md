@@ -17,7 +17,7 @@ silence, context or previous requests do not constitute approval.
 ## Shellfish Architectural Role in the Zoo Suite
 
 1. **Canonical UI package (`shellfish`)**: Provides primitive components, semantic containers, CSS tokens and a reactive i18n utility for every suite consumer app (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
-2. **Living Visual Guide & Interactive Catalog**: The `src/routes/+page.svelte` route, on reserved port `5172`, is the interactive catalog (a native Storybook) for demonstrating and consulting each component's usage.
+2. **Living Visual Guide & Interactive Catalog**: The overview at `src/routes/+page.svelte` links to the interactive catalog under `src/routes/components/`, on reserved port `5172`, for demonstrating and consulting each component's usage.
 3. **Gold Standard for Implementation & Dynamic Tests**: Shellfish is the technical reference for clean Svelte 5 code and scalable dynamic test suites that enforce quality invariants, tokens, dynamic i18n and semantic markup across 1 to 10,000 files.
 
 ## Non-Negotiable Guidelines and Rules

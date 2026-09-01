@@ -29,6 +29,7 @@ export interface CatalogEntry {
 	category: CatalogCategory;
 	slug: string;
 	root: string;
+	accessibilityKey?: string;
 	props: readonly string[];
 	controls: readonly CatalogControl[];
 	load: () => Promise<{ default: Component }>;

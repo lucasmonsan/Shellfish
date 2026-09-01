@@ -25,6 +25,10 @@ const translations: Record<Locale, Record<string, string>> = {
 		'catalog.a11y': 'Acessibilidade',
 		'catalog.a11yDescription':
 			'Use rótulos claros, mantenha o foco visível e opere interações pelo teclado.',
+		'catalog.a11y.alert':
+			'Alert usa uma região viva assertiva com div e role="alert"; não use aside para esse papel.',
+		'catalog.a11y.toast':
+			'Toast usa uma região viva polida com div, role="status" e aria-live="polite"; não use aside para esse papel.',
 		'catalog.when': 'Quando usar',
 		'catalog.whenDescription':
 			'Use quando a semântica e a API deste componente representarem a interação necessária.',
@@ -65,6 +69,10 @@ const translations: Record<Locale, Record<string, string>> = {
 		'catalog.a11y': 'Accessibility',
 		'catalog.a11yDescription':
 			'Use clear labels, retain visible focus and operate interactions with a keyboard.',
+		'catalog.a11y.alert':
+			'Alert uses an assertive live region with div and role="alert"; do not use aside for this role.',
+		'catalog.a11y.toast':
+			'Toast uses a polite live region with div, role="status" and aria-live="polite"; do not use aside for this role.',
 		'catalog.when': 'When to use',
 		'catalog.whenDescription':
 			'Use when this component’s semantics and API match the requested interaction.',

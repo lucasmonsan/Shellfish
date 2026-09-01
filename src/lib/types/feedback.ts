@@ -5,8 +5,8 @@ import type { Size } from './tokens.js';
 /** Alert severity. */
 export type AlertVariant = 'info' | 'success' | 'warning' | 'danger';
 
-/** Props for assertive feedback. */
-export interface AlertProps extends HTMLAttributes<HTMLElement> {
+/** Props for assertive feedback rendered as a `<div role="alert">` live region. */
+export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 	/** Alert content. */
 	children?: Snippet;
 	/** Severity styling. */
@@ -74,8 +74,8 @@ export interface DialogProps extends HTMLDialogAttributes {
 	onclose?: () => void;
 }
 
-/** Props for transient status feedback. */
-export interface ToastProps extends HTMLAttributes<HTMLElement> {
+/** Props for transient status feedback rendered as a `<div role="status">` live region. */
+export interface ToastProps extends HTMLAttributes<HTMLDivElement> {
 	/** Toast content. */
 	children?: Snippet;
 	/** Severity styling. */

@@ -481,7 +481,8 @@ const entries: CatalogEntry[] = [
 		propsType: 'AlertProps',
 		category: 'feedback',
 		slug: 'alert',
-		root: 'aside',
+		root: 'div',
+		accessibilityKey: 'catalog.a11y.alert',
 		props: ['children', 'variant', 'title', 'closable', 'closeLabel', 'onclose'],
 		controls: [
 			{
@@ -578,7 +579,8 @@ const entries: CatalogEntry[] = [
 		propsType: 'ToastProps',
 		category: 'feedback',
 		slug: 'toast',
-		root: 'aside',
+		root: 'div',
+		accessibilityKey: 'catalog.a11y.toast',
 		props: ['children', 'variant', 'duration', 'open', 'closeLabel', 'onclose'],
 		controls: [
 			{

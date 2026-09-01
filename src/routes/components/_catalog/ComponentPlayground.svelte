@@ -151,7 +151,7 @@
 	<h3>{catalogT(i18n.currentLocale, 'catalog.native')}</h3>
 	<p>{catalogT(i18n.currentLocale, 'catalog.nativeDescription')}</p>
 	<h3>{catalogT(i18n.currentLocale, 'catalog.a11y')}</h3>
-	<p>{catalogT(i18n.currentLocale, 'catalog.a11yDescription')}</p>
+	<p>{catalogT(i18n.currentLocale, entry.accessibilityKey ?? 'catalog.a11yDescription')}</p>
 </section>
 
 <style>

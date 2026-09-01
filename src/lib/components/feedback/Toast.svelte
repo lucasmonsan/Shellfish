@@ -29,7 +29,7 @@
 </script>
 
 {#if open}
-	<aside
+	<div
 		role="status"
 		aria-live="polite"
 		data-variant={variant}
@@ -60,11 +60,11 @@
 				<line x1="12" y1="4" x2="4" y2="12" />
 			</svg>
 		</button>
-	</aside>
+	</div>
 {/if}
 
 <style>
-	aside {
+	div[role='status'] {
 		display: inline-flex;
 		align-items: center;
 		justify-content: space-between;
@@ -91,19 +91,19 @@
 	}
 
 	/* Variantes */
-	aside[data-variant='info'] {
+	div[role='status'][data-variant='info'] {
 		border-left: calc(var(--border-width) * 3) solid var(--color-blue-light);
 	}
 
-	aside[data-variant='success'] {
+	div[role='status'][data-variant='success'] {
 		border-left: calc(var(--border-width) * 3) solid var(--color-green-light);
 	}
 
-	aside[data-variant='warning'] {
+	div[role='status'][data-variant='warning'] {
 		border-left: calc(var(--border-width) * 3) solid var(--color-yellow);
 	}
 
-	aside[data-variant='danger'] {
+	div[role='status'][data-variant='danger'] {
 		border-left: calc(var(--border-width) * 3) solid var(--color-red);
 	}
 

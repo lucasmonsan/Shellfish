@@ -27,13 +27,19 @@ for (const locale of locales) {
 		});
 
 		for (const entry of catalogEntries) {
-			test(`${entry.name} has a documented accessible playground`, async ({ browser, baseURL }) => {
+			test(`${entry.name} has a documented accessible playground`, async ({
+				browser,
+				baseURL,
+				browserName
+			}) => {
 				const context = await browser.newContext({
 					baseURL,
 					locale: locale.id,
 					extraHTTPHeaders: { 'Accept-Language': locale.header }
 				});
-				await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+				if (browserName === 'chromium') {
+					await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+				}
 				const page = await context.newPage();
 				await page.goto(`/components/${entry.category}/${entry.slug}`);
 				await expect(page.locator('html')).toHaveAttribute('lang', locale.id);
@@ -42,10 +48,14 @@ for (const locale of locales) {
 				await expect(page.locator('pre code')).toContainText(
 					`import { ${entry.name} } from 'shellfish'`
 				);
-				await page.getByRole('button', { name: /copy code|copiar código/i }).click();
-				await expect(
-					page.getByRole('button', { name: /code copied|código copiado/i })
-				).toBeVisible();
+				const copyButton = page.getByRole('button', { name: /copy code|copiar código/i });
+				await expect(copyButton).toBeVisible();
+				if (browserName === 'chromium') {
+					await copyButton.click();
+					await expect(
+						page.getByRole('button', { name: /code copied|código copiado/i })
+					).toBeVisible();
+				}
 				const axe = new AxeBuilder({ page }).disableRules(['color-contrast']);
 				if (['main', 'header', 'footer'].includes(entry.root)) {
 					axe.disableRules([
