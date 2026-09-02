@@ -61,7 +61,16 @@ pnpm run format
 
 # Build the package (dist/)
 pnpm run build:package
+
+# Run the deployed catalog build
+pnpm start
 ```
+
+## Internal catalog deployment
+
+The catalog can run as an authenticated internal Coolify app. See
+[docs/deployment.md](./docs/deployment.md) and
+[docs/production-smoke-checks.md](./docs/production-smoke-checks.md).
 
 ---
 

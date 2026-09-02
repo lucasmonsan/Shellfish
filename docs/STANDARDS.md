@@ -19,8 +19,10 @@ user's prior explicit approval. Approval must be specific to the proposed
 change; silence, context or previous requests do not constitute approval.
 
 The interactive catalog is internal. It runs on port `5172` and must not be
-indexed. Shellfish is a package, not a consumer product: app-only rules such as
-`AppShell`, `/up`, landing pages, SSO and public SEO do not apply here.
+indexed. When deployed, it uses Node runtime, HTTP Basic authentication and a
+public `/up` healthcheck; deployment details live in `docs/deployment.md`.
+Shellfish remains a package, not a consumer product: `AppShell`, landing pages,
+SSO and public SEO do not apply here.
 
 ## Catalog contract
 
@@ -110,22 +112,22 @@ without the user's explicit approval.
 
 ## Current compliance after this hardening
 
-| Finding                                                           | Decision                                                                                                                    | Status                        |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| Div wrappers in layout, controls, menus, cards and collapse areas | Required structural wrappers; documented exception.                                                                         | Accepted                      |
-| Old six-step layer scale and raw numeric layers                   | Migrated to suite layer tokens.                                                                                             | Fixed                         |
-| `!important` in reduced-motion reset                              | Narrow, documented accessibility exception.                                                                                 | Accepted                      |
-| Hardcoded Chips remove label                                      | Moved to i18n with `{tag}` parameter.                                                                                       | Fixed                         |
-| Arbitrary `Spinner.color`                                         | Replaced with semantic color options.                                                                                       | Fixed                         |
-| Card and Footer clipping open overlay content                     | Open state is visible; clipping stays only when collapsed.                                                                  | Fixed                         |
-| Keyboard access for clickable/flippable Cards                     | Focus/role/Enter/Space added when there is click behavior.                                                                  | Fixed                         |
-| Catalog indexation                                                | `robots.txt` and page metadata set to noindex.                                                                              | Fixed                         |
-| `Alert` and `Toast` live-region semantics                         | Use `div` roots because `aside` does not permit `alert` or `status` roles; catalog guides and tests record this decision.   | Fixed                         |
-| Theme flash                                                       | Theme initialized before hydration.                                                                                         | Fixed                         |
-| Missing component/audit documentation                             | This document added.                                                                                                        | Fixed                         |
-| Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                          | Pending external audit        |
-| Browser-level focus order, dialog behavior and visual overflow    | Cannot be proven by source inspection alone.                                                                                | Pending manual/E2E validation |
-| `adapter-auto` build notice                                       | Kept because Shellfish packages UI and is not a deployed consumer app. A deployable app must select its production adapter. | Accepted                      |
+| Finding                                                           | Decision                                                                                                                  | Status                        |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Div wrappers in layout, controls, menus, cards and collapse areas | Required structural wrappers; documented exception.                                                                       | Accepted                      |
+| Old six-step layer scale and raw numeric layers                   | Migrated to suite layer tokens.                                                                                           | Fixed                         |
+| `!important` in reduced-motion reset                              | Narrow, documented accessibility exception.                                                                               | Accepted                      |
+| Hardcoded Chips remove label                                      | Moved to i18n with `{tag}` parameter.                                                                                     | Fixed                         |
+| Arbitrary `Spinner.color`                                         | Replaced with semantic color options.                                                                                     | Fixed                         |
+| Card and Footer clipping open overlay content                     | Open state is visible; clipping stays only when collapsed.                                                                | Fixed                         |
+| Keyboard access for clickable/flippable Cards                     | Focus/role/Enter/Space added when there is click behavior.                                                                | Fixed                         |
+| Catalog indexation                                                | `robots.txt` and page metadata set to noindex.                                                                            | Fixed                         |
+| `Alert` and `Toast` live-region semantics                         | Use `div` roots because `aside` does not permit `alert` or `status` roles; catalog guides and tests record this decision. | Fixed                         |
+| Theme flash                                                       | Theme initialized before hydration.                                                                                       | Fixed                         |
+| Missing component/audit documentation                             | This document added.                                                                                                      | Fixed                         |
+| Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                        | Pending external audit        |
+| Browser-level focus order, dialog behavior and visual overflow    | Cannot be proven by source inspection alone.                                                                              | Pending manual/E2E validation |
+| Internal catalog deployment                                       | Uses `adapter-node`, Dockerfile, environment-only Basic Auth and public `/up` healthcheck.                                | Fixed                         |
 
 ## Quality gate
 

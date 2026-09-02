@@ -6,6 +6,7 @@ const locales = [
 	{ id: 'pt-BR', header: 'pt-BR,pt;q=0.9', catalog: 'Componentes' },
 	{ id: 'en-US', header: 'en-US,en;q=0.9', catalog: 'Components' }
 ] as const;
+const httpCredentials = { username: 'shellfish-e2e', password: 'shellfish-e2e' };
 
 for (const locale of locales) {
 	test.describe(`${locale.id} catalog`, () => {
@@ -15,6 +16,7 @@ for (const locale of locales) {
 		}) => {
 			const context = await browser.newContext({
 				baseURL,
+				httpCredentials,
 				javaScriptEnabled: false,
 				locale: locale.id,
 				extraHTTPHeaders: { 'Accept-Language': locale.header }
@@ -34,6 +36,7 @@ for (const locale of locales) {
 			}) => {
 				const context = await browser.newContext({
 					baseURL,
+					httpCredentials,
 					locale: locale.id,
 					extraHTTPHeaders: { 'Accept-Language': locale.header }
 				});
