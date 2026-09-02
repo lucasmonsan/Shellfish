@@ -5,11 +5,17 @@ export default defineConfig({
 	reporter: [['html', { open: 'never' }], ['list']],
 	webServer: {
 		command: 'pnpm run build && pnpm run preview',
+		env: {
+			...process.env,
+			SHELLFISH_CATALOG_USERNAME: 'shellfish-e2e',
+			SHELLFISH_CATALOG_PASSWORD: 'shellfish-e2e'
+		},
 		port: 5172,
 		reuseExistingServer: !process.env.CI
 	},
 	use: {
 		baseURL: 'http://127.0.0.1:5172',
+		httpCredentials: { username: 'shellfish-e2e', password: 'shellfish-e2e' },
 		locale: 'pt-BR',
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure'

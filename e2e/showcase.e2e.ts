@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const httpCredentials = { username: 'shellfish-e2e', password: 'shellfish-e2e' };
+
 test.describe('Catalog overview locale behavior', () => {
 	for (const scenario of [
 		{ locale: 'pt-BR', header: 'pt-BR,pt;q=0.9', label: 'Abrir catálogo' },
@@ -8,6 +10,7 @@ test.describe('Catalog overview locale behavior', () => {
 		test(`renders ${scenario.locale} before hydration`, async ({ browser, baseURL }) => {
 			const context = await browser.newContext({
 				baseURL,
+				httpCredentials,
 				locale: scenario.locale,
 				extraHTTPHeaders: { 'Accept-Language': scenario.header },
 				javaScriptEnabled: false
