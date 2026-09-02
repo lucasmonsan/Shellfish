@@ -1,0 +1,8 @@
+[phases.install]
+cmds = ["npx --yes pnpm@11.17.0 install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["npx --yes pnpm@11.17.0 build"]
+
+[start]
+cmd = "node build/index.js"

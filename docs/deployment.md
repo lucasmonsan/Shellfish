@@ -4,7 +4,7 @@ Deploy Shellfish only as an internal catalog. The component package remains a re
 
 ## Coolify
 
-- Build pack: Dockerfile
+- Build pack: Nixpacks
 - Exposed port: `3000`
 - Healthcheck: `GET /up`
 - Branch: the merged deployment branch
@@ -20,9 +20,9 @@ The catalog uses HTTP Basic authentication and sends `noindex, nofollow` metadat
 
 ## Runtime
 
-- Node: `22.13.0`
+- Node: `22`
 - Package manager: `pnpm@11.17.0`
-- Build: `pnpm install --frozen-lockfile && pnpm build`
+- Build: `npx --yes pnpm@11.17.0 install --frozen-lockfile && npx --yes pnpm@11.17.0 build`
 - Start: `node build/index.js`
 
 Do not commit credentials, domains, Coolify tokens or VPS details.
