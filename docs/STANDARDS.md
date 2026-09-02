@@ -127,7 +127,7 @@ without the user's explicit approval.
 | Missing component/audit documentation                             | This document added.                                                                                                      | Fixed                         |
 | Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                        | Pending external audit        |
 | Browser-level focus order, dialog behavior and visual overflow    | Cannot be proven by source inspection alone.                                                                              | Pending manual/E2E validation |
-| Internal catalog deployment                                       | Uses `adapter-node`, Dockerfile, environment-only Basic Auth and public `/up` healthcheck.                                | Fixed                         |
+| Internal catalog deployment                                       | Uses `adapter-node`, Nixpacks, environment-only Basic Auth and public `/up` healthcheck.                                  | Fixed                         |
 
 ## Quality gate
 

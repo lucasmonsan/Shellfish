@@ -34,7 +34,7 @@ silence, context or previous requests do not constitute approval.
 - **Reserved Local Port**: `http://localhost:5172` (port `5172`).
 - **AI Dev-Server Prohibition**: No AI may run `pnpm dev`, `vite dev` or `preview` without the user's explicit permission.
 - **Catalog Contract**: Every public component requires a typed API, a stable catalog route, a playground, generated code, i18n content and browser-test contract before it can be considered complete.
-- **Production Catalog**: Deploy with the Node adapter and the Dockerfile, configure Basic Auth through Coolify secrets and use public `/up` for healthchecks.
+- **Production Catalog**: Deploy with the Node adapter and Nixpacks, configure Basic Auth through Coolify secrets and use public `/up` for healthchecks.
 
 ## Directory Structure
 
