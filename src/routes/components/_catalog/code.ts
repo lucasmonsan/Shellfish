@@ -35,6 +35,9 @@ export function createExampleProps(entry: CatalogEntry): Record<string, unknown>
 }
 
 export function createCode(entry: CatalogEntry, values: Record<string, unknown>): string {
+	if (entry.name === 'Button' && values.iconOnly) {
+		return `import { Button } from 'shellfish';\n\n<Button iconOnly={true} aria-label="Add item">\n\t<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">\n\t\t<path d="M12 5v14M5 12h14" />\n\t</svg>\n</Button>`;
+	}
 	const props = Object.entries(values)
 		.filter(
 			([name]) =>

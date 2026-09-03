@@ -4,7 +4,7 @@ const space = ['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
 const size = ['sm', 'md', 'lg'] as const;
 const variants = ['primary', 'secondary', 'outline', 'ghost', 'danger'] as const;
 
-const entries: CatalogEntry[] = [
+const entries: Omit<CatalogEntry, 'loadDemo'>[] = [
 	{
 		name: 'Main',
 		propsType: 'MainProps',
@@ -624,7 +624,43 @@ const entries: CatalogEntry[] = [
 	}
 ];
 
-export const catalogEntries = entries as readonly CatalogEntry[];
+const demoLoaders: Record<string, CatalogEntry['loadDemo']> = {
+	main: () => import('./demos/main.js'),
+	header: () => import('./demos/header.js'),
+	section: () => import('./demos/section.js'),
+	footer: () => import('./demos/footer.js'),
+	row: () => import('./demos/row.js'),
+	column: () => import('./demos/column.js'),
+	grid: () => import('./demos/grid.js'),
+	button: () => import('./demos/button.js'),
+	tabs: () => import('./demos/tabs.js'),
+	dropdown: () => import('./demos/dropdown.js'),
+	input: () => import('./demos/input.js'),
+	textarea: () => import('./demos/textarea.js'),
+	select: () => import('./demos/select.js'),
+	checkbox: () => import('./demos/checkbox.js'),
+	radio: () => import('./demos/radio.js'),
+	switch: () => import('./demos/switch.js'),
+	slider: () => import('./demos/slider.js'),
+	calendar: () => import('./demos/calendar.js'),
+	chips: () => import('./demos/chips.js'),
+	card: () => import('./demos/card.js'),
+	badge: () => import('./demos/badge.js'),
+	divider: () => import('./demos/divider.js'),
+	avatar: () => import('./demos/avatar.js'),
+	alert: () => import('./demos/alert.js'),
+	spinner: () => import('./demos/spinner.js'),
+	'progress-bar': () => import('./demos/progress-bar.js'),
+	dialog: () => import('./demos/dialog.js'),
+	toast: () => import('./demos/toast.js'),
+	'theme-selector': () => import('./demos/theme-selector.js'),
+	'locale-selector': () => import('./demos/locale-selector.js')
+};
+
+export const catalogEntries: readonly CatalogEntry[] = entries.map((entry) => ({
+	...entry,
+	loadDemo: demoLoaders[entry.slug]
+}));
 
 export function getCategoryEntries(category: CatalogCategory): CatalogEntry[] {
 	return catalogEntries.filter((entry) => entry.category === category);
