@@ -108,7 +108,7 @@
 	</Header>
 
 	<Section scrollable={true} padding="none" gap="none" class="catalog-section">
-		<main id="catalog-content" class="catalog-content">{@render children()}</main>
+		<div id="catalog-content" class="catalog-content">{@render children()}</div>
 	</Section>
 
 	<Footer sticky={true} padding="sm">

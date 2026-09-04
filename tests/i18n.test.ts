@@ -473,7 +473,7 @@ describe('Internationalization (i18n) Engine, Integrity & Future-Proofing', () =
 
 		const body = rendered.body;
 		expect(body).toContain('Svelte 5 component library for the Zoo suite.');
-		expect(body).toContain('Open catalog');
+		expect(body).toContain('All components');
 		expect(body).toContain('Toggle language');
 		expect(body).toContain(`v${pkg.version}`);
 	});

@@ -92,9 +92,6 @@
 		border-top: var(--border-width) solid var(--border-color);
 		background: var(--bg-secondary);
 	}
-	.guide-grid p {
-		color: var(--text-secondary);
-	}
 	@media (max-width: 48rem) {
 		.guide-grid {
 			grid-template-columns: 1fr;

@@ -105,7 +105,7 @@
 <section aria-labelledby="api-title">
 	<h2 id="api-title">{catalogT(i18n.currentLocale, 'catalog.api')}</h2>
 	{#if api}<p>{api.documentation}</p>
-		<div class="api-table" role="region" aria-label={catalogT(i18n.currentLocale, 'catalog.api')}>
+		<div class="api-table">
 			<table>
 				<thead
 					><tr

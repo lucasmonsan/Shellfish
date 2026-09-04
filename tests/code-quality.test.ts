@@ -181,8 +181,8 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 	it('garante que a versão de package.json seja a fonte da verdade evolutiva e o README não use links file://', () => {
 		const pkg = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8'));
 		const readmeContent = fs.readFileSync(path.resolve(process.cwd(), 'README.md'), 'utf-8');
-		const showcaseContent = fs.readFileSync(
-			path.resolve(process.cwd(), 'src/routes/+page.svelte'),
+		const catalogShellContent = fs.readFileSync(
+			path.resolve(process.cwd(), 'src/routes/components/_catalog/CatalogShell.svelte'),
 			'utf-8'
 		);
 		const layoutServerContent = fs.readFileSync(
@@ -192,7 +192,7 @@ describe('Global Code Quality & Architecture Invariants (Scale-Proof)', () => {
 
 		expect(pkg.version).toBeDefined();
 		expect(layoutServerContent).toContain('version: pkg.version');
-		expect(showcaseContent).toContain('v{data.version}');
+		expect(catalogShellContent).toContain('Shellfish v{version}');
 		expect(readmeContent).not.toContain('file://');
 		expect(readmeContent).toContain('[LICENSE](./LICENSE)');
 	});

@@ -73,7 +73,8 @@ const translations: Record<Locale, Record<string, string>> = {
 		'catalog.prop': 'Prop',
 		'catalog.type': 'Tipo',
 		'catalog.descriptionLabel': 'Descrição',
-		'catalog.addItem': 'Adicionar item'
+		'catalog.addItem': 'Adicionar item',
+		'catalog.breadcrumb': 'Navegação estrutural'
 	},
 	'en-US': {
 		'catalog.title': 'Components',
@@ -146,7 +147,8 @@ const translations: Record<Locale, Record<string, string>> = {
 		'catalog.prop': 'Prop',
 		'catalog.type': 'Type',
 		'catalog.descriptionLabel': 'Description',
-		'catalog.addItem': 'Add item'
+		'catalog.addItem': 'Add item',
+		'catalog.breadcrumb': 'Breadcrumb navigation'
 	}
 };
 

@@ -4,8 +4,8 @@ const httpCredentials = { username: 'shellfish-e2e', password: 'shellfish-e2e' }
 
 test.describe('Catalog overview locale behavior', () => {
 	for (const scenario of [
-		{ locale: 'pt-BR', header: 'pt-BR,pt;q=0.9', label: 'Abrir catálogo' },
-		{ locale: 'en-US', header: 'en-US,en;q=0.9', label: 'Open catalog' }
+		{ locale: 'pt-BR', header: 'pt-BR,pt;q=0.9', label: 'Todos' },
+		{ locale: 'en-US', header: 'en-US,en;q=0.9', label: 'All components' }
 	] as const) {
 		test(`renders ${scenario.locale} before hydration`, async ({ browser, baseURL }) => {
 			const context = await browser.newContext({
@@ -18,7 +18,9 @@ test.describe('Catalog overview locale behavior', () => {
 			const page = await context.newPage();
 			await page.goto('/');
 			await expect(page.locator('html')).toHaveAttribute('lang', scenario.locale);
-			await expect(page.getByRole('link', { name: scenario.label })).toBeVisible();
+			await expect(
+				page.locator('#catalog-content').getByRole('link', { name: scenario.label, exact: true })
+			).toBeVisible();
 			await context.close();
 		});
 	}
