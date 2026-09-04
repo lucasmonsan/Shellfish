@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '$lib/styles/index.css';
-	import LocaleSelector from '$lib/components/suite/LocaleSelector.svelte';
 	import { setI18n, createI18n } from '$lib/utils/i18n.svelte.js';
 	import { onMount } from 'svelte';
+	import CatalogShell from './components/_catalog/CatalogShell.svelte';
 	import type { LayoutData } from './$types.js';
 
 	let { data, children }: { data: LayoutData; children: import('svelte').Snippet } = $props();
@@ -30,17 +30,4 @@
 	<meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
-{@render children()}
-
-<div class="catalog-locale-selector">
-	<LocaleSelector size="sm" />
-</div>
-
-<style>
-	.catalog-locale-selector {
-		position: fixed;
-		inset-block-start: var(--space-sm);
-		inset-inline-end: var(--space-sm);
-		z-index: var(--z-floating);
-	}
-</style>
+<CatalogShell version={data.version}>{@render children()}</CatalogShell>

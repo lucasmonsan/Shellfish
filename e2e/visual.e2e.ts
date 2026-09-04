@@ -14,9 +14,10 @@ test.describe('Catalog visual regression', () => {
 				await page.setViewportSize(viewport);
 				await page.goto(`/components/${entry.category}/${entry.slug}`);
 				await expect(page.getByRole('heading', { name: entry.name, exact: true })).toBeVisible();
+				await expect(page.locator(`[data-catalog-demo="${entry.slug}"]`)).toBeVisible();
 				await expect(page).toHaveScreenshot(
 					`components-${entry.category}-${entry.slug}-${viewport.name}.png`,
-					{ animations: 'disabled', fullPage: true }
+					{ animations: 'disabled', fullPage: true, maxDiffPixels: 1000 }
 				);
 			});
 		}

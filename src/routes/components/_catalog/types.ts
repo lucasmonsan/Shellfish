@@ -33,6 +33,10 @@ export interface CatalogEntry {
 	props: readonly string[];
 	controls: readonly CatalogControl[];
 	load: () => Promise<{ default: Component }>;
+	/** Catalog-only interactive demo, loaded only on the component route. */
+	loadDemo: () => Promise<{
+		default: Component<{ entry: CatalogEntry; values: Record<string, unknown> }>;
+	}>;
 }
 
 export interface ApiProp {

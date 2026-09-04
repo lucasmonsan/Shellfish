@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 import { catalogEntries } from '../src/routes/components/_catalog/registry.js';
+import { getCatalogGuide } from '../src/routes/components/_catalog/guides.js';
 
 const root = process.cwd();
 const componentsDirectory = path.join(root, 'src/lib/components');
@@ -86,8 +87,16 @@ describe('Catalog contracts', () => {
 		for (const entry of catalogEntries) {
 			expect(exports).toContain(`default as ${entry.name}`);
 			await expect(entry.load()).resolves.toHaveProperty('default');
+			await expect(entry.loadDemo()).resolves.toHaveProperty('default');
+			for (const locale of ['pt-BR', 'en-US'] as const) {
+				const guide = getCatalogGuide(locale, entry.name);
+				expect(guide.summary, `${entry.name} ${locale} summary`).not.toHaveLength(0);
+				expect(guide.when, `${entry.name} ${locale} when`).not.toHaveLength(0);
+				expect(guide.avoid, `${entry.name} ${locale} avoid`).not.toHaveLength(0);
+				expect(guide.accessibility, `${entry.name} ${locale} accessibility`).not.toHaveLength(0);
+			}
 		}
-	});
+	}, 20_000);
 
 	it('requires every catalog prop list to exactly match its direct Props interface', () => {
 		const interfaces = readInterfaces();
