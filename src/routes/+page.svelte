@@ -2,11 +2,19 @@
 	import { AppShell } from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 	import type { LayoutData } from './$types.js';
+	import { onMount } from 'svelte';
 
 	let { data }: { data: LayoutData } = $props();
 	const i18n = getI18n();
 
 	let currentTheme = $state<'light' | 'dark'>('light');
+
+	onMount(() => {
+		const active = document.documentElement.dataset.theme;
+		if (active === 'dark' || active === 'light') {
+			currentTheme = active;
+		}
+	});
 
 	function toggleTheme() {
 		const next = currentTheme === 'light' ? 'dark' : 'light';
@@ -16,7 +24,7 @@
 			try {
 				localStorage.setItem('shellfish-theme', next);
 			} catch {
-				// Ignora erro de storage
+				// Ignora indisponibilidade do storage
 			}
 		}
 	}
@@ -34,7 +42,7 @@
 	{#snippet top()}
 		<div class="shell-top-bar">
 			<div class="brand">
-				<span class="logo-mark">🐚</span>
+				<span class="brand-icon" aria-hidden="true"></span>
 				<div class="brand-text">
 					<span class="brand-name">{i18n.t('showcase.title')}</span>
 					<span class="version-badge">v{data.version}</span>
@@ -43,10 +51,12 @@
 
 			<div class="top-actions">
 				<button type="button" class="action-btn" onclick={handleToggleLocale}>
-					🌐 {i18n.t('locale.current')}
+					{i18n.t('locale.current')}
 				</button>
 				<button type="button" class="action-btn" onclick={toggleTheme}>
-					{currentTheme === 'light' ? '🌙 Escuro' : '☀️ Claro'}
+					{currentTheme === 'light'
+						? i18n.t('showcase.theme_light')
+						: i18n.t('showcase.theme_dark')}
 				</button>
 			</div>
 		</div>
@@ -54,57 +64,40 @@
 
 	<div class="page-content">
 		<header class="hero-section">
-			<span class="phase-pill">Fase 1 Concluída</span>
-			<h1>AppShell & Viewport</h1>
-			<p class="hero-desc">
-				O contêiner oficial de layout da Suíte Monsan com semântica estrita, viewport dinâmica (<code
-					>100dvh</code
-				>), e degradês de scroll automáticos.
-			</p>
+			<span class="phase-pill">{i18n.t('showcase.phase1_badge')}</span>
+			<h1>{i18n.t('showcase.hero_title')}</h1>
+			<p class="hero-desc">{i18n.t('showcase.hero_desc')}</p>
 		</header>
 
 		<section class="demo-card">
-			<h2>Como o AppShell Funciona</h2>
+			<h2>{i18n.t('showcase.how_it_works')}</h2>
 			<div class="demo-grid">
 				<div class="demo-feature">
-					<div class="feature-icon">🔝</div>
-					<h3>Região Top</h3>
-					<p>Fixo no topo com suporte a <code>backdrop-filter</code> e borda sutil.</p>
+					<h3>{i18n.t('showcase.top_title')}</h3>
+					<p>{i18n.t('showcase.top_desc')}</p>
 				</div>
 				<div class="demo-feature">
-					<div class="feature-icon">📜</div>
-					<h3>Região Content (Center)</h3>
-					<p>
-						Rolagem interna suave com fades superior e inferior que surgem quando o conteúdo
-						transborda.
-					</p>
+					<h3>{i18n.t('showcase.center_title')}</h3>
+					<p>{i18n.t('showcase.center_desc')}</p>
 				</div>
 				<div class="demo-feature">
-					<div class="feature-icon">🔻</div>
-					<h3>Região Bottom</h3>
-					<p>Rodapé ou barra de ações fixa na base da viewport sem quebrar em mobile.</p>
+					<h3>{i18n.t('showcase.bottom_title')}</h3>
+					<p>{i18n.t('showcase.bottom_desc')}</p>
 				</div>
 			</div>
 		</section>
 
 		<section class="demo-card">
-			<h2>Demonstração de Scroll e Fades Automáticos</h2>
-			<p>
-				Role esta página para cima e para baixo. Observe como o degradê suave superior surge assim
-				que o conteúdo afunda sob o cabeçalho, e o degradê inferior desaparece quando você atinge o
-				final.
-			</p>
+			<h2>{i18n.t('showcase.demo_title')}</h2>
+			<p>{i18n.t('showcase.demo_desc')}</p>
 
 			<div class="mock-cards-list">
 				{#each Array.from({ length: 8 }, (_, i) => i + 1) as item (item)}
 					<article class="mock-item">
 						<span class="item-number">#{item}</span>
 						<div class="item-body">
-							<h4>Bloco de Demonstração {item}</h4>
-							<p>
-								Simulação de superfície de conteúdo para validação do cálculo dinâmico de rolagem e
-								integridade do viewport em telas móveis e desktop.
-							</p>
+							<h4>{i18n.t('showcase.mock_block_title')} {item}</h4>
+							<p>{i18n.t('showcase.mock_block_desc')}</p>
 						</div>
 					</article>
 				{/each}
@@ -114,8 +107,8 @@
 
 	{#snippet bottom()}
 		<div class="shell-bottom-bar">
-			<span>🐚 Shellfish — Porta <code>4401</code></span>
-			<span>Suíte Monsan</span>
+			<span>Shellfish — Porta <code>4401</code></span>
+			<span>{i18n.t('showcase.footer_suite')}</span>
 		</div>
 	{/snippet}
 </AppShell>
@@ -137,9 +130,14 @@
 		gap: var(--space-sm);
 	}
 
-	.logo-mark {
-		font-size: 1.5rem;
-		line-height: 1;
+	.brand-icon {
+		display: inline-block;
+		width: 22px;
+		height: 22px;
+		background-color: var(--color-primary);
+		-webkit-mask: url('/favicon.svg') no-repeat center / contain;
+		mask: url('/favicon.svg') no-repeat center / contain;
+		flex-shrink: 0;
 	}
 
 	.brand-text {
@@ -250,11 +248,6 @@
 		border: var(--border-width) solid var(--border-color);
 		border-radius: var(--radius-sm);
 		padding: var(--space-md);
-	}
-
-	.feature-icon {
-		font-size: 1.5rem;
-		margin-bottom: var(--space-xs);
 	}
 
 	.demo-feature h3 {
