@@ -60,11 +60,11 @@ const catalogApiPlugin = {
 
 export default defineConfig({
 	server: {
-		port: 5172,
+		port: 4401,
 		host: true
 	},
 	preview: {
-		port: 5172,
+		port: 4401,
 		host: true
 	},
 	plugins: [sveltekit(), catalogApiPlugin],

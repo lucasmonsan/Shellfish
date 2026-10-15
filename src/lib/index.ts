@@ -12,3 +12,6 @@ export {
 	parseAcceptLanguage,
 	I18N_CONTEXT_KEY
 } from './utils/i18n.svelte.js';
+
+// Layout & Viewport Primitives
+export { default as AppShell } from './components/layout/AppShell.svelte';

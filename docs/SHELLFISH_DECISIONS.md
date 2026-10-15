@@ -53,3 +53,19 @@ Este documento registra as decisões consensuais para a refatoração do **Shell
 
 - **Proibição de CSS local nos apps:** Consumidores continuam proibidos de criar CSS customizado ou sobrescrever componentes.
 - **Garantia pela lib:** O Shellfish fornece a flexibilidade necessária via propriedades, variantes e snippets, evitando a necessidade de hacks nos consumidores.
+
+---
+
+## 7. Mapeamento de Portas Locais (Faixa 4400)
+
+Para isolar a suíte Monsan de projetos externos (livrando a porta padrão `5173` do Vite), a suíte utiliza a faixa `4400`:
+
+- **4401:** Shellfish (LibUI & Catálogo)
+- **4402:** Owlth (Auth & SSO)
+- **4403:** Monsan (Portal da Suíte)
+- **4404:** Koalify (Concursos & Questões)
+- **4405:** Manki (Flashcards)
+- **4406:** Crocode (IDE & Código)
+- **4407:** Rooster (Gestão & Rotina)
+- **4408:** Whallet (Finanças)
+- **4409:** Octomate (Automação)
