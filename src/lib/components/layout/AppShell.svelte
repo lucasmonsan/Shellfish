@@ -132,7 +132,7 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		height: 28px;
+		height: var(--scroll-fade-height);
 		pointer-events: none;
 		z-index: var(--layer-sticky);
 		opacity: 0;

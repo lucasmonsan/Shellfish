@@ -1,5 +1,5 @@
 /** Supported spacing token. */
-export type Space = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type Space = 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 /** Supported radius token. */
 export type Radius = 'sm' | 'md';
