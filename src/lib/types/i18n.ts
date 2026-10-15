@@ -1,8 +1,8 @@
 import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { Size } from './tokens.js';
 
-/** Supported application locale. */
-export type Locale = 'pt-BR' | 'en-US';
+/** Supported application locale in Monsan Suite. */
+export type Locale = 'pt-BR' | 'en-US' | 'es';
 
 /** Props for the locale preference control. */
 export interface LocaleSelectorProps extends HTMLButtonAttributes {

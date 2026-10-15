@@ -1,249 +1,130 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import { Column, Footer, Grid, Header, Row, Section } from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
-	import { catalogEntries, getCategoryEntries } from './components/_catalog/registry.js';
-	import { catalogCategories } from './components/_catalog/types.js';
-	import { catalogT } from './components/_catalog/translations.js';
 	import type { LayoutData } from './$types.js';
 
 	let { data }: { data: LayoutData } = $props();
 	const i18n = getI18n();
 </script>
 
-<svelte:head><title>Shellfish</title></svelte:head>
+<svelte:head>
+	<title>{i18n.t('showcase.title')} — {i18n.t('showcase.subtitle')}</title>
+</svelte:head>
 
-<section class="hero" aria-labelledby="home-title" data-catalog-version={data.version}>
-	<div>
-		<p class="eyebrow">{catalogT(i18n.currentLocale, 'catalog.internalCatalog')}</p>
-		<h1 id="home-title">{catalogT(i18n.currentLocale, 'catalog.homeTitle')}</h1>
-		<p>{catalogT(i18n.currentLocale, 'catalog.homeDescription')}</p>
-		<Row gap="sm" wrap={true}>
-			<a class="catalog-action" href={resolve('/components')}
-				>{catalogT(i18n.currentLocale, 'catalog.allComponents')}</a
-			>
-			<a class="catalog-action catalog-action--secondary" href={resolve('/components/layout')}
-				>{catalogT(i18n.currentLocale, 'catalog.exploreLayout')}</a
-			>
-		</Row>
-	</div>
-	<dl class="metrics">
-		<div>
-			<dt>{catalogT(i18n.currentLocale, 'catalog.componentsCount')}</dt>
-			<dd>{catalogEntries.length}</dd>
-		</div>
-		<div>
-			<dt>{catalogT(i18n.currentLocale, 'catalog.categoriesCount')}</dt>
-			<dd>{catalogCategories.length}</dd>
-		</div>
-	</dl>
-</section>
+<main class="foundation-container">
+	<header class="foundation-header">
+		<span class="badge">{i18n.t('showcase.status')}</span>
+		<h1>{i18n.t('showcase.title')}</h1>
+		<p class="subtitle">{i18n.t('showcase.subtitle')}</p>
+		<p class="tagline">{i18n.t('showcase.tagline')}</p>
+	</header>
 
-<section aria-labelledby="categories-title">
-	<div class="section-heading">
-		<div>
-			<p class="eyebrow">{catalogT(i18n.currentLocale, 'catalog.explore')}</p>
-			<h2 id="categories-title">{catalogT(i18n.currentLocale, 'catalog.categories')}</h2>
-		</div>
-		<a href={resolve('/components')}>{catalogT(i18n.currentLocale, 'catalog.allComponents')} →</a>
-	</div>
-	<div class="category-grid">
-		{#each catalogCategories as category (category)}
-			<a href={resolve(`/components/${category}`)}>
-				<strong>{catalogT(i18n.currentLocale, `catalog.category.${category}`)}</strong>
-				<span
-					>{getCategoryEntries(category).length}
-					{catalogT(i18n.currentLocale, 'catalog.componentsCount')}</span
-				>
-			</a>
-		{/each}
-	</div>
-</section>
+	<section class="foundation-card">
+		<h2>Próximos Passos (Fase 1)</h2>
+		<p>
+			A base limpa em Svelte 5 foi inicializada com sucesso. Agora estamos prontos para implementar
+			o primeiro bloco fundamental:
+		</p>
+		<ul>
+			<li>
+				<strong>AppShell:</strong> Contêiner de Viewport com regiões <code>Top</code>,
+				<code>Content</code>
+				(com scroll interno e degradês automáticos) e <code>Bottom</code>.
+			</li>
+			<li>
+				<strong>Tokens Minimalistas:</strong> Paleta refinada, elevação sutil e controle automático de
+				blur por performance.
+			</li>
+			<li>
+				<strong>Acessibilidade & i18n:</strong> Suporte nativo a <code>pt-BR</code>,
+				<code>en-US</code>
+				e <code>es</code>.
+			</li>
+		</ul>
+	</section>
 
-<section aria-labelledby="composition-title">
-	<div class="section-heading">
-		<div>
-			<p class="eyebrow">{catalogT(i18n.currentLocale, 'catalog.compositionEyebrow')}</p>
-			<h2 id="composition-title">{catalogT(i18n.currentLocale, 'catalog.compositionTitle')}</h2>
-		</div>
-	</div>
-	<div class="composition">
-		<Header padding="sm"
-			><Row fullWidth={true} justify="between"
-				><strong>{catalogT(i18n.currentLocale, 'catalog.demoHeader')}</strong><span
-					>{catalogT(i18n.currentLocale, 'catalog.demoActions')}</span
-				></Row
-			></Header
-		>
-		<Section padding="md"
-			><Column gap="sm"
-				><span>{catalogT(i18n.currentLocale, 'catalog.demoContent')}</span><Grid
-					columns={3}
-					gap="sm"
-					>{#each [1, 2, 3] as item (item)}<span class="demo-block">{item}</span>{/each}</Grid
-				></Column
-			></Section
-		>
-		<Footer padding="sm">{catalogT(i18n.currentLocale, 'catalog.demoFooter')}</Footer>
-	</div>
-</section>
+	<footer class="foundation-footer">
+		<span>v{data.version}</span>
+		<span>Suíte Monsan</span>
+	</footer>
+</main>
 
 <style>
-	.hero {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) auto;
-		gap: var(--space-xl);
-		align-items: end;
-		padding-block: var(--space-2xl);
-		border-bottom: var(--border-width) solid var(--border-color);
-	}
-	.catalog-action {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: var(--control-height-md);
-		padding-inline: var(--space-md);
-		border: var(--border-width) solid var(--border-color);
-		background: var(--color-primary);
-		box-shadow: var(--shadow);
-		color: var(--color-primary-contrast);
-		font-weight: 800;
-		text-decoration: none;
-	}
-	.catalog-action--secondary {
-		background: var(--bg-secondary);
-		color: var(--text-primary);
-	}
-	.catalog-action:hover {
-		transform: translate(-1px, -1px);
-		box-shadow: 2px 2px 0 var(--border-color);
-	}
-	.catalog-action:active {
-		transform: translate(1px, 1px);
-		box-shadow: none;
-	}
-	.catalog-action:focus-visible {
-		outline: var(--border-width) solid var(--color-primary);
-		outline-offset: var(--space-xs);
-	}
-	h1,
-	h2 {
-		margin: 0;
-		font-family: var(--font-display);
-		line-height: 1;
-	}
-	h1 {
-		font-size: clamp(var(--text-3xl), 7vw, 5rem);
-	}
-	h2 {
-		font-size: var(--text-3xl);
-	}
-	p {
-		max-width: 42rem;
-		color: var(--text-secondary);
-		font-size: var(--text-lg);
-	}
-	.eyebrow {
-		margin: 0 0 var(--space-sm);
-		color: var(--color-primary);
-		font-size: var(--text-xs);
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-	.metrics {
+	.foundation-container {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: var(--space-2xl) var(--space-md);
 		display: flex;
-		gap: var(--space-md);
+		flex-direction: column;
+		gap: var(--space-xl);
+		min-height: 100dvh;
+		justify-content: center;
+	}
+
+	.foundation-header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.badge {
+		align-self: flex-start;
+		font-size: var(--text-xs);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 4px 10px;
+		background-color: var(--color-primary-subtle);
+		color: var(--color-primary);
+		border-radius: var(--radius-full);
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+		letter-spacing: -0.02em;
 		margin: 0;
 	}
-	.metrics div {
-		min-width: 7rem;
-		padding: var(--space-md);
-		border: var(--border-width) solid var(--border-color);
-		background: var(--bg-secondary);
-		box-shadow: var(--shadow);
-	}
-	dt {
+
+	.subtitle {
+		font-size: var(--text-lg);
 		color: var(--text-secondary);
-		font-size: var(--text-xs);
-		font-weight: 800;
-		text-transform: uppercase;
+		margin: 0;
 	}
-	dd {
-		margin: var(--space-xs) 0 0;
-		font-family: var(--font-display);
-		font-size: var(--text-3xl);
+
+	.tagline {
+		font-size: var(--text-sm);
+		color: var(--text-muted);
+		margin: 0;
 	}
-	section + section {
-		margin-top: var(--space-2xl);
+
+	.foundation-card {
+		background-color: var(--bg-elevated);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-md);
+		padding: var(--space-lg);
+		box-shadow: var(--shadow-sm);
 	}
-	.section-heading {
+
+	.foundation-card h2 {
+		font-size: var(--text-xl);
+		margin-bottom: var(--space-sm);
+	}
+
+	.foundation-card ul {
+		margin: var(--space-sm) 0 0 0;
+		padding-left: var(--space-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		color: var(--text-secondary);
+		font-size: var(--text-sm);
+	}
+
+	.foundation-footer {
 		display: flex;
 		justify-content: space-between;
-		align-items: end;
-		gap: var(--space-md);
-		margin-bottom: var(--space-lg);
-	}
-	.section-heading a {
-		color: var(--text-primary);
-		font-weight: 800;
-	}
-	.category-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-md);
-	}
-	.category-grid a {
-		display: grid;
-		gap: var(--space-sm);
-		min-height: 8rem;
-		padding: var(--space-md);
-		border: var(--border-width) solid var(--border-color);
-		background: var(--bg-primary);
-		box-shadow: var(--shadow);
-		color: var(--text-primary);
-		text-decoration: none;
-	}
-	.category-grid a:hover {
-		transform: translate(-1px, -1px);
-		box-shadow: 3px 3px 0 var(--border-color);
-	}
-	.category-grid strong {
-		font-family: var(--font-display);
-		font-size: var(--text-xl);
-	}
-	.category-grid span {
-		color: var(--text-secondary);
-	}
-	.composition {
-		border: var(--border-width) solid var(--border-color);
-		background: var(--bg-secondary);
-		box-shadow: var(--shadow);
-	}
-	.demo-block {
-		display: grid;
-		min-height: 4rem;
-		place-items: center;
-		border: var(--border-width) solid var(--border-color);
-		background: var(--bg-primary);
-		font-weight: 800;
-	}
-	@media (max-width: 48rem) {
-		.hero {
-			grid-template-columns: 1fr;
-		}
-		.category-grid {
-			grid-template-columns: 1fr;
-		}
-		.section-heading {
-			align-items: start;
-			flex-direction: column;
-		}
-		.metrics {
-			width: 100%;
-		}
-		.metrics div {
-			flex: 1;
-		}
+		font-size: var(--text-xs);
+		color: var(--text-muted);
+		border-top: var(--border-width) solid var(--border-color);
+		padding-top: var(--space-md);
 	}
 </style>

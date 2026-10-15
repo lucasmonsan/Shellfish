@@ -1,54 +1,66 @@
 :root {
 	/* ==========================================================================
-	   1. SOMBRA SÓLIDA TÁTIL (PADRÃO ÚNICO GLOBAL)
+	   1. ESTÉTICA MINIMALISTA & ELEVAÇÃO SUTIL
 	   ========================================================================== */
-	--shadow: 1px 1px 0px var(--border-color);
+	--border-width: 1px;
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-full: 9999px;
+
+	/* Sombras Suaves (Minimalistas) */
+	--shadow-none: none;
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+	--shadow-border: 0 0 0 1px var(--border-color);
+
+	/* Transições Padronizadas */
+	--transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
 	/* ==========================================================================
-	   2. PALETA DE 12 CORES (HARMONIA TERRACOTA)
-	   ========================================================================== */
-	--color-red: #9b2226;
-	--color-orange: #d96b27;
-	--color-purple: #6f4c8a;
-	--color-pink: #c75c82;
-	--color-green-dark: #2b6140;
-	--color-green-light: #489968;
-	--color-blue-dark: #274c77;
-	--color-blue-light: #4f86c6;
-	--color-yellow: #dca130;
-	--color-white: #faf7f2;
-	--color-gray: #71717a;
-	--color-black: #1c1917;
-
-	/* Identidade Principal */
-	--color-primary: #b94b38;
-	--color-primary-hover: #9c3f2f;
-	--color-primary-contrast: #faf7f2;
-
-	/* Status Semânticos */
-	--color-success: var(--color-green-light);
-	--color-warning: var(--color-yellow);
-	--color-danger: var(--color-red);
-	--color-info: var(--color-blue-light);
-
-	/* ==========================================================================
-	   3. SUPERFÍCIES & CONTRASTE (LIGHT MODE)
+	   2. CORES E SUPERFÍCIES (LIGHT THEME - PADRÃO)
 	   ========================================================================== */
 	--bg-primary: #fdfbf7;
 	--bg-secondary: #f4eee3;
+	--bg-elevated: #ffffff;
+	--bg-input: #ffffff;
+
 	--text-primary: #1c1917;
 	--text-secondary: #78716c;
-	--border-color: #1c1917;
-	--border-width: 2px;
+	--text-muted: #a8a29e;
+
+	--border-color: #e7e5e4;
+	--border-subtle: #f5f5f4;
+	--border-strong: #1c1917;
+
+	/* Identidade Terracota Monsan */
+	--color-primary: #b94b38;
+	--color-primary-hover: #9c3f2f;
+	--color-primary-subtle: #fbeee9;
+	--color-primary-contrast: #ffffff;
+
+	/* Status Semânticos */
+	--color-success: #2b6140;
+	--color-success-subtle: #eef7f2;
+	--color-warning: #dca130;
+	--color-warning-subtle: #fef8eb;
+	--color-danger: #9b2226;
+	--color-danger-subtle: #fdf0f0;
+	--color-info: #274c77;
+	--color-info-subtle: #edf3f9;
 
 	/* ==========================================================================
-	   4. ARREDONDAMENTO DE CANTOS (APENAS SM E MD)
+	   3. BLUR & DESEMPENHO
 	   ========================================================================== */
-	--radius-sm: 1px;
-	--radius-md: 2px;
+	--blur-surface: blur(12px);
+	--backdrop-surface: rgba(253, 251, 247, 0.82);
+	--backdrop-elevated: rgba(255, 255, 255, 0.88);
 
 	/* ==========================================================================
-	   5. ESPAÇAMENTO (6 NÍVEIS BASEADOS NA GRADE DE 4/8PX)
+	   4. ESPAÇAMENTO E TIPOGRAFIA
 	   ========================================================================== */
 	--space-none: 0px;
 	--space-xs: 4px;
@@ -58,58 +70,83 @@
 	--space-xl: 32px;
 	--space-2xl: 48px;
 
-	/* Alturas Padrão de Controles */
-	--control-height-sm: 32px;
-	--control-height-md: 40px;
-	--control-height-lg: 48px;
-
-	/* ==========================================================================
-	   6. TIPOGRAFIA & ESCALA DE TEXTOS
-	   ========================================================================== */
-	--font-display: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-	--font-body:
-		'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-sans:
+		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
 	--text-xs: 0.75rem;
 	--text-sm: 0.875rem;
-	--text-base: 1rem;
+	--text-md: 1rem;
 	--text-lg: 1.125rem;
 	--text-xl: 1.25rem;
 	--text-2xl: 1.5rem;
+	--text-3xl: 2rem;
+
+	--leading-none: 1;
+	--leading-tight: 1.25;
+	--leading-normal: 1.5;
+	--leading-relaxed: 1.625;
 
 	/* ==========================================================================
-	   7. ESCALA SEMÂNTICA DE CAMADAS (CONTRATO DA SUÍTE)
+	   5. CAMADAS DE STACKING (Z-INDEX)
 	   ========================================================================== */
-	--z-base: 0;
-	--z-background: 10;
-	--z-content: 20;
-	--z-raised: 30;
-	--z-sticky: 40;
-	--z-shell-top: 50;
-	--z-shell-header: 60;
-	--z-popover: 70;
-	--z-floating: 80;
-	--z-drawer: 90;
-	--z-modal: 100;
-	--z-critical: 110;
+	--layer-base: 0;
+	--layer-content: 10;
+	--layer-sticky: 40;
+	--layer-header: 60;
+	--layer-popover: 70;
+	--layer-dialog: 100;
+	--layer-toast: 110;
 }
 
 /* ==========================================================================
-   8. DARK MODE
+   TEMA ESCURO (DARK THEME)
    ========================================================================== */
 :root[data-theme='dark'] {
-	--bg-primary: #181615;
-	--bg-secondary: #2a2624;
-	--text-primary: #f5f0eb;
+	--bg-primary: #121110;
+	--bg-secondary: #1c1917;
+	--bg-elevated: #242220;
+	--bg-input: #1c1917;
+
+	--text-primary: #fafaf9;
 	--text-secondary: #a8a29e;
-	--border-color: #f5f0eb;
+	--text-muted: #78716c;
 
-	--color-primary: #d9624c;
-	--color-primary-hover: #b94b38;
-	--color-primary-contrast: #faf7f2;
+	--border-color: #2e2b28;
+	--border-subtle: #1f1d1b;
+	--border-strong: #fafaf9;
 
-	--color-black: #181615;
-	--color-white: #faf7f2;
-	--color-red: #e63946;
+	--color-primary: #d96b52;
+	--color-primary-hover: #e8826b;
+	--color-primary-subtle: #2d1814;
+	--color-primary-contrast: #121110;
+
+	--color-success: #489968;
+	--color-success-subtle: #122218;
+	--color-warning: #e5b34e;
+	--color-warning-subtle: #291f09;
+	--color-danger: #cf4347;
+	--color-danger-subtle: #281012;
+	--color-info: #4f86c6;
+	--color-info-subtle: #101c29;
+
+	--backdrop-surface: rgba(18, 17, 16, 0.85);
+	--backdrop-elevated: rgba(36, 34, 32, 0.88);
+}
+
+/* ==========================================================================
+   DESATIVAÇÃO AUTOMÁTICA DE BLUR (PERFORMANCE & REDUCED MOTION)
+   ========================================================================== */
+:root[data-low-perf='true'] {
+	--blur-surface: none !important;
+	--backdrop-surface: var(--bg-primary) !important;
+	--backdrop-elevated: var(--bg-elevated) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--blur-surface: none !important;
+		--backdrop-surface: var(--bg-primary) !important;
+		--backdrop-elevated: var(--bg-elevated) !important;
+	}
 }
