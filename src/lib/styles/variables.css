@@ -70,8 +70,7 @@
 	--space-xl: 32px;
 	--space-2xl: 48px;
 
-	--font-sans:
-		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--font-sans: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
 	--text-xs: 0.75rem;
