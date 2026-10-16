@@ -1,20 +1,25 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'svelte/server';
 import { createRawSnippet } from 'svelte';
-import { Popover } from '$lib/index.js';
+import { Popover, type PopoverAriaProps } from '$lib/index.js';
 
 describe('Popover Overlay Primitive', () => {
-	const triggerSnippet = createRawSnippet<[toggle: () => void, isOpen: boolean]>(
-		(_getToggle, getIsOpen) => ({
-			render: () => `<button type="button">Trigger (open: ${getIsOpen?.() ?? false})</button>`
-		})
-	);
+	const triggerSnippet = createRawSnippet<
+		[toggle: () => void, isOpen: boolean, ariaProps: PopoverAriaProps]
+	>((_getToggle, getIsOpen, getAriaProps) => ({
+		render: () => {
+			const props = getAriaProps?.();
+			const isOpen = getIsOpen?.() ?? false;
+			const controls = props?.['aria-controls'] ? ` aria-controls="${props['aria-controls']}"` : '';
+			return `<button type="button" aria-haspopup="${props?.['aria-haspopup'] ?? 'dialog'}" aria-expanded="${props?.['aria-expanded'] ?? false}"${controls}>Trigger (open: ${isOpen})</button>`;
+		}
+	}));
 
 	const contentSnippet = createRawSnippet<[close: () => void]>(() => ({
 		render: () => '<div class="custom-card">Painel Popover</div>'
 	}));
 
-	it('renders trigger with aria attributes and does not render panel when closed', () => {
+	it('renders trigger with aria attributes on button and does not render panel when closed', () => {
 		const result = render(Popover, {
 			props: {
 				open: false,
@@ -27,14 +32,16 @@ describe('Popover Overlay Primitive', () => {
 		expect(result.body).toContain('Trigger (open: false)');
 		expect(result.body).toContain('aria-haspopup="dialog"');
 		expect(result.body).toContain('aria-expanded="false"');
+		expect(result.body).not.toContain('<div class="sf-popover-trigger" aria-haspopup');
 		expect(result.body).not.toContain('custom-card');
 		expect(result.body).not.toContain('Painel Popover');
 	});
 
-	it('renders floating panel when open is true', () => {
+	it('renders floating panel with role="region" and aria-label when open is true', () => {
 		const result = render(Popover, {
 			props: {
 				open: true,
+				ariaLabel: 'Menu de Opções',
 				trigger: triggerSnippet,
 				children: contentSnippet
 			}
@@ -42,6 +49,7 @@ describe('Popover Overlay Primitive', () => {
 
 		expect(result.body).toContain('aria-expanded="true"');
 		expect(result.body).toContain('role="region"');
+		expect(result.body).toContain('aria-label="Menu de Opções"');
 		expect(result.body).toContain('custom-card');
 		expect(result.body).toContain('Painel Popover');
 	});

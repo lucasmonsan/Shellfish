@@ -7,6 +7,14 @@ export type PopoverAlign = 'start' | 'center' | 'end';
 /** Vertical placement relative to the trigger element. */
 export type PopoverPlacement = 'auto' | 'bottom' | 'top';
 
+/** WAI-ARIA accessibility attributes to be spread onto the interactive trigger button. */
+export interface PopoverAriaProps {
+	'aria-haspopup': 'dialog';
+	'aria-expanded': boolean;
+	'aria-controls': string | undefined;
+	[key: string]: unknown;
+}
+
 /** Props for the atomic Popover overlay primitive. */
 export interface PopoverProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
 	/** Two-way bindable open state. Default: false. */
@@ -19,8 +27,16 @@ export interface PopoverProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
 	offset?: number;
 	/** Whether the popover trigger is disabled. Default: false. */
 	disabled?: boolean;
-	/** Required trigger snippet providing toggle function and current open state. */
-	trigger: Snippet<[toggle: (event?: MouseEvent | KeyboardEvent) => void, isOpen: boolean]>;
+	/** Accessible label for the floating panel region landmark. Default: 'Popover'. */
+	ariaLabel?: string;
+	/** Required trigger snippet providing toggle function, open state, and ARIA attributes for the button. */
+	trigger: Snippet<
+		[
+			toggle: (event?: MouseEvent | KeyboardEvent) => void,
+			isOpen: boolean,
+			ariaProps: PopoverAriaProps
+		]
+	>;
 	/** Default content snippet inside the popover panel, receiving close function. */
 	children?: Snippet<[close: () => void]>;
 	/** Optional explicit content snippet (alias to children). */

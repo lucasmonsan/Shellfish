@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PopoverProps } from '$lib/types/overlay.js';
+	import type { PopoverProps, PopoverAriaProps } from '$lib/types/overlay.js';
 
 	let {
 		open = $bindable(false),
@@ -7,6 +7,7 @@
 		placement = 'auto',
 		offset = 4,
 		disabled = false,
+		ariaLabel = 'Popover',
 		trigger,
 		children,
 		content,
@@ -21,6 +22,12 @@
 	let autoPlacement = $state<'bottom' | 'top'>('bottom');
 	let resolvedPlacement = $derived(placement !== 'auto' ? placement : autoPlacement);
 	const panelId = $props.id();
+
+	let ariaProps = $derived<PopoverAriaProps>({
+		'aria-haspopup': 'dialog',
+		'aria-expanded': open,
+		'aria-controls': open ? panelId : undefined
+	});
 
 	function toggle(event?: MouseEvent | KeyboardEvent) {
 		if (disabled) return;
@@ -99,13 +106,8 @@
 	style:--popover-offset="{offset}px"
 	{...restProps}
 >
-	<div
-		class="sf-popover-trigger"
-		aria-haspopup="dialog"
-		aria-expanded={open}
-		aria-controls={open ? panelId : undefined}
-	>
-		{@render trigger(toggle, open)}
+	<div class="sf-popover-trigger">
+		{@render trigger(toggle, open, ariaProps)}
 	</div>
 
 	{#if open}
@@ -113,6 +115,7 @@
 			bind:this={panelEl}
 			id={panelId}
 			role="region"
+			aria-label={ariaLabel}
 			tabindex="-1"
 			class="sf-popover-panel align-{align} placement-{resolvedPlacement} {panelClass}"
 		>

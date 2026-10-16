@@ -517,9 +517,13 @@
 			<Column gap="xs">
 				<span class="label">{i18n.t('popover.interactive_profile')}</span>
 				<Row gap="sm" align="center">
-					<Popover align="start" placement="bottom">
-						{#snippet trigger(toggle, open)}
-							<Button variant="secondary" size="md" onclick={toggle}>
+					<Popover
+						align="start"
+						placement="bottom"
+						ariaLabel={i18n.t('popover.interactive_profile')}
+					>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="secondary" size="md" onclick={toggle} {...ariaProps}>
 								<Image size="sm" src={SAMPLE_AVATAR} alt="" bordered />
 								<span>Lucas Monsan</span>
 								{#if open}<ChevronUp size={14} />{:else}<ChevronDown size={14} />{/if}
@@ -583,9 +587,9 @@
 			<Column gap="xs">
 				<span class="label">{i18n.t('popover.alignments')}</span>
 				<Row gap="sm" wrap>
-					<Popover align="start">
-						{#snippet trigger(toggle, open)}
-							<Button variant="outline" size="sm" onclick={toggle}>
+					<Popover align="start" ariaLabel={i18n.t('popover.align_start')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="outline" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.align_start')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -606,9 +610,9 @@
 						{/snippet}
 					</Popover>
 
-					<Popover align="center">
-						{#snippet trigger(toggle, open)}
-							<Button variant="outline" size="sm" onclick={toggle}>
+					<Popover align="center" ariaLabel={i18n.t('popover.align_center')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="outline" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.align_center')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -629,9 +633,9 @@
 						{/snippet}
 					</Popover>
 
-					<Popover align="end">
-						{#snippet trigger(toggle, open)}
-							<Button variant="outline" size="sm" onclick={toggle}>
+					<Popover align="end" ariaLabel={i18n.t('popover.align_end')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="outline" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.align_end')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -660,9 +664,9 @@
 			<Column gap="xs">
 				<span class="label">{i18n.t('popover.placements')}</span>
 				<Row gap="sm" wrap>
-					<Popover placement="auto">
-						{#snippet trigger(toggle, open)}
-							<Button variant="secondary" size="sm" onclick={toggle}>
+					<Popover placement="auto" ariaLabel={i18n.t('popover.placement_auto')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="secondary" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.placement_auto')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -685,9 +689,9 @@
 						{/snippet}
 					</Popover>
 
-					<Popover placement="top">
-						{#snippet trigger(toggle, open)}
-							<Button variant="secondary" size="sm" onclick={toggle}>
+					<Popover placement="top" ariaLabel={i18n.t('popover.placement_top')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="secondary" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.placement_top')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -709,9 +713,9 @@
 						{/snippet}
 					</Popover>
 
-					<Popover placement="bottom">
-						{#snippet trigger(toggle, open)}
-							<Button variant="secondary" size="sm" onclick={toggle}>
+					<Popover placement="bottom" ariaLabel={i18n.t('popover.placement_bottom')}>
+						{#snippet trigger(toggle, open, ariaProps)}
+							<Button variant="secondary" size="sm" onclick={toggle} {...ariaProps}>
 								{i18n.t('popover.placement_bottom')}
 								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
 							</Button>
@@ -769,7 +773,7 @@
 	:global(.footer) {
 		font-size: var(--text-xs);
 		font-family: var(--font-mono);
-		color: var(--text-muted);
+		color: var(--text-secondary);
 	}
 
 	h2 {
@@ -781,7 +785,7 @@
 	.label {
 		font-size: var(--text-xs);
 		font-family: var(--font-mono);
-		color: var(--text-muted);
+		color: var(--text-secondary);
 	}
 
 	.mono {
