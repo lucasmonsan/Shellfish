@@ -122,6 +122,32 @@
 		{ name: 'Sparkles', component: Sparkles },
 		{ name: 'Zap', component: Zap }
 	];
+
+	const SAMPLE_IMAGE =
+		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300"><rect width="100%" height="100%" fill="%232c2523"/><circle cx="200" cy="150" r="75" fill="%23e87d55"/><rect x="145" y="95" width="110" height="110" fill="%237db88f" opacity="0.85" rx="16"/><path d="M120 220 L280 220" stroke="%23f4ede4" stroke-width="8" stroke-linecap="round"/></svg>';
+
+	const SAMPLE_AVATAR =
+		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><rect width="100%" height="100%" fill="%2338302c"/><circle cx="50" cy="40" r="20" fill="%23e87d55"/><path d="M25 85 C25 65 75 65 75 85 Z" fill="%237db88f"/></svg>';
+
+	let imageState = $state<'valid' | 'error' | 'empty'>('valid');
+	let imageFit = $state<'cover' | 'contain'>('cover');
+	let imageRadiusIndex = $state(1); // 1 = 'xs'
+	const radiusOptions = ['none', 'xs', 'md', 'full'] as const;
+	let currentImageRadius = $derived(radiusOptions[imageRadiusIndex]);
+
+	let currentImageSrc = $derived.by(() => {
+		if (imageState === 'valid') return SAMPLE_IMAGE;
+		if (imageState === 'error') return 'https://invalid-host.broken/non-existent.jpg';
+		return null;
+	});
+
+	function cycleImageRadius() {
+		imageRadiusIndex = (imageRadiusIndex + 1) % radiusOptions.length;
+	}
+
+	function toggleImageFit() {
+		imageFit = imageFit === 'cover' ? 'contain' : 'cover';
+	}
 </script>
 
 <svelte:head>
@@ -349,90 +375,132 @@
 			</Grid>
 		</Card>
 
-		<Card gap="sm">
-			<h2>Image</h2>
+		<Card gap="md">
+			<h2>{i18n.t('image.title')}</h2>
+
+			<!-- 1. Interactive Playground -->
 			<Column gap="xs">
-				<span class="label">Sizes & Fallback Variants</span>
-				<Row gap="sm" align="center">
-					<Image size="sm" fallback="SM" alt="Tamanho SM" bordered />
-					<Image size="md" fallback="MD" alt="Tamanho MD" bordered />
-					<Image size="lg" fallback="LG" alt="Tamanho LG" bordered />
-					<Divider vertical spacing="xs" />
-					<Image size="md" alt="Ícone de Usuário" bordered>
-						<User size={18} />
-					</Image>
-					<Image size="md" alt="Sparkles" bordered>
-						<Sparkles size={18} />
-					</Image>
+				<span class="label">{i18n.t('image.interactive_playground')}</span>
+				<Row gap="md" align="center" wrap>
+					<!-- Contained Interactive Preview -->
+					<div style="width: 200px; height: 150px; flex-shrink: 0;">
+						<Image
+							src={currentImageSrc}
+							alt={i18n.t('image.sample_alt')}
+							fit={imageFit}
+							radius={currentImageRadius}
+							aspectRatio="4/3"
+							fallback="SF"
+							bordered
+						>
+							<User size={32} />
+						</Image>
+					</div>
+
+					<!-- State & Controls -->
+					<Column gap="xs">
+						<Row gap="xs" wrap>
+							<Button
+								size="sm"
+								variant={imageState === 'valid' ? 'primary' : 'secondary'}
+								onclick={() => (imageState = 'valid')}
+							>
+								<Check size={14} />
+								{i18n.t('image.state_success')}
+							</Button>
+							<Button
+								size="sm"
+								variant={imageState === 'error' ? 'danger' : 'secondary'}
+								onclick={() => (imageState = 'error')}
+							>
+								<AlertCircle size={14} />
+								{i18n.t('image.state_error')}
+							</Button>
+							<Button
+								size="sm"
+								variant={imageState === 'empty' ? 'primary' : 'secondary'}
+								onclick={() => (imageState = 'empty')}
+							>
+								<Minus size={14} />
+								{i18n.t('image.state_empty')}
+							</Button>
+						</Row>
+
+						<Row gap="xs" wrap>
+							<Button size="sm" variant="outline" onclick={toggleImageFit}>
+								{imageFit === 'cover' ? i18n.t('image.fit_cover') : i18n.t('image.fit_contain')}
+							</Button>
+							<Button size="sm" variant="outline" onclick={cycleImageRadius}>
+								{i18n.t('image.radius_cycle')}: {currentImageRadius}
+							</Button>
+						</Row>
+					</Column>
 				</Row>
 			</Column>
 
 			<Divider spacing="xxs" />
 
+			<!-- 2. Aspect Ratios Grid (Controlled width, real image rendered) -->
 			<Column gap="xs">
-				<span class="label">Aspect Ratio 16/9 Banner</span>
-				<Image aspectRatio="16/9" fallback="Capa de Baralho (16/9)" bordered />
+				<span class="label">{i18n.t('image.aspect_ratios')}</span>
+				<Grid minItemWidth="calc(var(--base) * 7.5)" gap="sm">
+					<Card variant="primary" padding="xs" gap="xs" align="center">
+						<Image src={SAMPLE_IMAGE} alt={i18n.t('image.sample_alt')} aspectRatio="1/1" bordered />
+						<span class="mono">1/1</span>
+					</Card>
+					<Card variant="primary" padding="xs" gap="xs" align="center">
+						<Image src={SAMPLE_IMAGE} alt={i18n.t('image.sample_alt')} aspectRatio="4/3" bordered />
+						<span class="mono">4/3</span>
+					</Card>
+					<Card variant="primary" padding="xs" gap="xs" align="center">
+						<Image
+							src={SAMPLE_IMAGE}
+							alt={i18n.t('image.sample_alt')}
+							aspectRatio="16/9"
+							bordered
+						/>
+						<span class="mono">16/9</span>
+					</Card>
+					<Card variant="primary" padding="xs" gap="xs" align="center">
+						<Image src={SAMPLE_IMAGE} alt={i18n.t('image.sample_alt')} aspectRatio="2/1" bordered />
+						<span class="mono">2/1</span>
+					</Card>
+				</Grid>
 			</Column>
-		</Card>
 
-		<Card gap="sm">
-			<h2>Compositions (LEGO)</h2>
-			<span class="label">Montagem modular sem componentes monolíticos</span>
+			<Divider spacing="xxs" />
 
-			<Grid minItemWidth="calc(var(--base) * 14)" gap="md">
-				<!-- Profile Summary Card -->
-				<Card variant="secondary" padding="md" gap="sm">
-					<Row gap="md" align="center" justify="between" fullWidth>
-						<Row gap="sm" align="center">
-							<Image size="md" fallback="LM" alt="Lucas Monsan" bordered />
-							<Column gap="none">
-								<strong>Lucas Monsan</strong>
-								<span class="label">user@monsan.dev</span>
-							</Column>
-						</Row>
-						<Badge variant="outline">Admin</Badge>
-					</Row>
-				</Card>
+			<!-- 3. Sizes & Fallbacks -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('image.sizes_and_fallbacks')}</span>
+				<Row gap="sm" align="center" wrap>
+					<!-- Real Image in sizes -->
+					<Image size="sm" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
+					<Image size="md" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
+					<Image size="lg" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
 
-				<!-- Header Profile Actions -->
-				<Card variant="primary" padding="md" gap="sm">
-					<span class="label">Botões de Header (Logado vs Deslogado)</span>
-					<Row gap="sm" align="center">
-						<IconButton
-							label="Menu de usuário logado"
-							variant="secondary"
-							onclick={() => alert('Abre menu')}
-						>
-							<Image size="md" fallback="LM" alt="Lucas Monsan" />
-						</IconButton>
+					<Divider vertical spacing="xs" />
 
-						<IconButton
-							label="Menu de usuário deslogado"
-							variant="secondary"
-							onclick={() => alert('Abre login')}
-						>
-							<Image size="md" alt="Visitante">
-								<User size={18} />
-							</Image>
-						</IconButton>
-					</Row>
-				</Card>
+					<!-- Circular with real image -->
+					<Image
+						size="md"
+						radius="full"
+						src={SAMPLE_AVATAR}
+						alt={i18n.t('image.avatar_sample_alt')}
+						bordered
+					/>
 
-				<!-- Deck / Item Card -->
-				<Card variant="secondary" padding="none" gap="none">
-					<Image aspectRatio="16/9" fallback="Biologia Celular" />
-					<div
-						style="padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-xs);"
-					>
-						<strong>Biologia Celular</strong>
-						<span class="label">142 cartões • Manki</span>
-						<Row justify="between" align="center" style="margin-top: var(--space-xs);">
-							<Badge variant="success">Em dia</Badge>
-							<Button size="sm" variant="primary">Estudar</Button>
-						</Row>
-					</div>
-				</Card>
-			</Grid>
+					<Divider vertical spacing="xs" />
+
+					<!-- Text Fallback (Initials) -->
+					<Image size="md" fallback="SF" alt="Shellfish" bordered />
+
+					<!-- Icon Fallback -->
+					<Image size="md" alt={i18n.t('image.avatar_sample_alt')} bordered>
+						<User size={18} />
+					</Image>
+				</Row>
+			</Column>
 		</Card>
 	</Section>
 
