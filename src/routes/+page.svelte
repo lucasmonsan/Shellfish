@@ -124,15 +124,15 @@
 	];
 
 	const SAMPLE_IMAGE =
-		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300"><rect width="100%" height="100%" fill="%232c2523"/><circle cx="200" cy="150" r="75" fill="%23e87d55"/><rect x="145" y="95" width="110" height="110" fill="%237db88f" opacity="0.85" rx="16"/><path d="M120 220 L280 220" stroke="%23f4ede4" stroke-width="8" stroke-linecap="round"/></svg>';
+		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231e3a8a"/><stop offset="100%" stop-color="%233b82f6"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23sky)"/><circle cx="310" cy="90" r="45" fill="%23fbbf24"/><polygon points="0,300 130,170 240,300" fill="%23065f46"/><polygon points="150,300 270,140 400,300" fill="%23047857"/><rect x="0" y="260" width="100%" height="40" fill="%230f172a"/><path d="M40 275 L120 275 M180 280 L320 280" stroke="%2393c5fd" stroke-width="3" stroke-linecap="round"/></svg>';
 
 	const SAMPLE_AVATAR =
-		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><rect width="100%" height="100%" fill="%2338302c"/><circle cx="50" cy="40" r="20" fill="%23e87d55"/><path d="M25 85 C25 65 75 65 75 85 Z" fill="%237db88f"/></svg>';
+		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><rect width="100%" height="100%" fill="%230284c7"/><circle cx="50" cy="38" r="22" fill="%23fed7aa"/><path d="M28 32 Q50 16 72 32 Q50 24 28 32 Z" fill="%237c2d12"/><path d="M20 95 C20 70 34 62 50 62 C66 62 80 70 80 95 Z" fill="%23ea580c"/></svg>';
 
 	let imageState = $state<'valid' | 'error' | 'empty'>('valid');
 	let imageFit = $state<'cover' | 'contain'>('cover');
-	let imageRadiusIndex = $state(1); // 1 = 'xs'
-	const radiusOptions = ['none', 'xs', 'md', 'full'] as const;
+	let imageRadiusIndex = $state(0); // 0 = 'xs' (canonical square)
+	const radiusOptions = ['xs', 'none', 'sm'] as const;
 	let currentImageRadius = $derived(radiusOptions[imageRadiusIndex]);
 
 	let currentImageSrc = $derived.by(() => {
@@ -478,17 +478,6 @@
 					<Image size="sm" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
 					<Image size="md" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
 					<Image size="lg" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
-
-					<Divider vertical spacing="xs" />
-
-					<!-- Circular with real image -->
-					<Image
-						size="md"
-						radius="full"
-						src={SAMPLE_AVATAR}
-						alt={i18n.t('image.avatar_sample_alt')}
-						bordered
-					/>
 
 					<Divider vertical spacing="xs" />
 
