@@ -6,3 +6,4 @@ export * from './actions.js';
 export * from './display.js';
 export * from './feedback.js';
 export * from './icons.js';
+export * from './overlay.js';

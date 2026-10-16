@@ -9,6 +9,7 @@
 		Badge,
 		Divider,
 		Image,
+		Popover,
 		Button,
 		IconButton,
 		Spinner,
@@ -158,9 +159,9 @@
 	{#snippet top()}
 		<Section contained padding="sm">
 			<Row justify="between" fullWidth>
-				<Row gap="xs">
+				<Row gap="xs" align="center">
 					<span class="brand-icon" aria-hidden="true"></span>
-					<span class="brand-name">Shellfish</span>
+					<h1 class="brand-name">Shellfish</h1>
 				</Row>
 
 				<Row gap="xs">
@@ -380,7 +381,7 @@
 
 			<!-- 1. Interactive States -->
 			<Column gap="xs">
-				<span class="label">Interactive States</span>
+				<span class="label">{i18n.t('image.interactive_playground')}</span>
 				<Row gap="md" align="center" wrap>
 					<!-- Contained Interactive Preview (Square 180x180 to contrast with 2:1 image) -->
 					<div style="width: 180px; height: 180px; flex-shrink: 0;">
@@ -459,7 +460,7 @@
 
 			<!-- 2. Aspect Ratios Grid (Controlled width, real image rendered) -->
 			<Column gap="xs">
-				<span class="label">Aspect Ratios</span>
+				<span class="label">{i18n.t('image.aspect_ratios')}</span>
 				<Grid minItemWidth="calc(var(--base) * 7.5)" gap="sm">
 					<Card variant="primary" padding="xs" gap="xs" align="center">
 						<Image src={SAMPLE_IMAGE} alt={i18n.t('image.sample_alt')} aspectRatio="1/1" bordered />
@@ -489,7 +490,7 @@
 
 			<!-- 3. Sizes & Fallbacks -->
 			<Column gap="xs">
-				<span class="label">Sizes & Fallbacks</span>
+				<span class="label">{i18n.t('image.sizes_and_fallbacks')}</span>
 				<Row gap="sm" align="center" wrap>
 					<!-- Real Image in sizes -->
 					<Image size="sm" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />
@@ -505,6 +506,233 @@
 					<Image size="md" alt={i18n.t('image.avatar_sample_alt')} bordered>
 						<User size={18} />
 					</Image>
+				</Row>
+			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('popover.title')}</h2>
+
+			<!-- 1. Interactive Profile Menu Composition (Canonical LEGO) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('popover.interactive_profile')}</span>
+				<Row gap="sm" align="center">
+					<Popover align="start" placement="bottom">
+						{#snippet trigger(toggle, open)}
+							<Button variant="secondary" size="md" onclick={toggle}>
+								<Image size="sm" src={SAMPLE_AVATAR} alt="" bordered />
+								<span>Lucas Monsan</span>
+								{#if open}<ChevronUp size={14} />{:else}<ChevronDown size={14} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 220px; box-shadow: var(--shadow-md);"
+							>
+								<Row gap="xs" align="center">
+									<Image size="md" src={SAMPLE_AVATAR} alt="" bordered />
+									<Column gap="none">
+										<strong style="font-size: var(--text-sm);">Lucas Monsan</strong>
+										<span class="mono">{i18n.t('popover.profile_role')}</span>
+									</Column>
+								</Row>
+								<Divider spacing="xxs" />
+								<Button
+									variant="ghost"
+									size="sm"
+									block
+									style="justify-content: flex-start;"
+									onclick={close}
+								>
+									<User size={14} />
+									<span>{i18n.t('popover.profile_account')}</span>
+								</Button>
+								<Button
+									variant="ghost"
+									size="sm"
+									block
+									style="justify-content: flex-start;"
+									onclick={close}
+								>
+									<Settings size={14} />
+									<span>{i18n.t('popover.profile_settings')}</span>
+								</Button>
+								<Divider spacing="xxs" />
+								<Button
+									variant="danger"
+									size="sm"
+									block
+									style="justify-content: flex-start;"
+									onclick={close}
+								>
+									<LogOut size={14} />
+									<span>{i18n.t('popover.profile_logout')}</span>
+								</Button>
+							</Card>
+						{/snippet}
+					</Popover>
+				</Row>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 2. Alignments (start, center, end) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('popover.alignments')}</span>
+				<Row gap="sm" wrap>
+					<Popover align="start">
+						{#snippet trigger(toggle, open)}
+							<Button variant="outline" size="sm" onclick={toggle}>
+								{i18n.t('popover.align_start')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);">{i18n.t('popover.align_start')}</strong>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
+
+					<Popover align="center">
+						{#snippet trigger(toggle, open)}
+							<Button variant="outline" size="sm" onclick={toggle}>
+								{i18n.t('popover.align_center')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);">{i18n.t('popover.align_center')}</strong>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
+
+					<Popover align="end">
+						{#snippet trigger(toggle, open)}
+							<Button variant="outline" size="sm" onclick={toggle}>
+								{i18n.t('popover.align_end')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);">{i18n.t('popover.align_end')}</strong>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
+				</Row>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 3. Placements (auto, top, bottom) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('popover.placements')}</span>
+				<Row gap="sm" wrap>
+					<Popover placement="auto">
+						{#snippet trigger(toggle, open)}
+							<Button variant="secondary" size="sm" onclick={toggle}>
+								{i18n.t('popover.placement_auto')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);"
+									>{i18n.t('popover.placement_auto')}</strong
+								>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
+
+					<Popover placement="top">
+						{#snippet trigger(toggle, open)}
+							<Button variant="secondary" size="sm" onclick={toggle}>
+								{i18n.t('popover.placement_top')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);">{i18n.t('popover.placement_top')}</strong
+								>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
+
+					<Popover placement="bottom">
+						{#snippet trigger(toggle, open)}
+							<Button variant="secondary" size="sm" onclick={toggle}>
+								{i18n.t('popover.placement_bottom')}
+								{#if open}<ChevronUp size={12} />{:else}<ChevronDown size={12} />{/if}
+							</Button>
+						{/snippet}
+						{#snippet children(close)}
+							<Card
+								variant="primary"
+								padding="sm"
+								gap="xs"
+								style="min-width: 200px; box-shadow: var(--shadow-md);"
+							>
+								<strong style="font-size: var(--text-xs);"
+									>{i18n.t('popover.placement_bottom')}</strong
+								>
+								<p class="mono" style="margin: 0;">{i18n.t('popover.panel_sample_desc')}</p>
+								<Button variant="secondary" size="sm" onclick={close}
+									>{i18n.t('common.close')}</Button
+								>
+							</Card>
+						{/snippet}
+					</Popover>
 				</Row>
 			</Column>
 		</Card>
@@ -534,6 +762,8 @@
 	.brand-name {
 		font-weight: 700;
 		font-size: var(--text-md);
+		margin: 0;
+		line-height: 1;
 	}
 
 	:global(.footer) {

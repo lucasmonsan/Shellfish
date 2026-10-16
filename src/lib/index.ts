@@ -27,3 +27,6 @@ export * from './components/feedback/index.js';
 
 // Curated Icons
 export * from './components/icons/index.js';
+
+// Overlay & Floating Primitives
+export * from './components/overlay/index.js';
