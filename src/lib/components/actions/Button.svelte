@@ -194,7 +194,7 @@
 	let dynamicSizeStyle = $derived.by(() => {
 		if (block || square) return '';
 		if (isCollapsed && visualLoading) {
-			return `width: ${targetSquarePx}px; height: ${targetSquarePx}px;`;
+			return `width: ${targetSquarePx}px; height: ${targetSquarePx}px; min-height: ${targetSquarePx}px;`;
 		}
 		if (currentWidthPx !== null && currentHeightPx !== null) {
 			return `width: ${currentWidthPx}px; height: ${currentHeightPx}px;`;
@@ -257,7 +257,7 @@
 		justify-content: center;
 		position: relative;
 		box-sizing: border-box;
-		height: var(--btn-min-height);
+		min-height: var(--btn-min-height);
 		min-width: var(--btn-min-height);
 		max-width: 100%;
 		flex-shrink: 0;
@@ -275,6 +275,7 @@
 		transition:
 			width var(--transition-morph),
 			height var(--transition-morph),
+			min-height var(--transition-morph),
 			padding var(--transition-morph),
 			background-color 0.35s ease-out,
 			border-color 0.35s ease-out,
