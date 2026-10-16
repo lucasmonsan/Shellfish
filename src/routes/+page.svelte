@@ -124,7 +124,7 @@
 	];
 
 	const SAMPLE_IMAGE =
-		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231e3a8a"/><stop offset="100%" stop-color="%233b82f6"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23sky)"/><circle cx="310" cy="90" r="45" fill="%23fbbf24"/><polygon points="0,300 130,170 240,300" fill="%23065f46"/><polygon points="150,300 270,140 400,300" fill="%23047857"/><rect x="0" y="260" width="100%" height="40" fill="%230f172a"/><path d="M40 275 L120 275 M180 280 L320 280" stroke="%2393c5fd" stroke-width="3" stroke-linecap="round"/></svg>';
+		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200"><defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%231e3a8a"/><stop offset="100%" stop-color="%2338bdf8"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23skyGrad)"/><polygon points="30,170 35,40 45,40 50,170" fill="%23f8fafc"/><rect x="34" y="60" width="12" height="15" fill="%23dc2626"/><rect x="32" y="105" width="16" height="18" fill="%23dc2626"/><rect x="30" y="145" width="20" height="20" fill="%23dc2626"/><polygon points="32,40 40,25 48,40" fill="%231e293b"/><circle cx="40" cy="35" r="5" fill="%23fef08a"/><circle cx="200" cy="70" r="32" fill="%23fbbf24"/><polygon points="100,180 180,90 260,180" fill="%23047857"/><polygon points="160,180 230,110 300,180" fill="%23065f46"/><polygon points="330,170 380,170 370,185 340,185" fill="%2378350f"/><polygon points="355,165 355,120 375,165" fill="%23f8fafc"/><polygon points="352,165 352,130 335,165" fill="%23ea580c"/><rect x="0" y="175" width="100%" height="25" fill="%230f172a"/><path d="M10 185 L80 185 M120 190 L260 190 M300 185 L390 185" stroke="%23bae6fd" stroke-width="2" stroke-linecap="round"/></svg>';
 
 	const SAMPLE_AVATAR =
 		'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><rect width="100%" height="100%" fill="%230284c7"/><circle cx="50" cy="38" r="22" fill="%23fed7aa"/><path d="M28 32 Q50 16 72 32 Q50 24 28 32 Z" fill="%237c2d12"/><path d="M20 95 C20 70 34 62 50 62 C66 62 80 70 80 95 Z" fill="%23ea580c"/></svg>';
@@ -137,7 +137,7 @@
 
 	let currentImageSrc = $derived.by(() => {
 		if (imageState === 'valid') return SAMPLE_IMAGE;
-		if (imageState === 'error') return 'https://invalid-host.broken/non-existent.jpg';
+		if (imageState === 'error') return 'data:image/svg+xml;utf8,<broken-svg-data';
 		return null;
 	});
 
@@ -382,18 +382,35 @@
 			<Column gap="xs">
 				<span class="label">{i18n.t('image.interactive_playground')}</span>
 				<Row gap="md" align="center" wrap>
-					<!-- Contained Interactive Preview -->
-					<div style="width: 200px; height: 150px; flex-shrink: 0;">
+					<!-- Contained Interactive Preview (Square 180x180 to contrast with 2:1 image) -->
+					<div style="width: 180px; height: 180px; flex-shrink: 0;">
 						<Image
 							src={currentImageSrc}
 							alt={i18n.t('image.sample_alt')}
 							fit={imageFit}
 							radius={currentImageRadius}
-							aspectRatio="4/3"
-							fallback="SF"
+							aspectRatio="1/1"
 							bordered
 						>
-							<User size={32} />
+							{#if imageState === 'error'}
+								<div
+									style="display: flex; flex-direction: column; align-items: center; gap: var(--space-xxs); color: var(--color-danger); text-align: center;"
+								>
+									<AlertCircle size={28} />
+									<span style="font-size: var(--text-xs); font-weight: 600;">
+										{i18n.t('image.load_error')}
+									</span>
+								</div>
+							{:else}
+								<div
+									style="display: flex; flex-direction: column; align-items: center; gap: var(--space-xxs); color: var(--text-secondary); text-align: center;"
+								>
+									<FileText size={28} />
+									<span style="font-size: var(--text-xs); font-weight: 600;">
+										{i18n.t('image.no_image')}
+									</span>
+								</div>
+							{/if}
 						</Image>
 					</div>
 

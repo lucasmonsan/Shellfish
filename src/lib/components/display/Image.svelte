@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ImageProps } from '$lib/types/display.js';
+	import Spinner from '../feedback/Spinner.svelte';
 
 	let {
 		src,
@@ -96,6 +97,7 @@
 	});
 
 	let isFallbackVisible = $derived(!src || hasError);
+	let isLoading = $derived(Boolean(src) && !isLoaded && !hasError);
 	let fallbackText = $derived(typeof fallback === 'string' ? fallback : undefined);
 </script>
 
@@ -122,14 +124,20 @@
 		/>
 	{/if}
 
+	{#if isLoading}
+		<div class="loading-content" aria-hidden="true">
+			<Spinner size="sm" />
+		</div>
+	{/if}
+
 	{#if isFallbackVisible}
 		<div class="fallback-content" aria-hidden="true">
 			{#if typeof fallback === 'function'}
 				{@render (fallback as Snippet)()}
-			{:else if fallbackText}
-				<span class="fallback-text">{fallbackText}</span>
 			{:else if children}
 				{@render children()}
+			{:else if fallbackText}
+				<span class="fallback-text">{fallbackText}</span>
 			{:else}
 				<span class="fallback-text">{alt || ''}</span>
 			{/if}
@@ -191,6 +199,15 @@
 
 	.loaded img {
 		opacity: 1;
+	}
+
+	.loading-content {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
 	}
 
 	.fallback-content {
