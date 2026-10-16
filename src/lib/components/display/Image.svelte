@@ -24,9 +24,9 @@
 		...restProps
 	}: ImageProps = $props();
 
-	let imgEl = $state<HTMLImageElement>();
 	let isLoaded = $state(false);
 	let hasError = $state(false);
+	let prevSrc = $state<string | null | undefined>(undefined);
 
 	// Normaliza dimensões baseadas em size ('sm' | 'md' | 'lg' ou número/string)
 	let resolvedWidth = $derived.by(() => {
@@ -77,22 +77,11 @@
 	}
 
 	$effect(() => {
-		if (!src) {
+		const currentSrc = src;
+		if (currentSrc !== prevSrc) {
+			prevSrc = currentSrc;
 			isLoaded = false;
 			hasError = false;
-			return;
-		}
-
-		isLoaded = false;
-		hasError = false;
-
-		// Sincroniza se a imagem já foi resolvida pelo cache do navegador
-		if (imgEl && imgEl.complete) {
-			if (imgEl.naturalWidth > 0) {
-				isLoaded = true;
-			} else {
-				hasError = true;
-			}
 		}
 	});
 
@@ -111,14 +100,14 @@
 	aria-label={isFallbackVisible ? alt || fallbackText || 'Image' : undefined}
 	{...restProps}
 >
-	{#if src && !hasError}
+	{#if src}
 		<img
-			bind:this={imgEl}
 			{src}
 			{alt}
 			{loading}
 			{decoding}
 			style:object-fit={fit}
+			class:hidden={hasError}
 			onload={handleLoad}
 			onerror={handleError}
 		/>
@@ -197,6 +186,10 @@
 		transition: opacity var(--transition-fast);
 	}
 
+	img.hidden {
+		display: none;
+	}
+
 	.loaded img {
 		opacity: 1;
 	}
@@ -216,24 +209,30 @@
 		justify-content: center;
 		width: 100%;
 		height: 100%;
-		padding: var(--space-xxs);
+		padding: var(--space-xs);
+		box-sizing: border-box;
 		color: var(--text-secondary);
 		font-family: var(--font-sans);
-		font-size: calc(var(--base) * 0.75);
-		font-weight: 700;
-		letter-spacing: 0.02em;
-		text-transform: uppercase;
-		line-height: 1;
+		font-size: var(--text-xs);
+		line-height: var(--leading-tight);
+		text-align: center;
 		user-select: none;
 		overflow: hidden;
+	}
+
+	.fallback-text {
+		display: inline-block;
+		max-width: 100%;
+		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;
+		font-weight: 700;
+		letter-spacing: 0.02em;
 	}
 
 	.fallback-content :global(svg) {
 		flex-shrink: 0;
-		max-width: 75%;
-		max-height: 75%;
+		max-width: 80%;
+		max-height: 80%;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

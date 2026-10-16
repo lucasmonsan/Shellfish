@@ -375,12 +375,12 @@
 			</Grid>
 		</Card>
 
-		<Card gap="md">
-			<h2>{i18n.t('image.title')}</h2>
+		<Card gap="sm">
+			<h2>Image</h2>
 
-			<!-- 1. Interactive Playground -->
+			<!-- 1. Interactive States -->
 			<Column gap="xs">
-				<span class="label">{i18n.t('image.interactive_playground')}</span>
+				<span class="label">Interactive States</span>
 				<Row gap="md" align="center" wrap>
 					<!-- Contained Interactive Preview (Square 180x180 to contrast with 2:1 image) -->
 					<div style="width: 180px; height: 180px; flex-shrink: 0;">
@@ -459,7 +459,7 @@
 
 			<!-- 2. Aspect Ratios Grid (Controlled width, real image rendered) -->
 			<Column gap="xs">
-				<span class="label">{i18n.t('image.aspect_ratios')}</span>
+				<span class="label">Aspect Ratios</span>
 				<Grid minItemWidth="calc(var(--base) * 7.5)" gap="sm">
 					<Card variant="primary" padding="xs" gap="xs" align="center">
 						<Image src={SAMPLE_IMAGE} alt={i18n.t('image.sample_alt')} aspectRatio="1/1" bordered />
@@ -489,7 +489,7 @@
 
 			<!-- 3. Sizes & Fallbacks -->
 			<Column gap="xs">
-				<span class="label">{i18n.t('image.sizes_and_fallbacks')}</span>
+				<span class="label">Sizes & Fallbacks</span>
 				<Row gap="sm" align="center" wrap>
 					<!-- Real Image in sizes -->
 					<Image size="sm" src={SAMPLE_AVATAR} alt={i18n.t('image.avatar_sample_alt')} bordered />

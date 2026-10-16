@@ -40,7 +40,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.radius_cycle': 'Alternar Cantos',
 		'image.sample_alt': 'Ilustração geométrica Shellfish',
 		'image.avatar_sample_alt': 'Avatar de exemplo',
-		'image.load_error': 'Falha ao carregar imagem',
+		'image.load_error': 'Erro ao carregar',
 		'image.no_image': 'Sem imagem'
 	},
 	'en-US': {
@@ -79,7 +79,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.radius_cycle': 'Cycle Radius',
 		'image.sample_alt': 'Shellfish geometric illustration',
 		'image.avatar_sample_alt': 'Sample avatar',
-		'image.load_error': 'Failed to load image',
+		'image.load_error': 'Failed to load',
 		'image.no_image': 'No image'
 	},
 	es: {
@@ -118,7 +118,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.radius_cycle': 'Cambiar Esquinas',
 		'image.sample_alt': 'Ilustración geométrica Shellfish',
 		'image.avatar_sample_alt': 'Avatar de ejemplo',
-		'image.load_error': 'Error al cargar imagen',
+		'image.load_error': 'Error al cargar',
 		'image.no_image': 'Sin imagen'
 	}
 };
