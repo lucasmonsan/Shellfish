@@ -1,39 +1,25 @@
 <script lang="ts">
-	import type { Size } from '../../types/tokens.js';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { getI18n } from '../../utils/i18n.svelte.js';
+	import type { SpinnerProps } from '$lib/types/feedback.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
-	interface Props extends HTMLAttributes<HTMLDivElement> {
-		/**
-		 * Size preset ('sm' = 18px, 'md' = 24px, 'lg' = 32px) or custom dimension.
-		 * Default: 'md'
-		 */
-		size?: Size | number | string;
-
-		/**
-		 * Accessible loading message for screen readers.
-		 * Defaults to localized i18n 'common.loading'.
-		 */
-		label?: string;
-
-		/**
-		 * Additional CSS classes.
-		 */
-		class?: string;
-	}
-
-	let { size = 'md', label, class: className = '', style = '', ...restProps }: Props = $props();
+	let {
+		size = 'md',
+		label,
+		class: className = '',
+		style = '',
+		...restProps
+	}: SpinnerProps = $props();
 
 	const i18n = getI18n();
 	let resolvedLabel = $derived(label ?? i18n.t('common.loading'));
 
+	let isPresetSize = $derived(size === 'sm' || size === 'md' || size === 'lg');
+
 	let dimensionStyle = $derived.by(() => {
+		if (isPresetSize) return '';
 		if (typeof size === 'number') {
 			return `width: ${size}px; height: ${size}px;`;
 		}
-		if (size === 'sm') return 'width: 18px; height: 18px;';
-		if (size === 'md') return 'width: 24px; height: 24px;';
-		if (size === 'lg') return 'width: 32px; height: 32px;';
 		return `width: ${size}; height: ${size};`;
 	});
 </script>
@@ -41,7 +27,7 @@
 <div
 	role="status"
 	aria-live="polite"
-	class="spinner {className}"
+	class="spinner {isPresetSize ? size : ''} {className}"
 	style="{dimensionStyle} {style}"
 	{...restProps}
 >
@@ -70,8 +56,23 @@
 		flex-shrink: 0;
 		box-sizing: border-box;
 		border-radius: var(--radius-xs);
-		border: 2px solid var(--border-color);
+		border: var(--border-width) solid var(--border-color);
 		animation: spinCube 1.2s infinite ease-in-out;
+	}
+
+	.sm {
+		width: calc(var(--base) * 1.125);
+		height: calc(var(--base) * 1.125);
+	}
+
+	.md {
+		width: calc(var(--base) * 1.5);
+		height: calc(var(--base) * 1.5);
+	}
+
+	.lg {
+		width: calc(var(--base) * 1.875);
+		height: calc(var(--base) * 1.875);
 	}
 
 	.sr-only {

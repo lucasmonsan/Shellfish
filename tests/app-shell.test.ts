@@ -15,7 +15,8 @@ describe('AppShell Component', () => {
 			}
 		});
 
-		expect(result.body).toMatch(/<main[^>]*class="[^"]*shell-main/);
+		expect(result.body).toMatch(/<main[^>]*>/);
+		expect(result.body).not.toContain('shell-main');
 		expect(result.body).toContain('id="test-content"');
 		expect(result.body).toContain('Conteúdo Principal');
 	});
@@ -35,7 +36,8 @@ describe('AppShell Component', () => {
 			}
 		});
 
-		expect(result.body).toMatch(/<header[^>]*class="[^"]*shell-top/);
+		expect(result.body).toMatch(/<header[^>]*>/);
+		expect(result.body).not.toContain('shell-top');
 		expect(result.body).toContain('id="test-nav"');
 	});
 
@@ -54,7 +56,8 @@ describe('AppShell Component', () => {
 			}
 		});
 
-		expect(result.body).toMatch(/<footer[^>]*class="[^"]*shell-bottom/);
+		expect(result.body).toMatch(/<footer[^>]*>/);
+		expect(result.body).not.toContain('shell-bottom');
 		expect(result.body).toContain('id="test-footer"');
 	});
 

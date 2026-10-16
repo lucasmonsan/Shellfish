@@ -69,7 +69,7 @@
 	   ========================================================================== */
 	--blur-surface: blur(12px);
 	--backdrop-surface: rgba(253, 251, 247, 0.82);
-	--backdrop-elevated: rgba(255, 255, 255, 0.88);
+	--backdrop-elevated: rgba(250, 246, 239, 0.88);
 
 	/* ==========================================================================
 	   4. ESCALA FLUIDA (--base), ESPAÇAMENTO E TIPOGRAFIA

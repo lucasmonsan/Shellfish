@@ -1,83 +1,149 @@
 import type { Snippet } from 'svelte';
-import type { HTMLButtonAttributes, HTMLAttributes } from 'svelte/elements';
+import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { Variant, Size } from './tokens.js';
 
-/** Props for the semantic Button control. */
+/** Props for the semantic Button primitive. */
 export interface ButtonProps extends HTMLButtonAttributes {
-	/** Content rendered inside the button. */
-	children?: Snippet;
-	/** Visual emphasis. Defaults to primary. */
+	/**
+	 * Button visual variant.
+	 * Default: 'primary'
+	 */
 	variant?: Variant;
-	/** Control height. Defaults to md. */
+
+	/**
+	 * Button size preset.
+	 * Default: 'md'
+	 */
 	size?: Size;
-	/** Expands the button to its container width. */
-	fullWidth?: boolean;
-	/** Uses the compact icon-only layout. */
-	iconOnly?: boolean;
-	/** Shows busy state and disables activation. */
+
+	/**
+	 * Full width button (100%).
+	 * Default: false
+	 */
+	block?: boolean;
+
+	/**
+	 * Square aspect ratio 1:1 for single icon button.
+	 * Default: false
+	 */
+	square?: boolean;
+
+	/**
+	 * Explicit loading state.
+	 * Default: false
+	 */
 	loading?: boolean;
-	/** Text casing policy. Defaults to none. */
-	casing?: 'uppercase' | 'none';
-}
 
-/** One selectable tab. */
-export interface TabItem {
-	/** Stable tab value. */
-	id: string;
-	/** Localized visible tab text. */
-	label: string;
-	/** Prevents selection. */
+	/**
+	 * Minimum loading duration in ms to ensure clean animation completion.
+	 * Default: 1200 (1 full spinCube cycle)
+	 */
+	minLoadingDuration?: number;
+
+	/**
+	 * Disabled state.
+	 * Default: false
+	 */
 	disabled?: boolean;
-}
 
-/** Props for the tab list navigation control. */
-export interface TabsProps extends Omit<HTMLAttributes<HTMLElement>, 'onchange'> {
-	/** Tabs rendered by the control. */
-	items?: TabItem[];
-	/** Selected tab id. */
-	value?: string;
-	/** Control height. */
-	size?: Size;
-	/** Expands the list to its container width. */
-	fullWidth?: boolean;
-	/** Optional custom content. */
-	children?: Snippet;
-	/** Called after selection changes. */
-	onchange?: (value: string) => void;
-}
+	/**
+	 * Button type attribute.
+	 * Default: 'button'
+	 */
+	type?: 'button' | 'submit' | 'reset';
 
-/** One dropdown menu action. */
-export interface DropdownItem {
-	/** Stable item id. */
-	id: string;
-	/** Localized item text. */
-	label: string;
-	/** Optional icon snippet. */
-	icon?: Snippet;
-	/** Uses danger styling. */
-	danger?: boolean;
-	/** Prevents activation. */
-	disabled?: boolean;
-	/** Activation callback. */
-	onclick?: () => void;
-}
+	/**
+	 * Click event handler (supports async promises with auto-loading).
+	 */
+	onclick?: (event: MouseEvent) => unknown;
 
-/** Props for the floating dropdown menu. */
-export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
-	/** Localized default trigger label. */
+	/**
+	 * Optional text label fallback when children snippet is omitted.
+	 */
 	label?: string;
-	/** Custom trigger snippet. */
-	trigger?: Snippet;
-	/** Menu items. */
-	items?: DropdownItem[];
-	/** Optional custom menu content. */
+
+	/**
+	 * Main button content snippet.
+	 */
 	children?: Snippet;
-	/** Controlled open state. */
-	open?: boolean;
-	/** Trigger appearance. */
+
+	/**
+	 * Accessible label for screen readers.
+	 */
+	ariaLabel?: string;
+
+	/**
+	 * Additional CSS class names.
+	 */
+	class?: string;
+}
+
+/** Props for the accessible square IconButton primitive. */
+export interface IconButtonProps extends HTMLButtonAttributes {
+	/**
+	 * Mandatory accessible label for screen readers.
+	 */
+	label: string;
+
+	/**
+	 * Hover tooltip. Defaults to label.
+	 */
+	title?: string;
+
+	/**
+	 * Button visual variant.
+	 * Default: 'secondary'
+	 */
 	variant?: Variant;
-	/** Trigger height. */
+
+	/**
+	 * Button size preset ('sm', 'md', 'lg').
+	 * Default: 'md'
+	 */
 	size?: Size;
-	/** Menu anchoring position. */
-	placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+
+	/**
+	 * Toggle state (sets aria-pressed and switches to primary highlight).
+	 * Default: false
+	 */
+	selected?: boolean;
+
+	/**
+	 * Optional numeric notification counter badge. Zero and negatives are hidden.
+	 * Default: 0
+	 */
+	count?: number;
+
+	/**
+	 * Loading state.
+	 * Default: false
+	 */
+	loading?: boolean;
+
+	/**
+	 * Disabled state.
+	 * Default: false
+	 */
+	disabled?: boolean;
+
+	/**
+	 * Button type attribute.
+	 * Default: 'button'
+	 */
+	type?: 'button' | 'submit' | 'reset';
+
+	/**
+	 * Click event handler.
+	 */
+	onclick?: (event: MouseEvent) => unknown;
+
+	/**
+	 * Icon snippet content.
+	 */
+	children?: Snippet;
+
+	/**
+	 * Additional CSS classes.
+	 */
+	class?: string;
 }

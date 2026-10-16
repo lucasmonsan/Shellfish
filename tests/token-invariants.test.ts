@@ -171,9 +171,11 @@ describe('Invariant Test: Zero Hardcoded Design Values in Library Code', () => {
 		expect(content).toContain('--text-md: var(--base)');
 		expect(content.toLowerCase()).not.toContain('#ffffff');
 		expect(content.toLowerCase()).not.toContain('#000000');
+		expect(content.toLowerCase()).not.toContain('rgba(255, 255, 255');
+		expect(content.toLowerCase()).not.toContain('rgba(0, 0, 0, 1)');
 	});
 
-	it('guarantees zero .shellfish-* class prefixes, zero leading/trailing slot props, and zero hardcoded hex colors in src/lib components', () => {
+	it('guarantees zero .shellfish-* class prefixes, zero positional slot props, and zero hardcoded hex colors in src/lib components', () => {
 		const libDir = path.resolve('src/lib/components');
 		const files = walkDir(libDir);
 
@@ -187,8 +189,8 @@ describe('Invariant Test: Zero Hardcoded Design Values in Library Code', () => {
 			).toBe(false);
 
 			expect(
-				/\b(leading|trailing)\??\s*:\s*Snippet/.test(content),
-				`Props de posição engessadas (leading/trailing) encontradas em ${relativePath}`
+				/\b(leading|trailing|leftIcon|rightIcon)\??\s*:/.test(content),
+				`Props de posição engessadas (leading/trailing/leftIcon/rightIcon) encontradas em ${relativePath}`
 			).toBe(false);
 
 			const styleMatch = /<style[^>]*>([\s\S]*?)<\/style>/.exec(content);

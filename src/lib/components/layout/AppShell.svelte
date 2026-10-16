@@ -41,7 +41,7 @@
 
 <div class="app-shell {className}" {...restProps}>
 	{#if top}
-		<header class="shell-top">
+		<header>
 			{@render top()}
 		</header>
 	{/if}
@@ -55,7 +55,7 @@
 			></div>
 		{/if}
 
-		<main class="shell-main" bind:this={contentElement} onscroll={updateScrollState}>
+		<main bind:this={contentElement} onscroll={updateScrollState}>
 			{@render children()}
 		</main>
 
@@ -69,7 +69,7 @@
 	</div>
 
 	{#if bottom}
-		<footer class="shell-bottom">
+		<footer>
 			{@render bottom()}
 		</footer>
 	{/if}

@@ -10,11 +10,11 @@ export default defineConfig({
 			SHELLFISH_CATALOG_USERNAME: 'shellfish-e2e',
 			SHELLFISH_CATALOG_PASSWORD: 'shellfish-e2e'
 		},
-		port: 5172,
+		port: 4401,
 		reuseExistingServer: !process.env.CI
 	},
 	use: {
-		baseURL: 'http://127.0.0.1:5172',
+		baseURL: 'http://127.0.0.1:4401',
 		httpCredentials: { username: 'shellfish-e2e', password: 'shellfish-e2e' },
 		locale: 'pt-BR',
 		trace: 'retain-on-failure',

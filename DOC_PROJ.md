@@ -1,60 +1,59 @@
 # Shellfish Project Context
 
-Shellfish is the official Svelte 5 interface-component and layout-primitive library for Monsan/Zoo suite products. It is the simplified, tactile and strictly standardized refactor of MonsanUI.
+Shellfish is the official Svelte 5 interface-component and layout-primitive library for Monsan/Zoo suite products. It is the canonical, tactile and strictly standardized UI primitive library of the Monsan Suite.
 
 Use this file as the concise entry point for AI agents. Use `README.md` for development commands and the Zoo root `AGENTS.md` for canonical workflow rules.
 
-The complete rules, validation criteria, technical exceptions and compliance
-status are in `docs/STANDARDS.md`.
+The complete rules, validation criteria, and architecture/visual invariants (`SF-A`, `SF-V`, `SF-X`, `SF-I`) are in `docs/STANDARDS.md`.
 
 ## Change Authority
 
-No Shellfish creation, edit, removal or other change — including code,
-components, content, files and rules — may be made without the user's prior
-explicit approval. Authorization must be specific to the proposed change;
-silence, context or previous requests do not constitute approval.
+No Shellfish creation, edit, removal or other change — including code, components, content, files and rules — may be made without the user's prior explicit approval. Authorization must be specific to the proposed change; silence, context or previous requests do not constitute approval.
 
 ## Shellfish Architectural Role in the Zoo Suite
 
-1. **Canonical UI package (`shellfish`)**: Provides primitive components, semantic containers, CSS tokens and a reactive i18n utility for every suite consumer app (`Monsan`, `Rooster`, `Koalify`, `Manki`, `Owlth`, etc.).
-2. **Living Visual Guide & Interactive Catalog**: The overview at `src/routes/+page.svelte` links to the interactive catalog under `src/routes/components/`, on reserved port `5172`, for demonstrating and consulting each component's usage. The catalog may be deployed as an authenticated internal Coolify app; see `docs/deployment.md`.
-3. **Gold Standard for Implementation & Dynamic Tests**: Shellfish is the technical reference for clean Svelte 5 code and scalable dynamic test suites that enforce quality invariants, tokens, dynamic i18n and semantic markup across 1 to 10,000 files.
+1. **Canonical UI package (`shellfish`)**: Provides composable LEGO primitives, semantic layout containers, fluid CSS tokens (`--base`) and a reactive i18n utility for every suite consumer app (`Owlth`, `Monsan`, `Koalify`, `Manki`, `Crocode`, `Rooster`, `Whallet`, `Octomate`).
+2. **Interactive Catalog (`4401`)**: The interactive showcase at `src/routes/+page.svelte` runs on reserved port `4401` (`http://localhost:4401`). The catalog may be deployed as an authenticated internal Coolify app; see `docs/deployment.md`.
+3. **Gold Standard for Implementation & Dynamic Tests**: Shellfish is the technical reference for clean Svelte 5 code and scalable dynamic test suites that enforce architectural invariants, fluid tokens, reactive i18n and semantic markup.
 
-## Non-Negotiable Guidelines and Rules
+## Non-Negotiable Guidelines and Rules (`docs/STANDARDS.md`)
 
-- **Single Visual Source of Truth**: Suite consumers do not create local CSS overrides; new variants and components are added directly to Shellfish.
-- **No Div Soup**: Semantic HTML is mandatory. A `<div>` is allowed only when required for layout, control association, animation, a menu or accessibility; see `docs/STANDARDS.md`.
-- **Direct Native-Tag Styling**: Style semantic roots directly; classes are allowed for required sub-elements and states.
-- **One Solid-Shadow Pattern**: Strictly use `--shadow: 1px 1px 0px var(--border-color)`; on hover use `2px 2px` with `translate(-1px, -1px)`, and on active use `0px 0px` with `translate(1px, 1px)`.
-- **Svelte 5 Runes**: Runes are mandatory (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Legacy Svelte 4 patterns (`export let`, `$$props`, `<slot>`) are forbidden.
-- **Strict TypeScript & Native a11y**: Every prop is typed and standard HTML attributes are forwarded through `...restProps`. Every component with real interaction provides visible focus and keyboard accessibility.
-- **Reactive Internationalization (i18n)**: Dynamically support `pt-BR` and `en-US` through `i18n.svelte.ts` and `<LocaleSelector>`. Static strings in accessibility attributes are forbidden.
-- **Scalable Dynamic Tests**: All test suites dynamically scan source code and validate architecture invariants, exports, CSS variables and i18n parity without per-file manual adjustments.
-- **Commit Standard**: Use Conventional Commits in English: `<type>(<scope>): <description>` (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`).
-- **Reserved Local Port**: `http://localhost:5172` (port `5172`).
+- **Architecture (`SF-A01`–`SF-A06`)**:
+  - Svelte 5 Runes only (`$props()`, `$state()`, `$derived()`, `$effect()`, `{@render}`). Legacy Svelte 4 patterns (`export let`, `$$props`, `<slot>`) are forbidden.
+  - Public components and types must be exported from `src/lib/index.ts` and `src/lib/types/index.ts`.
+  - Prioritize semantic HTML tags (`<header>`, `<main>`, `<footer>`, `<button>`, `<dialog>`, `<nav>`, `<section>`, `<article>`). Style native root tags directly in scoped CSS with short variant/state classes; never use `.shellfish-*` prefixes.
+  - Build true LEGO primitives via free `children` composition; never create rigid positional slot props (`leading`, `trailing`, `leftIcon`, `rightIcon`).
+- **Visual System (`SF-V01`–`SF-V09`)**:
+  - Use declared CSS tokens only (`src/lib/styles/variables.css`). Hardcoded hex colors (`#...`), raw pixel/rem spacing, raw border-radius or raw box-shadow in components are forbidden.
+  - Never use pure white (`#ffffff`, `rgba(255, 255, 255, ...)`) or pure black (`#000000`, `rgba(0, 0, 0, 1)`). Use warm suite tokens (`--bg-primary`, `--color-on-solid: #fdfbf7`, `--text-primary`) with WCAG AA+ contrast in Light and Dark themes.
+  - Derive spacing (`--space-*`), typography (`--text-*`), control heights (`--control-height*`) and preset dimensions mathematically from the single fluid `--base` token (`clamp` + `calc`).
+  - Near-square aesthetic (`--radius-xs: 2px` default for controls, badges and `spinCube`) with `--border-width: 2px` (`var(--border-color)`), token-based hover (`--color-*-hover`), and tactile active feedback (`transform: scale(0.98)`).
+  - Inline action controls (`Button`, `IconButton`, `Input`, `Select`) enforce `min-height: var(--control-height*)`, vertical safety padding, `white-space: nowrap` and `flex-shrink: 0`.
+  - `spinCube` is the single canonical loading indicator of the suite.
+  - UI and catalog copy must be strictly minimal and functional (component names, variant tokens, and 1–2 word action labels), with zero promotional or explanatory text.
+- **Accessibility & i18n (`SF-X01`–`SF-X02`, `SF-I01`–`SF-I03`)**:
+  - Every interactive control is keyboard-operable, exposes visible `:focus-visible` outline and supports `@media (prefers-reduced-motion: reduce)`.
+  - Reactive i18n across all 3 official Monsan Suite locales (`pt-BR`, `en-US`, `es`) via `src/lib/utils/i18n.svelte.ts`, initialized before hydration without flash.
+- **Commit Standard**: Use short, one-line Conventional Commits in English (`feat:`, `fix:`, `refactor:`, `test:`, `chore:`, `docs:`).
+- **Reserved Local Port**: `http://localhost:4401` (port `4401`).
 - **AI Dev-Server Prohibition**: No AI may run `pnpm dev`, `vite dev` or `preview` without the user's explicit permission.
-- **Catalog Contract**: Every public component requires a typed API, a stable catalog route, a playground, generated code, i18n content and browser-test contract before it can be considered complete.
-- **Production Catalog**: Deploy with the Node adapter and Nixpacks, configure Basic Auth through Coolify secrets and use public `/up` for healthchecks.
 
 ## Directory Structure
 
 - `src/lib/index.ts`: Public package entry point and component/type re-exports.
-- `src/lib/components/`: Components organized by category (`containers/`, `actions/`, `forms/`, `display/`, `feedback/`, `suite/`).
-- `src/lib/styles/`: Design tokens (`variables.css`), reset (`modern-normalize.css`) and normalization (`index.css`).
+- `src/lib/components/`: Components organized by category (`layout/`, `actions/`, `forms/`, `display/`, `feedback/`, `icons/`).
+- `src/lib/styles/`: Design tokens (`variables.css`), reset (`modern-normalize.css`) and entry (`index.css`).
 - `src/lib/utils/`: Reactive utilities (`i18n.svelte.ts`).
 - `src/lib/types/`: TypeScript definitions for library props and types.
-- `src/routes/`: Internal showcase and visual reference for components.
-- `src/routes/components/`: Catalog index, category and component routes. Catalog-only code stays under this route tree.
-- `tests/`: Scalable automated tests for implementation quality, tokens, semantics, tactile behavior, forms, feedback and i18n.
+- `src/routes/`: Interactive catalog and visual showcase (`http://localhost:4401`).
+- `tests/`: Automated unit and architectural invariant tests.
 
 ## Quality Commands
 
 ```bash
-pnpm test
-pnpm run check
-pnpm run typecheck
-pnpm run lint
-pnpm run lint:package
-pnpm run build
-pnpm run build:package
+pnpm test:unit
+pnpm check
+pnpm lint
+pnpm build
+pnpm build:package
 ```

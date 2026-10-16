@@ -1,83 +1,6 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { Variant, Size } from '../../types/tokens.js';
+	import type { ButtonProps } from '$lib/types/actions.js';
 	import Spinner from '../feedback/Spinner.svelte';
-
-	interface Props extends HTMLButtonAttributes {
-		/**
-		 * Button visual variant.
-		 * Default: 'primary'
-		 */
-		variant?: Variant;
-
-		/**
-		 * Button size preset.
-		 * Default: 'md'
-		 */
-		size?: Size;
-
-		/**
-		 * Full width button (100%).
-		 * Default: false
-		 */
-		block?: boolean;
-
-		/**
-		 * Square aspect ratio 1:1 for single icon button.
-		 * Default: false
-		 */
-		square?: boolean;
-
-		/**
-		 * Explicit loading state.
-		 * Default: false
-		 */
-		loading?: boolean;
-
-		/**
-		 * Minimum loading duration in ms to ensure clean animation completion.
-		 * Default: 1200 (1 full spinCube cycle)
-		 */
-		minLoadingDuration?: number;
-
-		/**
-		 * Disabled state.
-		 * Default: false
-		 */
-		disabled?: boolean;
-
-		/**
-		 * Button type attribute.
-		 * Default: 'button'
-		 */
-		type?: 'button' | 'submit' | 'reset';
-
-		/**
-		 * Click event handler (supports async promises with auto-loading).
-		 */
-		onclick?: (event: MouseEvent) => unknown;
-
-		/**
-		 * Optional text label fallback when children snippet is omitted.
-		 */
-		label?: string;
-
-		/**
-		 * Main button content snippet (supports icons, text, or multi-line content).
-		 */
-		children?: Snippet;
-
-		/**
-		 * Accessible label for screen readers.
-		 */
-		ariaLabel?: string;
-
-		/**
-		 * Additional CSS class names.
-		 */
-		class?: string;
-	}
 
 	let {
 		variant = 'primary',
@@ -94,7 +17,7 @@
 		ariaLabel,
 		class: className = '',
 		...restProps
-	}: Props = $props();
+	}: ButtonProps = $props();
 
 	// Normaliza variantes (error -> danger)
 	let resolvedVariant = $derived(variant === 'error' ? 'danger' : variant);
@@ -112,18 +35,6 @@
 	let targetSquarePx = $state<number>(40);
 	let isCollapsed = $state(false);
 
-	let fallbackSquarePx = $derived.by(() => {
-		if (size === 'sm') return 32;
-		if (size === 'lg') return 46;
-		return 38;
-	});
-
-	let spinnerSize = $derived.by(() => {
-		if (size === 'sm') return 18;
-		if (size === 'lg') return 28;
-		return 24;
-	});
-
 	$effect(() => {
 		if (isEffectivelyLoading) {
 			if (minTimer) {
@@ -136,11 +47,10 @@
 			if (buttonEl && !square && !block) {
 				const naturalWidth = buttonEl.offsetWidth;
 				const naturalHeight = buttonEl.offsetHeight;
-				const cubeSize = Math.min(naturalHeight, fallbackSquarePx);
 
 				currentWidthPx = naturalWidth;
 				currentHeightPx = naturalHeight;
-				targetSquarePx = cubeSize;
+				targetSquarePx = naturalHeight;
 
 				buttonEl.style.width = `${naturalWidth}px`;
 				buttonEl.style.height = `${naturalHeight}px`;
@@ -246,7 +156,7 @@
 	</span>
 
 	<span class="spinner" class:visible={visualLoading} aria-hidden={!visualLoading}>
-		<Spinner size={spinnerSize} />
+		<Spinner {size} />
 	</span>
 </button>
 

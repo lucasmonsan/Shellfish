@@ -58,15 +58,15 @@ describe('Spinner Component (spinCube)', () => {
 		expect(result.body).toContain('spinner');
 	});
 
-	it('applies preset sizes (sm = 18px, md = 24px, lg = 32px)', () => {
+	it('applies fluid preset size classes (sm, md, lg)', () => {
 		const sm = render(Spinner, { props: { size: 'sm' } });
-		expect(sm.body).toContain('width: 18px; height: 18px;');
+		expect(sm.body).toContain('spinner sm');
 
 		const md = render(Spinner, { props: { size: 'md' } });
-		expect(md.body).toContain('width: 24px; height: 24px;');
+		expect(md.body).toContain('spinner md');
 
 		const lg = render(Spinner, { props: { size: 'lg' } });
-		expect(lg.body).toContain('width: 32px; height: 32px;');
+		expect(lg.body).toContain('spinner lg');
 	});
 
 	it('applies custom numeric size in px', () => {

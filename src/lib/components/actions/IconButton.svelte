@@ -1,77 +1,6 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import type { Variant, Size } from '../../types/tokens.js';
+	import type { IconButtonProps } from '$lib/types/actions.js';
 	import Button from './Button.svelte';
-
-	interface Props extends HTMLButtonAttributes {
-		/**
-		 * Mandatory accessible label for screen readers.
-		 */
-		label: string;
-
-		/**
-		 * Hover tooltip. Defaults to label.
-		 */
-		title?: string;
-
-		/**
-		 * Button visual variant.
-		 * Default: 'secondary'
-		 */
-		variant?: Variant;
-
-		/**
-		 * Button size preset ('sm' = 32px, 'md' = 40px, 'lg' = 48px).
-		 * Default: 'md'
-		 */
-		size?: Size;
-
-		/**
-		 * Toggle state (sets aria-pressed and switches to primary highlight).
-		 * Default: false
-		 */
-		selected?: boolean;
-
-		/**
-		 * Optional numeric notification counter badge. Zero and negatives are hidden.
-		 * Default: 0
-		 */
-		count?: number;
-
-		/**
-		 * Loading state.
-		 * Default: false
-		 */
-		loading?: boolean;
-
-		/**
-		 * Disabled state.
-		 * Default: false
-		 */
-		disabled?: boolean;
-
-		/**
-		 * Button type attribute.
-		 * Default: 'button'
-		 */
-		type?: 'button' | 'submit' | 'reset';
-
-		/**
-		 * Click event handler.
-		 */
-		onclick?: (event: MouseEvent) => unknown;
-
-		/**
-		 * Icon snippet content.
-		 */
-		children?: Snippet;
-
-		/**
-		 * Additional CSS classes.
-		 */
-		class?: string;
-	}
 
 	let {
 		label,
@@ -87,7 +16,7 @@
 		children,
 		class: className = '',
 		...restProps
-	}: Props = $props();
+	}: IconButtonProps = $props();
 
 	let visibleCount = $derived(Math.max(0, Math.trunc(count)));
 	let accessibleLabel = $derived(visibleCount > 0 ? `${label}: ${visibleCount}` : label);
@@ -127,7 +56,7 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid var(--bg-primary);
+		border: calc(var(--border-width) * 0.5) solid var(--bg-primary);
 		border-radius: var(--radius-xs);
 		background-color: var(--color-danger);
 		color: var(--color-on-solid);
