@@ -1,136 +1,102 @@
 # Shellfish Standards
 
-This is the canonical, complete and auditable rule set for Shellfish. It
-supersedes ambiguous wording in project notes. Global Zoo rules in `AGENTS.md`
-remain mandatory; this document only specifies their application to this UI
-library.
+This is the single canonical, conflict-free rulebook and architectural decision record for **Shellfish**, the official Svelte 5 UI primitive library of the Monsan Suite. Global workspace rules in `AGENTS.md` remain mandatory.
 
-## Scope and authority
+---
 
-Shellfish is the single visual and interaction source for Zoo applications.
-Consumer applications must not override Shellfish CSS. A missing variant, token
-or behavior is added here first, then consumed through its public API.
+## 1. Scope, Philosophy & Governance
 
-## Change authority
+- **Zero Domain Monolith:** `src/lib/` contains only pure, reusable UI primitives, design tokens, types, icons and neutral utilities. Product-specific logic (compilers, flashcards, quiz engines, domain workflows) is strictly forbidden.
+- **LEGO Composition:** Instead of hyper-specific composite widgets, Shellfish provides composable primitives (`AppShell`, `Button`, `IconButton`, `Spinner`, `Card`, `Input`, `Dialog`, etc.) assembled through Svelte 5 Snippets (`{#snippet ...}`).
+- **Single Visual Authority:** Consumer apps (`Owlth`, `Monsan`, `Koalify`, `Manki`, `Crocode`, `Rooster`, `Whallet`, `Octomate`) must never override component CSS locally. Missing variants or behaviors are added in Shellfish first.
+- **Change Authority:** No creation, edit or removal in Shellfish is permitted without the user's explicit prior approval.
 
-No Shellfish creation, edit, removal or other change — including code,
-components, content, files and these standards — is permitted without the
-user's prior explicit approval. Approval must be specific to the proposed
-change; silence, context or previous requests do not constitute approval.
+---
 
-The interactive catalog is internal. It runs on port `5172` and must not be
-indexed. When deployed, it uses Node runtime, HTTP Basic authentication and a
-public `/up` healthcheck; deployment details live in `docs/deployment.md`.
-Shellfish remains a package, not a consumer product: `AppShell`, landing pages,
-SSO and public SEO do not apply here.
+## 2. Local Suite Port Mapping (4400 Range)
 
-## Catalog contract
+To isolate the Monsan Suite from external projects and default Vite ports, the suite uses the `4400` port range:
 
-The catalog uses stable, non-localized routes: `/components`,
-`/components/[category]` and `/components/[category]/[component]`. Its registry
-is the audited inventory of public components. A public component is incomplete
-without a documented `*Props` interface, catalog entry, dynamic playground,
-generated example, route and browser-test contract.
+- **`4401`:** Shellfish (UI Library & Interactive Showcase/Catalog)
+- **`4402`:** Owlth (Auth & SSO)
+- **`4403`:** Monsan (Suite Portal)
+- **`4404`:** Koalify (Exams & Questions)
+- **`4405`:** Manki (Flashcards)
+- **`4406`:** Crocode (IDE & Code)
+- **`4407`:** Rooster (Routine & Management)
+- **`4408`:** Whallet (Finances)
+- **`4409`:** Octomate (Automation)
 
-Catalog content is localized in `pt-BR` and `en-US`; API identifiers, types and
-copied Svelte code remain English. Components load individually through dynamic
-imports. An entry's name, category or slug must not be removed or changed
-without the user's explicit approval.
+---
 
-## Mandatory rules
+## 3. Layout, Viewport & Blur Performance
 
-### Architecture
+- **`AppShell` 3-Block Structure (`100dvh`):**
+  1. **Top (`<header>`):** Fixed top bar with `backdrop-filter: var(--blur-surface)` and subtle border.
+  2. **Content (`<main>`):** Occupies remaining height (`flex: 1`, `min-height: 0`, `overflow-y: auto`) with automatic top/bottom scroll-fade indicators (`--scroll-fade-height`) triggered only when content overflows.
+  3. **Bottom (`<footer>`):** Fixed bottom bar or footer.
+- **Performance & Reduced Motion:**
+  - Selective blur (`--blur-surface`) automatically degrades to solid surfaces (`--bg-primary` / `--bg-elevated`) when `:root[data-low-perf='true']` or `@media (prefers-reduced-motion: reduce)` is active.
 
-| ID     | Rule                                                                                                                                                                    | Validation                  |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| SF-A01 | Use Svelte 5 Runes; do not use `export let`, `$$props`, lifecycle APIs or `<slot>`.                                                                                     | `code-quality.test.ts`      |
-| SF-A02 | Public components and types are exported from `src/lib/index.ts` and `src/lib/types/index.ts`.                                                                          | `code-quality.test.ts`      |
-| SF-A03 | Props are strictly typed. Forward native attributes with `...restProps` whenever the component has a native root.                                                       | typecheck + component tests |
-| SF-A04 | `src/lib/` contains only reusable UI, tokens, types and neutral utilities; no consumer product data or workflow.                                                        | review                      |
-| SF-A05 | Use semantic native elements first. A wrapper exists only when layout, a native control association, animation, portal/top-layer behavior or accessibility requires it. | review + component tests    |
+---
 
-### Visual system
+## 4. Canonical Layer Scale (`z-index`)
 
-| ID     | Rule                                                                                                                                           | Validation                               |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| SF-V01 | Use declared CSS tokens only. Do not hardcode colors in components.                                                                            | `tokens.test.ts`, `code-quality.test.ts` |
-| SF-V02 | Do not add or rename a color token without explicit approval. Never use pure black or white.                                                   | review                                   |
-| SF-V03 | The default tactile shadow is `--shadow`. Interactive controls use the defined rest/hover/active physics.                                      | `actions.test.ts`, component tests       |
-| SF-V04 | Use only `--radius-sm` and `--radius-md`; use the spacing and control-height scales.                                                           | `tokens.test.ts`                         |
-| SF-V05 | Use semantic layer tokens only. Raw numeric `z-index` is forbidden.                                                                            | `code-quality.test.ts`                   |
-| SF-V06 | Popovers, menus and shadows must remain visible. A surface may clip content only while it is collapsed or during a contained transition.       | review + component tests                 |
-| SF-V07 | Do not use `!important`, except in the global reduced-motion reset, where it is necessary to override component-scoped animation declarations. | `code-quality.test.ts`                   |
+Raw numeric `z-index` values are forbidden in components. Always use the 7 canonical layer tokens declared in `src/lib/styles/variables.css`:
 
-### Semantics and accessibility
+- `--layer-base: 0`
+- `--layer-content: 10`
+- `--layer-sticky: 40`
+- `--layer-header: 60`
+- `--layer-popover: 70`
+- `--layer-dialog: 100`
+- `--layer-toast: 110`
 
-| ID     | Rule                                                                                                                                   | Validation                              |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| SF-X01 | Every interaction is keyboard-operable, exposes visible focus and has correct native semantics or ARIA.                                | component tests + manual browser check  |
-| SF-X02 | Interactive non-native surfaces are focusable and implement Enter/Space consistently.                                                  | component tests                         |
-| SF-X03 | Labels, state and feedback use native HTML where possible (`label`, `button`, `dialog`, `input`, `select`, `textarea`, `aside`, `hr`). | component tests                         |
-| SF-X04 | User-facing and accessibility text is localized; components must not embed translatable strings. Callers may provide localized props.  | `i18n.test.ts` + review                 |
-| SF-X05 | Support `prefers-reduced-motion`.                                                                                                      | global CSS + review                     |
-| SF-X06 | Assertive and polite live regions use neutral `div` roots with `role="alert"` or `role="status"`; do not put either role on `aside`.   | browser accessibility + component tests |
+---
 
-### Internationalization and theme
+## 5. Mandatory Rules
 
-| ID     | Rule                                                                                                                         | Validation                        |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| SF-I01 | Support `pt-BR` and `en-US` reactively through `i18n.svelte.ts`.                                                             | `i18n.test.ts`                    |
-| SF-I02 | Locale dictionaries have identical non-empty keys and placeholders.                                                          | `i18n.test.ts`                    |
-| SF-I03 | SSR resolves the locale from the valid cookie or `Accept-Language`; a client preference cannot overwrite an explicit cookie. | `i18n.test.ts`                    |
-| SF-I04 | Theme is set before hydration from the same storage key used by `ThemeSelector`.                                             | `app.html` + manual browser check |
+### Architecture (`SF-A`)
 
-### Repository, release and operations
+| ID     | Rule                                                                                                                                                                                  | Validation                            |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| SF-A01 | Use Svelte 5 Runes (`$props`, `$state`, `$derived`, `$effect`) and `{@render ...}`. Never use `export let`, `$$props`, legacy lifecycle APIs or `<slot>`.                             | `pnpm check` + component tests        |
+| SF-A02 | Public components and types must be exported from `src/lib/index.ts` and `src/lib/types/index.ts`.                                                                                    | `pnpm check` + component tests        |
+| SF-A03 | Props are strictly typed. Forward native HTML attributes with `...restProps` on components with a native root.                                                                        | `pnpm check` + component tests        |
+| SF-A04 | Prioritize semantic HTML tags (`<header>`, `<main>`, `<footer>`, `<button>`, `<dialog>`, `<nav>`, `<section>`, `<article>`). Wrappers exist only when layout/animation requires them. | `app-shell.test.ts`, `button.test.ts` |
+| SF-A05 | Style native root tags directly in Svelte scoped CSS (`button`, `header`, `main`, `footer`, `svg`) with short state/variant classes. Never use `.shellfish-*` prefixes.               | `token-invariants.test.ts`            |
+| SF-A06 | Build true LEGO primitives using free `children` composition. Never create rigid positional slot props (`leading`, `trailing`, `leftIcon`, `rightIcon`).                              | `token-invariants.test.ts`            |
 
-| ID     | Rule                                                                                                                  | Validation                     |
-| ------ | --------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| SF-R01 | Use pnpm, Svelte 5, strict TypeScript, ESLint and Prettier.                                                           | package metadata + `pnpm lint` |
-| SF-R02 | Keep AGPL-3.0-only, the required PWA assets and package export map.                                                   | package metadata + tests       |
-| SF-R03 | Keep source, tests and component audit documentation under `src/lib/`, `tests/` and `docs/`.                          | baseline audit                 |
-| SF-R04 | Do not commit secrets or generated artifacts.                                                                         | review + `.gitignore`          |
-| SF-R05 | Use Conventional Commits in English: `<type>(<scope>): <description>`.                                                | review                         |
-| SF-R06 | Do not start `dev`, `preview` or a server without explicit user permission.                                           | workflow                       |
-| SF-R07 | `pnpm test` includes browser and Playwright E2E checks. Every new public component needs a catalog and test contract. | CI + contract tests            |
-| SF-R08 | Visual snapshots are versioned test fixtures. Updating one is a deliberate visual change requiring explicit approval. | review + Playwright            |
+### Visual System (`SF-V`)
 
-## Canonical layer scale
+| ID     | Rule                                                                                                                                                                                               | Validation                 |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| SF-V01 | Use declared CSS tokens only. Hardcoded hex colors (`#...`), raw pixel/rem spacing, raw border-radius or raw box-shadow in components are strictly forbidden.                                      | `token-invariants.test.ts` |
+| SF-V02 | Never use pure white (`#ffffff`) or pure black (`#000000`). Use warm suite tokens (`--bg-primary`, `--color-on-solid: #fdfbf7`, `--text-primary`) with WCAG AA+ contrast in Light and Dark themes. | `token-invariants.test.ts` |
+| SF-V03 | Derive spacing (`--space-*`), typography (`--text-*`) and control heights (`--control-height*`) mathematically from the single fluid `--base` token (`clamp` + `calc`).                            | `token-invariants.test.ts` |
+| SF-V04 | Use the canonical radius scale (`--radius-xs` `2px` near-square default for controls/badges/spinCube, `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-full`).                               | `token-invariants.test.ts` |
+| SF-V05 | Inline action controls (`Button`, `IconButton`, `Input`, `Select`) enforce fixed single-line height (`height: var(--control-height*)`), `white-space: nowrap`, and `flex-shrink: 0`.               | `button.test.ts` + review  |
+| SF-V06 | Keep `overflow: visible` at rest so badges, focus rings and popovers are never clipped; apply `overflow: hidden` only during collapse/morphing transitions (`.morphing`).                          | `button.test.ts` + review  |
+| SF-V07 | Do not use `!important` in component styles (allowed only in the global reduced-motion / low-perf reset in `variables.css`).                                                                       | review                     |
+| SF-V08 | `spinCube` is the single canonical loading indicator of the suite. Never display redundant status badges or text when a control already communicates loading visually.                             | `icons-spinner.test.ts`    |
+| SF-V09 | UI and catalog copy must be strictly minimal and functional (component names, variant tokens, and 1–2 word action labels). Never include promotional copy, subtitles, or technical explanations.   | review                     |
 
-`base` 0, `background` 10, `content` 20, `raised` 30, `sticky` 40,
-`shell-top` 50, `shell-header` 60, `popover` 70, `floating` 80, `drawer` 90,
-`modal` 100 and `critical` 110. Consumers never use raw values.
+### Accessibility & Internationalization (`SF-X` & `SF-I`)
 
-## Explicit exceptions and resolved ambiguities
+| ID     | Rule                                                                                                                                               | Validation                                |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| SF-X01 | Every interactive control is keyboard-operable, exposes visible `:focus-visible` outline and uses native semantics or accurate ARIA attributes.    | `button.test.ts`, `icons-spinner.test.ts` |
+| SF-X02 | Support `@media (prefers-reduced-motion: reduce)` across all animated components and global tokens.                                                | component CSS + `variables.css`           |
+| SF-I01 | Support all 3 official Monsan Suite locales reactively (`pt-BR`, `en-US`, `es`) via `src/lib/utils/i18n.svelte.ts`.                                | `foundation.test.ts`                      |
+| SF-I02 | Components must not embed hardcoded translatable strings; default accessible labels (such as `Spinner` loading status) resolve from `i18n.t(...)`. | `Spinner.svelte` + `foundation.test.ts`   |
+| SF-I03 | Theme (`light` / `dark`) and locale initialize before hydration to prevent visual flash.                                                           | `app.html` + `+layout.svelte`             |
 
-| Former absolute rule                 | Canonical decision                                                                      | Reason                                                                                                                                                         |
-| ------------------------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| “Zero div-soup”                      | No superfluous wrappers; required wrappers are allowed.                                 | `Row`, `Grid`, input decoration, card flip/collapse, menus and animation need structural elements. Removing them breaks behavior, semantics or browser layout. |
-| “Style only native tags”             | Style native roots directly; classes are allowed for required sub-elements and states.  | Multiple internal parts cannot be represented by one semantic root.                                                                                            |
-| “Never `!important`”                 | Forbidden except the global reduced-motion reset.                                       | The user preference must override scoped component animation declarations.                                                                                     |
-| “Never clip overflow”                | Never clip open overlays; clipping is allowed only for collapsed/transitioning content. | Collapse animations require clipping, while open menus must remain visible.                                                                                    |
-| “Every interactive Card is a button” | Only Cards with an actual click behavior are button-like.                               | Visual `interactive` feedback alone must not create misleading keyboard controls.                                                                              |
+---
 
-## Current compliance after this hardening
+## 6. Quality Gate
 
-| Finding                                                           | Decision                                                                                                                  | Status                        |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| Div wrappers in layout, controls, menus, cards and collapse areas | Required structural wrappers; documented exception.                                                                       | Accepted                      |
-| Old six-step layer scale and raw numeric layers                   | Migrated to suite layer tokens.                                                                                           | Fixed                         |
-| `!important` in reduced-motion reset                              | Narrow, documented accessibility exception.                                                                               | Accepted                      |
-| Hardcoded Chips remove label                                      | Moved to i18n with `{tag}` parameter.                                                                                     | Fixed                         |
-| Arbitrary `Spinner.color`                                         | Replaced with semantic color options.                                                                                     | Fixed                         |
-| Card and Footer clipping open overlay content                     | Open state is visible; clipping stays only when collapsed.                                                                | Fixed                         |
-| Keyboard access for clickable/flippable Cards                     | Focus/role/Enter/Space added when there is click behavior.                                                                | Fixed                         |
-| Catalog indexation                                                | `robots.txt` and page metadata set to noindex.                                                                            | Fixed                         |
-| `Alert` and `Toast` live-region semantics                         | Use `div` roots because `aside` does not permit `alert` or `status` roles; catalog guides and tests record this decision. | Fixed                         |
-| Theme flash                                                       | Theme initialized before hydration.                                                                                       | Fixed                         |
-| Missing component/audit documentation                             | This document added.                                                                                                      | Fixed                         |
-| Consumer CSS overrides                                            | Cannot be proven from Shellfish alone. Audit every consumer repository separately.                                        | Pending external audit        |
-| Browser-level focus order, dialog behavior and visual overflow    | Cannot be proven by source inspection alone.                                                                              | Pending manual/E2E validation |
-| Internal catalog deployment                                       | Uses `adapter-node`, Nixpacks, environment-only Basic Auth and public `/up` healthcheck.                                  | Fixed                         |
+Run in order:
 
-## Quality gate
-
-Run, in order: `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, `pnpm build`,
-`pnpm run lint:package`, `pnpm test:e2e`. `pnpm test` runs this complete gate
-and requires the user's explicit approval under Zoo workflow.
+1. `pnpm test:unit` (Vitest unit & architectural invariant tests)
+2. `pnpm check` (`svelte-kit sync` & `svelte-check`)
+3. `pnpm lint` (`prettier --check .` & `eslint .`)

@@ -39,7 +39,7 @@
 	});
 </script>
 
-<div class="shellfish-app-shell {className}" {...restProps}>
+<div class="app-shell {className}" {...restProps}>
 	{#if top}
 		<header class="shell-top">
 			{@render top()}
@@ -76,7 +76,7 @@
 </div>
 
 <style>
-	.shellfish-app-shell {
+	.app-shell {
 		display: flex;
 		flex-direction: column;
 		height: 100dvh;
@@ -88,7 +88,7 @@
 		position: relative;
 	}
 
-	.shell-top {
+	header {
 		flex-shrink: 0;
 		z-index: var(--layer-header);
 		background-color: var(--backdrop-surface);
@@ -108,7 +108,7 @@
 		overflow: hidden;
 	}
 
-	.shell-main {
+	main {
 		flex: 1;
 		min-height: 0;
 		overflow-y: auto;
@@ -117,7 +117,7 @@
 		scroll-behavior: smooth;
 	}
 
-	.shell-bottom {
+	footer {
 		flex-shrink: 0;
 		z-index: var(--layer-sticky);
 		background-color: var(--backdrop-surface);

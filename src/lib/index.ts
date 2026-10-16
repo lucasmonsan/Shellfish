@@ -15,3 +15,13 @@ export {
 
 // Layout & Viewport Primitives
 export { default as AppShell } from './components/layout/AppShell.svelte';
+
+// Action Components
+export { default as Button } from './components/actions/Button.svelte';
+export { default as IconButton } from './components/actions/IconButton.svelte';
+
+// Feedback & Loading
+export { default as Spinner } from './components/feedback/Spinner.svelte';
+
+// Curated Icons
+export * from './components/icons/index.js';

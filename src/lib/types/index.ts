@@ -2,3 +2,4 @@ export * from './tokens.js';
 export * from './theme.js';
 export * from './i18n.js';
 export * from './layout.js';
+export * from './icons.js';

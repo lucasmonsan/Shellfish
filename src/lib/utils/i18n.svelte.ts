@@ -5,145 +5,79 @@ export const I18N_CONTEXT_KEY = Symbol('shellfish-i18n');
 
 export const translations: Record<Locale, Record<string, string>> = {
 	'pt-BR': {
-		// Acessibilidade e Controles Comuns
 		'common.close': 'Fechar',
 		'common.cancel': 'Cancelar',
 		'common.confirm': 'Confirmar',
 		'common.save': 'Salvar',
 		'common.delete': 'Excluir',
 		'common.edit': 'Editar',
+		'common.search': 'Pesquisar',
+		'common.add': 'Adicionar',
+		'common.notifications': 'Notificações',
+		'common.disabled': 'Desabilitado',
 		'common.loading': 'Carregando...',
 		'common.back': 'Voltar',
 		'common.next': 'Próximo',
 		'dialog.close': 'Fechar diálogo',
 		'alert.close': 'Fechar alerta',
 		'toast.close': 'Fechar notificação',
-		'theme.toggle': 'Alternar tema claro/escuro',
+		'theme.toggle': 'Alternar tema',
+		'theme.light': 'Claro',
+		'theme.dark': 'Escuro',
 		'locale.toggle': 'Alternar idioma',
-		'locale.current': 'Português',
+		'locale.current': 'PT',
 		'locale.name': 'Português (Brasil)',
-		'document.title': 'Shellfish UI — Suíte Monsan',
-
-		// Showcase / Catálogo
-		'showcase.title': 'Shellfish',
-		'showcase.subtitle': 'Design System & Componentes da Suíte Monsan',
-		'showcase.tagline': 'Biblioteca Svelte 5 minimalista, acessível e tátil.',
-		'showcase.phase1_badge': 'Fase 1 Concluída',
-		'showcase.hero_title': 'AppShell & Viewport',
-		'showcase.hero_desc':
-			'O contêiner oficial de layout da Suíte Monsan com semântica estrita, viewport dinâmica (100dvh) e degradês de scroll automáticos.',
-		'showcase.how_it_works': 'Como o AppShell Funciona',
-		'showcase.top_title': 'Região Top',
-		'showcase.top_desc': 'Fixo no topo com suporte a backdrop-filter e borda sutil.',
-		'showcase.center_title': 'Região Content (Center)',
-		'showcase.center_desc':
-			'Rolagem interna suave com fades superior e inferior que surgem quando o conteúdo transborda.',
-		'showcase.bottom_title': 'Região Bottom',
-		'showcase.bottom_desc':
-			'Rodapé ou barra de ações fixa na base da viewport sem quebrar em mobile.',
-		'showcase.demo_title': 'Demonstração de Scroll e Fades Automáticos',
-		'showcase.demo_desc':
-			'Role esta página para cima e para baixo. Observe como o degradê suave superior surge assim que o conteúdo afunda sob o cabeçalho, e o degradê inferior desaparece quando você atinge o final.',
-		'showcase.mock_block_title': 'Bloco de Demonstração',
-		'showcase.mock_block_desc':
-			'Simulação de superfície de conteúdo para validação do cálculo dinâmico de rolagem e integridade do viewport em telas móveis e desktop.',
-		'showcase.footer_suite': 'Suíte Monsan',
-		'showcase.theme_light': 'Tema Claro',
-		'showcase.theme_dark': 'Tema Escuro'
+		'document.title': 'Shellfish'
 	},
 	'en-US': {
-		// Accessibility & Common Controls
 		'common.close': 'Close',
 		'common.cancel': 'Cancel',
 		'common.confirm': 'Confirm',
 		'common.save': 'Save',
 		'common.delete': 'Delete',
 		'common.edit': 'Edit',
+		'common.search': 'Search',
+		'common.add': 'Add',
+		'common.notifications': 'Notifications',
+		'common.disabled': 'Disabled',
 		'common.loading': 'Loading...',
 		'common.back': 'Back',
 		'common.next': 'Next',
 		'dialog.close': 'Close dialog',
 		'alert.close': 'Close alert',
 		'toast.close': 'Close notification',
-		'theme.toggle': 'Toggle light/dark theme',
+		'theme.toggle': 'Toggle theme',
+		'theme.light': 'Light',
+		'theme.dark': 'Dark',
 		'locale.toggle': 'Toggle language',
-		'locale.current': 'English',
+		'locale.current': 'EN',
 		'locale.name': 'English (US)',
-		'document.title': 'Shellfish UI — Monsan Suite',
-
-		// Showcase / Catalog
-		'showcase.title': 'Shellfish',
-		'showcase.subtitle': 'Design System & Components for Monsan Suite',
-		'showcase.tagline': 'Minimalist, accessible, and tactile Svelte 5 library.',
-		'showcase.phase1_badge': 'Phase 1 Complete',
-		'showcase.hero_title': 'AppShell & Viewport',
-		'showcase.hero_desc':
-			'Official Monsan Suite layout container with strict semantics, dynamic viewport (100dvh), and automatic scroll fades.',
-		'showcase.how_it_works': 'How AppShell Works',
-		'showcase.top_title': 'Top Region',
-		'showcase.top_desc': 'Fixed at the top with backdrop-filter and subtle border support.',
-		'showcase.center_title': 'Content Region (Center)',
-		'showcase.center_desc':
-			'Smooth internal scrolling with top and bottom fades that appear when content overflows.',
-		'showcase.bottom_title': 'Bottom Region',
-		'showcase.bottom_desc':
-			'Footer or action bar fixed at viewport bottom without mobile breakage.',
-		'showcase.demo_title': 'Scroll Demonstration & Automatic Fades',
-		'showcase.demo_desc':
-			'Scroll this page up and down. Notice how the top gradient appears as content slides beneath the header, and the bottom gradient fades when you reach the end.',
-		'showcase.mock_block_title': 'Demo Block',
-		'showcase.mock_block_desc':
-			'Simulated content surface to validate dynamic scroll calculations and viewport integrity across mobile and desktop screens.',
-		'showcase.footer_suite': 'Monsan Suite',
-		'showcase.theme_light': 'Light Theme',
-		'showcase.theme_dark': 'Dark Theme'
+		'document.title': 'Shellfish'
 	},
 	es: {
-		// Accesibilidad y Controles Comunes
 		'common.close': 'Cerrar',
 		'common.cancel': 'Cancelar',
 		'common.confirm': 'Confirmar',
 		'common.save': 'Guardar',
 		'common.delete': 'Eliminar',
 		'common.edit': 'Editar',
+		'common.search': 'Buscar',
+		'common.add': 'Añadir',
+		'common.notifications': 'Notificaciones',
+		'common.disabled': 'Deshabilitado',
 		'common.loading': 'Cargando...',
 		'common.back': 'Volver',
 		'common.next': 'Siguiente',
 		'dialog.close': 'Cerrar diálogo',
 		'alert.close': 'Cerrar alerta',
 		'toast.close': 'Cerrar notificación',
-		'theme.toggle': 'Cambiar tema claro/oscuro',
+		'theme.toggle': 'Cambiar tema',
+		'theme.light': 'Claro',
+		'theme.dark': 'Oscuro',
 		'locale.toggle': 'Cambiar idioma',
-		'locale.current': 'Español',
+		'locale.current': 'ES',
 		'locale.name': 'Español',
-		'document.title': 'Shellfish UI — Monsan Suite',
-
-		// Showcase / Catálogo
-		'showcase.title': 'Shellfish',
-		'showcase.subtitle': 'Design System y Componentes de Monsan Suite',
-		'showcase.tagline': 'Biblioteca Svelte 5 minimalista, accesible y táctil.',
-		'showcase.phase1_badge': 'Fase 1 Completada',
-		'showcase.hero_title': 'AppShell y Viewport',
-		'showcase.hero_desc':
-			'El contenedor oficial de diseño de Monsan Suite con semántica estricta, viewport dinámico (100dvh) y degradados de scroll automáticos.',
-		'showcase.how_it_works': 'Cómo Funciona AppShell',
-		'showcase.top_title': 'Región Superior (Top)',
-		'showcase.top_desc': 'Fijo arriba con soporte para backdrop-filter y borde sutil.',
-		'showcase.center_title': 'Región de Contenido (Centro)',
-		'showcase.center_desc':
-			'Desplazamiento interno suave con degradados superior e inferior que aparecen cuando el contenido desborda.',
-		'showcase.bottom_title': 'Región Inferior (Bottom)',
-		'showcase.bottom_desc':
-			'Pie de página o barra de acciones fija en la base sin romper en dispositivos móviles.',
-		'showcase.demo_title': 'Demostración de Scroll y Degradados Automáticos',
-		'showcase.demo_desc':
-			'Desplaza esta página hacia arriba y hacia abajo. Observa cómo el degradado superior aparece cuando el contenido pasa bajo el encabezado, y el degradado inferior desaparece al llegar al final.',
-		'showcase.mock_block_title': 'Bloque de Demostración',
-		'showcase.mock_block_desc':
-			'Superficie de contenido simulada para validar el cálculo dinámico del scroll y la integridad de la pantalla en móviles y ordenadores.',
-		'showcase.footer_suite': 'Monsan Suite',
-		'showcase.theme_light': 'Tema Claro',
-		'showcase.theme_dark': 'Tema Oscuro'
+		'document.title': 'Shellfish'
 	}
 };
 

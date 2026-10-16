@@ -1,5 +1,46 @@
 <script lang="ts">
-	import { AppShell } from '$lib/index.js';
+	import {
+		AppShell,
+		Button,
+		IconButton,
+		Spinner,
+		Sun,
+		Moon,
+		Globe,
+		Search,
+		X,
+		Check,
+		ChevronDown,
+		ChevronUp,
+		ChevronLeft,
+		ChevronRight,
+		ArrowRight,
+		Trash,
+		Pencil,
+		Plus,
+		Minus,
+		Eye,
+		EyeOff,
+		AlertCircle,
+		CheckCircle,
+		Copy,
+		User,
+		Settings,
+		LogOut,
+		FileText,
+		Folder,
+		Lock,
+		Unlock,
+		RotateCw,
+		Save,
+		Download,
+		Upload,
+		ListBullets,
+		BarChart,
+		DotsThreeVertical,
+		Sparkles,
+		Zap
+	} from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 	import type { LayoutData } from './$types.js';
 	import { onMount } from 'svelte';
@@ -8,6 +49,8 @@
 	const i18n = getI18n();
 
 	let currentTheme = $state<'light' | 'dark'>('light');
+	let manualLoading = $state(false);
+	let notificationCount = $state(3);
 
 	onMount(() => {
 		const active = document.documentElement.dataset.theme;
@@ -29,285 +72,350 @@
 		}
 	}
 
-	function handleToggleLocale() {
-		i18n.toggleLocale();
+	async function simulateAsync() {
+		await new Promise((resolve) => setTimeout(resolve, 1200));
 	}
+
+	const iconCatalog = [
+		{ name: 'Sun', component: Sun },
+		{ name: 'Moon', component: Moon },
+		{ name: 'Globe', component: Globe },
+		{ name: 'Search', component: Search },
+		{ name: 'X', component: X },
+		{ name: 'Check', component: Check },
+		{ name: 'ChevronDown', component: ChevronDown },
+		{ name: 'ChevronUp', component: ChevronUp },
+		{ name: 'ChevronLeft', component: ChevronLeft },
+		{ name: 'ChevronRight', component: ChevronRight },
+		{ name: 'ArrowRight', component: ArrowRight },
+		{ name: 'Trash', component: Trash },
+		{ name: 'Pencil', component: Pencil },
+		{ name: 'Plus', component: Plus },
+		{ name: 'Minus', component: Minus },
+		{ name: 'Eye', component: Eye },
+		{ name: 'EyeOff', component: EyeOff },
+		{ name: 'AlertCircle', component: AlertCircle },
+		{ name: 'CheckCircle', component: CheckCircle },
+		{ name: 'Copy', component: Copy },
+		{ name: 'User', component: User },
+		{ name: 'Settings', component: Settings },
+		{ name: 'LogOut', component: LogOut },
+		{ name: 'FileText', component: FileText },
+		{ name: 'Folder', component: Folder },
+		{ name: 'Lock', component: Lock },
+		{ name: 'Unlock', component: Unlock },
+		{ name: 'RotateCw', component: RotateCw },
+		{ name: 'Save', component: Save },
+		{ name: 'Download', component: Download },
+		{ name: 'Upload', component: Upload },
+		{ name: 'ListBullets', component: ListBullets },
+		{ name: 'BarChart', component: BarChart },
+		{ name: 'DotsThreeVertical', component: DotsThreeVertical },
+		{ name: 'Sparkles', component: Sparkles },
+		{ name: 'Zap', component: Zap }
+	];
 </script>
 
 <svelte:head>
-	<title>{i18n.t('showcase.title')} — {i18n.t('showcase.subtitle')}</title>
+	<title>{i18n.t('document.title')}</title>
 </svelte:head>
 
 <AppShell>
 	{#snippet top()}
-		<div class="shell-top-bar">
+		<div class="bar">
 			<div class="brand">
 				<span class="brand-icon" aria-hidden="true"></span>
-				<div class="brand-text">
-					<span class="brand-name">{i18n.t('showcase.title')}</span>
-					<span class="version-badge">v{data.version}</span>
-				</div>
+				<span class="brand-name">Shellfish</span>
 			</div>
 
-			<div class="top-actions">
-				<button type="button" class="action-btn" onclick={handleToggleLocale}>
+			<div class="actions">
+				<Button
+					variant="secondary"
+					size="sm"
+					ariaLabel={i18n.t('locale.toggle')}
+					onclick={() => i18n.toggleLocale()}
+				>
+					<Globe size={16} />
 					{i18n.t('locale.current')}
-				</button>
-				<button type="button" class="action-btn" onclick={toggleTheme}>
-					{currentTheme === 'light'
-						? i18n.t('showcase.theme_light')
-						: i18n.t('showcase.theme_dark')}
-				</button>
+				</Button>
+
+				<IconButton
+					label={i18n.t('theme.toggle')}
+					variant="secondary"
+					size="sm"
+					onclick={toggleTheme}
+				>
+					{#if currentTheme === 'light'}
+						<Sun size={16} />
+					{:else}
+						<Moon size={16} />
+					{/if}
+				</IconButton>
 			</div>
 		</div>
 	{/snippet}
 
-	<div class="page-content">
-		<header class="hero-section">
-			<span class="phase-pill">{i18n.t('showcase.phase1_badge')}</span>
-			<h1>{i18n.t('showcase.hero_title')}</h1>
-			<p class="hero-desc">{i18n.t('showcase.hero_desc')}</p>
-		</header>
+	<div class="catalog">
+		<section class="group">
+			<h2>Button</h2>
 
-		<section class="demo-card">
-			<h2>{i18n.t('showcase.how_it_works')}</h2>
-			<div class="demo-grid">
-				<div class="demo-feature">
-					<h3>{i18n.t('showcase.top_title')}</h3>
-					<p>{i18n.t('showcase.top_desc')}</p>
+			<div class="subgroup">
+				<span class="label">Variants</span>
+				<div class="row">
+					<Button variant="primary">
+						<Check size={16} />
+						Primary
+					</Button>
+					<Button variant="secondary">
+						<Settings size={16} />
+						Secondary
+					</Button>
+					<Button variant="danger">
+						<Trash size={16} />
+						Danger
+					</Button>
+					<Button variant="warning">
+						<AlertCircle size={16} />
+						Warning
+					</Button>
+					<Button variant="success">
+						<CheckCircle size={16} />
+						Success
+					</Button>
+					<Button variant="outline">
+						<Search size={16} />
+						Outline
+					</Button>
+					<Button variant="ghost">
+						<Copy size={16} />
+						Ghost
+					</Button>
+					<Button variant="primary" disabled>{i18n.t('common.disabled')}</Button>
 				</div>
-				<div class="demo-feature">
-					<h3>{i18n.t('showcase.center_title')}</h3>
-					<p>{i18n.t('showcase.center_desc')}</p>
+			</div>
+
+			<div class="subgroup">
+				<span class="label">Sizes</span>
+				<div class="row">
+					<Button size="sm" variant="secondary">
+						<Plus size={14} />
+						sm
+					</Button>
+					<Button size="md" variant="secondary">
+						<Plus size={16} />
+						md
+					</Button>
+					<Button size="lg" variant="secondary">
+						<Plus size={18} />
+						lg
+					</Button>
 				</div>
-				<div class="demo-feature">
-					<h3>{i18n.t('showcase.bottom_title')}</h3>
-					<p>{i18n.t('showcase.bottom_desc')}</p>
+			</div>
+
+			<div class="subgroup">
+				<span class="label">Loading & IconButton</span>
+				<div class="row">
+					<Button variant="primary" onclick={simulateAsync}>
+						<Save size={16} />
+						{i18n.t('common.save')}
+					</Button>
+
+					<Button
+						variant="secondary"
+						loading={manualLoading}
+						onclick={() => {
+							manualLoading = !manualLoading;
+						}}
+					>
+						Loading
+					</Button>
+
+					<Button variant="secondary" square ariaLabel={i18n.t('common.add')}>
+						<Plus size={18} />
+					</Button>
+
+					<Button variant="primary" square ariaLabel={i18n.t('common.search')}>
+						<Search size={18} />
+					</Button>
+
+					<Button variant="danger" square ariaLabel={i18n.t('common.delete')}>
+						<Trash size={18} />
+					</Button>
+
+					<IconButton
+						label={i18n.t('common.notifications')}
+						count={notificationCount}
+						onclick={() => {
+							notificationCount = notificationCount > 0 ? 0 : 3;
+						}}
+					>
+						<Sparkles size={18} />
+					</IconButton>
 				</div>
 			</div>
 		</section>
 
-		<section class="demo-card">
-			<h2>{i18n.t('showcase.demo_title')}</h2>
-			<p>{i18n.t('showcase.demo_desc')}</p>
+		<section class="group">
+			<h2>Spinner</h2>
+			<div class="row">
+				<div class="cell">
+					<Spinner size="sm" />
+					<span class="mono">sm</span>
+				</div>
+				<div class="cell">
+					<Spinner size="md" />
+					<span class="mono">md</span>
+				</div>
+				<div class="cell">
+					<Spinner size="lg" />
+					<span class="mono">lg</span>
+				</div>
+			</div>
+		</section>
 
-			<div class="mock-cards-list">
-				{#each Array.from({ length: 8 }, (_, i) => i + 1) as item (item)}
-					<article class="mock-item">
-						<span class="item-number">#{item}</span>
-						<div class="item-body">
-							<h4>{i18n.t('showcase.mock_block_title')} {item}</h4>
-							<p>{i18n.t('showcase.mock_block_desc')}</p>
-						</div>
-					</article>
+		<section class="group">
+			<h2>Icons</h2>
+			<div class="icons-grid">
+				{#each iconCatalog as icon (icon.name)}
+					<div class="icon-cell">
+						<icon.component size={20} />
+						<span class="mono">{icon.name}</span>
+					</div>
 				{/each}
 			</div>
 		</section>
 	</div>
 
 	{#snippet bottom()}
-		<div class="shell-bottom-bar">
-			<span>Shellfish — Porta <code>4401</code></span>
-			<span>{i18n.t('showcase.footer_suite')}</span>
+		<div class="bar footer">
+			<span>v{data.version}</span>
+			<span>Monsan</span>
 		</div>
 	{/snippet}
 </AppShell>
 
 <style>
-	.shell-top-bar {
+	.bar {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: var(--space-sm) var(--space-md);
-		max-width: 960px;
+		padding: var(--space-sm) var(--space-lg);
+		max-width: 1280px;
 		margin: 0 auto;
 		width: 100%;
+	}
+
+	.footer {
+		font-size: var(--text-xs);
+		font-family: var(--font-mono);
+		color: var(--text-muted);
 	}
 
 	.brand {
 		display: flex;
 		align-items: center;
-		gap: var(--space-sm);
+		gap: var(--space-xs);
 	}
 
 	.brand-icon {
 		display: inline-block;
-		width: 22px;
-		height: 22px;
+		width: 20px;
+		height: 20px;
 		background-color: var(--color-primary);
 		-webkit-mask: url('/favicon.svg') no-repeat center / contain;
 		mask: url('/favicon.svg') no-repeat center / contain;
 		flex-shrink: 0;
 	}
 
-	.brand-text {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-	}
-
 	.brand-name {
 		font-weight: 700;
 		font-size: var(--text-md);
-		letter-spacing: -0.01em;
 	}
 
-	.version-badge {
-		font-size: var(--text-xs);
-		background-color: var(--border-color);
-		padding: 2px 6px;
-		border-radius: var(--radius-sm);
-		color: var(--text-secondary);
-	}
-
-	.top-actions {
+	.actions {
 		display: flex;
+		align-items: center;
 		gap: var(--space-xs);
 	}
 
-	.action-btn {
-		font-family: inherit;
-		font-size: var(--text-xs);
-		font-weight: 500;
-		background-color: var(--bg-elevated);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-sm);
-		padding: 6px 12px;
-		cursor: pointer;
-		color: var(--text-primary);
-		transition: background-color var(--transition-fast);
-	}
-
-	.action-btn:hover {
-		background-color: var(--bg-secondary);
-	}
-
-	.page-content {
-		max-width: 840px;
+	.catalog {
+		max-width: 1280px;
 		margin: 0 auto;
-		padding: var(--space-xl) var(--space-md) var(--space-2xl);
+		padding: var(--space-lg);
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xl);
+		gap: var(--space-md);
 	}
 
-	.hero-section {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xs);
-	}
-
-	.phase-pill {
-		align-self: flex-start;
-		font-size: var(--text-xs);
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		padding: 4px 10px;
-		background-color: var(--color-primary-subtle);
-		color: var(--color-primary);
-		border-radius: var(--radius-full);
-	}
-
-	h1 {
-		font-size: var(--text-3xl);
-		letter-spacing: -0.02em;
-		margin: 0;
-	}
-
-	.hero-desc {
-		font-size: var(--text-lg);
-		color: var(--text-secondary);
-		margin: 0;
-	}
-
-	.demo-card {
+	.group {
 		background-color: var(--bg-elevated);
 		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-md);
+		border-radius: var(--radius-xs);
 		padding: var(--space-lg);
-		box-shadow: var(--shadow-sm);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-	}
-
-	.demo-card h2 {
-		margin: 0;
-		font-size: var(--text-xl);
-	}
-
-	.demo-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: var(--space-md);
-	}
-
-	.demo-feature {
-		background-color: var(--bg-primary);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-sm);
-		padding: var(--space-md);
-	}
-
-	.demo-feature h3 {
-		font-size: var(--text-md);
-		margin: 0 0 var(--space-xs) 0;
-	}
-
-	.demo-feature p {
-		font-size: var(--text-sm);
-		color: var(--text-secondary);
-		margin: 0;
-	}
-
-	.mock-cards-list {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-sm);
-		margin-top: var(--space-xs);
 	}
 
-	.mock-item {
+	h2 {
+		margin: 0;
+		font-size: var(--text-lg);
+		font-weight: 700;
+	}
+
+	.subgroup {
 		display: flex;
-		align-items: flex-start;
-		gap: var(--space-md);
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.label {
+		font-size: var(--text-xs);
+		font-family: var(--font-mono);
+		color: var(--text-muted);
+	}
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-sm);
+		align-items: center;
+	}
+
+	.cell {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
 		padding: var(--space-md);
 		background-color: var(--bg-primary);
 		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-xs);
+		min-width: 80px;
 	}
 
-	.item-number {
-		font-size: var(--text-xs);
-		font-family: var(--font-mono);
-		font-weight: 700;
-		padding: 2px 6px;
-		background-color: var(--bg-secondary);
-		border-radius: var(--radius-sm);
-		color: var(--text-secondary);
+	.icons-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+		gap: var(--space-sm);
 	}
 
-	.item-body h4 {
-		margin: 0 0 var(--space-xxs) 0;
-		font-size: var(--text-sm);
-	}
-
-	.item-body p {
-		margin: 0;
-		font-size: var(--text-xs);
-		color: var(--text-secondary);
-	}
-
-	.shell-bottom-bar {
+	.icon-cell {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
 		align-items: center;
-		padding: var(--space-sm) var(--space-md);
-		max-width: 960px;
-		margin: 0 auto;
-		width: 100%;
-		font-size: var(--text-xs);
-		color: var(--text-muted);
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: var(--space-sm);
+		background-color: var(--bg-primary);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-xs);
+	}
+
+	.mono {
+		font-size: var(--text-xxs);
+		font-family: var(--font-mono);
+		color: var(--text-secondary);
 	}
 </style>

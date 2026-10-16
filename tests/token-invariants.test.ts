@@ -157,4 +157,47 @@ describe('Invariant Test: Zero Hardcoded Design Values in Library Code', () => {
 
 		expect(allViolations).toHaveLength(0);
 	});
+
+	it('guarantees that variables.css derives spacing, typography, and control heights from fluid --base', () => {
+		const varsPath = path.resolve('src/lib/styles/variables.css');
+		const content = fs.readFileSync(varsPath, 'utf8');
+
+		expect(content).toContain('--base: clamp(');
+		expect(content).toContain('--control-height: calc(var(--base)');
+		expect(content).toContain('--space-xs: calc(var(--base)');
+		expect(content).toContain('--space-sm: calc(var(--base)');
+		expect(content).toContain('--space-md: var(--base)');
+		expect(content).toContain('--text-sm: calc(var(--base)');
+		expect(content).toContain('--text-md: var(--base)');
+		expect(content.toLowerCase()).not.toContain('#ffffff');
+		expect(content.toLowerCase()).not.toContain('#000000');
+	});
+
+	it('guarantees zero .shellfish-* class prefixes, zero leading/trailing slot props, and zero hardcoded hex colors in src/lib components', () => {
+		const libDir = path.resolve('src/lib/components');
+		const files = walkDir(libDir);
+
+		for (const file of files) {
+			const relativePath = path.relative(process.cwd(), file);
+			const content = fs.readFileSync(file, 'utf8');
+
+			expect(
+				content.includes('shellfish-'),
+				`Prefixo redundante '.shellfish-*' encontrado em ${relativePath}`
+			).toBe(false);
+
+			expect(
+				/\b(leading|trailing)\??\s*:\s*Snippet/.test(content),
+				`Props de posição engessadas (leading/trailing) encontradas em ${relativePath}`
+			).toBe(false);
+
+			const styleMatch = /<style[^>]*>([\s\S]*?)<\/style>/.exec(content);
+			if (styleMatch) {
+				expect(
+					/#[0-9a-fA-F]{3,8}\b/.test(styleMatch[1]),
+					`Cor hexadecimal hardcoded encontrada no <style> de ${relativePath}`
+				).toBe(false);
+			}
+		}
+	});
 });
