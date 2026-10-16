@@ -302,7 +302,7 @@
 
 		<Card gap="sm">
 			<h2>Card</h2>
-			<Grid minItemWidth={180} gap="sm">
+			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
 				<Card variant="primary" padding="md" gap="xs">
 					<span class="mono">primary</span>
 				</Card>
@@ -314,9 +314,6 @@
 				</Card>
 				<Card variant="outlined" padding="md" gap="xs">
 					<span class="mono">outlined</span>
-				</Card>
-				<Card variant="primary" padding="md" gap="xs" interactive>
-					<span class="mono">interactive</span>
 				</Card>
 			</Grid>
 		</Card>
@@ -341,7 +338,7 @@
 
 		<Card gap="sm">
 			<h2>Icons</h2>
-			<Grid minItemWidth={128} gap="sm">
+			<Grid gap="sm">
 				{#each iconCatalog as icon (icon.name)}
 					<Card variant="primary" padding="sm" gap="sm" align="center">
 						<icon.component size={20} />

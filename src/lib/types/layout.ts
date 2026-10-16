@@ -84,7 +84,7 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 	padding?: Space;
 	/** Fixed column count. If omitted, uses auto-fill with minItemWidth. */
 	columns?: number;
-	/** Minimum item width for auto-fill responsive grid (number in px or CSS string). Default: 128. */
+	/** Minimum item width for auto-fill grid (number in px or CSS string). Default: calc(var(--base) * 8). */
 	minItemWidth?: number | string;
 	/** Additional CSS classes. */
 	class?: string;

@@ -66,20 +66,23 @@ describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 		expect(result.body).toContain('--col-gap: var(--space-xs)');
 	});
 
-	it('renders Grid with auto-fill minItemWidth or fixed columns', () => {
+	it('renders Grid with fluid default, explicit minItemWidth or fixed columns', () => {
 		const children = createRawSnippet(() => ({
 			render: () => '<div>Cell</div>'
 		}));
 
+		const defaultGrid = render(Grid, { props: { children } });
+		expect(defaultGrid.body).not.toContain('--grid-cols');
+		expect(defaultGrid.body).toContain('--grid-gap: var(--space-sm)');
+
 		const autoGrid = render(Grid, {
 			props: {
-				minItemWidth: 128,
+				minItemWidth: 'calc(var(--base) * 11)',
 				gap: 'sm',
 				children
 			}
 		});
-		expect(autoGrid.body).toContain('repeat(auto-fill, minmax(128px, 1fr))');
-		expect(autoGrid.body).toContain('--grid-gap: var(--space-sm)');
+		expect(autoGrid.body).toContain('repeat(auto-fill, minmax(calc(var(--base) * 11), 1fr))');
 
 		const fixedGrid = render(Grid, {
 			props: {
@@ -93,7 +96,7 @@ describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 });
 
 describe('Display Primitives (Card, Badge, Divider)', () => {
-	it('renders semantic <article> for Card with variants and interactive mode', () => {
+	it('renders semantic <article> for Card as a pure non-focusable surface', () => {
 		const children = createRawSnippet(() => ({
 			render: () => '<p>Card body</p>'
 		}));
@@ -108,16 +111,8 @@ describe('Display Primitives (Card, Badge, Divider)', () => {
 			}
 		});
 		expect(card.body).toMatch(/<article[^>]*class="primary align-center/);
-		expect(card.body).not.toContain('tabindex="0"');
-
-		const interactiveCard = render(Card, {
-			props: {
-				interactive: true,
-				children
-			}
-		});
-		expect(interactiveCard.body).toContain('interactive');
-		expect(interactiveCard.body).toContain('tabindex="0"');
+		expect(card.body).not.toContain('tabindex');
+		expect(card.body).toContain('--card-pad: var(--space-sm)');
 	});
 
 	it('renders Badge with all suite variants and sizes', () => {

@@ -17,8 +17,6 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 	gap?: Space;
 	/** Cross-axis alignment of children. Default: 'stretch'. */
 	align?: 'start' | 'center' | 'end' | 'stretch';
-	/** Enables hover and active tactile feedback. Default: false. */
-	interactive?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }

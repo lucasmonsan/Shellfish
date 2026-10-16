@@ -6,24 +6,27 @@
 		gap = 'sm',
 		padding = 'none',
 		columns,
-		minItemWidth = 128,
+		minItemWidth,
 		class: className = '',
 		style = '',
 		...restProps
 	}: GridProps = $props();
 
-	let resolvedTemplate = $derived.by(() => {
+	let colsStyle = $derived.by(() => {
 		if (typeof columns === 'number' && columns > 0) {
-			return `repeat(${columns}, minmax(0, 1fr))`;
+			return `--grid-cols: repeat(${columns}, minmax(0, 1fr));`;
 		}
-		const minWidth = typeof minItemWidth === 'number' ? `${minItemWidth}px` : minItemWidth;
-		return `repeat(auto-fill, minmax(${minWidth}, 1fr))`;
+		if (minItemWidth !== undefined) {
+			const minWidth = typeof minItemWidth === 'number' ? `${minItemWidth}px` : minItemWidth;
+			return `--grid-cols: repeat(auto-fill, minmax(${minWidth}, 1fr));`;
+		}
+		return '';
 	});
 </script>
 
 <div
 	class="grid {className}"
-	style="--grid-cols: {resolvedTemplate}; --grid-gap: var(--space-{gap}); --grid-pad: var(--space-{padding}); {style}"
+	style="{colsStyle} --grid-gap: var(--space-{gap}); --grid-pad: var(--space-{padding}); {style}"
 	{...restProps}
 >
 	{#if children}
