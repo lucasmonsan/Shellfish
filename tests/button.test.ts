@@ -145,7 +145,32 @@ describe('IconButton Primitive', () => {
 		expect(result.body).toContain('square');
 		expect(result.body).toContain('aria-label="Excluir Item"');
 		expect(result.body).toContain('title="Excluir Item"');
+		expect(result.body).not.toContain('aria-pressed');
 		expect(result.body).toContain('id="test-icon"');
+	});
+
+	it('renders aria-pressed only when selected is explicitly provided', () => {
+		const iconSnippet = createRawSnippet(() => ({
+			render: () => '<svg></svg>'
+		}));
+
+		const pressed = render(IconButton, {
+			props: {
+				label: 'Favoritar',
+				selected: true,
+				children: iconSnippet
+			}
+		});
+		expect(pressed.body).toContain('aria-pressed="true"');
+
+		const unpressed = render(IconButton, {
+			props: {
+				label: 'Favoritar',
+				selected: false,
+				children: iconSnippet
+			}
+		});
+		expect(unpressed.body).toContain('aria-pressed="false"');
 	});
 
 	it('displays notification count badge when count > 0', () => {

@@ -7,7 +7,7 @@
 		title = label,
 		variant = 'secondary',
 		size = 'md',
-		selected = false,
+		selected,
 		count = 0,
 		loading = false,
 		disabled = false,

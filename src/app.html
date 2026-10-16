@@ -15,7 +15,12 @@
 		/>
 		<script>
 			(() => {
-				const stored = localStorage.getItem('shellfish-theme');
+				let stored = null;
+				try {
+					stored = localStorage.getItem('shellfish-theme');
+				} catch {
+					// Ignora bloqueio de storage
+				}
 				const theme =
 					stored === 'light' || stored === 'dark'
 						? stored

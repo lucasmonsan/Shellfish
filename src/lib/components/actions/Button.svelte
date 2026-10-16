@@ -16,6 +16,7 @@
 		children,
 		ariaLabel,
 		class: className = '',
+		style = '',
 		...restProps
 	}: ButtonProps = $props();
 
@@ -144,7 +145,7 @@
 	class:morphing={isMorphing}
 	class:block
 	class:square
-	style="{dynamicSizeStyle} {restProps.style ?? ''}"
+	style="{dynamicSizeStyle} {style}"
 	{...restProps}
 >
 	<span class="content" class:hidden={visualLoading}>
@@ -360,6 +361,10 @@
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity 0.15s ease-out;
+	}
+
+	.spinner:not(.visible) :global(.spinner) {
+		animation: none;
 	}
 
 	.spinner.visible {
