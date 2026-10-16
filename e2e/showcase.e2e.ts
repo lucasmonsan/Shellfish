@@ -31,6 +31,7 @@ test.describe('Catalog locale and theme behavior', () => {
 		await context.clearCookies();
 		await context.setExtraHTTPHeaders({ 'Accept-Language': 'pt-BR,pt;q=0.9' });
 		await page.goto('/');
+		await page.waitForLoadState('networkidle');
 		await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
 
 		await page.getByRole('button', { name: 'Alternar idioma' }).click();

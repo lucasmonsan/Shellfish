@@ -41,7 +41,23 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.sample_alt': 'Ilustração geométrica Shellfish',
 		'image.avatar_sample_alt': 'Avatar de exemplo',
 		'image.load_error': 'Erro ao carregar',
-		'image.no_image': 'Sem imagem'
+		'image.no_image': 'Sem imagem',
+		'popover.title': 'Popover',
+		'popover.alignments': 'Alinhamentos Horizontais',
+		'popover.align_start': 'Início (start)',
+		'popover.align_center': 'Centro (center)',
+		'popover.align_end': 'Fim (end)',
+		'popover.placements': 'Posicionamentos Verticais',
+		'popover.placement_auto': 'Automático (auto)',
+		'popover.placement_top': 'Acima (top)',
+		'popover.placement_bottom': 'Abaixo (bottom)',
+		'popover.interactive_profile': 'Composição: Menu de Usuário',
+		'popover.profile_role': 'Engenheiro de Software',
+		'popover.profile_account': 'Minha Conta',
+		'popover.profile_settings': 'Configurações',
+		'popover.profile_logout': 'Encerrar Sessão',
+		'popover.panel_sample_title': 'Painel Flutuante',
+		'popover.panel_sample_desc': 'Fecha com clique externo, tecla Escape ou ao selecionar uma ação.'
 	},
 	'en-US': {
 		'common.close': 'Close',
@@ -80,7 +96,24 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.sample_alt': 'Shellfish geometric illustration',
 		'image.avatar_sample_alt': 'Sample avatar',
 		'image.load_error': 'Failed to load',
-		'image.no_image': 'No image'
+		'image.no_image': 'No image',
+		'popover.title': 'Popover',
+		'popover.alignments': 'Horizontal Alignments',
+		'popover.align_start': 'Start (start)',
+		'popover.align_center': 'Center (center)',
+		'popover.align_end': 'End (end)',
+		'popover.placements': 'Vertical Placements',
+		'popover.placement_auto': 'Automatic (auto)',
+		'popover.placement_top': 'Above (top)',
+		'popover.placement_bottom': 'Below (bottom)',
+		'popover.interactive_profile': 'Composition: User Profile Menu',
+		'popover.profile_role': 'Software Engineer',
+		'popover.profile_account': 'My Account',
+		'popover.profile_settings': 'Settings',
+		'popover.profile_logout': 'Sign Out',
+		'popover.panel_sample_title': 'Floating Panel',
+		'popover.panel_sample_desc':
+			'Closes with outside click, Escape key, or when selecting an action.'
 	},
 	es: {
 		'common.close': 'Cerrar',
@@ -119,7 +152,24 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'image.sample_alt': 'Ilustración geométrica Shellfish',
 		'image.avatar_sample_alt': 'Avatar de ejemplo',
 		'image.load_error': 'Error al cargar',
-		'image.no_image': 'Sin imagen'
+		'image.no_image': 'Sin imagen',
+		'popover.title': 'Popover',
+		'popover.alignments': 'Alineaciones Horizontales',
+		'popover.align_start': 'Inicio (start)',
+		'popover.align_center': 'Centro (center)',
+		'popover.align_end': 'Fin (end)',
+		'popover.placements': 'Posicionamientos Verticales',
+		'popover.placement_auto': 'Automático (auto)',
+		'popover.placement_top': 'Arriba (top)',
+		'popover.placement_bottom': 'Abajo (bottom)',
+		'popover.interactive_profile': 'Composición: Menú de Usuario',
+		'popover.profile_role': 'Ingeniero de Software',
+		'popover.profile_account': 'Mi Cuenta',
+		'popover.profile_settings': 'Configuraciones',
+		'popover.profile_logout': 'Cerrar Sesión',
+		'popover.panel_sample_title': 'Panel Flotante',
+		'popover.panel_sample_desc':
+			'Se cierra con clic externo, tecla Escape o al seleccionar una acción.'
 	}
 };
 
