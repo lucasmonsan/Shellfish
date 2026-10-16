@@ -1,6 +1,13 @@
 <script lang="ts">
 	import {
 		AppShell,
+		Section,
+		Row,
+		Column,
+		Grid,
+		Card,
+		Badge,
+		Divider,
 		Button,
 		IconButton,
 		Spinner,
@@ -122,46 +129,48 @@
 
 <AppShell>
 	{#snippet top()}
-		<div class="bar">
-			<div class="brand">
-				<span class="brand-icon" aria-hidden="true"></span>
-				<span class="brand-name">Shellfish</span>
-			</div>
+		<Section contained padding="sm">
+			<Row justify="between" fullWidth>
+				<Row gap="xs">
+					<span class="brand-icon" aria-hidden="true"></span>
+					<span class="brand-name">Shellfish</span>
+				</Row>
 
-			<div class="actions">
-				<Button
-					variant="secondary"
-					size="sm"
-					ariaLabel={i18n.t('locale.toggle')}
-					onclick={() => i18n.toggleLocale()}
-				>
-					<Globe size={16} />
-					{i18n.t('locale.current')}
-				</Button>
+				<Row gap="xs">
+					<Button
+						variant="secondary"
+						size="sm"
+						ariaLabel={i18n.t('locale.toggle')}
+						onclick={() => i18n.toggleLocale()}
+					>
+						<Globe size={16} />
+						{i18n.t('locale.current')}
+					</Button>
 
-				<IconButton
-					label={i18n.t('theme.toggle')}
-					variant="secondary"
-					size="sm"
-					onclick={toggleTheme}
-				>
-					{#if currentTheme === 'light'}
-						<Sun size={16} />
-					{:else}
-						<Moon size={16} />
-					{/if}
-				</IconButton>
-			</div>
-		</div>
+					<IconButton
+						label={i18n.t('theme.toggle')}
+						variant="secondary"
+						size="sm"
+						onclick={toggleTheme}
+					>
+						{#if currentTheme === 'light'}
+							<Sun size={16} />
+						{:else}
+							<Moon size={16} />
+						{/if}
+					</IconButton>
+				</Row>
+			</Row>
+		</Section>
 	{/snippet}
 
-	<div class="catalog">
-		<section class="group">
+	<Section contained padding="lg" gap="md">
+		<Card gap="sm">
 			<h2>Button</h2>
 
-			<div class="subgroup">
+			<Column gap="xs">
 				<span class="label">Variants</span>
-				<div class="row">
+				<Row gap="sm">
 					<Button variant="primary">
 						<Check size={16} />
 						Primary
@@ -191,12 +200,14 @@
 						Ghost
 					</Button>
 					<Button variant="primary" disabled>{i18n.t('common.disabled')}</Button>
-				</div>
-			</div>
+				</Row>
+			</Column>
 
-			<div class="subgroup">
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
 				<span class="label">Sizes</span>
-				<div class="row">
+				<Row gap="sm">
 					<Button size="sm" variant="secondary">
 						<Plus size={14} />
 						sm
@@ -209,12 +220,14 @@
 						<Plus size={18} />
 						lg
 					</Button>
-				</div>
-			</div>
+				</Row>
+			</Column>
 
-			<div class="subgroup">
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
 				<span class="label">Loading & IconButton</span>
-				<div class="row">
+				<Row gap="sm">
 					<Button variant="primary" onclick={simulateAsync}>
 						<Save size={16} />
 						{i18n.t('common.save')}
@@ -251,72 +264,102 @@
 					>
 						<Sparkles size={18} />
 					</IconButton>
-				</div>
-			</div>
-		</section>
+				</Row>
+			</Column>
+		</Card>
 
-		<section class="group">
+		<Card gap="sm">
+			<h2>Badge & Divider</h2>
+
+			<Column gap="xs">
+				<span class="label">Variants</span>
+				<Row gap="sm">
+					<Badge variant="primary">Primary</Badge>
+					<Badge variant="secondary">Secondary</Badge>
+					<Badge variant="danger">Danger</Badge>
+					<Badge variant="warning">Warning</Badge>
+					<Badge variant="success">Success</Badge>
+					<Badge variant="outline">Outline</Badge>
+					<Badge variant="ghost">Ghost</Badge>
+				</Row>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
+				<span class="label">Sizes & Vertical Divider</span>
+				<Row gap="sm">
+					<Badge size="sm" variant="primary">sm</Badge>
+					<Badge size="md" variant="primary">md</Badge>
+					<Divider vertical spacing="xs" />
+					<Badge size="sm" variant="secondary">
+						<Sparkles size={12} />
+						Icon
+					</Badge>
+				</Row>
+			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>Card</h2>
+			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
+				<Card variant="primary" padding="md" gap="xs">
+					<span class="mono">primary</span>
+				</Card>
+				<Card variant="elevated" padding="md" gap="xs">
+					<span class="mono">elevated</span>
+				</Card>
+				<Card variant="secondary" padding="md" gap="xs">
+					<span class="mono">secondary</span>
+				</Card>
+				<Card variant="outlined" padding="md" gap="xs">
+					<span class="mono">outlined</span>
+				</Card>
+			</Grid>
+		</Card>
+
+		<Card gap="sm">
 			<h2>Spinner</h2>
-			<div class="row">
-				<div class="cell">
+			<Row gap="sm">
+				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="sm" />
 					<span class="mono">sm</span>
-				</div>
-				<div class="cell">
+				</Card>
+				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="md" />
 					<span class="mono">md</span>
-				</div>
-				<div class="cell">
+				</Card>
+				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="lg" />
 					<span class="mono">lg</span>
-				</div>
-			</div>
-		</section>
+				</Card>
+			</Row>
+		</Card>
 
-		<section class="group">
+		<Card gap="sm">
 			<h2>Icons</h2>
-			<div class="icons-grid">
+			<Grid gap="sm">
 				{#each iconCatalog as icon (icon.name)}
-					<div class="icon-cell">
+					<Card variant="primary" padding="sm" gap="sm" align="center">
 						<icon.component size={20} />
 						<span class="mono">{icon.name}</span>
-					</div>
+					</Card>
 				{/each}
-			</div>
-		</section>
-	</div>
+			</Grid>
+		</Card>
+	</Section>
 
 	{#snippet bottom()}
-		<div class="bar footer">
-			<span>v{data.version}</span>
-			<span>Monsan</span>
-		</div>
+		<Section contained padding="sm">
+			<Row justify="between" fullWidth class="footer">
+				<span>v{data.version}</span>
+				<span>Monsan</span>
+			</Row>
+		</Section>
 	{/snippet}
 </AppShell>
 
 <style>
-	.bar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: var(--space-sm) var(--space-lg);
-		max-width: 1280px;
-		margin: 0 auto;
-		width: 100%;
-	}
-
-	.footer {
-		font-size: var(--text-xs);
-		font-family: var(--font-mono);
-		color: var(--text-muted);
-	}
-
-	.brand {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-	}
-
 	.brand-icon {
 		display: inline-block;
 		width: 20px;
@@ -332,29 +375,10 @@
 		font-size: var(--text-md);
 	}
 
-	.actions {
-		display: flex;
-		align-items: center;
-		gap: var(--space-xs);
-	}
-
-	.catalog {
-		max-width: 1280px;
-		margin: 0 auto;
-		padding: var(--space-lg);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-	}
-
-	.group {
-		background-color: var(--bg-elevated);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-xs);
-		padding: var(--space-lg);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
+	:global(.footer) {
+		font-size: var(--text-xs);
+		font-family: var(--font-mono);
+		color: var(--text-muted);
 	}
 
 	h2 {
@@ -363,54 +387,10 @@
 		font-weight: 700;
 	}
 
-	.subgroup {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xs);
-	}
-
 	.label {
 		font-size: var(--text-xs);
 		font-family: var(--font-mono);
 		color: var(--text-muted);
-	}
-
-	.row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-sm);
-		align-items: center;
-	}
-
-	.cell {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-sm);
-		padding: var(--space-md);
-		background-color: var(--bg-primary);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-xs);
-		min-width: 80px;
-	}
-
-	.icons-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-		gap: var(--space-sm);
-	}
-
-	.icon-cell {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-sm);
-		padding: var(--space-sm);
-		background-color: var(--bg-primary);
-		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-xs);
 	}
 
 	.mono {

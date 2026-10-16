@@ -14,14 +14,16 @@ export {
 } from './utils/i18n.svelte.js';
 
 // Layout & Viewport Primitives
-export { default as AppShell } from './components/layout/AppShell.svelte';
+export * from './components/layout/index.js';
 
 // Action Components
-export { default as Button } from './components/actions/Button.svelte';
-export { default as IconButton } from './components/actions/IconButton.svelte';
+export * from './components/actions/index.js';
+
+// Display & Surface Components
+export * from './components/display/index.js';
 
 // Feedback & Loading
-export { default as Spinner } from './components/feedback/Spinner.svelte';
+export * from './components/feedback/index.js';
 
 // Curated Icons
 export * from './components/icons/index.js';
