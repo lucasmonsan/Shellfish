@@ -10,6 +10,9 @@
 		Divider,
 		Image,
 		Popover,
+		FormField,
+		Input,
+		FormStack,
 		Button,
 		IconButton,
 		Spinner,
@@ -148,6 +151,18 @@
 
 	function toggleImageFit() {
 		imageFit = imageFit === 'cover' ? 'contain' : 'cover';
+	}
+
+	let searchQuery = $state('');
+	let showPassword = $state(false);
+	let passwordValue = $state('');
+	let formName = $state('');
+	let formEmail = $state('');
+	let formSubmitted = $state(false);
+
+	async function handleFormSubmit() {
+		await new Promise((resolve) => setTimeout(resolve, 600));
+		formSubmitted = true;
 	}
 </script>
 
@@ -738,6 +753,258 @@
 						{/snippet}
 					</Popover>
 				</Row>
+			</Column>
+		</Card>
+	</Section>
+
+	<!-- Forms Section -->
+	<Section contained padding="sm">
+		<Card variant="outlined" padding="md" gap="md">
+			<Row justify="between" align="center" fullWidth>
+				<h2>{i18n.t('forms.title')}</h2>
+				<Badge variant="secondary" size="sm">LEGO Primitives</Badge>
+			</Row>
+
+			<!-- 1. Basic Fields & Sizes -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.basic_fields')}</span>
+				<Grid minItemWidth={220} gap="sm">
+					<FormField label="Size SM" forId="demo-input-sm">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								size="sm"
+								placeholder="sm (fluid)"
+								aria-describedby={ctx.describedby}
+								invalid={ctx.invalid}
+							/>
+						{/snippet}
+					</FormField>
+					<FormField label="Size MD (Default)" forId="demo-input-md">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								size="md"
+								placeholder="md (fluid)"
+								aria-describedby={ctx.describedby}
+								invalid={ctx.invalid}
+							/>
+						{/snippet}
+					</FormField>
+					<FormField label="Size LG" forId="demo-input-lg">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								size="lg"
+								placeholder="lg (fluid)"
+								aria-describedby={ctx.describedby}
+								invalid={ctx.invalid}
+							/>
+						{/snippet}
+					</FormField>
+				</Grid>
+
+				<Row gap="sm" wrap>
+					<FormField label="Disabled" forId="demo-input-disabled" disabled>
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								disabled={ctx.disabled}
+								value="Valor desabilitado"
+								aria-describedby={ctx.describedby}
+							/>
+						{/snippet}
+					</FormField>
+					<FormField label="Readonly" forId="demo-input-readonly">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								readonly
+								value="Somente leitura"
+								aria-describedby={ctx.describedby}
+							/>
+						{/snippet}
+					</FormField>
+				</Row>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 2. LEGO Adornments (before / after) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.adornments')}</span>
+				<Grid minItemWidth={240} gap="sm">
+					<!-- Search Input -->
+					<FormField label="Search Bar" forId="demo-input-search">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								bind:value={searchQuery}
+								placeholder={i18n.t('forms.search_placeholder')}
+								aria-describedby={ctx.describedby}
+							>
+								{#snippet before()}
+									<Search size={16} />
+								{/snippet}
+								{#snippet after()}
+									{#if searchQuery.length > 0}
+										<IconButton
+											size="sm"
+											variant="ghost"
+											label={i18n.t('forms.clear_input')}
+											onclick={() => (searchQuery = '')}
+										>
+											<X size={14} />
+										</IconButton>
+									{/if}
+								{/snippet}
+							</Input>
+						{/snippet}
+					</FormField>
+
+					<!-- Password with Toggle -->
+					<FormField label={i18n.t('forms.password_label')} forId="demo-input-pwd" required>
+						{#snippet extra()}
+							<span class="mono">{i18n.t('forms.forgot_password')}</span>
+						{/snippet}
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								type={showPassword ? 'text' : 'password'}
+								bind:value={passwordValue}
+								placeholder={i18n.t('forms.password_placeholder')}
+								aria-describedby={ctx.describedby}
+								required={ctx.required}
+							>
+								{#snippet before()}
+									<Lock size={16} />
+								{/snippet}
+								{#snippet after()}
+									<IconButton
+										size="sm"
+										variant="ghost"
+										label={showPassword
+											? i18n.t('forms.hide_password')
+											: i18n.t('forms.show_password')}
+										onclick={() => (showPassword = !showPassword)}
+									>
+										{#if showPassword}<EyeOff size={14} />{:else}<Eye size={14} />{/if}
+									</IconButton>
+								{/snippet}
+							</Input>
+						{/snippet}
+					</FormField>
+
+					<!-- Currency / Unit Prefix -->
+					<FormField label={i18n.t('forms.price_label')} forId="demo-input-price">
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								type="text"
+								placeholder={i18n.t('forms.price_placeholder')}
+								aria-describedby={ctx.describedby}
+							>
+								{#snippet before()}
+									<span class="mono" style="font-weight: 700;">{i18n.t('forms.price_prefix')}</span>
+								{/snippet}
+							</Input>
+						{/snippet}
+					</FormField>
+				</Grid>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 3. Validation States -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.validation')}</span>
+				<Grid minItemWidth={260} gap="sm">
+					<FormField
+						label={i18n.t('forms.email_label')}
+						forId="demo-email-helper"
+						helper={i18n.t('forms.email_helper')}
+						required
+					>
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								type="email"
+								placeholder={i18n.t('forms.email_placeholder')}
+								aria-describedby={ctx.describedby}
+								required={ctx.required}
+							/>
+						{/snippet}
+					</FormField>
+
+					<FormField
+						label={i18n.t('forms.invalid_label')}
+						forId="demo-input-invalid"
+						error={i18n.t('forms.invalid_error')}
+					>
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								value="nome@invalido"
+								aria-describedby={ctx.describedby}
+								invalid={ctx.invalid}
+							/>
+						{/snippet}
+					</FormField>
+				</Grid>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 4. Form Composition with FormStack -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.composition')}</span>
+				<Card variant="primary" padding="sm" gap="xs">
+					<FormStack gap="sm" onsubmit={handleFormSubmit}>
+						<Grid minItemWidth={240} gap="sm">
+							<FormField label={i18n.t('forms.name_label')} forId="formstack-name" required>
+								{#snippet control(ctx)}
+									<Input
+										id={ctx.id}
+										bind:value={formName}
+										placeholder={i18n.t('forms.name_placeholder')}
+										aria-describedby={ctx.describedby}
+										required={ctx.required}
+									/>
+								{/snippet}
+							</FormField>
+
+							<FormField
+								label={i18n.t('forms.email_label')}
+								forId="formstack-email"
+								helper={i18n.t('forms.email_helper')}
+								required
+							>
+								{#snippet control(ctx)}
+									<Input
+										id={ctx.id}
+										type="email"
+										bind:value={formEmail}
+										placeholder={i18n.t('forms.email_placeholder')}
+										aria-describedby={ctx.describedby}
+										required={ctx.required}
+									/>
+								{/snippet}
+							</FormField>
+						</Grid>
+
+						<Row justify="between" align="center">
+							<Button type="submit" variant="primary" size="md">
+								{i18n.t('forms.submit')}
+							</Button>
+							{#if formSubmitted}
+								<Row gap="xs" align="center" style="color: var(--color-success);">
+									<CheckCircle size={16} />
+									<span class="mono">{i18n.t('forms.submitted')}</span>
+								</Row>
+							{/if}
+						</Row>
+					</FormStack>
+				</Card>
 			</Column>
 		</Card>
 	</Section>

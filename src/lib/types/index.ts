@@ -7,3 +7,4 @@ export * from './display.js';
 export * from './feedback.js';
 export * from './icons.js';
 export * from './overlay.js';
+export * from './forms.js';
