@@ -8,6 +8,7 @@
 		Card,
 		Badge,
 		Divider,
+		Image,
 		Button,
 		IconButton,
 		Spinner,
@@ -345,6 +346,92 @@
 						<span class="mono">{icon.name}</span>
 					</Card>
 				{/each}
+			</Grid>
+		</Card>
+
+		<Card gap="sm">
+			<h2>Image</h2>
+			<Column gap="xs">
+				<span class="label">Sizes & Fallback Variants</span>
+				<Row gap="sm" align="center">
+					<Image size="sm" fallback="SM" alt="Tamanho SM" bordered />
+					<Image size="md" fallback="MD" alt="Tamanho MD" bordered />
+					<Image size="lg" fallback="LG" alt="Tamanho LG" bordered />
+					<Divider vertical spacing="xs" />
+					<Image size="md" alt="Ícone de Usuário" bordered>
+						<User size={18} />
+					</Image>
+					<Image size="md" alt="Sparkles" bordered>
+						<Sparkles size={18} />
+					</Image>
+				</Row>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
+				<span class="label">Aspect Ratio 16/9 Banner</span>
+				<Image aspectRatio="16/9" fallback="Capa de Baralho (16/9)" bordered />
+			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>Compositions (LEGO)</h2>
+			<span class="label">Montagem modular sem componentes monolíticos</span>
+
+			<Grid minItemWidth="calc(var(--base) * 14)" gap="md">
+				<!-- Profile Summary Card -->
+				<Card variant="secondary" padding="md" gap="sm">
+					<Row gap="md" align="center" justify="between" fullWidth>
+						<Row gap="sm" align="center">
+							<Image size="md" fallback="LM" alt="Lucas Monsan" bordered />
+							<Column gap="none">
+								<strong>Lucas Monsan</strong>
+								<span class="label">user@monsan.dev</span>
+							</Column>
+						</Row>
+						<Badge variant="outline">Admin</Badge>
+					</Row>
+				</Card>
+
+				<!-- Header Profile Actions -->
+				<Card variant="primary" padding="md" gap="sm">
+					<span class="label">Botões de Header (Logado vs Deslogado)</span>
+					<Row gap="sm" align="center">
+						<IconButton
+							label="Menu de usuário logado"
+							variant="secondary"
+							onclick={() => alert('Abre menu')}
+						>
+							<Image size="md" fallback="LM" alt="Lucas Monsan" />
+						</IconButton>
+
+						<IconButton
+							label="Menu de usuário deslogado"
+							variant="secondary"
+							onclick={() => alert('Abre login')}
+						>
+							<Image size="md" alt="Visitante">
+								<User size={18} />
+							</Image>
+						</IconButton>
+					</Row>
+				</Card>
+
+				<!-- Deck / Item Card -->
+				<Card variant="secondary" padding="none" gap="none">
+					<Image aspectRatio="16/9" fallback="Biologia Celular" />
+					<div
+						style="padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-xs);"
+					>
+						<strong>Biologia Celular</strong>
+						<span class="label">142 cartões • Manki</span>
+						<Row justify="between" align="center" style="margin-top: var(--space-xs);">
+							<Badge variant="success">Em dia</Badge>
+							<Button size="sm" variant="primary">Estudar</Button>
+						</Row>
+					</div>
+				</Card>
 			</Grid>
 		</Card>
 	</Section>
