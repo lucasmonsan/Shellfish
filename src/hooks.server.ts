@@ -38,8 +38,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return unauthorizedResponse();
 	}
 
-	const cookieLocale = event.cookies.get('zoo_locale');
-	const hasLocaleCookie = cookieLocale === 'pt-BR' || cookieLocale === 'en-US';
+	const cookieLocale = event.cookies.get('monsan_locale') || event.cookies.get('zoo_locale');
+	const hasLocaleCookie =
+		cookieLocale === 'pt-BR' || cookieLocale === 'en-US' || cookieLocale === 'es';
 	const locale: Locale = hasLocaleCookie
 		? (cookieLocale as Locale)
 		: parseAcceptLanguage(event.request.headers.get('accept-language'));

@@ -1,11 +1,12 @@
 /** Supported spacing token. */
-export type Space = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type Space = 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 /** Supported radius token. */
-export type Radius = 'sm' | 'md';
+export type Radius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 /** Shared action variant. */
-export type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+export type Variant =
+	'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'error' | 'warning' | 'success';
 
 /** Shared control height. */
 export type Size = 'sm' | 'md' | 'lg';

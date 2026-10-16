@@ -1,160 +1,96 @@
 <script lang="ts">
-	import type { SpinnerProps } from '$lib/types/index.js';
+	import type { SpinnerProps } from '$lib/types/feedback.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
-		variant = 'cube',
 		size = 'md',
-		color,
 		label,
-		class: className,
+		class: className = '',
+		style = '',
 		...restProps
 	}: SpinnerProps = $props();
 
-	const { t } = getI18n();
-	const colorToken = $derived(
-		color === 'primary'
-			? 'var(--color-primary)'
-			: color === 'success'
-				? 'var(--color-success)'
-				: color === 'warning'
-					? 'var(--color-warning)'
-					: color === 'danger'
-						? 'var(--color-danger)'
-						: color === 'info'
-							? 'var(--color-info)'
-							: undefined
-	);
+	const i18n = getI18n();
+	let resolvedLabel = $derived(label ?? i18n.t('common.loading'));
+
+	let isPresetSize = $derived(size === 'sm' || size === 'md' || size === 'lg');
+
+	let dimensionStyle = $derived.by(() => {
+		if (isPresetSize) return '';
+		if (typeof size === 'number') {
+			return `width: ${size}px; height: ${size}px;`;
+		}
+		return `width: ${size}; height: ${size};`;
+	});
 </script>
 
-<span
+<div
 	role="status"
-	aria-label={label ?? t('spinner.loading')}
-	data-size={size}
-	data-variant={variant}
-	class={`shellfish-spinner ${className ?? ''}`}
+	aria-live="polite"
+	class="spinner {isPresetSize ? size : ''} {className}"
+	style="{dimensionStyle} {style}"
 	{...restProps}
 >
-	{#if variant === 'cube'}
-		<span class="spinner-cube" style:background-color={colorToken}></span>
-	{:else if variant === 'ratchet'}
-		<span class="spinner-ratchet" style:background-color={colorToken}></span>
-	{:else}
-		<svg viewBox="0 0 24 24" fill="none" class="spinner-chaser-svg">
-			<rect
-				class="track-rect"
-				x="4"
-				y="4"
-				width="16"
-				height="16"
-				stroke={colorToken ?? 'var(--border-color)'}
-				stroke-width="2.5"
-				stroke-opacity="0.2"
-			/>
-			<rect
-				class="chaser-rect"
-				x="4"
-				y="4"
-				width="16"
-				height="16"
-				stroke={colorToken ?? 'var(--color-primary)'}
-				stroke-width="2.5"
-				stroke-dasharray="16 48"
-			/>
-		</svg>
-	{/if}
-</span>
+	<span class="sr-only">{resolvedLabel}</span>
+</div>
 
 <style>
-	.shellfish-spinner {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		flex-shrink: 0;
-		vertical-align: middle;
-		box-sizing: border-box;
-	}
-
-	.shellfish-spinner[data-size='sm'] {
-		width: 16px;
-		height: 16px;
-	}
-
-	.shellfish-spinner[data-size='md'] {
-		width: 24px;
-		height: 24px;
-	}
-
-	.shellfish-spinner[data-size='lg'] {
-		width: 36px;
-		height: 36px;
-	}
-
-	/* 1. O Cubo Neobrutalista do MonsanUI (Giro Fluido ease-in-out) */
-	.spinner-cube {
-		width: 65%;
-		height: 65%;
-		background-color: var(--color-primary);
-		border: var(--border-width) solid var(--border-color);
-		box-sizing: border-box;
-		animation: spinCube 1.2s infinite ease-in-out;
-		transform-origin: center;
-	}
-
 	@keyframes spinCube {
 		0% {
 			transform: rotate(0deg);
+			background-color: var(--color-primary);
+		}
+		50% {
+			transform: rotate(180deg);
+			background-color: var(--color-success);
 		}
 		100% {
 			transform: rotate(360deg);
+			background-color: var(--color-primary);
 		}
 	}
 
-	/* 2. Catraca Mecânica com steps(8) compassado */
-	.spinner-ratchet {
-		width: 65%;
-		height: 65%;
-		background-color: var(--color-primary);
-		border: var(--border-width) solid var(--border-color);
+	.spinner {
+		display: inline-block;
+		vertical-align: middle;
+		flex-shrink: 0;
 		box-sizing: border-box;
-		animation: ratchetSteps 1.6s infinite steps(8);
-		transform-origin: center;
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--border-color);
+		animation: spinCube 1.2s infinite ease-in-out;
 	}
 
-	@keyframes ratchetSteps {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
+	.sm {
+		width: calc(var(--base) * 1.125);
+		height: calc(var(--base) * 1.125);
 	}
 
-	/* 3. Trilha Perimetral (Chaser Terracota) */
-	.spinner-chaser-svg {
-		width: 100%;
-		height: 100%;
-		display: block;
+	.md {
+		width: calc(var(--base) * 1.5);
+		height: calc(var(--base) * 1.5);
 	}
 
-	.spinner-chaser-svg .chaser-rect {
-		animation: chaserDash 1.2s linear infinite;
+	.lg {
+		width: calc(var(--base) * 1.875);
+		height: calc(var(--base) * 1.875);
 	}
 
-	@keyframes chaserDash {
-		from {
-			stroke-dashoffset: 0;
-		}
-		to {
-			stroke-dashoffset: -64;
-		}
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.spinner-cube,
-		.spinner-ratchet,
-		.spinner-chaser-svg .chaser-rect {
+		.spinner {
 			animation: none;
+			opacity: 0.7;
 		}
 	}
 </style>
