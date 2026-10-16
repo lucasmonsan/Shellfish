@@ -27,7 +27,21 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'locale.toggle': 'Alternar idioma',
 		'locale.current': 'PT',
 		'locale.name': 'Português (Brasil)',
-		'document.title': 'Shellfish'
+		'document.title': 'Shellfish',
+		'image.title': 'Imagem',
+		'image.interactive_playground': 'Playground Interativo',
+		'image.state_success': 'Imagem Válida',
+		'image.state_error': 'Simular Erro (404)',
+		'image.state_empty': 'Sem URL (Fallback)',
+		'image.aspect_ratios': 'Proporções (Aspect Ratio)',
+		'image.sizes_and_fallbacks': 'Tamanhos e Fallbacks',
+		'image.fit_cover': 'Ajuste: Cover',
+		'image.fit_contain': 'Ajuste: Contain',
+		'image.radius_cycle': 'Alternar Cantos',
+		'image.sample_alt': 'Ilustração geométrica Shellfish',
+		'image.avatar_sample_alt': 'Avatar de exemplo',
+		'image.load_error': 'Erro ao carregar',
+		'image.no_image': 'Sem imagem'
 	},
 	'en-US': {
 		'common.close': 'Close',
@@ -52,7 +66,21 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'locale.toggle': 'Toggle language',
 		'locale.current': 'EN',
 		'locale.name': 'English (US)',
-		'document.title': 'Shellfish'
+		'document.title': 'Shellfish',
+		'image.title': 'Image',
+		'image.interactive_playground': 'Interactive Playground',
+		'image.state_success': 'Valid Image',
+		'image.state_error': 'Simulate Error (404)',
+		'image.state_empty': 'No URL (Fallback)',
+		'image.aspect_ratios': 'Aspect Ratios',
+		'image.sizes_and_fallbacks': 'Sizes and Fallbacks',
+		'image.fit_cover': 'Fit: Cover',
+		'image.fit_contain': 'Fit: Contain',
+		'image.radius_cycle': 'Cycle Radius',
+		'image.sample_alt': 'Shellfish geometric illustration',
+		'image.avatar_sample_alt': 'Sample avatar',
+		'image.load_error': 'Failed to load',
+		'image.no_image': 'No image'
 	},
 	es: {
 		'common.close': 'Cerrar',
@@ -77,7 +105,21 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'locale.toggle': 'Cambiar idioma',
 		'locale.current': 'ES',
 		'locale.name': 'Español',
-		'document.title': 'Shellfish'
+		'document.title': 'Shellfish',
+		'image.title': 'Imagen',
+		'image.interactive_playground': 'Área de Prueba Interactiva',
+		'image.state_success': 'Imagen Válida',
+		'image.state_error': 'Simular Error (404)',
+		'image.state_empty': 'Sin URL (Respaldo)',
+		'image.aspect_ratios': 'Proporciones (Aspect Ratio)',
+		'image.sizes_and_fallbacks': 'Tamaños y Respaldos',
+		'image.fit_cover': 'Ajuste: Cover',
+		'image.fit_contain': 'Ajuste: Contain',
+		'image.radius_cycle': 'Cambiar Esquinas',
+		'image.sample_alt': 'Ilustración geométrica Shellfish',
+		'image.avatar_sample_alt': 'Avatar de ejemplo',
+		'image.load_error': 'Error al cargar',
+		'image.no_image': 'Sin imagen'
 	}
 };
 
