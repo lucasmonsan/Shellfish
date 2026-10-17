@@ -159,3 +159,135 @@ export interface FormStackProps extends HTMLFormAttributes {
 	 */
 	class?: string;
 }
+
+/** Props for the atomic Checkbox primitive. */
+export interface CheckboxProps extends Omit<HTMLInputAttributes, 'size'> {
+	/** Current checked state. Supports two-way binding. */
+	checked?: boolean;
+
+	/** Indeterminate (mixed) state. Supports two-way binding. */
+	indeterminate?: boolean;
+
+	/** Optional text label. */
+	label?: string;
+
+	/**
+	 * Visual size preset ('sm', 'md', 'lg') derived from fluid --base.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/** Whether the checkbox is in an invalid/error state. */
+	invalid?: boolean;
+
+	/** Whether the checkbox is disabled. */
+	disabled?: boolean;
+
+	/** Custom label / children snippet. */
+	children?: Snippet;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the atomic Radio primitive. */
+export interface RadioProps extends Omit<HTMLInputAttributes, 'size'> {
+	/** Selected group value. Supports two-way binding. */
+	group?: unknown;
+
+	/** Value of this radio option. */
+	value?: unknown;
+
+	/** Optional text label. */
+	label?: string;
+
+	/**
+	 * Visual size preset ('sm', 'md', 'lg') derived from fluid --base.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/** Whether the radio is in an invalid/error state. */
+	invalid?: boolean;
+
+	/** Whether the radio is disabled. */
+	disabled?: boolean;
+
+	/** Custom label / children snippet. */
+	children?: Snippet;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Unique symbol for RadioGroup context inheritance. */
+export const RADIO_GROUP_KEY = Symbol('radio-group');
+
+/** Props for the semantic RadioGroup container primitive. */
+export interface RadioGroupProps extends HTMLAttributes<HTMLDivElement> {
+	/** Selected value in the group. Supports two-way binding. */
+	value?: unknown;
+
+	/** Accessible group label. */
+	label?: string;
+
+	/** Shared name attribute for child radio inputs. */
+	name?: string;
+
+	/**
+	 * Layout orientation.
+	 * Default: 'vertical'
+	 */
+	orientation?: 'horizontal' | 'vertical';
+
+	/**
+	 * Spacing gap between radios.
+	 * Default: 'sm'
+	 */
+	gap?: 'xs' | 'sm' | 'md';
+
+	/**
+	 * Default size for nested radios.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/** Whether all radios in the group are in an invalid/error state. */
+	invalid?: boolean;
+
+	/** Whether all radios in the group are disabled. */
+	disabled?: boolean;
+
+	/** Child radio elements / options. */
+	children?: Snippet;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the atomic Switch primitive. */
+export interface SwitchProps extends Omit<HTMLInputAttributes, 'size'> {
+	/** Current checked state. Supports two-way binding. */
+	checked?: boolean;
+
+	/** Optional text label. */
+	label?: string;
+
+	/**
+	 * Visual size preset ('sm', 'md', 'lg') derived from fluid --base.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/** Whether the switch is in an invalid/error state. */
+	invalid?: boolean;
+
+	/** Whether the switch is disabled. */
+	disabled?: boolean;
+
+	/** Custom label / children snippet. */
+	children?: Snippet;
+
+	/** Additional CSS classes. */
+	class?: string;
+}

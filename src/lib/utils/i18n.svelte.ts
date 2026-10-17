@@ -111,7 +111,16 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.name': 'Nome',
 		'forms.name_placeholder': 'Seu nome completo',
 		'forms.submit': 'Enviar',
-		'forms.submitted': 'Enviado com sucesso!'
+		'forms.submitted': 'Enviado com sucesso!',
+		'forms.selection_title': 'Controles de Seleção',
+		'forms.checkbox_label': 'Lembrar de mim',
+		'forms.checkbox_indeterminate': 'Selecionar todos',
+		'forms.radio_plan_free': 'Gratuito',
+		'forms.radio_plan_pro': 'Profissional',
+		'forms.radio_plan_enterprise': 'Corporativo',
+		'forms.radio_group_label': 'Plano da conta',
+		'forms.switch_notifications': 'Notificações por email',
+		'forms.switch_dark_mode': 'Modo escuro automático'
 	},
 	'en-US': {
 		'common.close': 'Close',
@@ -220,7 +229,16 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.name': 'Name',
 		'forms.name_placeholder': 'Your full name',
 		'forms.submit': 'Submit',
-		'forms.submitted': 'Submitted successfully!'
+		'forms.submitted': 'Submitted successfully!',
+		'forms.selection_title': 'Selection Controls',
+		'forms.checkbox_label': 'Remember me',
+		'forms.checkbox_indeterminate': 'Select all',
+		'forms.radio_plan_free': 'Free',
+		'forms.radio_plan_pro': 'Pro',
+		'forms.radio_plan_enterprise': 'Enterprise',
+		'forms.radio_group_label': 'Account plan',
+		'forms.switch_notifications': 'Email notifications',
+		'forms.switch_dark_mode': 'Automatic dark mode'
 	},
 	es: {
 		'common.close': 'Cerrar',
@@ -329,7 +347,16 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.name': 'Nombre',
 		'forms.name_placeholder': 'Su nombre completo',
 		'forms.submit': 'Enviar',
-		'forms.submitted': '¡Enviado con éxito!'
+		'forms.submitted': '¡Enviado con éxito!',
+		'forms.selection_title': 'Controles de Selección',
+		'forms.checkbox_label': 'Recordarme',
+		'forms.checkbox_indeterminate': 'Seleccionar todo',
+		'forms.radio_plan_free': 'Gratis',
+		'forms.radio_plan_pro': 'Profesional',
+		'forms.radio_plan_enterprise': 'Corporativo',
+		'forms.radio_group_label': 'Plan de la cuenta',
+		'forms.switch_notifications': 'Notificaciones por correo',
+		'forms.switch_dark_mode': 'Modo oscuro automático'
 	}
 };
 
