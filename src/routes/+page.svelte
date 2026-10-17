@@ -17,6 +17,8 @@
 		Radio,
 		RadioGroup,
 		Switch,
+		Select,
+		Textarea,
 		Button,
 		IconButton,
 		Spinner,
@@ -168,6 +170,8 @@
 	let selectedPlan = $state('pro');
 	let switchEmail = $state(true);
 	let switchDark = $state(false);
+	let selectedCountry = $state('br');
+	let bioText = $state('');
 
 	async function handleFormSubmit() {
 		await new Promise((resolve) => setTimeout(resolve, 600));
@@ -974,6 +978,53 @@
 						<Switch bind:checked={switchDark} label={i18n.t('forms.switch_dark_mode')} />
 						<Switch checked disabled label={i18n.t('forms.disabled')} />
 					</Column>
+				</Grid>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 5. Seletores e Texto Multilinha (Select, Textarea) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.select_textarea_title')}</span>
+				<Grid minItemWidth={260} gap="sm">
+					<FormField
+						label={i18n.t('forms.country_label')}
+						forId="demo-country-select"
+						helper={i18n.t('forms.country_help')}
+					>
+						{#snippet control(ctx)}
+							<Select
+								id={ctx.id}
+								bind:value={selectedCountry}
+								placeholder={i18n.t('forms.country_placeholder')}
+								aria-describedby={ctx.describedby}
+								options={[
+									{ value: 'br', label: i18n.t('forms.country_br') },
+									{ value: 'us', label: i18n.t('forms.country_us') },
+									{ value: 'es', label: i18n.t('forms.country_es') },
+									{ value: 'pt', label: i18n.t('forms.country_pt') }
+								]}
+							/>
+						{/snippet}
+					</FormField>
+
+					<FormField
+						label={i18n.t('forms.bio_label')}
+						forId="demo-bio-textarea"
+						helper={i18n.t('forms.bio_help')}
+					>
+						{#snippet control(ctx)}
+							<Textarea
+								id={ctx.id}
+								bind:value={bioText}
+								placeholder={i18n.t('forms.bio_placeholder')}
+								maxlength={120}
+								showCount
+								rows={3}
+								aria-describedby={ctx.describedby}
+							/>
+						{/snippet}
+					</FormField>
 				</Grid>
 			</Column>
 		</Card>
