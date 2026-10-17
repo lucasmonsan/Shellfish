@@ -19,6 +19,12 @@
 		Switch,
 		Select,
 		Textarea,
+		Chip,
+		TagInput,
+		FileUpload,
+		ColorPicker,
+		DatePicker,
+		TimePicker,
 		Button,
 		IconButton,
 		Spinner,
@@ -172,6 +178,12 @@
 	let switchDark = $state(false);
 	let selectedCountry = $state('br');
 	let bioText = $state('');
+	let selectedChipFilter = $state('svelte');
+	let demoTags = $state(['Monsan', 'Shellfish', 'Svelte5']);
+	let demoFiles = $state<File[]>([]);
+	let demoColor = $state('#b94b38');
+	let demoDate = $state('2026-10-17');
+	let demoTime = $state('14:30');
 
 	async function handleFormSubmit() {
 		await new Promise((resolve) => setTimeout(resolve, 600));
@@ -1027,6 +1039,121 @@
 					</FormField>
 				</Grid>
 			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 6. Entradas Especializadas (Chip, TagInput, FileUpload, ColorPicker, DatePicker, TimePicker) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.advanced_title')}</span>
+				<Grid minItemWidth={260} gap="md">
+					<!-- Chips e Filtros -->
+					<Column gap="xs">
+						<span class="mono" style="font-size: var(--text-xs); color: var(--text-muted);"
+							>{i18n.t('forms.chips_label')}</span
+						>
+						<Row gap="xs" wrap align="center">
+							<Chip
+								variant="secondary"
+								selected={selectedChipFilter === 'ux'}
+								onclick={() => (selectedChipFilter = 'ux')}
+								label={i18n.t('forms.chip_ux')}
+							/>
+							<Chip
+								variant="secondary"
+								selected={selectedChipFilter === 'svelte'}
+								onclick={() => (selectedChipFilter = 'svelte')}
+								label={i18n.t('forms.chip_svelte')}
+							/>
+							<Chip
+								variant="secondary"
+								selected={selectedChipFilter === 'lego'}
+								onclick={() => (selectedChipFilter = 'lego')}
+								label={i18n.t('forms.chip_lego')}
+							/>
+							<Chip
+								variant="secondary"
+								selected={selectedChipFilter === 'a11y'}
+								onclick={() => (selectedChipFilter = 'a11y')}
+								label={i18n.t('forms.chip_a11y')}
+							/>
+						</Row>
+
+						<FormField
+							label={i18n.t('forms.tag_input_label')}
+							forId="demo-tag-input"
+							helper={i18n.t('forms.tag_input_help')}
+						>
+							{#snippet control(ctx)}
+								<TagInput
+									id={ctx.id}
+									label={i18n.t('forms.tag_input_label')}
+									bind:tags={demoTags}
+									placeholder={i18n.t('forms.tag_input_placeholder')}
+									maxTags={6}
+								/>
+							{/snippet}
+						</FormField>
+					</Column>
+
+					<!-- FileUpload -->
+					<Column gap="xs">
+						<span class="mono" style="font-size: var(--text-xs); color: var(--text-muted);"
+							>{i18n.t('forms.upload_label')}</span
+						>
+						<FileUpload
+							bind:files={demoFiles}
+							label={i18n.t('forms.upload_label')}
+							maxSizeMb={5}
+							multiple
+							maxFiles={3}
+							accept="image/*,.pdf"
+						/>
+					</Column>
+
+					<!-- ColorPicker, DatePicker, TimePicker -->
+					<Column gap="sm">
+						<FormField
+							label={i18n.t('forms.color_label')}
+							forId="demo-color-picker"
+							helper={i18n.t('forms.color_help')}
+						>
+							{#snippet control()}
+								<ColorPicker bind:value={demoColor} label={i18n.t('forms.color_label')} />
+							{/snippet}
+						</FormField>
+
+						<Grid minItemWidth={120} gap="sm">
+							<FormField
+								label={i18n.t('forms.date_label')}
+								forId="demo-date-picker"
+								helper={i18n.t('forms.date_help')}
+							>
+								{#snippet control(ctx)}
+									<DatePicker
+										id={ctx.id}
+										bind:value={demoDate}
+										aria-describedby={ctx.describedby}
+									/>
+								{/snippet}
+							</FormField>
+
+							<FormField
+								label={i18n.t('forms.time_label')}
+								forId="demo-time-picker"
+								helper={i18n.t('forms.time_help')}
+							>
+								{#snippet control(ctx)}
+									<TimePicker
+										id={ctx.id}
+										bind:value={demoTime}
+										aria-describedby={ctx.describedby}
+									/>
+								{/snippet}
+							</FormField>
+						</Grid>
+					</Column>
+				</Grid>
+			</Column>
 		</Card>
 	</Section>
 
@@ -1043,8 +1170,8 @@
 <style>
 	.brand-icon {
 		display: inline-block;
-		width: 20px;
-		height: 20px;
+		width: calc(var(--base) * 1.6);
+		height: calc(var(--base) * 1.6);
 		background-color: var(--color-primary);
 		-webkit-mask: url('/favicon.svg') no-repeat center / contain;
 		mask: url('/favicon.svg') no-repeat center / contain;
@@ -1053,9 +1180,9 @@
 
 	.brand-name {
 		font-weight: 700;
-		font-size: var(--text-md);
+		font-size: var(--text-lg);
 		margin: 0;
-		line-height: 1;
+		line-height: var(--leading-none);
 	}
 
 	:global(.footer) {

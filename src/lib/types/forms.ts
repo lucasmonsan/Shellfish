@@ -6,7 +6,7 @@ import type {
 	HTMLSelectAttributes,
 	HTMLTextareaAttributes
 } from 'svelte/elements';
-import type { Size } from './tokens.js';
+import type { Size, Variant } from './tokens.js';
 
 /** Visual variant for the Input primitive. */
 export type InputVariant = 'default' | 'unstyled';
@@ -378,6 +378,183 @@ export interface TextareaProps extends HTMLTextareaAttributes {
 	 * Default: false
 	 */
 	showCount?: boolean;
+
+	/** Additional CSS classes. */
+	class?: string;
+
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Props for the atomic Chip / Tag primitive. */
+export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
+	/** Visual style variant. Default: 'secondary' */
+	variant?: Variant;
+
+	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
+	size?: Size;
+
+	/** Whether the chip is selected (e.g. in filter groups). Default: false */
+	selected?: boolean;
+
+	/** Whether the chip displays a removal button (X). Default: false */
+	removable?: boolean;
+
+	/** Whether the chip is disabled. Default: false */
+	disabled?: boolean;
+
+	/** Accessible label for the remove button. Default: 'Remover' */
+	removeLabel?: string;
+
+	/** Removal callback when X or delete key is pressed. */
+	onremove?: (event: MouseEvent | KeyboardEvent) => void;
+
+	/** Click callback when chip is clicked. */
+	onclick?: (event: MouseEvent) => void;
+
+	/** Chip content / label. */
+	children?: Snippet;
+
+	/** Text label if children snippet is omitted. */
+	label?: string;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the dynamic TagInput primitive. */
+export interface TagInputProps extends HTMLAttributes<HTMLDivElement> {
+	/** Two-way bindable array of string tags. */
+	tags?: string[];
+
+	/** Maximum allowed tags. */
+	maxTags?: number;
+
+	/** Input placeholder text when tags can still be added. */
+	placeholder?: string;
+
+	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
+	size?: Size;
+
+	/** Whether the tag input is in an invalid/error state. Default: false */
+	invalid?: boolean;
+
+	/** Whether the tag input is disabled. Default: false */
+	disabled?: boolean;
+
+	/** Whether the tag input takes full width (100%). Default: true */
+	block?: boolean;
+
+	/** ID for connecting label associations. */
+	id?: string;
+
+	/** Accessible label for the input. */
+	label?: string;
+
+	/** Callback when tags array changes. */
+	ontagschange?: (tags: string[]) => void;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the FileUpload / Dropzone primitive. */
+export interface FileUploadProps extends HTMLAttributes<HTMLDivElement> {
+	/** Accessible label for the file upload dropzone. */
+	label?: string;
+
+	/** Two-way bindable array of selected File objects. */
+	files?: File[];
+
+	/** Comma-separated accepted file extensions or MIME types (e.g. "image/*,.pdf"). */
+	accept?: string;
+
+	/** Whether multiple files can be selected simultaneously. Default: false */
+	multiple?: boolean;
+
+	/** Maximum size allowed per file in megabytes (MB). */
+	maxSizeMb?: number;
+
+	/** Maximum number of files allowed. */
+	maxFiles?: number;
+
+	/** Whether the upload zone is disabled. Default: false */
+	disabled?: boolean;
+
+	/** Whether the upload zone is in an invalid/error state. Default: false */
+	invalid?: boolean;
+
+	/** Custom prompt snippet inside the dropzone. */
+	children?: Snippet;
+
+	/** Callback when valid files are added or selected. */
+	onfiles?: (files: File[]) => void;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the ColorPicker primitive. */
+export interface ColorPickerProps extends HTMLAttributes<HTMLDivElement> {
+	/** Two-way bindable hex color value (e.g. '#b94b38'). */
+	value?: string;
+
+	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
+	size?: Size;
+
+	/** Preset palette colors for quick 1-click selection. */
+	presets?: string[];
+
+	/** Whether to show the editable hexadecimal text input alongside the swatch. Default: true */
+	showHexInput?: boolean;
+
+	/** Whether the color picker is disabled. Default: false */
+	disabled?: boolean;
+
+	/** Whether the color picker is in an invalid/error state. Default: false */
+	invalid?: boolean;
+
+	/** Accessible label for the color swatch. */
+	label?: string;
+
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for the atomic DatePicker primitive. */
+export interface DatePickerProps extends Omit<HTMLInputAttributes, 'size' | 'type'> {
+	/** Two-way bindable ISO date string ('YYYY-MM-DD'). */
+	value?: string;
+
+	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
+	size?: Size;
+
+	/** Whether the datepicker is in an invalid/error state. Default: false */
+	invalid?: boolean;
+
+	/** Full width container (100%). Default: true */
+	block?: boolean;
+
+	/** Additional CSS classes. */
+	class?: string;
+
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Props for the atomic TimePicker primitive. */
+export interface TimePickerProps extends Omit<HTMLInputAttributes, 'size' | 'type'> {
+	/** Two-way bindable time string ('HH:MM' or 'HH:MM:SS'). */
+	value?: string;
+
+	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
+	size?: Size;
+
+	/** Whether the timepicker is in an invalid/error state. Default: false */
+	invalid?: boolean;
+
+	/** Full width container (100%). Default: true */
+	block?: boolean;
 
 	/** Additional CSS classes. */
 	class?: string;
