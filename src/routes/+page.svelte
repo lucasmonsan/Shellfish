@@ -13,6 +13,10 @@
 		FormField,
 		Input,
 		FormStack,
+		Checkbox,
+		Radio,
+		RadioGroup,
+		Switch,
 		Button,
 		IconButton,
 		Spinner,
@@ -159,6 +163,11 @@
 	let formName = $state('');
 	let formEmail = $state('');
 	let formSubmitted = $state(false);
+	let chkRemember = $state(false);
+	let chkIndeterminate = $state(true);
+	let selectedPlan = $state('pro');
+	let switchEmail = $state(true);
+	let switchDark = $state(false);
 
 	async function handleFormSubmit() {
 		await new Promise((resolve) => setTimeout(resolve, 600));
@@ -929,6 +938,43 @@
 						</Row>
 					</FormStack>
 				</Card>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 4. Controles de Seleção (Checkbox, Radio, Switch) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.selection_title')}</span>
+				<Grid minItemWidth={240} gap="md">
+					<!-- Checkboxes -->
+					<Column gap="xs">
+						<Checkbox bind:checked={chkRemember} label={i18n.t('forms.checkbox_label')} />
+						<Checkbox
+							bind:indeterminate={chkIndeterminate}
+							label={i18n.t('forms.checkbox_indeterminate')}
+						/>
+						<Checkbox checked disabled label={i18n.t('forms.disabled')} />
+					</Column>
+
+					<!-- RadioGroup -->
+					<RadioGroup
+						name="plan"
+						bind:value={selectedPlan}
+						label={i18n.t('forms.radio_group_label')}
+						gap="xs"
+					>
+						<Radio value="free" label={i18n.t('forms.radio_plan_free')} />
+						<Radio value="pro" label={i18n.t('forms.radio_plan_pro')} />
+						<Radio value="enterprise" label={i18n.t('forms.radio_plan_enterprise')} disabled />
+					</RadioGroup>
+
+					<!-- Switches -->
+					<Column gap="xs">
+						<Switch bind:checked={switchEmail} label={i18n.t('forms.switch_notifications')} />
+						<Switch bind:checked={switchDark} label={i18n.t('forms.switch_dark_mode')} />
+						<Switch checked disabled label={i18n.t('forms.disabled')} />
+					</Column>
+				</Grid>
 			</Column>
 		</Card>
 	</Section>
