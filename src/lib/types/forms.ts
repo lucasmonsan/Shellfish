@@ -1,5 +1,11 @@
 import type { Snippet } from 'svelte';
-import type { HTMLInputAttributes, HTMLAttributes, HTMLFormAttributes } from 'svelte/elements';
+import type {
+	HTMLInputAttributes,
+	HTMLAttributes,
+	HTMLFormAttributes,
+	HTMLSelectAttributes,
+	HTMLTextareaAttributes
+} from 'svelte/elements';
 import type { Size } from './tokens.js';
 
 /** Visual variant for the Input primitive. */
@@ -290,4 +296,92 @@ export interface SwitchProps extends Omit<HTMLInputAttributes, 'size'> {
 
 	/** Additional CSS classes. */
 	class?: string;
+}
+
+/** Option structure for the Select primitive when passed via props. */
+export interface SelectOption {
+	value: string;
+	label: string;
+	disabled?: boolean;
+}
+
+/** Props for the atomic Select primitive. */
+export interface SelectProps extends Omit<HTMLSelectAttributes, 'size'> {
+	/** Two-way bindable select value. */
+	value?: string | number | null;
+
+	/** Optional options array. When omitted, options can be passed via children snippet. */
+	options?: SelectOption[];
+
+	/** Placeholder option displayed when value is empty. */
+	placeholder?: string;
+
+	/**
+	 * Visual size preset ('sm', 'md', 'lg') derived from fluid --base.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/**
+	 * Whether the select is in an invalid/error state.
+	 * Default: false
+	 */
+	invalid?: boolean;
+
+	/**
+	 * Full width container (100%).
+	 * Default: true
+	 */
+	block?: boolean;
+
+	/** Custom options / optgroups passed as children. */
+	children?: Snippet;
+
+	/** Additional CSS classes. */
+	class?: string;
+
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Props for the atomic Textarea primitive. */
+export interface TextareaProps extends HTMLTextareaAttributes {
+	/** Two-way bindable textarea value. */
+	value?: string;
+
+	/**
+	 * Visual size preset ('sm', 'md', 'lg') derived from fluid --base.
+	 * Default: 'md'
+	 */
+	size?: Size;
+
+	/**
+	 * Whether the textarea is in an invalid/error state.
+	 * Default: false
+	 */
+	invalid?: boolean;
+
+	/**
+	 * Resize behavior ('none', 'vertical', 'horizontal', 'both').
+	 * Default: 'vertical'
+	 */
+	resize?: 'none' | 'vertical' | 'horizontal' | 'both';
+
+	/**
+	 * Full width container (100%).
+	 * Default: true
+	 */
+	block?: boolean;
+
+	/**
+	 * Whether to display character count in the footer.
+	 * Default: false
+	 */
+	showCount?: boolean;
+
+	/** Additional CSS classes. */
+	class?: string;
+
+	/** Additional inline styles. */
+	style?: string;
 }

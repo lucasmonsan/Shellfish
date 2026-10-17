@@ -120,7 +120,18 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.radio_plan_enterprise': 'Corporativo',
 		'forms.radio_group_label': 'Plano da conta',
 		'forms.switch_notifications': 'Notificações por email',
-		'forms.switch_dark_mode': 'Modo escuro automático'
+		'forms.switch_dark_mode': 'Modo escuro automático',
+		'forms.select_textarea_title': 'Seletores e Texto Multilinha',
+		'forms.country_label': 'País de Residência',
+		'forms.country_placeholder': 'Selecione um país...',
+		'forms.country_br': 'Brasil',
+		'forms.country_us': 'Estados Unidos',
+		'forms.country_es': 'Espanha',
+		'forms.country_pt': 'Portugal',
+		'forms.country_help': 'Usado para fins fiscais e de localização',
+		'forms.bio_label': 'Biografia ou Observações',
+		'forms.bio_placeholder': 'Escreva uma breve descrição (máx. 120 caracteres)...',
+		'forms.bio_help': 'Conte um pouco sobre suas preferências'
 	},
 	'en-US': {
 		'common.close': 'Close',
@@ -238,7 +249,18 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.radio_plan_enterprise': 'Enterprise',
 		'forms.radio_group_label': 'Account plan',
 		'forms.switch_notifications': 'Email notifications',
-		'forms.switch_dark_mode': 'Automatic dark mode'
+		'forms.switch_dark_mode': 'Automatic dark mode',
+		'forms.select_textarea_title': 'Selectors & Multiline Text',
+		'forms.country_label': 'Country of Residence',
+		'forms.country_placeholder': 'Select a country...',
+		'forms.country_br': 'Brazil',
+		'forms.country_us': 'United States',
+		'forms.country_es': 'Spain',
+		'forms.country_pt': 'Portugal',
+		'forms.country_help': 'Used for tax and localization purposes',
+		'forms.bio_label': 'Biography or Notes',
+		'forms.bio_placeholder': 'Write a brief description (max 120 characters)...',
+		'forms.bio_help': 'Tell us a bit about your preferences'
 	},
 	es: {
 		'common.close': 'Cerrar',
@@ -356,7 +378,18 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.radio_plan_enterprise': 'Corporativo',
 		'forms.radio_group_label': 'Plan de la cuenta',
 		'forms.switch_notifications': 'Notificaciones por correo',
-		'forms.switch_dark_mode': 'Modo oscuro automático'
+		'forms.switch_dark_mode': 'Modo oscuro automático',
+		'forms.select_textarea_title': 'Selectores y Texto Multilínea',
+		'forms.country_label': 'País de Residencia',
+		'forms.country_placeholder': 'Seleccione un país...',
+		'forms.country_br': 'Brasil',
+		'forms.country_us': 'Estados Unidos',
+		'forms.country_es': 'España',
+		'forms.country_pt': 'Portugal',
+		'forms.country_help': 'Usado para fines fiscales y de localización',
+		'forms.bio_label': 'Biografía u Observaciones',
+		'forms.bio_placeholder': 'Escriba una breve descripción (máx. 120 caracteres)...',
+		'forms.bio_help': 'Cuéntenos un poco sobre sus preferencias'
 	}
 };
 
