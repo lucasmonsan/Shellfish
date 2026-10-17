@@ -10,6 +10,9 @@
 		Divider,
 		Image,
 		Popover,
+		FormField,
+		Input,
+		FormStack,
 		Button,
 		IconButton,
 		Spinner,
@@ -149,6 +152,18 @@
 	function toggleImageFit() {
 		imageFit = imageFit === 'cover' ? 'contain' : 'cover';
 	}
+
+	let searchQuery = $state('');
+	let showPassword = $state(false);
+	let passwordValue = $state('');
+	let formName = $state('');
+	let formEmail = $state('');
+	let formSubmitted = $state(false);
+
+	async function handleFormSubmit() {
+		await new Promise((resolve) => setTimeout(resolve, 600));
+		formSubmitted = true;
+	}
 </script>
 
 <svelte:head>
@@ -161,7 +176,7 @@
 			<Row justify="between" fullWidth>
 				<Row gap="xs" align="center">
 					<span class="brand-icon" aria-hidden="true"></span>
-					<h1 class="brand-name">Shellfish</h1>
+					<h1 class="brand-name">{i18n.t('brand.name')}</h1>
 				</Row>
 
 				<Row gap="xs">
@@ -194,38 +209,38 @@
 
 	<Section contained padding="lg" gap="md">
 		<Card gap="sm">
-			<h2>Button</h2>
+			<h2>{i18n.t('catalog.button_title')}</h2>
 
 			<Column gap="xs">
-				<span class="label">Variants</span>
+				<span class="label">{i18n.t('catalog.variants')}</span>
 				<Row gap="sm">
 					<Button variant="primary">
 						<Check size={16} />
-						Primary
+						{i18n.t('variants.primary')}
 					</Button>
 					<Button variant="secondary">
 						<Settings size={16} />
-						Secondary
+						{i18n.t('variants.secondary')}
 					</Button>
 					<Button variant="danger">
 						<Trash size={16} />
-						Danger
+						{i18n.t('variants.danger')}
 					</Button>
 					<Button variant="warning">
 						<AlertCircle size={16} />
-						Warning
+						{i18n.t('variants.warning')}
 					</Button>
 					<Button variant="success">
 						<CheckCircle size={16} />
-						Success
+						{i18n.t('variants.success')}
 					</Button>
 					<Button variant="outline">
 						<Search size={16} />
-						Outline
+						{i18n.t('variants.outline')}
 					</Button>
 					<Button variant="ghost">
 						<Copy size={16} />
-						Ghost
+						{i18n.t('variants.ghost')}
 					</Button>
 					<Button variant="primary" disabled>{i18n.t('common.disabled')}</Button>
 				</Row>
@@ -234,19 +249,19 @@
 			<Divider spacing="xxs" />
 
 			<Column gap="xs">
-				<span class="label">Sizes</span>
+				<span class="label">{i18n.t('catalog.sizes')}</span>
 				<Row gap="sm">
 					<Button size="sm" variant="secondary">
 						<Plus size={14} />
-						sm
+						{i18n.t('catalog.size_sm')}
 					</Button>
 					<Button size="md" variant="secondary">
 						<Plus size={16} />
-						md
+						{i18n.t('catalog.size_md')}
 					</Button>
 					<Button size="lg" variant="secondary">
 						<Plus size={18} />
-						lg
+						{i18n.t('catalog.size_lg')}
 					</Button>
 				</Row>
 			</Column>
@@ -254,7 +269,7 @@
 			<Divider spacing="xxs" />
 
 			<Column gap="xs">
-				<span class="label">Loading & IconButton</span>
+				<span class="label">{i18n.t('catalog.loading_icon_button')}</span>
 				<Row gap="sm">
 					<Button variant="primary" onclick={simulateAsync}>
 						<Save size={16} />
@@ -297,28 +312,28 @@
 		</Card>
 
 		<Card gap="sm">
-			<h2>Badge & Divider</h2>
+			<h2>{i18n.t('catalog.badge_divider_title')}</h2>
 
 			<Column gap="xs">
-				<span class="label">Variants</span>
+				<span class="label">{i18n.t('catalog.variants')}</span>
 				<Row gap="sm">
-					<Badge variant="primary">Primary</Badge>
-					<Badge variant="secondary">Secondary</Badge>
-					<Badge variant="danger">Danger</Badge>
-					<Badge variant="warning">Warning</Badge>
-					<Badge variant="success">Success</Badge>
-					<Badge variant="outline">Outline</Badge>
-					<Badge variant="ghost">Ghost</Badge>
+					<Badge variant="primary">{i18n.t('variants.primary')}</Badge>
+					<Badge variant="secondary">{i18n.t('variants.secondary')}</Badge>
+					<Badge variant="danger">{i18n.t('variants.danger')}</Badge>
+					<Badge variant="warning">{i18n.t('variants.warning')}</Badge>
+					<Badge variant="success">{i18n.t('variants.success')}</Badge>
+					<Badge variant="outline">{i18n.t('variants.outline')}</Badge>
+					<Badge variant="ghost">{i18n.t('variants.ghost')}</Badge>
 				</Row>
 			</Column>
 
 			<Divider spacing="xxs" />
 
 			<Column gap="xs">
-				<span class="label">Sizes & Vertical Divider</span>
+				<span class="label">{i18n.t('catalog.sizes_vertical_divider')}</span>
 				<Row gap="sm">
-					<Badge size="sm" variant="primary">sm</Badge>
-					<Badge size="md" variant="primary">md</Badge>
+					<Badge size="sm" variant="primary">{i18n.t('catalog.size_sm')}</Badge>
+					<Badge size="md" variant="primary">{i18n.t('catalog.size_md')}</Badge>
 					<Divider vertical spacing="xs" />
 					<Badge size="sm" variant="secondary">
 						<Sparkles size={12} />
@@ -329,43 +344,43 @@
 		</Card>
 
 		<Card gap="sm">
-			<h2>Card</h2>
+			<h2>{i18n.t('catalog.card_title')}</h2>
 			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
 				<Card variant="primary" padding="md" gap="xs">
-					<span class="mono">primary</span>
+					<span class="mono">{i18n.t('card.primary')}</span>
 				</Card>
 				<Card variant="elevated" padding="md" gap="xs">
-					<span class="mono">elevated</span>
+					<span class="mono">{i18n.t('card.elevated')}</span>
 				</Card>
 				<Card variant="secondary" padding="md" gap="xs">
-					<span class="mono">secondary</span>
+					<span class="mono">{i18n.t('card.secondary')}</span>
 				</Card>
 				<Card variant="outlined" padding="md" gap="xs">
-					<span class="mono">outlined</span>
+					<span class="mono">{i18n.t('card.outlined')}</span>
 				</Card>
 			</Grid>
 		</Card>
 
 		<Card gap="sm">
-			<h2>Spinner</h2>
+			<h2>{i18n.t('catalog.spinner_title')}</h2>
 			<Row gap="sm">
 				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="sm" />
-					<span class="mono">sm</span>
+					<span class="mono">{i18n.t('catalog.size_sm')}</span>
 				</Card>
 				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="md" />
-					<span class="mono">md</span>
+					<span class="mono">{i18n.t('catalog.size_md')}</span>
 				</Card>
 				<Card variant="primary" padding="md" gap="sm" align="center">
 					<Spinner size="lg" />
-					<span class="mono">lg</span>
+					<span class="mono">{i18n.t('catalog.size_lg')}</span>
 				</Card>
 			</Row>
 		</Card>
 
 		<Card gap="sm">
-			<h2>Icons</h2>
+			<h2>{i18n.t('catalog.icons_title')}</h2>
 			<Grid gap="sm">
 				{#each iconCatalog as icon (icon.name)}
 					<Card variant="primary" padding="sm" gap="sm" align="center">
@@ -377,7 +392,7 @@
 		</Card>
 
 		<Card gap="sm">
-			<h2>Image</h2>
+			<h2>{i18n.t('image.title')}</h2>
 
 			<!-- 1. Interactive States -->
 			<Column gap="xs">
@@ -525,7 +540,7 @@
 						{#snippet trigger(toggle, open, ariaProps)}
 							<Button variant="secondary" size="md" onclick={toggle} {...ariaProps}>
 								<Image size="sm" src={SAMPLE_AVATAR} alt="" bordered />
-								<span>Lucas Monsan</span>
+								<span>{i18n.t('demo.user_name')}</span>
 								{#if open}<ChevronUp size={14} />{:else}<ChevronDown size={14} />{/if}
 							</Button>
 						{/snippet}
@@ -539,7 +554,7 @@
 								<Row gap="xs" align="center">
 									<Image size="md" src={SAMPLE_AVATAR} alt="" bordered />
 									<Column gap="none">
-										<strong style="font-size: var(--text-sm);">Lucas Monsan</strong>
+										<strong style="font-size: var(--text-sm);">{i18n.t('demo.user_name')}</strong>
 										<span class="mono">{i18n.t('popover.profile_role')}</span>
 									</Column>
 								</Row>
@@ -740,13 +755,189 @@
 				</Row>
 			</Column>
 		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('forms.title')}</h2>
+
+			<!-- 1. Tamanhos e Estados (Input Atômico Puro) -->
+			<Column gap="xs">
+				<Grid minItemWidth={220} gap="sm" style="align-items: center;">
+					<Input
+						size="sm"
+						placeholder={i18n.t('forms.size_sm')}
+						aria-label={i18n.t('forms.size_sm')}
+					/>
+					<Input
+						size="md"
+						placeholder={i18n.t('forms.size_md')}
+						aria-label={i18n.t('forms.size_md')}
+					/>
+					<Input
+						size="lg"
+						placeholder={i18n.t('forms.size_lg')}
+						aria-label={i18n.t('forms.size_lg')}
+					/>
+				</Grid>
+
+				<Grid minItemWidth={220} gap="sm">
+					<!-- Busca com Ícone e Limpeza -->
+					<Input
+						bind:value={searchQuery}
+						placeholder={i18n.t('forms.search_placeholder')}
+						aria-label={i18n.t('forms.search')}
+					>
+						{#snippet before()}
+							<Search size={16} />
+						{/snippet}
+						{#snippet after()}
+							{#if searchQuery.length > 0}
+								<IconButton
+									size="sm"
+									variant="ghost"
+									label={i18n.t('forms.clear')}
+									onclick={() => (searchQuery = '')}
+								>
+									<X size={14} />
+								</IconButton>
+							{/if}
+						{/snippet}
+					</Input>
+
+					<!-- Senha com Alternador de Visibilidade -->
+					<Input
+						type={showPassword ? 'text' : 'password'}
+						bind:value={passwordValue}
+						placeholder={i18n.t('forms.password_placeholder')}
+						aria-label={i18n.t('forms.password')}
+					>
+						{#snippet before()}
+							<Lock size={16} />
+						{/snippet}
+						{#snippet after()}
+							<IconButton
+								size="sm"
+								variant="ghost"
+								label={showPassword ? i18n.t('forms.hide_password') : i18n.t('forms.show_password')}
+								onclick={() => (showPassword = !showPassword)}
+							>
+								{#if showPassword}<EyeOff size={14} />{:else}<Eye size={14} />{/if}
+							</IconButton>
+						{/snippet}
+					</Input>
+
+					<!-- Prefixo de Moeda -->
+					<Input type="text" placeholder="0,00" aria-label={i18n.t('forms.price')}>
+						{#snippet before()}
+							<span class="mono" style="font-weight: 700;">{i18n.t('forms.currency_symbol')}</span>
+						{/snippet}
+					</Input>
+				</Grid>
+
+				<Grid minItemWidth={220} gap="sm">
+					<Input
+						disabled
+						placeholder={i18n.t('forms.disabled')}
+						aria-label={i18n.t('forms.disabled')}
+					/>
+					<Input
+						readonly
+						placeholder={i18n.t('forms.readonly')}
+						aria-label={i18n.t('forms.readonly')}
+					/>
+				</Grid>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 2. Validação Semântica (FormField) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.validation')}</span>
+				<Grid minItemWidth={260} gap="sm">
+					<FormField
+						label={i18n.t('forms.email')}
+						forId="demo-email-helper"
+						helper={i18n.t('forms.email_helper')}
+						required
+					>
+						{#snippet control(ctx)}
+							<Input
+								id={ctx.id}
+								type="email"
+								placeholder={i18n.t('forms.email_placeholder')}
+								aria-describedby={ctx.describedby}
+								required={ctx.required}
+							/>
+						{/snippet}
+					</FormField>
+
+					<FormField
+						label={i18n.t('forms.error_label')}
+						forId="demo-input-invalid"
+						error={i18n.t('forms.error_message')}
+					>
+						{#snippet control(ctx)}
+							<Input id={ctx.id} aria-describedby={ctx.describedby} invalid={ctx.invalid} />
+						{/snippet}
+					</FormField>
+				</Grid>
+			</Column>
+
+			<Divider spacing="xxs" />
+
+			<!-- 3. Formulário (FormStack) -->
+			<Column gap="xs">
+				<span class="label">{i18n.t('forms.form')}</span>
+				<Card variant="primary" padding="sm" gap="xs">
+					<FormStack gap="sm" onsubmit={handleFormSubmit}>
+						<Grid minItemWidth={240} gap="sm">
+							<FormField label={i18n.t('forms.name')} forId="formstack-name" required>
+								{#snippet control(ctx)}
+									<Input
+										id={ctx.id}
+										bind:value={formName}
+										placeholder={i18n.t('forms.name_placeholder')}
+										aria-describedby={ctx.describedby}
+										required={ctx.required}
+									/>
+								{/snippet}
+							</FormField>
+
+							<FormField label={i18n.t('forms.email')} forId="formstack-email" required>
+								{#snippet control(ctx)}
+									<Input
+										id={ctx.id}
+										type="email"
+										bind:value={formEmail}
+										placeholder={i18n.t('forms.email_placeholder')}
+										aria-describedby={ctx.describedby}
+										required={ctx.required}
+									/>
+								{/snippet}
+							</FormField>
+						</Grid>
+
+						<Row justify="between" align="center">
+							<Button type="submit" variant="primary" size="md">
+								{i18n.t('forms.submit')}
+							</Button>
+							{#if formSubmitted}
+								<Row gap="xs" align="center" style="color: var(--color-success);">
+									<CheckCircle size={16} />
+									<span class="mono">{i18n.t('forms.submitted')}</span>
+								</Row>
+							{/if}
+						</Row>
+					</FormStack>
+				</Card>
+			</Column>
+		</Card>
 	</Section>
 
 	{#snippet bottom()}
 		<Section contained padding="sm">
 			<Row justify="between" fullWidth class="footer">
 				<span>v{data.version}</span>
-				<span>Monsan</span>
+				<span>{i18n.t('brand.company')}</span>
 			</Row>
 		</Section>
 	{/snippet}
