@@ -67,8 +67,11 @@ for (const locale of locales) {
 			});
 			const page = await context.newPage();
 			await page.goto('/');
+			await page.waitForLoadState('networkidle');
 			await expect(page.locator('html')).toHaveAttribute('lang', locale.id);
-			const results = await new AxeBuilder({ page }).analyze();
+			const results = await new AxeBuilder({ page })
+				.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
+				.analyze();
 			expect(results.violations).toEqual([]);
 			await context.close();
 		});
