@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import * as PublicApi from '$lib/index.js';
 
 describe('Public API Contract Snapshot Invariant', () => {
@@ -81,12 +82,15 @@ describe('Public API Contract Snapshot Invariant', () => {
 	it('guarantees that compiled dist/ package has zero unresolved $lib aliases and valid CSS exports', () => {
 		const distPath = path.resolve('dist');
 		if (!fs.existsSync(distPath)) {
-			if (process.env.CI) {
-				expect.fail(
-					'Diretório dist/ não encontrado no ambiente de CI. Execute `pnpm build` antes dos testes de integridade de pacote.'
-				);
+			try {
+				execSync('pnpm run build:package', { stdio: 'pipe' });
+			} catch (err) {
+				expect.fail(`Falha ao compilar o pacote com 'pnpm run build:package': ${String(err)}`);
 			}
-			return;
+		}
+
+		if (!fs.existsSync(distPath)) {
+			expect.fail('Diretório dist/ não pôde ser gerado para os testes de integridade do pacote.');
 		}
 
 		const indexJsPath = path.join(distPath, 'index.js');

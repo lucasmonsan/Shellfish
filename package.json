@@ -51,7 +51,7 @@
 		"lint:package": "publint run --pack false",
 		"format": "prettier --write .",
 		"test:unit": "vitest run",
-		"test": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build && pnpm run lint:package && pnpm test:e2e",
+		"test": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:unit && pnpm run lint:package && pnpm test:e2e",
 		"test:e2e": "playwright test"
 	},
 	"peerDependencies": {
