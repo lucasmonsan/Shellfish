@@ -43,6 +43,21 @@
 		}
 	}
 
+	function findNextEnabledIndex(current: number, direction: 1 | -1): number {
+		const len = options.length;
+		if (len === 0 || options.every((o) => o.disabled)) return -1;
+		let start = current;
+		if (start < 0) {
+			start = direction === 1 ? -1 : len;
+		}
+		let next = start;
+		for (let i = 0; i < len; i++) {
+			next = (next + direction + len) % len;
+			if (!options[next]?.disabled) return next;
+		}
+		return current >= 0 ? current : -1;
+	}
+
 	function handleKeydown(
 		e: KeyboardEvent,
 		open: boolean,
@@ -55,19 +70,23 @@
 			e.preventDefault();
 			if (!open) {
 				toggle(e);
-				focusedIndex = options.findIndex((o) => String(o.value) === String(value));
-				if (focusedIndex < 0) focusedIndex = 0;
+				const matchIndex = options.findIndex(
+					(o) => String(o.value) === String(value) && !o.disabled
+				);
+				focusedIndex = matchIndex >= 0 ? matchIndex : findNextEnabledIndex(-1, 1);
 			} else {
-				focusedIndex = (focusedIndex + 1) % options.length;
+				focusedIndex = findNextEnabledIndex(focusedIndex, 1);
 			}
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
 			if (!open) {
 				toggle(e);
-				focusedIndex = options.findIndex((o) => String(o.value) === String(value));
-				if (focusedIndex < 0) focusedIndex = options.length - 1;
+				const matchIndex = options.findIndex(
+					(o) => String(o.value) === String(value) && !o.disabled
+				);
+				focusedIndex = matchIndex >= 0 ? matchIndex : findNextEnabledIndex(options.length, -1);
 			} else {
-				focusedIndex = (focusedIndex - 1 + options.length) % options.length;
+				focusedIndex = findNextEnabledIndex(focusedIndex, -1);
 			}
 		} else if (e.key === 'Enter' || e.key === ' ') {
 			if (open && focusedIndex >= 0 && focusedIndex < options.length) {
@@ -193,7 +212,7 @@
 		width: 100%;
 	}
 
-	.select-root :global(.select-popover-wrapper .sf-popover-trigger) {
+	.select-root :global(.select-popover-wrapper .popover-trigger) {
 		width: 100%;
 	}
 

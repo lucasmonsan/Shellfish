@@ -183,12 +183,8 @@ describe('Invariant Test: Universal A11y Invariants & HTML-AAM Compliance', () =
 	it('enforces Rule SF-V07: zero !important across new and active components', () => {
 		const violations: string[] = [];
 
-		// Dívida técnica herdada documentada para correção futura pelo outro chat
-		const legacyAllowlist = new Set(['src/lib/components/overlay/Popover.svelte']);
-
 		for (const filePath of allComponentPaths) {
 			const relative = path.relative(process.cwd(), filePath);
-			if (legacyAllowlist.has(relative)) continue;
 
 			const content = fs.readFileSync(filePath, 'utf8');
 			const styleMatch = content.match(/<style[\s\S]*?>([\s\S]*?)<\/style>/i);

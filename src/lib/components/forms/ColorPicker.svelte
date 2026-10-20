@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ColorPickerProps } from '$lib/types/forms.js';
 	import Popover from '$lib/components/overlay/Popover.svelte';
-	import { i18n } from '$lib/utils/i18n.svelte.js';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	const DEFAULT_MONSAN_PRESETS = [
 		'#b94b38', // Primária Terracota
@@ -37,6 +37,7 @@
 		...restProps
 	}: ColorPickerProps = $props();
 
+	const i18n = getI18n();
 	let resolvedLabel = $derived(label ?? i18n.t('forms.color_picker_label'));
 
 	function selectPreset(color: string, close: () => void) {
@@ -182,11 +183,11 @@
 		display: flex;
 	}
 
-	.color-picker-wrapper.block :global(.sf-popover) {
+	.color-picker-wrapper.block :global(.popover-root) {
 		width: 100%;
 	}
 
-	.color-picker-wrapper.block :global(.sf-popover-trigger) {
+	.color-picker-wrapper.block :global(.popover-trigger) {
 		width: 100%;
 	}
 

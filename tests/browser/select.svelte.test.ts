@@ -73,4 +73,43 @@ describe('Select Interactive Browser Component Test', () => {
 		await userEvent.keyboard('{Escape}');
 		await expect.element(listbox).not.toBeInTheDocument();
 	});
+
+	it('skips disabled options during keyboard navigation according to WAI-ARIA APG', async () => {
+		const navOptions = [
+			{ value: 'opt1', label: 'Option 1' },
+			{ value: 'opt2', label: 'Option 2 (Disabled)', disabled: true },
+			{ value: 'opt3', label: 'Option 3' }
+		];
+
+		render(Select, {
+			props: {
+				options: navOptions,
+				placeholder: 'Select an option'
+			}
+		});
+
+		const trigger = page.getByRole('combobox');
+		trigger.element().focus();
+
+		// ArrowDown abre a lista e foca Option 1
+		await userEvent.keyboard('{ArrowDown}');
+		const listbox = page.getByRole('listbox');
+		await expect.element(listbox).toBeVisible();
+
+		const opt1 = page.getByRole('option', { name: 'Option 1' });
+		const opt2 = page.getByRole('option', { name: 'Option 2 (Disabled)' });
+		const opt3 = page.getByRole('option', { name: 'Option 3' });
+
+		await expect.element(opt1).toHaveClass(/focused/);
+
+		// ArrowDown pula Option 2 (disabled) e foca diretamente Option 3
+		await userEvent.keyboard('{ArrowDown}');
+		await expect.element(opt2).not.toHaveClass(/focused/);
+		await expect.element(opt3).toHaveClass(/focused/);
+
+		// Pressiona Enter para selecionar Option 3
+		await userEvent.keyboard('{Enter}');
+		await expect.element(listbox).not.toBeInTheDocument();
+		await expect.element(trigger).toHaveTextContent('Option 3');
+	});
 });
