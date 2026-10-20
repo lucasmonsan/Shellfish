@@ -39,6 +39,10 @@ describe('Public API Contract Snapshot Invariant', () => {
 
 			// Overlays
 			'Popover',
+			'Modal',
+			'Drawer',
+			'Tooltip',
+			'overlayStack',
 
 			// Forms
 			'Input',

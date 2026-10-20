@@ -30,6 +30,7 @@ export * from './components/icons/index.js';
 
 // Overlay & Floating Primitives
 export * from './components/overlay/index.js';
+export { overlayStack, type OverlayConfig } from './utils/overlay.svelte.js';
 
 // Form Primitives & Controls
 export * from './components/forms/index.js';

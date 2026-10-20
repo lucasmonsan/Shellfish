@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PopoverProps, PopoverAriaProps } from '$lib/types/overlay.js';
+	import { overlayStack } from '$lib/utils/overlay.svelte.js';
 
 	let {
 		open = $bindable(false),
@@ -62,37 +63,31 @@
 
 		updatePlacement();
 
-		function onPointerDown(e: PointerEvent) {
-			const target = e.target as Node | null;
-			if (rootEl && target && !rootEl.contains(target)) {
-				open = false;
-			}
-		}
+		const triggerFocusable = rootEl?.querySelector<HTMLElement>(
+			'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+		);
 
-		function onKeyDown(e: KeyboardEvent) {
-			if (e.key === 'Escape') {
-				e.stopPropagation();
-				e.preventDefault();
+		overlayStack.register({
+			id: panelId,
+			type: 'popover',
+			element: rootEl,
+			close: () => {
 				open = false;
-				const focusable = rootEl?.querySelector<HTMLElement>(
-					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-				);
-				focusable?.focus();
-			}
-		}
+			},
+			restoreFocusEl: triggerFocusable,
+			closeOnEscape: true,
+			closeOnClickOutside: true
+		});
 
 		function onViewportChange() {
 			updatePlacement();
 		}
 
-		document.addEventListener('pointerdown', onPointerDown, true);
-		window.addEventListener('keydown', onKeyDown);
 		window.addEventListener('resize', onViewportChange, { passive: true });
 		window.addEventListener('scroll', onViewportChange, { passive: true });
 
 		return () => {
-			document.removeEventListener('pointerdown', onPointerDown, true);
-			window.removeEventListener('keydown', onKeyDown);
+			overlayStack.unregister(panelId);
 			window.removeEventListener('resize', onViewportChange);
 			window.removeEventListener('scroll', onViewportChange);
 		};
