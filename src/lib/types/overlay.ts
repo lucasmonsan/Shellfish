@@ -58,6 +58,8 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'chi
 	open?: boolean;
 	/** Modal size preset. Default: 'md'. */
 	size?: ModalSize;
+	/** Whether the modal body has explicit vertical scroll overflow. Default: false (overflow: visible allows floating dropdowns). */
+	scrollable?: boolean;
 	/** Accessible title rendered in the dialog header. */
 	title?: string;
 	/** Accessible fallback label for screen readers when title is omitted. */
@@ -98,6 +100,8 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'ch
 	placement?: DrawerPlacement;
 	/** Drawer width size preset. Default: 'md'. */
 	size?: DrawerSize;
+	/** Whether the drawer body has explicit vertical scroll overflow. Default: false (overflow: visible allows floating dropdowns). */
+	scrollable?: boolean;
 	/** Accessible title rendered in the drawer header. */
 	title?: string;
 	/** Accessible fallback label for screen readers when title is omitted. */
@@ -139,8 +143,8 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
 	disabled?: boolean;
 	/** Trigger snippet providing the unique aria-describedby ID when active. */
 	trigger?: Snippet<[ariaDescribedBy: string | undefined]>;
-	/** Fallback children snippet when trigger snippet is not used. */
-	children?: Snippet;
+	/** Fallback children snippet when trigger snippet is not used, also receiving ariaDescribedBy when active. */
+	children?: Snippet<[ariaDescribedBy: string | undefined]>;
 	/** Additional CSS classes for the root wrapper. */
 	class?: string;
 	/** Additional inline styles. */

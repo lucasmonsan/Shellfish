@@ -24,6 +24,23 @@ class OverlayManager {
 	private pushedStates = new Set<string>();
 	private listenersAttached = false;
 	private originalBodyOverflow = '';
+	private childDismissedInCurrentGesture = false;
+
+	recordChildDismiss(): void {
+		this.childDismissedInCurrentGesture = true;
+		// Limpeza de segurança caso o pointerup não gere um evento click
+		setTimeout(() => {
+			this.childDismissedInCurrentGesture = false;
+		}, 300);
+	}
+
+	consumeChildDismiss(): boolean {
+		if (this.childDismissedInCurrentGesture) {
+			this.childDismissedInCurrentGesture = false;
+			return true;
+		}
+		return false;
+	}
 
 	get length(): number {
 		return this.stack.length;
@@ -65,8 +82,12 @@ class OverlayManager {
 
 		// Coordenação de histórico do navegador (botão Voltar do mobile/browser)
 		if (config.closeOnBack && typeof window.history !== 'undefined') {
-			window.history.pushState({ shellfishOverlayId: config.id }, '');
-			this.pushedStates.add(config.id);
+			try {
+				window.history.pushState({ shellfishOverlayId: config.id }, '');
+				this.pushedStates.add(config.id);
+			} catch (e) {
+				console.warn('Shellfish overlay history coordination unavailable:', e);
+			}
 		}
 	}
 
@@ -82,7 +103,11 @@ class OverlayManager {
 		if (this.pushedStates.has(id)) {
 			this.pushedStates.delete(id);
 			if (!options?.closedByBack && window.history.state?.shellfishOverlayId === id) {
-				window.history.back();
+				try {
+					window.history.back();
+				} catch {
+					// Ignora indisponibilidade do histórico do navegador
+				}
 			}
 		}
 
@@ -130,27 +155,17 @@ class OverlayManager {
 		// Se o clique foi fora do elemento do topo
 		if (!top.element.contains(target)) {
 			if (top.type === 'popover') {
-				// Fecha o popover e interrompe a propagação para não fechar o modal pai
+				// Fecha o popover, marca o descarte do filho e interrompe a propagação para proteger o modal pai
+				this.recordChildDismiss();
 				e.stopPropagation();
 				top.close();
 			}
 		}
 	};
 
-	private handlePopState = (): void => {
+	private handlePopState = (e?: PopStateEvent): void => {
 		const top = this.getTop();
-		if (!top || !top.closeOnBack) return;
-
-		// Se o overlay registrou um estado no histórico, só fecha se o popstate realmente desarmou o estado
-		if (this.pushedStates.has(top.id)) {
-			// Se o histórico ainda aponta para este overlay, foi um disparo espúrio ou push interno
-			if (window.history.state?.shellfishOverlayId === top.id) {
-				return;
-			}
-		} else {
-			// Se o overlay não registrou histórico próprio, não deve reagir a popstate aleatório
-			return;
-		}
+		if (!top) return;
 
 		// Se o overlay do topo for um popover (que não gerou estado próprio) dentro de um modal/drawer
 		if (top.type === 'popover') {
@@ -160,9 +175,22 @@ class OverlayManager {
 				.reverse()
 				.find((o) => o.type === 'modal' || o.type === 'drawer');
 			if (parentModal && this.pushedStates.has(parentModal.id)) {
-				window.history.pushState({ shellfishOverlayId: parentModal.id }, '');
+				try {
+					window.history.pushState({ shellfishOverlayId: parentModal.id }, '');
+				} catch {
+					// Ignora indisponibilidade do histórico do navegador
+				}
 			}
 			return;
+		}
+
+		if (!top.closeOnBack) return;
+
+		// Se o overlay registrou um estado no histórico, só ignora se o popstate ainda carregar este mesmo estado
+		if (this.pushedStates.has(top.id)) {
+			if (e?.state?.shellfishOverlayId === top.id) {
+				return;
+			}
 		}
 
 		this.unregister(top.id, { closedByBack: true });

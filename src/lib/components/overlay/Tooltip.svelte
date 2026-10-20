@@ -84,7 +84,7 @@
 	{#if trigger}
 		{@render trigger(visible ? tooltipId : undefined)}
 	{:else if children}
-		{@render children()}
+		{@render children(visible ? tooltipId : undefined)}
 	{/if}
 
 	{#if visible && text}
@@ -105,43 +105,50 @@
 	.tooltip-bubble {
 		position: absolute;
 		z-index: var(--layer-toast, 110);
-		padding: var(--space-xs) var(--space-sm);
-		border: 1px solid var(--border-color);
-		border-radius: var(--radius-xs);
+		padding: var(--space-xs, 4px) var(--space-sm, 8px);
+		border: var(--border-width, 1px) solid var(--border-color);
+		border-radius: var(--radius-xs, 2px);
 		background-color: var(--text-primary);
 		color: var(--bg-primary);
 		font-family: var(--font-sans);
-		font-size: var(--text-xs);
+		font-size: var(--text-xs, 0.75rem);
 		font-weight: 500;
 		line-height: 1.25;
 		white-space: nowrap;
-		pointer-events: none;
-		box-shadow: var(--shadow-md);
+		box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
 		box-sizing: border-box;
-		animation: tooltip-in var(--transition-fast) ease-out;
+		animation: tooltip-in var(--transition-fast, 150ms) ease-out;
+	}
+
+	/* Zona de ponte invisível para hover contínuo (WCAG 2.1 SC 1.4.13) */
+	.tooltip-bubble::before {
+		content: '';
+		position: absolute;
+		inset: calc(var(--space-xs, 4px) * -1);
+		z-index: -1;
 	}
 
 	/* Posicionamentos */
 	.placement-top {
-		bottom: calc(100% + var(--space-xs));
+		bottom: calc(100% + var(--space-xs, 4px));
 		left: 50%;
 		transform: translateX(-50%);
 	}
 
 	.placement-bottom {
-		top: calc(100% + var(--space-xs));
+		top: calc(100% + var(--space-xs, 4px));
 		left: 50%;
 		transform: translateX(-50%);
 	}
 
 	.placement-left {
-		right: calc(100% + var(--space-xs));
+		right: calc(100% + var(--space-xs, 4px));
 		top: 50%;
 		transform: translateY(-50%);
 	}
 
 	.placement-right {
-		left: calc(100% + var(--space-xs));
+		left: calc(100% + var(--space-xs, 4px));
 		top: 50%;
 		transform: translateY(-50%);
 	}
