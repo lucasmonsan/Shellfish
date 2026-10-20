@@ -175,10 +175,14 @@
 		backdrop-filter: var(--blur-overlay);
 	}
 
+	.modal-dialog[open]::backdrop {
+		animation: backdrop-in var(--duration-base) var(--ease-standard);
+	}
+
 	.modal-dialog[open] {
 		display: flex;
 		flex-direction: column;
-		animation: modal-in var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: modal-in var(--duration-base) var(--ease-decelerate);
 	}
 
 	/* Larguras padronizadas baseadas na escala fluida */
@@ -312,8 +316,21 @@
 		}
 	}
 
+	@keyframes backdrop-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.modal-dialog[open] {
+			animation: none;
+		}
+
+		.modal-dialog[open]::backdrop {
 			animation: none;
 		}
 	}

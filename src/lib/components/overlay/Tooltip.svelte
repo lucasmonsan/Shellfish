@@ -117,7 +117,7 @@
 		white-space: nowrap;
 		box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
 		box-sizing: border-box;
-		animation: tooltip-in var(--transition-fast, 150ms) ease-out;
+		animation: tooltip-in var(--duration-fast, 125ms) var(--ease-decelerate, ease-out);
 	}
 
 	/* Zona de ponte invisível para hover contínuo (WCAG 2.1 SC 1.4.13) */

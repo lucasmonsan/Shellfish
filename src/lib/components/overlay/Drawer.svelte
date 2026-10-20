@@ -177,6 +177,10 @@
 		backdrop-filter: var(--blur-overlay);
 	}
 
+	.drawer-dialog[open]::backdrop {
+		animation: backdrop-in var(--duration-base) var(--ease-standard);
+	}
+
 	.drawer-dialog[open] {
 		display: flex;
 		flex-direction: column;
@@ -187,14 +191,14 @@
 		right: 0;
 		left: auto;
 		border-left: var(--border-width) solid var(--border-color);
-		animation: drawer-in-right var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: drawer-in-right var(--duration-base) var(--ease-decelerate);
 	}
 
 	.placement-left {
 		left: 0;
 		right: auto;
 		border-right: var(--border-width) solid var(--border-color);
-		animation: drawer-in-left var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: drawer-in-left var(--duration-base) var(--ease-decelerate);
 	}
 
 	/* Larguras padronizadas baseadas na escala fluida */
@@ -325,9 +329,22 @@
 		}
 	}
 
+	@keyframes backdrop-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.placement-right,
 		.placement-left {
+			animation: none;
+		}
+
+		.drawer-dialog[open]::backdrop {
 			animation: none;
 		}
 	}
