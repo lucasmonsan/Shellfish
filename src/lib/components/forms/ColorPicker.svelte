@@ -298,7 +298,7 @@
 		min-width: calc(var(--base) * 1.25);
 		min-height: calc(var(--base) * 1.25);
 		border-radius: var(--radius-xs);
-		border: 1px solid var(--border-color);
+		border: var(--border-width) solid var(--border-color);
 		box-sizing: border-box;
 		flex-shrink: 0;
 	}
@@ -383,7 +383,7 @@
 		flex-direction: column;
 		gap: var(--space-xxs);
 		padding-top: var(--space-xs);
-		border-top: 1px solid var(--border-color);
+		border-top: var(--border-width) solid var(--border-color);
 	}
 
 	.custom-controls {
@@ -398,7 +398,7 @@
 		height: calc(var(--base) * 1.5);
 		min-width: calc(var(--base) * 1.5);
 		border-radius: var(--radius-xs);
-		border: 1px solid var(--border-color);
+		border: var(--border-width) solid var(--border-color);
 		cursor: pointer;
 		overflow: hidden;
 		flex-shrink: 0;

@@ -173,7 +173,7 @@
 		justify-content: flex-start;
 		padding: calc(var(--space-xxs) * 0.35) var(--space-sm);
 		background-color: var(--bg-input);
-		border-top: 1px solid var(--border-color);
+		border-top: var(--border-width) solid var(--border-color);
 		flex-shrink: 0;
 		user-select: none;
 	}

@@ -812,7 +812,7 @@
 							</FormField>
 						</Column>
 						{#snippet footer(close)}
-							<Button variant="secondary" onclick={close}>{i18n.t('common.cancel')}</Button>
+							<Button variant="danger" onclick={close}>{i18n.t('common.cancel')}</Button>
 							<Button variant="primary" onclick={close}>{i18n.t('common.confirm')}</Button>
 						{/snippet}
 					</Modal>
@@ -831,7 +831,7 @@
 							<p style="margin: 0;">{i18n.t('drawer.sample_desc')}</p>
 						</Column>
 						{#snippet footer(close)}
-							<Button variant="secondary" onclick={close}>{i18n.t('common.close')}</Button>
+							<Button variant="danger" onclick={close}>{i18n.t('common.close')}</Button>
 						{/snippet}
 					</Drawer>
 				</Row>

@@ -232,13 +232,14 @@ describe('Invariant Test: Zero Hardcoded Design Values in Library Code', () => {
 					.replace(';', '')
 					.trim();
 
-				// 1. Proíbe bordas sub-pixel fracionárias: calc(var(--border-width) * 0.5)
+				// 1. Proíbe bordas sub-pixel fracionárias ou literais 1px sem token
 				if (
 					prop.startsWith('border') &&
-					/calc\(var\(--border-width\)\s*\*\s*0\.\d+\)/.test(value)
+					(/calc\(var\(--border-width\)\s*\*\s*0\.\d+\)/.test(value) ||
+						/\b1px\s+(solid|dashed|dotted)\b/.test(value))
 				) {
 					cohesionViolations.push(
-						`  [BORDA FRACIONÁRIA] ${relativePath}:${lineNum} -> "${prop}: ${value}" (Use estritamente 'var(--border-width)' para espessura uniforme de 1px na suíte)`
+						`  [BORDA NÃO-TOKENIZADA] ${relativePath}:${lineNum} -> "${prop}: ${value}" (Use estritamente 'var(--border-width)' para espessura uniforme na suíte)`
 					);
 				}
 

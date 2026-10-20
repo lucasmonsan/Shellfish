@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { page, userEvent } from 'vitest/browser';
+import { createRawSnippet } from 'svelte';
 import Modal from '$lib/components/overlay/Modal.svelte';
 
 describe('Modal Interactive Browser Component Test', () => {
@@ -53,5 +54,24 @@ describe('Modal Interactive Browser Component Test', () => {
 
 		await userEvent.keyboard('{Escape}');
 		await expect.element(dialog).toBeVisible();
+	});
+
+	it('renders with scrollable class on modal-body when scrollable prop is true', async () => {
+		render(Modal, {
+			props: {
+				open: true,
+				scrollable: true,
+				title: 'Modal com rolagem',
+				children: createRawSnippet(() => ({
+					render: () => '<span>Conteúdo longo do modal</span>'
+				}))
+			}
+		});
+
+		const dialog = page.getByRole('dialog');
+		await expect.element(dialog).toBeVisible();
+
+		const body = dialog.element().querySelector('.modal-body');
+		expect(body?.classList.contains('scrollable')).toBe(true);
 	});
 });

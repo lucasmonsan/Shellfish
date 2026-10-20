@@ -8,6 +8,7 @@
 		open = $bindable(false),
 		placement = 'right',
 		size = 'md',
+		scrollable = false,
 		title,
 		ariaLabel,
 		closeOnEscape = true,
@@ -72,6 +73,21 @@
 
 	function handleDialogClick(e: MouseEvent) {
 		if (e.target === dialogEl && closeOnClickOutside) {
+			// Se um popover/select interno foi fechado neste mesmo gesto, protege o drawer
+			if (overlayStack.consumeChildDismiss()) return;
+
+			// Se o elemento ativo for um input ou textarea dentro do drawer, o primeiro clique no backdrop
+			// apenas desfaz o foco (recolhe o teclado virtual no mobile) e preserva o drawer aberto
+			const activeEl = document.activeElement;
+			if (
+				activeEl &&
+				dialogEl.contains(activeEl) &&
+				(activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')
+			) {
+				(activeEl as HTMLElement).blur();
+				return;
+			}
+
 			if (!overlayStack.isTop(drawerId)) return;
 			close();
 		}
@@ -126,7 +142,7 @@
 		{/if}
 
 		{#if children}
-			<div class="drawer-body">
+			<div class="drawer-body" class:scrollable>
 				{@render children(close)}
 			</div>
 		{/if}
@@ -144,8 +160,8 @@
 		position: fixed;
 		top: 0;
 		bottom: 0;
-		height: 100vh;
-		max-height: 100vh;
+		height: 100dvh;
+		max-height: 100dvh;
 		margin: 0;
 		padding: 0;
 		border: none;
@@ -153,7 +169,7 @@
 		color: var(--text-primary);
 		box-shadow: var(--shadow-lg);
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow: visible;
 	}
 
 	.drawer-dialog::backdrop {
@@ -204,15 +220,15 @@
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow: visible;
 	}
 
 	.drawer-header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--space-md);
-		padding: var(--space-md) var(--space-lg);
+		gap: var(--space-sm);
+		padding: var(--space-sm) var(--space-md);
 		border-bottom: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-primary);
 		box-sizing: border-box;
@@ -232,25 +248,26 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--space-xl);
-		height: var(--space-xl);
+		width: var(--control-height-sm);
+		height: var(--control-height-sm);
 		padding: 0;
 		margin: 0;
-		border: 1px solid transparent;
+		border: var(--border-width) solid transparent;
 		border-radius: var(--radius-xs);
 		background-color: transparent;
-		color: var(--text-secondary);
+		color: var(--color-danger);
 		cursor: pointer;
 		transition:
 			background-color var(--transition-fast),
-			color var(--transition-fast);
+			color var(--transition-fast),
+			border-color var(--transition-fast);
 		flex-shrink: 0;
 	}
 
 	.drawer-close-btn:hover {
-		background-color: var(--bg-secondary);
-		color: var(--text-primary);
-		border-color: var(--border-color);
+		background-color: var(--color-danger);
+		color: var(--color-on-solid);
+		border-color: var(--color-danger);
 	}
 
 	.drawer-close-btn:focus-visible {
@@ -259,9 +276,10 @@
 	}
 
 	.drawer-body {
-		padding: var(--space-lg);
-		overflow-y: auto;
-		overflow-x: hidden;
+		position: relative;
+		z-index: 2;
+		padding: var(--space-md);
+		overflow: visible;
 		flex: 1 1 auto;
 		box-sizing: border-box;
 		font-family: var(--font-sans);
@@ -270,12 +288,19 @@
 		line-height: 1.5;
 	}
 
+	.drawer-body.scrollable {
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
 	.drawer-footer {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
-		gap: var(--space-sm);
-		padding: var(--space-md) var(--space-lg);
+		gap: var(--space-xs);
+		padding: var(--space-sm) var(--space-md);
 		border-top: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-primary);
 		box-sizing: border-box;
