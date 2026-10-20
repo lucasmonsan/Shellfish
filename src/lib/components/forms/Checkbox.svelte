@@ -154,12 +154,11 @@
 
 	/* Interações */
 	.checkbox-root:hover:not(.disabled) .indicator {
-		border-color: var(--color-primary);
+		border-color: var(--border-strong);
 	}
 
 	.checkbox-root:has(input:focus-visible):not(.disabled) .indicator {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -175,7 +174,7 @@
 
 	.checkbox-root.invalid:has(input:focus-visible):not(.disabled) .indicator {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
+		outline: none;
 	}
 
 	.checkbox-root.invalid.checked .indicator,

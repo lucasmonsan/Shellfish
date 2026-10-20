@@ -39,6 +39,8 @@
 	class:invalid={invalid || isOverLimit}
 	class:disabled
 	class:readonly
+	class:has-count={showCount}
+	style:resize={disabled || readonly ? 'none' : resize}
 	{style}
 >
 	<textarea
@@ -49,17 +51,18 @@
 		{disabled}
 		{readonly}
 		{maxlength}
-		style:resize
 		aria-invalid={invalid || isOverLimit ? 'true' : undefined}
 		{...restProps}></textarea>
 
-	{#if showCount && maxlength}
-		<div class="count-badge" class:warning={isNearLimit} class:danger={isOverLimit}>
-			{currentLength} / {maxlength}
-		</div>
-	{:else if showCount}
-		<div class="count-badge">
-			{currentLength}
+	{#if showCount}
+		<div class="textarea-footer">
+			<div class="count-badge" class:warning={isNearLimit} class:danger={isOverLimit}>
+				{#if maxlength}
+					{currentLength} / {maxlength}
+				{:else}
+					{currentLength}
+				{/if}
+			</div>
 		</div>
 	{/if}
 </div>
@@ -78,6 +81,7 @@
 		font-size: var(--text-sm);
 		line-height: var(--leading-normal);
 		vertical-align: middle;
+		overflow: hidden;
 		transition:
 			border-color var(--transition-fast),
 			background-color var(--transition-fast),
@@ -101,7 +105,7 @@
 		font-size: var(--text-sm);
 	}
 	.textarea-container.md textarea {
-		padding: var(--space-sm) calc(var(--base) * 0.75);
+		padding: var(--space-sm) var(--control-padding-md);
 	}
 
 	.textarea-container.lg {
@@ -113,22 +117,29 @@
 
 	textarea {
 		width: 100%;
+		flex: 1;
 		border: none;
 		background: transparent;
 		color: inherit;
 		font-family: inherit;
 		font-size: inherit;
 		line-height: inherit;
-		border-radius: inherit;
+		border-radius: 0;
 		box-sizing: border-box;
 		outline: none;
+		resize: none;
 		min-height: calc(var(--control-height) * 1.5);
+		overflow-y: auto;
+	}
+
+	/* Interações */
+	.textarea-container:hover:not(.disabled):not(:has(textarea:focus-visible)) {
+		border-color: var(--border-strong);
 	}
 
 	/* Foco Acessível via :has(textarea:focus-visible) */
 	.textarea-container:has(textarea:focus-visible):not(.disabled) {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -139,7 +150,6 @@
 
 	.textarea-container.invalid:has(textarea:focus-visible):not(.disabled) {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
 		outline: none;
 	}
 
@@ -157,13 +167,29 @@
 		background-color: var(--bg-secondary);
 	}
 
-	.count-badge {
-		align-self: flex-end;
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		color: var(--text-muted);
-		padding: 0 calc(var(--base) * 0.5) calc(var(--base) * 0.25);
+	.textarea-footer {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: calc(var(--space-xxs) * 0.35) var(--space-sm);
+		background-color: var(--bg-input);
+		border-top: 1px solid var(--border-color);
+		flex-shrink: 0;
 		user-select: none;
+	}
+
+	.textarea-container.readonly .textarea-footer,
+	.textarea-container.disabled .textarea-footer {
+		background-color: var(--bg-secondary);
+	}
+
+	.count-badge {
+		font-family: var(--font-mono);
+		font-size: var(--text-xxs);
+		line-height: var(--leading-none);
+		color: var(--text-muted);
+		user-select: none;
+		pointer-events: none;
 	}
 
 	.count-badge.warning {

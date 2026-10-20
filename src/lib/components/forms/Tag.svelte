@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { ChipProps } from '$lib/types/forms.js';
+	import type { TagProps } from '$lib/types/forms.js';
 	import X from '$lib/components/icons/X.svelte';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		variant = 'secondary',
@@ -8,14 +9,17 @@
 		selected,
 		removable = false,
 		disabled = false,
-		removeLabel = 'Remover',
+		removeLabel,
 		label,
 		onremove,
 		onclick,
 		children,
 		class: className = '',
 		...restProps
-	}: ChipProps = $props();
+	}: TagProps = $props();
+
+	const i18n = getI18n();
+	let resolvedRemoveLabel = $derived(removeLabel ?? i18n.t('forms.tag_remove'));
 
 	// Se tem botão de remoção interno, o container NÃO pode ser role="button" (W3C HTML-AAM nested-interactive)
 	const isButton = $derived(!removable && (Boolean(onclick) || selected !== undefined));
@@ -69,7 +73,7 @@
 		<button
 			type="button"
 			class="remove-button"
-			aria-label={removeLabel}
+			aria-label={resolvedRemoveLabel}
 			{disabled}
 			tabindex={disabled ? -1 : 0}
 			onclick={handleRemoveClick}
@@ -87,7 +91,7 @@
 		box-sizing: border-box;
 		border-radius: var(--radius-xs);
 		border: var(--border-width) solid var(--border-color);
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-weight: 500;
 		line-height: var(--leading-none);
 		white-space: nowrap;
@@ -106,7 +110,6 @@
 
 	.chip-root.interactive:focus-visible {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -122,19 +125,31 @@
 		padding: 0 var(--space-xs);
 		gap: var(--space-xxs);
 	}
+	.sm.removable {
+		padding-right: 0;
+		gap: 0;
+	}
 
 	.md {
 		height: calc(var(--base) * 1.5);
 		font-size: var(--text-xs);
-		padding: 0 calc(var(--base) * 0.5);
-		gap: var(--space-xs);
+		padding: 0 var(--space-sm);
+		gap: var(--space-xxs);
+	}
+	.md.removable {
+		padding-right: 0;
+		gap: 0;
 	}
 
 	.lg {
 		height: calc(var(--base) * 1.875);
 		font-size: var(--text-sm);
-		padding: 0 calc(var(--base) * 0.65);
-		gap: var(--space-xs);
+		padding: 0 var(--space-sm);
+		gap: var(--space-xxs);
+	}
+	.lg.removable {
+		padding-right: 0;
+		gap: 0;
 	}
 
 	/* Variantes */

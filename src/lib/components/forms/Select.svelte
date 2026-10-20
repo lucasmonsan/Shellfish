@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { SelectProps } from '$lib/types/forms.js';
+	import Popover from '$lib/components/overlay/Popover.svelte';
 	import ChevronDown from '$lib/components/icons/ChevronDown.svelte';
 
 	let {
@@ -17,52 +18,200 @@
 		...restProps
 	}: SelectProps = $props();
 
-	let selectEl = $state<HTMLSelectElement>();
+	let triggerEl = $state<HTMLButtonElement>();
+	let nativeSelectEl = $state<HTMLSelectElement>();
+	let focusedIndex = $state(-1);
+
+	let selectedOption = $derived(options.find((opt) => String(opt.value) === String(value)));
+
+	let displayLabel = $derived(selectedOption ? selectedOption.label : placeholder || '');
 
 	export function focus() {
-		selectEl?.focus();
+		triggerEl?.focus();
+	}
+
+	function select(val: string, close?: () => void) {
+		if (disabled) return;
+		const previousVal = value;
+		value = val;
+		close?.();
+		triggerEl?.focus();
+
+		if (previousVal !== val && nativeSelectEl) {
+			nativeSelectEl.value = val;
+			nativeSelectEl.dispatchEvent(new Event('change', { bubbles: true }));
+		}
+	}
+
+	function handleKeydown(
+		e: KeyboardEvent,
+		open: boolean,
+		toggle: (event?: MouseEvent | KeyboardEvent) => void,
+		close: () => void
+	) {
+		if (disabled) return;
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			if (!open) {
+				toggle(e);
+				focusedIndex = options.findIndex((o) => String(o.value) === String(value));
+				if (focusedIndex < 0) focusedIndex = 0;
+			} else {
+				focusedIndex = (focusedIndex + 1) % options.length;
+			}
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			if (!open) {
+				toggle(e);
+				focusedIndex = options.findIndex((o) => String(o.value) === String(value));
+				if (focusedIndex < 0) focusedIndex = options.length - 1;
+			} else {
+				focusedIndex = (focusedIndex - 1 + options.length) % options.length;
+			}
+		} else if (e.key === 'Enter' || e.key === ' ') {
+			if (open && focusedIndex >= 0 && focusedIndex < options.length) {
+				e.preventDefault();
+				const opt = options[focusedIndex];
+				if (!opt.disabled) {
+					select(opt.value, close);
+				}
+			}
+		}
 	}
 </script>
 
-<div class="select-container {size} {className}" class:block class:invalid class:disabled {style}>
-	<select
-		bind:this={selectEl}
-		bind:value
-		{id}
-		{disabled}
-		aria-invalid={invalid ? 'true' : undefined}
-		{...restProps}
-	>
-		{#if placeholder}
-			<option value="" disabled hidden={Boolean(value)}>
-				{placeholder}
-			</option>
-		{/if}
+<div class="select-root {className}" class:block class:disabled class:invalid {style}>
+	<Popover disabled={Boolean(disabled)} align="start" offset={4} class="select-popover-wrapper">
+		{#snippet trigger(toggle, open, ariaProps)}
+			<div class="trigger-wrapper">
+				<button
+					bind:this={triggerEl}
+					type="button"
+					role="combobox"
+					class="select-trigger {size}"
+					class:block
+					class:open
+					class:invalid
+					class:has-placeholder={!selectedOption && Boolean(placeholder)}
+					{id}
+					disabled={Boolean(disabled)}
+					aria-invalid={invalid ? 'true' : undefined}
+					onclick={toggle}
+					onkeydown={(e) => handleKeydown(e, open, toggle, () => toggle())}
+					{...ariaProps}
+					aria-haspopup="listbox"
+				>
+					<span class="select-label">
+						{displayLabel}
+					</span>
 
-		{#if children}
-			{@render children()}
-		{:else if options.length > 0}
-			{#each options as opt (opt.value)}
-				<option value={opt.value} disabled={opt.disabled}>
-					{opt.label}
-				</option>
-			{/each}
-		{/if}
-	</select>
+					<span class="chevron" class:rotate={open} aria-hidden="true">
+						<ChevronDown size={size === 'sm' ? 12 : size === 'lg' ? 16 : 14} />
+					</span>
+				</button>
 
-	<span class="chevron" aria-hidden="true">
-		<ChevronDown size={size === 'sm' ? 12 : size === 'lg' ? 16 : 14} />
-	</span>
+				<!-- Fallback nativo transparente apenas para toque/mobile -->
+				<select
+					bind:this={nativeSelectEl}
+					bind:value
+					disabled={Boolean(disabled)}
+					tabindex="-1"
+					aria-hidden="true"
+					class="mobile-native-select"
+					{...restProps}
+				>
+					{#if placeholder}
+						<option value="" disabled hidden={Boolean(value)}>{placeholder}</option>
+					{/if}
+					{#if children}
+						{@render children()}
+					{:else}
+						{#each options as opt (opt.value)}
+							<option value={opt.value} disabled={opt.disabled}>{opt.label}</option>
+						{/each}
+					{/if}
+				</select>
+			</div>
+		{/snippet}
+
+		{#snippet content(close)}
+			<div class="select-listbox" role="listbox" aria-label={placeholder || 'Opções'} tabindex="-1">
+				{#if options.length > 0}
+					{#each options as opt, idx (opt.value)}
+						{@const isSelected = String(opt.value) === String(value)}
+						{@const isFocused = focusedIndex === idx}
+						<button
+							type="button"
+							role="option"
+							class="select-option {size}"
+							class:selected={isSelected}
+							class:focused={isFocused}
+							aria-selected={isSelected}
+							disabled={opt.disabled}
+							onclick={() => select(opt.value, close)}
+						>
+							<span class="option-label">{opt.label}</span>
+							{#if isSelected}
+								<svg
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="check-icon"
+								>
+									<polyline points="3 8.5 6.5 12 13 4.5" />
+								</svg>
+							{/if}
+						</button>
+					{/each}
+				{:else if children}
+					<div class="empty-notice">
+						{@render children()}
+					</div>
+				{/if}
+			</div>
+		{/snippet}
+	</Popover>
 </div>
 
 <style>
-	.select-container {
+	.select-root {
+		display: inline-flex;
+		box-sizing: border-box;
+		vertical-align: middle;
+	}
+
+	.select-root.block {
+		width: 100%;
+		display: flex;
+	}
+
+	.select-root :global(.select-popover-wrapper) {
+		width: 100%;
+	}
+
+	.select-root :global(.select-popover-wrapper .sf-popover-trigger) {
+		width: 100%;
+	}
+
+	.trigger-wrapper {
+		position: relative;
+		width: 100%;
+		display: flex;
+	}
+
+	.select-trigger {
 		display: inline-flex;
 		align-items: center;
-		position: relative;
+		justify-content: space-between;
 		box-sizing: border-box;
+		width: 100%;
 		height: var(--control-height);
 		min-height: var(--control-height);
+		padding: 0 var(--control-padding-md);
 		border-radius: var(--radius-xs);
 		border: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-input);
@@ -70,104 +219,201 @@
 		font-family: var(--font-sans);
 		font-size: var(--text-sm);
 		line-height: var(--leading-none);
-		vertical-align: middle;
+		cursor: pointer;
+		user-select: none;
+		outline: none;
+		text-align: left;
 		transition:
 			border-color var(--transition-fast),
 			background-color var(--transition-fast),
 			box-shadow var(--transition-fast);
 	}
 
-	.select-container.block {
-		width: 100%;
-		display: flex;
-	}
-
 	/* Escala de Tamanhos */
-	.select-container.sm {
+	.select-trigger.sm {
 		height: var(--control-height-sm);
 		min-height: var(--control-height-sm);
 		font-size: var(--text-xs);
+		padding: 0 var(--control-padding-sm);
 	}
 
-	.select-container.md {
+	.select-trigger.md {
 		height: var(--control-height);
 		min-height: var(--control-height);
 		font-size: var(--text-sm);
+		padding: 0 var(--control-padding-md);
 	}
 
-	.select-container.lg {
+	.select-trigger.lg {
 		height: var(--control-height-lg);
 		min-height: var(--control-height-lg);
 		font-size: var(--text-md);
+		padding: 0 var(--control-padding-lg);
 	}
 
-	select {
-		appearance: none;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		width: 100%;
-		height: 100%;
-		border: none;
-		background: transparent;
-		color: inherit;
-		font-family: inherit;
-		font-size: inherit;
-		line-height: inherit;
-		padding: 0 calc(var(--base) * 1.75) 0 calc(var(--base) * 0.75);
-		border-radius: inherit;
-		cursor: pointer;
-		outline: none;
+	.select-trigger.has-placeholder .select-label {
+		color: var(--text-muted);
 	}
 
-	.select-container.sm select {
-		padding: 0 calc(var(--base) * 1.5) 0 var(--space-sm);
+	.select-label {
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
-	.select-container.lg select {
-		padding: 0 calc(var(--base) * 2) 0 var(--space-md);
+	.select-trigger:hover:not(:disabled) {
+		border-color: var(--border-strong);
 	}
 
-	/* Foco Acessível via :has(select:focus-visible) */
-	.select-container:has(select:focus-visible):not(.disabled) {
+	.select-trigger:focus-visible,
+	.select-trigger.open {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
-	/* Estado Inválido */
-	.select-container.invalid {
+	.select-trigger.invalid {
 		border-color: var(--color-danger);
 	}
 
-	.select-container.invalid:has(select:focus-visible):not(.disabled) {
+	.select-trigger.invalid:focus-visible {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
 		outline: none;
 	}
 
-	/* Desabilitado */
-	.select-container.disabled {
+	.select-trigger:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
 		background-color: var(--bg-secondary);
 	}
 
-	.select-container.disabled select {
-		cursor: not-allowed;
-	}
-
 	.chevron {
-		position: absolute;
-		right: calc(var(--base) * 0.6);
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		pointer-events: none;
+		color: var(--text-muted);
+		margin-left: var(--space-xs);
+		flex-shrink: 0;
+		transition: transform var(--transition-fast);
+	}
+
+	.chevron.rotate {
+		transform: rotate(180deg);
+	}
+
+	/* Mobile Native Select Overlay */
+	.mobile-native-select {
+		display: none;
+	}
+
+	@media (pointer: coarse) {
+		.mobile-native-select {
+			display: block;
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			cursor: pointer;
+			border: none;
+			margin: 0;
+			padding: 0;
+			z-index: 2;
+		}
+	}
+
+	/* Lista Dropdown Popover */
+	.select-listbox {
+		box-sizing: border-box;
+		background-color: var(--bg-elevated);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-xs);
+		box-shadow: var(--shadow-md);
+		min-width: 180px;
+		max-width: calc(100vw - var(--space-md) * 2);
+		max-height: 240px;
+		overflow-y: auto;
+		padding: var(--space-xxs);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xxs);
+	}
+
+	.select-option {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		box-sizing: border-box;
+		min-height: var(--control-height-sm);
+		padding: var(--space-xs) var(--space-sm);
+		border-radius: var(--radius-xs);
+		border: none;
+		background: transparent;
+		color: var(--text-primary);
+		font-family: var(--font-sans);
+		font-size: var(--text-sm);
+		line-height: var(--leading-normal);
+		cursor: pointer;
+		text-align: left;
+		transition:
+			background-color var(--transition-fast),
+			color var(--transition-fast);
+	}
+
+	.select-option.sm {
+		font-size: var(--text-xs);
+		min-height: calc(var(--control-height-sm) * 0.85);
+		padding: var(--space-xxs) var(--space-xs);
+	}
+
+	.select-option.lg {
+		font-size: var(--text-md);
+		min-height: var(--control-height);
+		padding: var(--space-sm) var(--space-md);
+	}
+
+	.select-option:hover:not(:disabled),
+	.select-option.focused:not(:disabled) {
+		background-color: var(--bg-secondary);
+	}
+
+	.select-option.selected {
+		background-color: var(--color-primary-selected);
+		color: var(--color-primary);
+		font-weight: 600;
+	}
+
+	.select-option:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.option-label {
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.check-icon {
+		width: 14px;
+		height: 14px;
+		color: var(--color-primary);
+		margin-left: var(--space-xs);
+		flex-shrink: 0;
+	}
+
+	.empty-notice {
+		padding: var(--space-sm);
+		font-size: var(--text-xs);
 		color: var(--text-muted);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.select-container {
+		.select-trigger,
+		.chevron,
+		.select-option {
 			transition: none;
 		}
 	}

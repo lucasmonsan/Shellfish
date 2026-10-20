@@ -4,6 +4,7 @@
 	import FileText from '$lib/components/icons/FileText.svelte';
 	import Trash from '$lib/components/icons/Trash.svelte';
 	import AlertCircle from '$lib/components/icons/AlertCircle.svelte';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		files = $bindable([]),
@@ -14,11 +15,16 @@
 		disabled = false,
 		invalid = false,
 		label,
+		primaryText,
+		secondaryText,
 		onfiles,
 		children,
 		class: className = '',
 		...restProps
 	}: FileUploadProps = $props();
+
+	const i18n = getI18n();
+	let resolvedPrimaryText = $derived(primaryText ?? i18n.t('forms.upload_primary'));
 
 	let fileInputEl = $state<HTMLInputElement>();
 	let isDragging = $state(false);
@@ -41,7 +47,10 @@
 
 		for (const file of Array.from(incoming)) {
 			if (file.size > maxBytes) {
-				errorMessage = `O arquivo "${file.name}" excede o tamanho máximo de ${maxSizeMb} MB.`;
+				errorMessage = i18n.t('forms.upload_file_size_error', {
+					name: file.name,
+					maxSize: maxSizeMb
+				});
 				continue;
 			}
 			validList.push(file);
@@ -54,7 +63,7 @@
 			const combined = [...files, ...validList];
 			updated = maxFiles ? combined.slice(0, maxFiles) : combined;
 			if (maxFiles && combined.length > maxFiles) {
-				errorMessage = `Limite máximo de ${maxFiles} arquivo(s) atingido.`;
+				errorMessage = i18n.t('forms.upload_max_files_error', { maxFiles });
 			}
 		} else {
 			updated = [validList[0]];
@@ -120,7 +129,7 @@
 		{accept}
 		{multiple}
 		{disabled}
-		aria-label={label || 'Upload de arquivos'}
+		aria-label={label || i18n.t('forms.upload_input_label')}
 		onchange={handleInputChange}
 		tabindex="-1"
 	/>
@@ -129,7 +138,7 @@
 		role="button"
 		tabindex={disabled ? -1 : 0}
 		aria-disabled={disabled ? 'true' : undefined}
-		aria-label={label || 'Área de envio de arquivos'}
+		aria-label={label || i18n.t('forms.upload_dropzone_label')}
 		class="dropzone"
 		class:dragging={isDragging}
 		class:invalid={invalid || Boolean(errorMessage)}
@@ -147,9 +156,12 @@
 				{@render children()}
 			{:else}
 				<div class="text-content">
-					<strong class="primary-text">Clique para selecionar ou arraste arquivos aqui</strong>
+					<strong class="primary-text">{resolvedPrimaryText}</strong>
 					<span class="secondary-text">
-						{accept ? `Tipos permitidos: ${accept}` : 'Qualquer formato aceito'} (máx. {maxSizeMb} MB)
+						{secondaryText ??
+							(accept
+								? `${accept.replace(/,/g, ', ')} até ${maxSizeMb}MB`
+								: i18n.t('forms.upload_default_help', { maxSize: maxSizeMb }))}
 					</span>
 				</div>
 			{/if}
@@ -164,7 +176,7 @@
 	{/if}
 
 	{#if files.length > 0}
-		<ul class="file-list" aria-label="Arquivos selecionados">
+		<ul class="file-list" aria-label={i18n.t('forms.upload_selected_files')}>
 			{#each files as file, index (file.name + file.size)}
 				<li class="file-item">
 					<span class="file-icon" aria-hidden="true">
@@ -178,7 +190,7 @@
 						<button
 							type="button"
 							class="remove-btn"
-							aria-label={`Remover ${file.name}`}
+							aria-label={i18n.t('forms.upload_remove_file', { name: file.name })}
 							onclick={(e) => removeFile(index, e)}
 						>
 							<Trash size={14} />
@@ -216,7 +228,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: calc(var(--base) * 1.5) var(--space-md);
+		padding: var(--space-lg) var(--space-md);
 		border-radius: var(--radius-xs);
 		border: var(--border-width) dashed var(--border-strong);
 		background-color: var(--bg-input);
@@ -230,9 +242,13 @@
 			box-shadow var(--transition-fast);
 	}
 
+	.dropzone:hover:not(.disabled):not(:focus-visible) {
+		border-color: var(--border-strong);
+	}
+
 	.dropzone:focus-visible {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
+		outline: none;
 	}
 
 	.dropzone.dragging {

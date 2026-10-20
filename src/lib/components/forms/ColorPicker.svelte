@@ -1,133 +1,409 @@
 <script lang="ts">
 	import type { ColorPickerProps } from '$lib/types/forms.js';
-	import Input from './Input.svelte';
+	import Popover from '$lib/components/overlay/Popover.svelte';
+	import { i18n } from '$lib/utils/i18n.svelte.js';
+
+	const DEFAULT_MONSAN_PRESETS = [
+		'#b94b38', // Primária Terracota
+		'#9c3b2a', // Primária Escura
+		'#d46450', // Primária Clara
+		'#2b6140', // Sucesso Floresta
+		'#3d8257', // Sucesso Claro
+		'#e09f2d', // Aviso Âmbar
+		'#f0b246', // Aviso Claro
+		'#9b2226', // Perigo Carmim
+		'#b82c30', // Perigo Claro
+		'#2b4c7e', // Info Ardósia
+		'#3e68a3', // Info Claro
+		'#2d2422', // Neutro Escuro (Carvão)
+		'#5e544f', // Neutro Médio
+		'#8a807a', // Neutro Quente
+		'#d8d2c8', // Borda Neutra
+		'#faf6ef' // Fundo Claro (Creme)
+	];
 
 	let {
 		value = $bindable('#b94b38'),
 		size = 'md',
-		presets = [
-			'#b94b38',
-			'#9c3b2a',
-			'#2b6140',
-			'#e09f2d',
-			'#9b2226',
-			'#2d2422',
-			'#5e544f',
-			'#faf6ef'
-		],
+		presets = DEFAULT_MONSAN_PRESETS,
+		allowCustom = false,
 		showHexInput = true,
+		block = false,
 		disabled = false,
 		invalid = false,
-		label = 'Seletor de cor',
+		label,
 		class: className = '',
+		style = '',
 		...restProps
 	}: ColorPickerProps = $props();
 
-	function selectPreset(color: string) {
+	let resolvedLabel = $derived(label ?? i18n.t('forms.color_picker_label'));
+
+	function selectPreset(color: string, close: () => void) {
 		if (disabled) return;
 		value = color;
+		close();
+	}
+
+	function isLightColor(hex: string): boolean {
+		if (!hex || typeof hex !== 'string') return false;
+		const clean = hex.replace('#', '');
+		if (clean.length !== 6 && clean.length !== 3) return false;
+		const full =
+			clean.length === 3
+				? clean
+						.split('')
+						.map((c) => c + c)
+						.join('')
+				: clean;
+		const r = parseInt(full.substring(0, 2), 16);
+		const g = parseInt(full.substring(2, 4), 16);
+		const b = parseInt(full.substring(4, 6), 16);
+		return (r * 299 + g * 587 + b * 114) / 1000 > 155;
 	}
 </script>
 
-<div class="color-picker-root {size} {className}" class:disabled class:invalid {...restProps}>
-	<div class="picker-main">
-		<!-- Swatch com input nativo oculto por cima para clique -->
-		<label class="swatch-container" style:background-color={value} title={label}>
-			<input type="color" bind:value {disabled} aria-label={label} class="native-color-input" />
-		</label>
+<div
+	class="color-picker-wrapper {className}"
+	class:block
+	class:disabled
+	class:invalid
+	{style}
+	{...restProps}
+>
+	<Popover {disabled} align="start" offset={6}>
+		{#snippet trigger(toggle, open, ariaProps)}
+			<button
+				type="button"
+				class="color-trigger {size}"
+				class:swatch-only={!showHexInput}
+				class:with-hex={showHexInput}
+				class:open
+				class:block
+				class:invalid
+				{disabled}
+				style:background-color={showHexInput ? undefined : value}
+				aria-label={`${resolvedLabel}: ${value}`}
+				onclick={toggle}
+				{...ariaProps}
+			>
+				{#if showHexInput}
+					<span class="swatch-preview" style:background-color={value}></span>
+					<span class="hex-text">{value?.toUpperCase() || ''}</span>
+				{/if}
+			</button>
+		{/snippet}
 
-		{#if showHexInput}
-			<div class="hex-field">
-				<Input
-					bind:value
-					{size}
-					{disabled}
-					{invalid}
-					maxlength={7}
-					block={false}
-					aria-label={label ? `${label} (Hex)` : 'Hexadecimal color'}
-					class="hex-input"
-				/>
+		{#snippet content(close)}
+			<div class="color-popover-panel" role="region" aria-label={resolvedLabel}>
+				<div class="panel-section-title">
+					{i18n.t('forms.color_palette_title')}
+				</div>
+
+				<div
+					class="swatches-grid"
+					role="radiogroup"
+					aria-label={i18n.t('forms.color_palette_title')}
+				>
+					{#each presets as preset (preset)}
+						{@const isSelected = value?.toLowerCase() === preset.toLowerCase()}
+						{@const isLight = isLightColor(preset)}
+						<button
+							type="button"
+							class="palette-swatch"
+							class:selected={isSelected}
+							style:background-color={preset}
+							title={preset}
+							aria-label={i18n.t('forms.color_preset', { color: preset })}
+							aria-checked={isSelected}
+							role="radio"
+							onclick={() => selectPreset(preset, close)}
+						>
+							{#if isSelected}
+								<svg
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke={isLight ? '#2d2422' : '#ffffff'}
+									stroke-width="2.5"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="check-icon"
+								>
+									<polyline points="3 8.5 6.5 12 13 4.5" />
+								</svg>
+							{/if}
+						</button>
+					{/each}
+				</div>
+
+				{#if allowCustom}
+					<div class="custom-section">
+						<div class="panel-section-title">
+							{i18n.t('forms.color_custom_title')}
+						</div>
+						<div class="custom-controls">
+							<label
+								class="custom-native-wrapper"
+								style:background-color={value}
+								title={i18n.t('forms.color_custom_title')}
+							>
+								<input
+									type="color"
+									bind:value
+									class="custom-native-input"
+									aria-label={i18n.t('forms.color_custom_title')}
+								/>
+							</label>
+							<input
+								type="text"
+								bind:value
+								maxlength={7}
+								class="custom-hex-field"
+								placeholder="#000000"
+								aria-label={i18n.t('forms.color_hex_code')}
+							/>
+						</div>
+					</div>
+				{/if}
 			</div>
-		{/if}
-	</div>
-
-	{#if presets && presets.length > 0}
-		<div class="presets-row" role="group" aria-label="Cores sugeridas">
-			{#each presets as preset (preset)}
-				<button
-					type="button"
-					class="preset-button"
-					class:active={value?.toLowerCase() === preset.toLowerCase()}
-					style:background-color={preset}
-					aria-label={`Cor ${preset}`}
-					{disabled}
-					onclick={() => selectPreset(preset)}
-				></button>
-			{/each}
-		</div>
-	{/if}
+		{/snippet}
+	</Popover>
 </div>
 
 <style>
-	.color-picker-root {
+	.color-picker-wrapper {
 		display: inline-flex;
-		flex-direction: column;
-		gap: var(--space-xs);
 		box-sizing: border-box;
-		font-family: var(--font-sans);
 		vertical-align: middle;
 	}
 
-	.picker-main {
+	.color-picker-wrapper.block {
+		width: 100%;
+		display: flex;
+	}
+
+	.color-picker-wrapper.block :global(.sf-popover) {
+		width: 100%;
+	}
+
+	.color-picker-wrapper.block :global(.sf-popover-trigger) {
+		width: 100%;
+	}
+
+	.color-trigger {
 		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		box-sizing: border-box;
+		height: var(--control-height);
+		min-height: var(--control-height);
+		padding: 0 var(--space-sm);
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--border-color);
+		background-color: var(--bg-input);
+		color: var(--text-primary);
+		font-family: var(--font-sans);
+		font-size: var(--text-sm);
+		cursor: pointer;
+		user-select: none;
+		outline: none;
+		transition:
+			border-color var(--transition-fast),
+			background-color var(--transition-fast),
+			box-shadow var(--transition-fast);
+	}
+
+	.color-trigger.block {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	/* Escala de Tamanhos */
+	.color-trigger.sm {
+		height: var(--control-height-sm);
+		min-height: var(--control-height-sm);
+		font-size: var(--text-xs);
+		padding: 0 var(--space-xs);
+	}
+
+	.color-trigger.md {
+		height: var(--control-height);
+		min-height: var(--control-height);
+		font-size: var(--text-sm);
+	}
+
+	.color-trigger.lg {
+		height: var(--control-height-lg);
+		min-height: var(--control-height-lg);
+		font-size: var(--text-md);
+		padding: 0 var(--space-md);
+	}
+
+	/* Modo Quadrado Puro */
+	.color-trigger.swatch-only {
+		padding: 0;
+		width: var(--control-height);
+		height: var(--control-height);
+		min-width: var(--control-height);
+		min-height: var(--control-height);
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	.color-trigger.swatch-only.sm {
+		width: var(--control-height-sm);
+		height: var(--control-height-sm);
+		min-width: var(--control-height-sm);
+		min-height: var(--control-height-sm);
+		padding: 0;
+	}
+
+	.color-trigger.swatch-only.lg {
+		width: var(--control-height-lg);
+		height: var(--control-height-lg);
+		min-width: var(--control-height-lg);
+		min-height: var(--control-height-lg);
+		padding: 0;
+	}
+
+	.color-trigger:hover:not(:disabled) {
+		border-color: var(--border-strong);
+	}
+
+	.color-trigger:focus-visible,
+	.color-trigger.open {
+		border-color: var(--color-primary);
+		outline: none;
+	}
+
+	.color-trigger.invalid {
+		border-color: var(--color-danger);
+	}
+
+	.color-trigger.invalid:focus-visible {
+		border-color: var(--color-danger);
+		outline: none;
+	}
+
+	.color-trigger:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		background-color: var(--bg-secondary);
+	}
+
+	.swatch-preview {
+		width: calc(var(--base) * 1.25);
+		height: calc(var(--base) * 1.25);
+		min-width: calc(var(--base) * 1.25);
+		min-height: calc(var(--base) * 1.25);
+		border-radius: var(--radius-xs);
+		border: 1px solid var(--border-color);
+		box-sizing: border-box;
+		flex-shrink: 0;
+	}
+
+	.hex-text {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--text-secondary);
+		letter-spacing: 0.05em;
+	}
+
+	/* Painel Popover */
+	.color-popover-panel {
+		box-sizing: border-box;
+		background-color: var(--bg-elevated);
+		border: var(--border-width) solid var(--border-color);
+		border-radius: var(--radius-sm);
+		padding: var(--space-sm);
+		box-shadow: var(--shadow-md);
+		min-width: 200px;
+		max-width: 260px;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.panel-section-title {
+		font-size: var(--text-xxs);
+		font-family: var(--font-mono);
+		color: var(--text-secondary);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.swatches-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: var(--space-xs);
+	}
+
+	.palette-swatch {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--border-color);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		margin: 0;
+		position: relative;
+		transition:
+			transform var(--transition-fast),
+			border-color var(--transition-fast),
+			box-shadow var(--transition-fast);
+	}
+
+	.palette-swatch:hover {
+		transform: scale(1.1);
+		z-index: 2;
+		border-color: var(--border-strong);
+	}
+
+	.palette-swatch.selected {
+		z-index: 1;
+	}
+
+	.palette-swatch:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 1px;
+	}
+
+	.check-icon {
+		width: 12px;
+		height: 12px;
+	}
+
+	/* Seção Custom */
+	.custom-section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xxs);
+		padding-top: var(--space-xs);
+		border-top: 1px solid var(--border-color);
+	}
+
+	.custom-controls {
+		display: flex;
 		align-items: center;
 		gap: var(--space-xs);
 	}
 
-	.swatch-container {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
+	.custom-native-wrapper {
 		position: relative;
-		box-sizing: border-box;
+		width: calc(var(--base) * 1.5);
+		height: calc(var(--base) * 1.5);
+		min-width: calc(var(--base) * 1.5);
 		border-radius: var(--radius-xs);
-		border: var(--border-width) solid var(--border-color);
+		border: 1px solid var(--border-color);
 		cursor: pointer;
 		overflow: hidden;
 		flex-shrink: 0;
-		transition:
-			border-color var(--transition-fast),
-			box-shadow var(--transition-fast),
-			transform var(--transition-fast);
 	}
 
-	.color-picker-root.sm .swatch-container {
-		width: var(--control-height-sm);
-		height: var(--control-height-sm);
-	}
-
-	.color-picker-root.md .swatch-container {
-		width: var(--control-height);
-		height: var(--control-height);
-	}
-
-	.color-picker-root.lg .swatch-container {
-		width: var(--control-height-lg);
-		height: var(--control-height-lg);
-	}
-
-	.swatch-container:hover:not(.disabled) {
-		border-color: var(--border-strong);
-	}
-
-	.swatch-container:has(.native-color-input:focus-visible) {
-		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
-		outline: none;
-	}
-
-	.native-color-input {
+	.custom-native-input {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -135,67 +411,33 @@
 		height: 100%;
 		opacity: 0;
 		cursor: pointer;
-		margin: 0;
-		padding: 0;
 		border: none;
+		padding: 0;
+		margin: 0;
 	}
 
-	.hex-field {
-		width: calc(var(--base) * 6.5);
-	}
-
-	.presets-row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-xxs);
-		align-items: center;
-	}
-
-	.preset-button {
-		width: calc(var(--base) * 1.5);
+	.custom-hex-field {
+		flex: 1;
 		height: calc(var(--base) * 1.5);
-		min-width: calc(var(--base) * 1.5);
-		min-height: calc(var(--base) * 1.5);
 		border-radius: var(--radius-xs);
 		border: var(--border-width) solid var(--border-color);
-		cursor: pointer;
-		padding: 0;
-		margin: 0;
-		transition:
-			transform var(--transition-fast),
-			border-color var(--transition-fast),
-			box-shadow var(--transition-fast);
-	}
-
-	.preset-button:hover:not(:disabled) {
-		transform: scale(1.15);
-		border-color: var(--border-strong);
-	}
-
-	.preset-button.active {
-		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
-	}
-
-	.preset-button:focus-visible {
-		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
+		background-color: var(--bg-input);
+		color: var(--text-primary);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		padding: 0 var(--space-xs);
 		outline: none;
+		box-sizing: border-box;
 	}
 
-	.color-picker-root.disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.color-picker-root.disabled .swatch-container,
-	.color-picker-root.disabled .preset-button {
-		cursor: not-allowed;
+	.custom-hex-field:focus-visible {
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 1px var(--color-primary);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.swatch-container,
-		.preset-button {
+		.color-trigger,
+		.palette-swatch {
 			transition: none;
 		}
 	}

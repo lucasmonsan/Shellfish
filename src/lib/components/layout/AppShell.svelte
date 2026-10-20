@@ -152,4 +152,13 @@
 	.scroll-fade.is-active {
 		opacity: 1;
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.app-shell,
+		.app-shell-header,
+		.app-shell-sidebar,
+		.scroll-fade {
+			transition: none;
+		}
+	}
 </style>

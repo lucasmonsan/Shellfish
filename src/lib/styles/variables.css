@@ -2,7 +2,7 @@
 	/* ==========================================================================
 	   1. ESTÉTICA MINIMALISTA & ELEVAÇÃO SUTIL
 	   ========================================================================== */
-	--border-width: 2px;
+	--border-width: 1px;
 	--radius-none: 0px;
 	--radius-xs: 2px;
 	--radius-sm: 4px;
@@ -44,6 +44,7 @@
 	--color-primary: #b94b38;
 	--color-primary-hover: #9c3b2a;
 	--color-primary-subtle: #fbeee9;
+	--color-primary-selected: rgba(185, 75, 56, 0.16);
 	--color-primary-contrast: #fdfbf7;
 	--color-outline: #b94b38;
 
@@ -51,16 +52,18 @@
 	--color-success: #2b6140;
 	--color-success-hover: #1e462e;
 	--color-success-subtle: #eef7f2;
-	--color-warning: #e09f2d;
-	--color-warning-hover: #c88a1f;
+	--color-warning: #c2831b;
+	--color-warning-hover: #a87114;
 	--color-warning-subtle: #fef8eb;
 	--color-warning-contrast: #2d2422;
 	--color-danger: #9b2226;
 	--color-danger-hover: #7b1a1d;
 	--color-danger-subtle: #fdf0f0;
+	--color-danger-text: var(--color-danger);
 	--color-error: #9b2226;
 	--color-error-hover: #7b1a1d;
 	--color-error-subtle: #fdf0f0;
+	--color-error-text: var(--color-error);
 	--color-info: #274c77;
 	--color-info-subtle: #edf3f9;
 
@@ -78,6 +81,11 @@
 	--control-height: calc(var(--base) * 2.25 + 2 * var(--border-width));
 	--control-height-sm: calc(var(--control-height) * 0.8);
 	--control-height-lg: calc(var(--control-height) * 1.2);
+
+	/* Paddings Universais de Controles */
+	--control-padding-sm: var(--space-xs);
+	--control-padding-md: var(--space-sm);
+	--control-padding-lg: var(--space-md);
 
 	/* Escala de Espaçamento Fluida */
 	--space-none: 0px;
@@ -133,33 +141,36 @@
 
 	--text-primary: #fdfbf7;
 	--text-secondary: #b8aeaa;
-	--text-muted: #8c827e;
+	--text-muted: #918783;
 
 	--border-color: rgba(253, 251, 247, 0.22);
 	--border-subtle: rgba(253, 251, 247, 0.1);
 	--border-strong: rgba(253, 251, 247, 0.42);
 
 	--color-on-solid: #fdfbf7;
-	--color-primary: #c4543e;
-	--color-primary-hover: #d9654e;
+	--color-primary: #b94b38;
+	--color-primary-hover: #a33f2d;
 	--color-primary-subtle: #38201b;
+	--color-primary-selected: rgba(185, 75, 56, 0.22);
 	--color-primary-contrast: #fdfbf7;
 	--color-outline: #e8826b;
 
-	--color-success: #2d6a4f;
-	--color-success-hover: #3b8263;
+	--color-success: #357a5b;
+	--color-success-hover: #3e8e6b;
 	--color-success-subtle: #182b22;
 	--color-warning: #e5a93c;
 	--color-warning-hover: #f0b84d;
 	--color-warning-subtle: #332610;
 	--color-warning-contrast: #221d1c;
-	--color-danger: #b53035;
-	--color-danger-hover: #cc3b40;
+	--color-danger: #c4383e;
+	--color-danger-hover: #b03036;
 	--color-danger-subtle: #331719;
-	--color-error: #b53035;
-	--color-error-hover: #cc3b40;
+	--color-danger-text: #ff7b72;
+	--color-error: #c4383e;
+	--color-error-hover: #b03036;
 	--color-error-subtle: #331719;
-	--color-info: #3d6b99;
+	--color-error-text: #ff7b72;
+	--color-info: #3f70a1;
 	--color-info-subtle: #182533;
 
 	--backdrop-surface: rgba(34, 29, 28, 0.85);
