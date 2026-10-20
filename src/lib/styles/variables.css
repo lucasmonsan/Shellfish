@@ -71,8 +71,10 @@
 	   3. BLUR & DESEMPENHO
 	   ========================================================================== */
 	--blur-surface: blur(12px);
+	--blur-overlay: blur(4px);
 	--backdrop-surface: rgba(253, 251, 247, 0.82);
 	--backdrop-elevated: rgba(250, 246, 239, 0.88);
+	--bg-overlay: rgba(45, 36, 34, 0.45);
 
 	/* ==========================================================================
 	   4. ESCALA FLUIDA (--base), ESPAÇAMENTO E TIPOGRAFIA
@@ -175,6 +177,7 @@
 
 	--backdrop-surface: rgba(34, 29, 28, 0.85);
 	--backdrop-elevated: rgba(42, 36, 35, 0.88);
+	--bg-overlay: rgba(18, 14, 13, 0.65);
 }
 
 /* ==========================================================================
@@ -182,6 +185,7 @@
    ========================================================================== */
 :root[data-low-perf='true'] {
 	--blur-surface: none !important;
+	--blur-overlay: none !important;
 	--backdrop-surface: var(--bg-primary) !important;
 	--backdrop-elevated: var(--bg-elevated) !important;
 }
@@ -189,6 +193,7 @@
 @media (prefers-reduced-motion: reduce) {
 	:root {
 		--blur-surface: none !important;
+		--blur-overlay: none !important;
 		--backdrop-surface: var(--bg-primary) !important;
 		--backdrop-elevated: var(--bg-elevated) !important;
 	}

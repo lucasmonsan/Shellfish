@@ -10,6 +10,9 @@
 		Divider,
 		Image,
 		Popover,
+		Modal,
+		Drawer,
+		Tooltip,
 		FormField,
 		Input,
 		FormStack,
@@ -182,6 +185,9 @@
 	let demoColor = $state('#b94b38');
 	let demoDate = $state('2026-10-17');
 	let demoTime = $state('14:30');
+	let demoModalOpen = $state(false);
+	let demoDrawerOpen = $state(false);
+	let demoModalOption = $state('opt1');
 
 	async function handleFormSubmit() {
 		await new Promise((resolve) => setTimeout(resolve, 600));
@@ -775,6 +781,72 @@
 							</Card>
 						{/snippet}
 					</Popover>
+				</Row>
+			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('modal.title')}</h2>
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('modal.sample_desc')}</span>
+				<Row gap="sm" align="center">
+					<Button variant="primary" onclick={() => (demoModalOpen = true)}>
+						{i18n.t('modal.open_button')}
+					</Button>
+
+					<Modal bind:open={demoModalOpen} title={i18n.t('modal.sample_title')}>
+						<Column gap="md">
+							<p style="margin: 0;">{i18n.t('modal.sample_desc')}</p>
+							<FormField forId="demo-modal-select" label={i18n.t('forms.select_label')}>
+								<Select
+									id="demo-modal-select"
+									bind:value={demoModalOption}
+									options={[
+										{ value: 'opt1', label: 'Opção 1' },
+										{ value: 'opt2', label: 'Opção 2' },
+										{ value: 'opt3', label: 'Opção 3' }
+									]}
+									placeholder={i18n.t('forms.select_placeholder')}
+								/>
+							</FormField>
+						</Column>
+						{#snippet footer(close)}
+							<Button variant="secondary" onclick={close}>{i18n.t('common.cancel')}</Button>
+							<Button variant="primary" onclick={close}>{i18n.t('common.confirm')}</Button>
+						{/snippet}
+					</Modal>
+				</Row>
+			</Column>
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('drawer.title')}</span>
+				<Row gap="sm" align="center">
+					<Button variant="secondary" onclick={() => (demoDrawerOpen = true)}>
+						{i18n.t('drawer.open_button')}
+					</Button>
+
+					<Drawer bind:open={demoDrawerOpen} title={i18n.t('drawer.title')}>
+						<Column gap="md">
+							<p style="margin: 0;">{i18n.t('drawer.sample_desc')}</p>
+						</Column>
+						{#snippet footer(close)}
+							<Button variant="secondary" onclick={close}>{i18n.t('common.close')}</Button>
+						{/snippet}
+					</Drawer>
+				</Row>
+			</Column>
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('tooltip.title')}</span>
+				<Row gap="sm" align="center">
+					<Tooltip text={i18n.t('tooltip.sample_text')}>
+						{#snippet trigger(describedBy)}
+							<Button variant="outline" aria-describedby={describedBy}>
+								{i18n.t('tooltip.sample_button')}
+							</Button>
+						{/snippet}
+					</Tooltip>
 				</Row>
 			</Column>
 		</Card>

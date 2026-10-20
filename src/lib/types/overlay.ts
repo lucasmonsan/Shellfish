@@ -48,3 +48,101 @@ export interface PopoverProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
 	/** Additional inline styles. */
 	style?: string;
 }
+
+/** Predefined modal widths according to the fluid typography scale. */
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
+/** Props for the atomic Modal dialog primitive. */
+export interface ModalProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'children'> {
+	/** Two-way bindable open state. Default: false. */
+	open?: boolean;
+	/** Modal size preset. Default: 'md'. */
+	size?: ModalSize;
+	/** Accessible title rendered in the dialog header. */
+	title?: string;
+	/** Accessible fallback label for screen readers when title is omitted. */
+	ariaLabel?: string;
+	/** Whether pressing Escape closes the modal when it is the topmost overlay. Default: true. */
+	closeOnEscape?: boolean;
+	/** Whether clicking on the backdrop closes the modal when it is the topmost overlay. Default: true. */
+	closeOnClickOutside?: boolean;
+	/** Whether the browser/mobile Back button closes the modal without route navigation. Default: true. */
+	closeOnBack?: boolean;
+	/** Whether to display the canonical header close 'X' button. Default: true. */
+	showCloseButton?: boolean;
+	/** Custom header snippet, receiving close function. */
+	header?: Snippet<[close: () => void]>;
+	/** Main content snippet inside the modal dialog body, receiving close function. */
+	children?: Snippet<[close: () => void]>;
+	/** Custom footer snippet, receiving close function. */
+	footer?: Snippet<[close: () => void]>;
+	/** Callback invoked when the modal closes. */
+	onclose?: () => void;
+	/** Additional CSS classes for the native dialog element. */
+	class?: string;
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Drawer sliding anchor side. */
+export type DrawerPlacement = 'left' | 'right';
+
+/** Drawer width presets. */
+export type DrawerSize = 'sm' | 'md' | 'lg' | 'full';
+
+/** Props for the atomic Drawer overlay primitive. */
+export interface DrawerProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'children'> {
+	/** Two-way bindable open state. Default: false. */
+	open?: boolean;
+	/** Slide-in anchor placement. Default: 'right'. */
+	placement?: DrawerPlacement;
+	/** Drawer width size preset. Default: 'md'. */
+	size?: DrawerSize;
+	/** Accessible title rendered in the drawer header. */
+	title?: string;
+	/** Accessible fallback label for screen readers when title is omitted. */
+	ariaLabel?: string;
+	/** Whether pressing Escape closes the drawer when it is the topmost overlay. Default: true. */
+	closeOnEscape?: boolean;
+	/** Whether clicking on the backdrop closes the drawer when it is the topmost overlay. Default: true. */
+	closeOnClickOutside?: boolean;
+	/** Whether the browser/mobile Back button closes the drawer without route navigation. Default: true. */
+	closeOnBack?: boolean;
+	/** Whether to display the canonical header close 'X' button. Default: true. */
+	showCloseButton?: boolean;
+	/** Custom header snippet, receiving close function. */
+	header?: Snippet<[close: () => void]>;
+	/** Main content snippet inside the drawer body, receiving close function. */
+	children?: Snippet<[close: () => void]>;
+	/** Custom footer snippet, receiving close function. */
+	footer?: Snippet<[close: () => void]>;
+	/** Callback invoked when the drawer closes. */
+	onclose?: () => void;
+	/** Additional CSS classes for the native dialog element. */
+	class?: string;
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Directional anchor placement for tooltips. */
+export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+
+/** Props for the lightweight, non-modal Tooltip primitive. */
+export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	/** Text content displayed inside the tooltip bubble. */
+	text?: string;
+	/** Directional bubble placement relative to trigger. Default: 'top'. */
+	placement?: TooltipPlacement;
+	/** Hover/focus display delay in milliseconds. Default: 150. */
+	delay?: number;
+	/** Whether the tooltip is disabled. Default: false. */
+	disabled?: boolean;
+	/** Trigger snippet providing the unique aria-describedby ID when active. */
+	trigger?: Snippet<[ariaDescribedBy: string | undefined]>;
+	/** Fallback children snippet when trigger snippet is not used. */
+	children?: Snippet;
+	/** Additional CSS classes for the root wrapper. */
+	class?: string;
+	/** Additional inline styles. */
+	style?: string;
+}

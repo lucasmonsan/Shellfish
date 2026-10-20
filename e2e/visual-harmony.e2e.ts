@@ -22,7 +22,8 @@ test.describe('Visual & Geometric Harmony Invariants (Real Browser DOM)', () => 
 
 			const results: Record<string, number> = {};
 			for (const [name, sel] of Object.entries(selectors)) {
-				const el = document.querySelector(sel);
+				const elements = Array.from(document.querySelectorAll(sel));
+				const el = elements.find((e) => (e as HTMLElement).offsetHeight > 0) || elements[0];
 				if (el) {
 					results[name] = Number(el.getBoundingClientRect().height.toFixed(2));
 				}
@@ -65,7 +66,8 @@ test.describe('Visual & Geometric Harmony Invariants (Real Browser DOM)', () => 
 			const violations: string[] = [];
 
 			for (const [name, sel] of Object.entries(formSelectors)) {
-				const el = document.querySelector(sel);
+				const elements = Array.from(document.querySelectorAll(sel));
+				const el = elements.find((e) => (e as HTMLElement).offsetHeight > 0) || elements[0];
 				if (!el) continue;
 
 				const cs = window.getComputedStyle(el);
