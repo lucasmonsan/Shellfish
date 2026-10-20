@@ -33,7 +33,7 @@
 		font-weight: 700;
 		line-height: var(--leading-none);
 		border-radius: var(--radius-xs);
-		border: calc(var(--border-width) * 0.5) solid var(--border-color);
+		border: var(--border-width) solid var(--border-color);
 	}
 
 	span :global(svg) {

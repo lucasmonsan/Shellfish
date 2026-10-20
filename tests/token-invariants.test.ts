@@ -202,4 +202,68 @@ describe('Invariant Test: Zero Hardcoded Design Values in Library Code', () => {
 			}
 		}
 	});
+
+	it('enforces strict cohesion: zero fractional sub-pixel borders, zero ad-hoc font-size calcs, and zero non-token horizontal paddings', () => {
+		const libDir = path.resolve('src/lib/components');
+		const files = walkDir(libDir);
+		const cohesionViolations: string[] = [];
+
+		for (const file of files) {
+			const relativePath = path.relative(process.cwd(), file);
+			const content = fs.readFileSync(file, 'utf8');
+			const styleMatch = /<style[^>]*>([\s\S]*?)<\/style>/.exec(content);
+			if (!styleMatch) continue;
+
+			const beforeStyle = content.slice(0, styleMatch.index);
+			const lineOffset = beforeStyle.split('\n').length - 1;
+			const lines = styleMatch[1].split('\n');
+
+			for (let i = 0; i < lines.length; i++) {
+				const rawLine = lines[i].trim();
+				const lineNum = i + 1 + lineOffset;
+
+				if (rawLine.startsWith('/*') || rawLine.startsWith('*') || rawLine.endsWith('*/')) continue;
+				const colonIndex = rawLine.indexOf(':');
+				if (colonIndex === -1) continue;
+
+				const prop = rawLine.slice(0, colonIndex).trim().toLowerCase();
+				const value = rawLine
+					.slice(colonIndex + 1)
+					.replace(';', '')
+					.trim();
+
+				// 1. Proíbe bordas sub-pixel fracionárias: calc(var(--border-width) * 0.5)
+				if (
+					prop.startsWith('border') &&
+					/calc\(var\(--border-width\)\s*\*\s*0\.\d+\)/.test(value)
+				) {
+					cohesionViolations.push(
+						`  [BORDA FRACIONÁRIA] ${relativePath}:${lineNum} -> "${prop}: ${value}" (Use estritamente 'var(--border-width)' para espessura uniforme de 1px na suíte)`
+					);
+				}
+
+				// 2. Proíbe font-size inventado via calc(...) fora da escala --text-*
+				if (prop === 'font-size' && value.includes('calc(')) {
+					cohesionViolations.push(
+						`  [FONTE FORA DA ESCALA] ${relativePath}:${lineNum} -> "${prop}: ${value}" (Use exclusivamente tokens 'var(--text-*)' ou 'inherit')`
+					);
+				}
+
+				// 3. Proíbe paddings usando calc(var(--base) * ...) em vez de --space-* ou --control-padding-*
+				if (prop.startsWith('padding') && /calc\(var\(--base\)/.test(value)) {
+					cohesionViolations.push(
+						`  [PADDING AD-HOC] ${relativePath}:${lineNum} -> "${prop}: ${value}" (Use exclusivamente 'var(--control-padding-*)' ou 'var(--space-*)')`
+					);
+				}
+			}
+		}
+
+		if (cohesionViolations.length > 0) {
+			expect.fail(
+				`Violações de Coesão de Tokens detectadas nos componentes:\n\n${cohesionViolations.join('\n')}`
+			);
+		}
+
+		expect(cohesionViolations).toHaveLength(0);
+	});
 });

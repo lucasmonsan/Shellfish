@@ -56,12 +56,12 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border: calc(var(--border-width) * 0.5) solid var(--bg-primary);
+		border: var(--border-width) solid var(--bg-primary);
 		border-radius: var(--radius-xs);
 		background-color: var(--color-danger);
 		color: var(--color-on-solid);
 		font-family: var(--font-sans);
-		font-size: calc(var(--base) * 0.6);
+		font-size: var(--text-xxs);
 		font-weight: 700;
 		line-height: 1;
 		text-align: center;

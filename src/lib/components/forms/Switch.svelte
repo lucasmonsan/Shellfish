@@ -143,12 +143,11 @@
 
 	/* Interações */
 	.switch-root:hover:not(.disabled) .track {
-		border-color: var(--color-primary);
+		border-color: var(--border-strong);
 	}
 
 	.switch-root:has(input:focus-visible):not(.disabled) .track {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -159,7 +158,7 @@
 
 	.switch-root.checked .thumb {
 		background-color: var(--color-on-solid);
-		border-color: var(--color-on-solid);
+		border-color: var(--color-primary);
 	}
 
 	.switch-root.invalid .track {
@@ -168,7 +167,7 @@
 
 	.switch-root.invalid:has(input:focus-visible):not(.disabled) .track {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
+		outline: none;
 	}
 
 	.switch-root.invalid.checked .track {

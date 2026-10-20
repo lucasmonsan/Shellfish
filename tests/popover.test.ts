@@ -32,7 +32,7 @@ describe('Popover Overlay Primitive', () => {
 		expect(result.body).toContain('Trigger (open: false)');
 		expect(result.body).toContain('aria-haspopup="dialog"');
 		expect(result.body).toContain('aria-expanded="false"');
-		expect(result.body).not.toContain('<div class="sf-popover-trigger" aria-haspopup');
+		expect(result.body).not.toContain('<div class="popover-trigger" aria-haspopup');
 		expect(result.body).not.toContain('custom-card');
 		expect(result.body).not.toContain('Painel Popover');
 	});

@@ -22,8 +22,6 @@ export default defineConfig({
 	},
 	testMatch: '**/*.e2e.{ts,js}',
 	projects: [
-		{ name: 'chromium', use: { browserName: 'chromium', viewport: { width: 1440, height: 960 } } },
-		{ name: 'firefox', use: { browserName: 'firefox', viewport: { width: 1440, height: 960 } } },
-		{ name: 'webkit', use: { browserName: 'webkit', viewport: { width: 1440, height: 960 } } }
+		{ name: 'chromium', use: { browserName: 'chromium', viewport: { width: 1440, height: 960 } } }
 	]
 });

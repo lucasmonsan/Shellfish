@@ -123,12 +123,12 @@
 	}
 
 	.error-message {
-		color: var(--color-danger);
+		color: var(--color-danger-text, var(--color-danger));
 		font-weight: 600;
 	}
 
 	.disabled label {
-		opacity: 0.6;
+		opacity: 0.5;
 		cursor: not-allowed;
 	}
 </style>

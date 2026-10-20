@@ -120,7 +120,7 @@
 		justify-content: center;
 		box-sizing: border-box;
 		border: var(--border-width) solid var(--border-color);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-xs);
 		background-color: var(--bg-primary);
 		flex-shrink: 0;
 		transition:
@@ -130,7 +130,7 @@
 	}
 
 	.dot {
-		border-radius: var(--radius-full);
+		border-radius: 0;
 		background-color: var(--color-primary);
 		transform: scale(0);
 		transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,12 +176,11 @@
 
 	/* Interações */
 	.radio-root:hover:not(.disabled) .indicator {
-		border-color: var(--color-primary);
+		border-color: var(--border-strong);
 	}
 
 	.radio-root:has(input:focus-visible):not(.disabled) .indicator {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -199,7 +198,7 @@
 
 	.radio-root.invalid:has(input:focus-visible):not(.disabled) .indicator {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
+		outline: none;
 	}
 
 	.radio-root.invalid .dot {

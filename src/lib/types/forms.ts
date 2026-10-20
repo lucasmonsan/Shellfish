@@ -386,21 +386,21 @@ export interface TextareaProps extends HTMLTextareaAttributes {
 	style?: string;
 }
 
-/** Props for the atomic Chip / Tag primitive. */
-export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
+/** Props for the atomic Tag / Chip primitive. */
+export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 	/** Visual style variant. Default: 'secondary' */
 	variant?: Variant;
 
 	/** Visual size preset ('sm', 'md', 'lg') derived from fluid --base. Default: 'md' */
 	size?: Size;
 
-	/** Whether the chip is selected (e.g. in filter groups). Default: false */
+	/** Whether the tag is selected (e.g. in filter groups). Default: false */
 	selected?: boolean;
 
-	/** Whether the chip displays a removal button (X). Default: false */
+	/** Whether the tag displays a removal button (X). Default: false */
 	removable?: boolean;
 
-	/** Whether the chip is disabled. Default: false */
+	/** Whether the tag is disabled. Default: false */
 	disabled?: boolean;
 
 	/** Accessible label for the remove button. Default: 'Remover' */
@@ -409,10 +409,10 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
 	/** Removal callback when X or delete key is pressed. */
 	onremove?: (event: MouseEvent | KeyboardEvent) => void;
 
-	/** Click callback when chip is clicked. */
+	/** Click callback when tag is clicked. */
 	onclick?: (event: MouseEvent) => void;
 
-	/** Chip content / label. */
+	/** Tag content / label. */
 	children?: Snippet;
 
 	/** Text label if children snippet is omitted. */
@@ -422,8 +422,11 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
 	class?: string;
 }
 
-/** Props for the dynamic TagInput primitive. */
-export interface TagInputProps extends HTMLAttributes<HTMLDivElement> {
+/** Backward-compatible alias for TagProps. */
+export type ChipProps = TagProps;
+
+/** Props for the dynamic Tags / TagInput primitive. */
+export interface TagsProps extends HTMLAttributes<HTMLDivElement> {
 	/** Two-way bindable array of string tags. */
 	tags?: string[];
 
@@ -458,10 +461,19 @@ export interface TagInputProps extends HTMLAttributes<HTMLDivElement> {
 	class?: string;
 }
 
+/** Backward-compatible alias for TagsProps. */
+export type TagInputProps = TagsProps;
+
 /** Props for the FileUpload / Dropzone primitive. */
 export interface FileUploadProps extends HTMLAttributes<HTMLDivElement> {
 	/** Accessible label for the file upload dropzone. */
 	label?: string;
+
+	/** Primary prompt text inside the dropzone. */
+	primaryText?: string;
+
+	/** Secondary prompt text inside the dropzone. */
+	secondaryText?: string;
 
 	/** Two-way bindable array of selected File objects. */
 	files?: File[];
@@ -505,8 +517,14 @@ export interface ColorPickerProps extends HTMLAttributes<HTMLDivElement> {
 	/** Preset palette colors for quick 1-click selection. */
 	presets?: string[];
 
-	/** Whether to show the editable hexadecimal text input alongside the swatch. Default: true */
+	/** Whether custom color picker is allowed (opens native / hex picker). Default: false */
+	allowCustom?: boolean;
+
+	/** Whether to show the editable hexadecimal text input alongside the swatch in trigger. Default: true */
 	showHexInput?: boolean;
+
+	/** Full width trigger container (100%). Default: false */
+	block?: boolean;
 
 	/** Whether the color picker is disabled. Default: false */
 	disabled?: boolean;

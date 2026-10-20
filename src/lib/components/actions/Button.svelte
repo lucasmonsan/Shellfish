@@ -214,7 +214,7 @@
 	}
 
 	button:disabled:not(.loading) {
-		opacity: 0.45;
+		opacity: 0.5;
 		cursor: not-allowed;
 	}
 
@@ -237,21 +237,21 @@
 	.sm {
 		--btn-min-height: var(--control-height-sm);
 		font-size: var(--text-xs);
-		padding: var(--space-xxs) calc(var(--base) * 0.45);
-		gap: calc(var(--base) * 0.35);
+		padding: var(--space-xxs) var(--control-padding-sm);
+		gap: var(--space-xs);
 	}
 
 	.md {
 		--btn-min-height: var(--control-height);
 		font-size: var(--text-sm);
-		padding: var(--space-xs) var(--space-sm);
-		gap: calc(var(--base) * 0.45);
+		padding: var(--space-xs) var(--control-padding-md);
+		gap: var(--space-xs);
 	}
 
 	.lg {
 		--btn-min-height: var(--control-height-lg);
 		font-size: var(--text-md);
-		padding: calc(var(--base) * 0.35) calc(var(--base) * 0.65);
+		padding: var(--space-xs) var(--control-padding-lg);
 		gap: var(--space-sm);
 	}
 
@@ -259,10 +259,12 @@
 	.primary {
 		background-color: var(--color-primary);
 		color: var(--color-primary-contrast);
+		border-color: var(--color-primary);
 	}
 
 	.primary:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-primary-hover);
+		border-color: var(--color-primary-hover);
 	}
 
 	.secondary {
@@ -298,28 +300,34 @@
 	.danger {
 		background-color: var(--color-danger);
 		color: var(--color-on-solid);
+		border-color: var(--color-danger);
 	}
 
 	.danger:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-danger-hover);
+		border-color: var(--color-danger-hover);
 	}
 
 	.warning {
 		background-color: var(--color-warning);
 		color: var(--color-warning-contrast);
+		border-color: var(--color-warning);
 	}
 
 	.warning:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-warning-hover);
+		border-color: var(--color-warning-hover);
 	}
 
 	.success {
 		background-color: var(--color-success);
 		color: var(--color-on-solid);
+		border-color: var(--color-success);
 	}
 
 	.success:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-success-hover);
+		border-color: var(--color-success-hover);
 	}
 
 	/* Opção B: O botão reduz e se dissolve em transparência total */

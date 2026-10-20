@@ -101,12 +101,12 @@
 
 <div
 	bind:this={rootEl}
-	class="sf-popover {className}"
+	class="popover-root {className}"
 	{style}
 	style:--popover-offset="{offset}px"
 	{...restProps}
 >
-	<div class="sf-popover-trigger">
+	<div class="popover-trigger">
 		{@render trigger(toggle, open, ariaProps)}
 	</div>
 
@@ -117,7 +117,7 @@
 			role="region"
 			aria-label={ariaLabel}
 			tabindex="-1"
-			class="sf-popover-panel align-{align} placement-{resolvedPlacement} {panelClass}"
+			class="popover-panel align-{align} placement-{resolvedPlacement} {panelClass}"
 		>
 			{#if content}
 				{@render content(close)}
@@ -129,19 +129,19 @@
 </div>
 
 <style>
-	.sf-popover {
+	.popover-root {
 		position: relative;
 		display: inline-flex;
 		box-sizing: border-box;
 		vertical-align: middle;
 	}
 
-	.sf-popover-trigger {
+	.popover-trigger {
 		display: inline-flex;
 		box-sizing: border-box;
 	}
 
-	.sf-popover-panel {
+	.popover-panel {
 		position: absolute;
 		z-index: var(--layer-popover, 70);
 		box-sizing: border-box;
@@ -174,12 +174,12 @@
 	}
 
 	.placement-bottom:not(.align-center) {
-		animation: sf-popover-in-bottom var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: popover-in-bottom var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.placement-bottom.align-center {
 		transform: translateX(-50%);
-		animation: sf-popover-in-bottom-center var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: popover-in-bottom-center var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.placement-top {
@@ -188,15 +188,15 @@
 	}
 
 	.placement-top:not(.align-center) {
-		animation: sf-popover-in-top var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: popover-in-top var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.placement-top.align-center {
 		transform: translateX(-50%);
-		animation: sf-popover-in-top-center var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+		animation: popover-in-top-center var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
-	@keyframes sf-popover-in-bottom {
+	@keyframes popover-in-bottom {
 		from {
 			opacity: 0;
 			transform: translateY(-4px);
@@ -207,7 +207,7 @@
 		}
 	}
 
-	@keyframes sf-popover-in-bottom-center {
+	@keyframes popover-in-bottom-center {
 		from {
 			opacity: 0;
 			transform: translate(-50%, -4px);
@@ -218,7 +218,7 @@
 		}
 	}
 
-	@keyframes sf-popover-in-top {
+	@keyframes popover-in-top {
 		from {
 			opacity: 0;
 			transform: translateY(4px);
@@ -229,7 +229,7 @@
 		}
 	}
 
-	@keyframes sf-popover-in-top-center {
+	@keyframes popover-in-top-center {
 		from {
 			opacity: 0;
 			transform: translate(-50%, 4px);
@@ -241,8 +241,8 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.sf-popover-panel {
-			animation: none !important;
+		.popover-panel {
+			animation: none;
 		}
 	}
 </style>

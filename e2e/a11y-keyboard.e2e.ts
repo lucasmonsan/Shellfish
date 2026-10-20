@@ -121,4 +121,37 @@ test.describe('Universal WAI-ARIA APG Keyboard & Focus Engine', () => {
 			}
 		}
 	});
+
+	test('opens Select listbox and closes via Escape key', async ({ page }) => {
+		const selectTrigger = page.locator('#demo-country-select');
+		await expect(selectTrigger).toBeVisible();
+
+		await selectTrigger.focus();
+		await expect(selectTrigger).toBeFocused();
+
+		// Pressiona Enter para abrir
+		await page.keyboard.press('Enter');
+		const listbox = page.getByRole('listbox');
+		await expect(listbox).toBeVisible();
+
+		// Fecha via Escape
+		await page.keyboard.press('Escape');
+		await expect(listbox).not.toBeVisible();
+	});
+
+	test('creates and deletes tags via keyboard (Enter & Backspace)', async ({ page }) => {
+		const tagInput = page.locator('#demo-tag-input');
+		await expect(tagInput).toBeVisible();
+
+		await tagInput.focus();
+		await tagInput.fill('Acessibilidade');
+		await page.keyboard.press('Enter');
+
+		const newTag = page.getByText('Acessibilidade');
+		await expect(newTag).toBeVisible();
+
+		// Com input vazio, Backspace apaga a última tag
+		await page.keyboard.press('Backspace');
+		await expect(newTag).not.toBeVisible();
+	});
 });

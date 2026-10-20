@@ -89,7 +89,7 @@
 		font-family: var(--font-sans);
 		font-size: var(--text-sm);
 		line-height: var(--leading-none);
-		padding: 0 calc(var(--base) * 0.75);
+		padding: 0 var(--control-padding-md);
 		gap: var(--space-xs);
 		vertical-align: middle;
 		transition:
@@ -108,7 +108,7 @@
 		height: var(--control-height-sm);
 		min-height: var(--control-height-sm);
 		font-size: var(--text-xs);
-		padding: 0 var(--space-sm);
+		padding: 0 var(--control-padding-sm);
 		gap: var(--space-xs);
 	}
 
@@ -116,7 +116,7 @@
 		height: var(--control-height);
 		min-height: var(--control-height);
 		font-size: var(--text-sm);
-		padding: 0 calc(var(--base) * 0.75);
+		padding: 0 var(--control-padding-md);
 		gap: var(--space-xs);
 	}
 
@@ -124,14 +124,18 @@
 		height: var(--control-height-lg);
 		min-height: var(--control-height-lg);
 		font-size: var(--text-md);
-		padding: 0 var(--space-md);
+		padding: 0 var(--control-padding-lg);
 		gap: var(--space-sm);
+	}
+
+	/* Interações */
+	.input-container:hover:not(.disabled):not(:focus-within) {
+		border-color: var(--border-strong);
 	}
 
 	/* Estados de Foco */
 	.input-container:focus-within:not(.disabled) {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -142,7 +146,6 @@
 
 	.input-container.invalid:focus-within:not(.disabled) {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
 		outline: none;
 	}
 

@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { TagInputProps } from '$lib/types/forms.js';
-	import Chip from './Chip.svelte';
+	import type { TagsProps } from '$lib/types/forms.js';
+	import Tag from './Tag.svelte';
+	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
 	let {
 		tags = $bindable([]),
 		maxTags,
-		placeholder = 'Digite e pressione Enter...',
+		placeholder,
 		size = 'md',
 		invalid = false,
 		disabled = false,
@@ -15,7 +16,10 @@
 		ontagschange,
 		class: className = '',
 		...restProps
-	}: TagInputProps = $props();
+	}: TagsProps = $props();
+
+	const i18n = getI18n();
+	let resolvedPlaceholder = $derived(placeholder ?? i18n.t('forms.tags_placeholder'));
 
 	let inputValue = $state('');
 	let inputEl = $state<HTMLInputElement>();
@@ -71,7 +75,7 @@
 >
 	<div class="tags-wrapper">
 		{#each tags as tag, index (tag)}
-			<Chip {size} removable={!disabled} label={tag} onremove={() => removeTag(index)} />
+			<Tag {size} removable={!disabled} label={tag} onremove={() => removeTag(index)} />
 		{/each}
 
 		{#if canAddMore && !disabled}
@@ -80,8 +84,8 @@
 				{id}
 				type="text"
 				bind:value={inputValue}
-				placeholder={tags.length === 0 ? placeholder : ''}
-				aria-label={label || placeholder || 'Tags'}
+				placeholder={tags.length === 0 ? resolvedPlaceholder : ''}
+				aria-label={label || resolvedPlaceholder}
 				{disabled}
 				aria-invalid={invalid ? 'true' : undefined}
 				onkeydown={handleKeyDown}
@@ -101,9 +105,9 @@
 		border: var(--border-width) solid var(--border-color);
 		background-color: var(--bg-input);
 		color: var(--text-primary);
-		font-family: var(--font-sans);
+		font-family: var(--font-mono);
 		font-size: var(--text-sm);
-		padding: var(--space-xxs) calc(var(--base) * 0.45);
+		padding: var(--space-xs);
 		vertical-align: middle;
 		cursor: text;
 		transition:
@@ -121,19 +125,19 @@
 	.sm {
 		min-height: var(--control-height-sm);
 		font-size: var(--text-xs);
-		padding: var(--space-xxs) var(--space-xs);
+		padding: var(--space-xxs);
 	}
 
 	.md {
 		min-height: var(--control-height);
 		font-size: var(--text-sm);
-		padding: var(--space-xxs) calc(var(--base) * 0.45);
+		padding: var(--space-xs);
 	}
 
 	.lg {
 		min-height: var(--control-height-lg);
 		font-size: var(--text-md);
-		padding: var(--space-xs) var(--space-sm);
+		padding: var(--space-sm);
 	}
 
 	.tags-wrapper {
@@ -145,8 +149,8 @@
 	}
 
 	input {
-		flex: 1 1 80px;
-		min-width: 60px;
+		flex: 1 1 0px;
+		min-width: calc(var(--base) * 2);
 		border: none;
 		background: transparent;
 		color: inherit;
@@ -154,13 +158,17 @@
 		font-size: inherit;
 		line-height: var(--leading-normal);
 		outline: none;
-		padding: var(--space-xxs) var(--space-xs);
+		padding: 0 var(--space-xxs);
+	}
+
+	/* Interações */
+	.tag-input-container:hover:not(.disabled):not(:has(input:focus-visible)) {
+		border-color: var(--border-strong);
 	}
 
 	/* Foco Acessível */
 	.tag-input-container:has(input:focus-visible):not(.disabled) {
 		border-color: var(--color-primary);
-		box-shadow: 0 0 0 1px var(--color-primary);
 		outline: none;
 	}
 
@@ -171,7 +179,6 @@
 
 	.tag-input-container.invalid:has(input:focus-visible):not(.disabled) {
 		border-color: var(--color-danger);
-		box-shadow: 0 0 0 1px var(--color-danger);
 		outline: none;
 	}
 

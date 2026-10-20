@@ -19,8 +19,7 @@
 		Switch,
 		Select,
 		Textarea,
-		Chip,
-		TagInput,
+		Tags,
 		FileUpload,
 		ColorPicker,
 		DatePicker,
@@ -178,7 +177,6 @@
 	let switchDark = $state(false);
 	let selectedCountry = $state('br');
 	let bioText = $state('');
-	let selectedChipFilter = $state('svelte');
 	let demoTags = $state(['Monsan', 'Shellfish', 'Svelte5']);
 	let demoFiles = $state<File[]>([]);
 	let demoColor = $state('#b94b38');
@@ -973,12 +971,7 @@
 					</Column>
 
 					<!-- RadioGroup -->
-					<RadioGroup
-						name="plan"
-						bind:value={selectedPlan}
-						label={i18n.t('forms.radio_group_label')}
-						gap="xs"
-					>
+					<RadioGroup name="plan" bind:value={selectedPlan} gap="xs">
 						<Radio value="free" label={i18n.t('forms.radio_plan_free')} />
 						<Radio value="pro" label={i18n.t('forms.radio_plan_pro')} />
 						<Radio value="enterprise" label={i18n.t('forms.radio_plan_enterprise')} disabled />
@@ -999,11 +992,7 @@
 			<Column gap="xs">
 				<span class="label">{i18n.t('forms.select_textarea_title')}</span>
 				<Grid minItemWidth={260} gap="sm">
-					<FormField
-						label={i18n.t('forms.country_label')}
-						forId="demo-country-select"
-						helper={i18n.t('forms.country_help')}
-					>
+					<FormField label={i18n.t('forms.country_label')} forId="demo-country-select">
 						{#snippet control(ctx)}
 							<Select
 								id={ctx.id}
@@ -1020,11 +1009,7 @@
 						{/snippet}
 					</FormField>
 
-					<FormField
-						label={i18n.t('forms.bio_label')}
-						forId="demo-bio-textarea"
-						helper={i18n.t('forms.bio_help')}
-					>
+					<FormField label={i18n.t('forms.bio_label')} forId="demo-bio-textarea">
 						{#snippet control(ctx)}
 							<Textarea
 								id={ctx.id}
@@ -1042,49 +1027,15 @@
 
 			<Divider spacing="xxs" />
 
-			<!-- 6. Entradas Especializadas (Chip, TagInput, FileUpload, ColorPicker, DatePicker, TimePicker) -->
+			<!-- 6. Entradas Especializadas (Tag, Tags, FileUpload, ColorPicker, DatePicker, TimePicker) -->
 			<Column gap="xs">
 				<span class="label">{i18n.t('forms.advanced_title')}</span>
 				<Grid minItemWidth={260} gap="md">
-					<!-- Chips e Filtros -->
+					<!-- Tags -->
 					<Column gap="xs">
-						<span class="mono" style="font-size: var(--text-xs); color: var(--text-muted);"
-							>{i18n.t('forms.chips_label')}</span
-						>
-						<Row gap="xs" wrap align="center">
-							<Chip
-								variant="secondary"
-								selected={selectedChipFilter === 'ux'}
-								onclick={() => (selectedChipFilter = 'ux')}
-								label={i18n.t('forms.chip_ux')}
-							/>
-							<Chip
-								variant="secondary"
-								selected={selectedChipFilter === 'svelte'}
-								onclick={() => (selectedChipFilter = 'svelte')}
-								label={i18n.t('forms.chip_svelte')}
-							/>
-							<Chip
-								variant="secondary"
-								selected={selectedChipFilter === 'lego'}
-								onclick={() => (selectedChipFilter = 'lego')}
-								label={i18n.t('forms.chip_lego')}
-							/>
-							<Chip
-								variant="secondary"
-								selected={selectedChipFilter === 'a11y'}
-								onclick={() => (selectedChipFilter = 'a11y')}
-								label={i18n.t('forms.chip_a11y')}
-							/>
-						</Row>
-
-						<FormField
-							label={i18n.t('forms.tag_input_label')}
-							forId="demo-tag-input"
-							helper={i18n.t('forms.tag_input_help')}
-						>
+						<FormField label={i18n.t('forms.tag_input_label')} forId="demo-tag-input">
 							{#snippet control(ctx)}
-								<TagInput
+								<Tags
 									id={ctx.id}
 									label={i18n.t('forms.tag_input_label')}
 									bind:tags={demoTags}
@@ -1097,9 +1048,6 @@
 
 					<!-- FileUpload -->
 					<Column gap="xs">
-						<span class="mono" style="font-size: var(--text-xs); color: var(--text-muted);"
-							>{i18n.t('forms.upload_label')}</span
-						>
 						<FileUpload
 							bind:files={demoFiles}
 							label={i18n.t('forms.upload_label')}
@@ -1112,22 +1060,25 @@
 
 					<!-- ColorPicker, DatePicker, TimePicker -->
 					<Column gap="sm">
-						<FormField
-							label={i18n.t('forms.color_label')}
-							forId="demo-color-picker"
-							helper={i18n.t('forms.color_help')}
-						>
+						<FormField label={i18n.t('forms.color_label')} forId="demo-color-picker">
 							{#snippet control()}
-								<ColorPicker bind:value={demoColor} label={i18n.t('forms.color_label')} />
+								<Row gap="sm" align="center">
+									<ColorPicker
+										bind:value={demoColor}
+										showHexInput={true}
+										label={i18n.t('forms.color_label')}
+									/>
+									<ColorPicker
+										bind:value={demoColor}
+										showHexInput={false}
+										label={i18n.t('forms.color_label')}
+									/>
+								</Row>
 							{/snippet}
 						</FormField>
 
 						<Grid minItemWidth={120} gap="sm">
-							<FormField
-								label={i18n.t('forms.date_label')}
-								forId="demo-date-picker"
-								helper={i18n.t('forms.date_help')}
-							>
+							<FormField label={i18n.t('forms.date_label')} forId="demo-date-picker">
 								{#snippet control(ctx)}
 									<DatePicker
 										id={ctx.id}
@@ -1137,11 +1088,7 @@
 								{/snippet}
 							</FormField>
 
-							<FormField
-								label={i18n.t('forms.time_label')}
-								forId="demo-time-picker"
-								helper={i18n.t('forms.time_help')}
-							>
+							<FormField label={i18n.t('forms.time_label')} forId="demo-time-picker">
 								{#snippet control(ctx)}
 									<TimePicker
 										id={ctx.id}
