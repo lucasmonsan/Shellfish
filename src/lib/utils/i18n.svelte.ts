@@ -59,7 +59,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'popover.panel_sample_title': 'Painel Flutuante',
 		'popover.panel_sample_desc':
 			'Fecha com clique externo, tecla Escape ou ao selecionar uma ação.',
-		'modal.title': 'Modal & Diálogos',
+		'modal.title': 'Modal',
 		'modal.open_button': 'Abrir Modal',
 		'modal.sample_title': 'Confirmar Ação',
 		'modal.sample_desc':
@@ -234,7 +234,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'popover.panel_sample_title': 'Floating Panel',
 		'popover.panel_sample_desc':
 			'Closes with outside click, Escape key, or when selecting an action.',
-		'modal.title': 'Modal & Dialogs',
+		'modal.title': 'Modal',
 		'modal.open_button': 'Open Modal',
 		'modal.sample_title': 'Confirm Action',
 		'modal.sample_desc':
@@ -408,7 +408,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'popover.panel_sample_title': 'Panel Flotante',
 		'popover.panel_sample_desc':
 			'Se cierra con clic externo, tecla Escape o al seleccionar una acción.',
-		'modal.title': 'Modal y Diálogos',
+		'modal.title': 'Modal',
 		'modal.open_button': 'Abrir Modal',
 		'modal.sample_title': 'Confirmar Acción',
 		'modal.sample_desc': 'Diálogo modal semántico nativo con control jerárquico de foco y teclado.',
