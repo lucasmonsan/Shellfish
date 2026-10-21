@@ -1,26 +1,10 @@
 <script lang="ts">
+	import { MONSAN_PALETTE } from '$lib/types/tokens.js';
 	import type { ColorPickerProps } from '$lib/types/forms.js';
 	import Popover from '$lib/components/overlay/Popover.svelte';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
-	const DEFAULT_MONSAN_PRESETS = [
-		'#b94b38', // Primária Terracota
-		'#9c3b2a', // Primária Escura
-		'#d46450', // Primária Clara
-		'#2b6140', // Sucesso Floresta
-		'#3d8257', // Sucesso Claro
-		'#e09f2d', // Aviso Âmbar
-		'#f0b246', // Aviso Claro
-		'#9b2226', // Perigo Carmim
-		'#b82c30', // Perigo Claro
-		'#2b4c7e', // Info Ardósia
-		'#3e68a3', // Info Claro
-		'#2d2422', // Neutro Escuro (Carvão)
-		'#5e544f', // Neutro Médio
-		'#8a807a', // Neutro Quente
-		'#d8d2c8', // Borda Neutra
-		'#faf6ef' // Fundo Claro (Creme)
-	];
+	const DEFAULT_MONSAN_PRESETS: string[] = MONSAN_PALETTE.map((color) => color.hex);
 
 	let {
 		value = $bindable('#b94b38'),
@@ -124,7 +108,7 @@
 								<svg
 									viewBox="0 0 16 16"
 									fill="none"
-									stroke={isLight ? '#2d2422' : '#ffffff'}
+									stroke={isLight ? '#221d1c' : '#fdfbf7'}
 									stroke-width="2.5"
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -160,7 +144,7 @@
 								bind:value
 								maxlength={7}
 								class="custom-hex-field"
-								placeholder="#000000"
+								placeholder="#b94b38"
 								aria-label={i18n.t('forms.color_hex_code')}
 							/>
 						</div>
@@ -335,7 +319,7 @@
 
 	.swatches-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		gap: var(--space-xs);
 	}
 
