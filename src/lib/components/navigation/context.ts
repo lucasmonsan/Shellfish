@@ -1,4 +1,4 @@
-export const TABS_CONTEXT_KEY = Symbol('tabs-context');
+export const TABS_CONTEXT_KEY = Symbol.for('shellfish:tabs:context');
 
 export interface TabsContext {
 	getValue: () => string | undefined;

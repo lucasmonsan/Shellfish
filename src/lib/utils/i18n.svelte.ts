@@ -191,7 +191,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.color_label': 'Cor de Destaque',
 		'forms.color_help': 'Selecione uma cor para personalizar a identidade',
 		'forms.color_palette_title': 'Paleta Monsan',
-		'palette.title': 'Paleta Mineral Monsan',
+		'palette.title': 'Cores',
 		'palette.description':
 			'Sistema cromático mineral e orgânico com 10 famílias calibradas para alto contraste.',
 		'palette.terracotta': 'Terracota',
@@ -412,7 +412,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.color_label': 'Accent Color',
 		'forms.color_help': 'Pick a color to customize branding',
 		'forms.color_palette_title': 'Monsan Palette',
-		'palette.title': 'Monsan Mineral Palette',
+		'palette.title': 'Colors',
 		'palette.description':
 			'Mineral and organic chromatic system with 10 high-contrast calibrated families.',
 		'palette.terracotta': 'Terracotta',
@@ -633,7 +633,7 @@ export const translations: Record<Locale, Record<string, string>> = {
 		'forms.color_label': 'Color de Acento',
 		'forms.color_help': 'Seleccione un color para personalizar la identidad',
 		'forms.color_palette_title': 'Paleta Monsan',
-		'palette.title': 'Paleta Mineral Monsan',
+		'palette.title': 'Colores',
 		'palette.description':
 			'Sistema cromático mineral y orgánico con 10 familias calibradas para alto contraste.',
 		'palette.terracotta': 'Terracota',

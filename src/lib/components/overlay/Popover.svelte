@@ -22,6 +22,7 @@
 	let panelEl = $state<HTMLDivElement>();
 	let autoPlacement = $state<'bottom' | 'top'>('bottom');
 	let resolvedPlacement = $derived(placement !== 'auto' ? placement : autoPlacement);
+	let panelStyle = $state('');
 	const panelId = $props.id();
 
 	let ariaProps = $derived<PopoverAriaProps>({
@@ -41,21 +42,42 @@
 	}
 
 	function updatePlacement() {
-		if (placement !== 'auto') return;
+		if (!rootEl || typeof window === 'undefined') return;
 
-		if (rootEl && typeof window !== 'undefined') {
-			const rect = rootEl.getBoundingClientRect();
-			const viewportHeight = window.innerHeight;
-			const spaceBelow = viewportHeight - rect.bottom;
-			const spaceAbove = rect.top;
-			const estimatedPanelHeight = panelEl ? panelEl.offsetHeight : 160;
+		const rect = rootEl.getBoundingClientRect();
+		const viewportHeight = window.innerHeight;
+		const viewportWidth = window.innerWidth;
+		const spaceBelow = viewportHeight - rect.bottom;
+		const spaceAbove = rect.top;
+		const estimatedPanelHeight = panelEl ? panelEl.offsetHeight : 160;
 
+		if (placement === 'auto') {
 			if (spaceBelow < estimatedPanelHeight && spaceAbove > spaceBelow) {
 				autoPlacement = 'top';
 			} else {
 				autoPlacement = 'bottom';
 			}
 		}
+
+		const isTop = (placement !== 'auto' ? placement : autoPlacement) === 'top';
+
+		let horizontalCss: string;
+		if (align === 'start') {
+			horizontalCss = `left: ${rect.left}px; right: auto;`;
+		} else if (align === 'end') {
+			horizontalCss = `right: ${viewportWidth - rect.right}px; left: auto;`;
+		} else {
+			horizontalCss = `left: ${rect.left + rect.width / 2}px; right: auto;`;
+		}
+
+		let verticalCss: string;
+		if (isTop) {
+			verticalCss = `bottom: ${viewportHeight - rect.top + offset}px; top: auto;`;
+		} else {
+			verticalCss = `top: ${rect.bottom + offset}px; bottom: auto;`;
+		}
+
+		panelStyle = `${horizontalCss} ${verticalCss}`;
 	}
 
 	$effect(() => {
@@ -84,12 +106,12 @@
 		}
 
 		window.addEventListener('resize', onViewportChange, { passive: true });
-		window.addEventListener('scroll', onViewportChange, { passive: true });
+		window.addEventListener('scroll', onViewportChange, { passive: true, capture: true });
 
 		return () => {
 			overlayStack.unregister(panelId);
 			window.removeEventListener('resize', onViewportChange);
-			window.removeEventListener('scroll', onViewportChange);
+			window.removeEventListener('scroll', onViewportChange, true);
 		};
 	});
 </script>
@@ -112,6 +134,7 @@
 			role="region"
 			aria-label={ariaLabel}
 			tabindex="-1"
+			style={panelStyle}
 			class="popover-panel align-{align} placement-{resolvedPlacement} {panelClass}"
 		>
 			{#if content}
@@ -137,7 +160,7 @@
 	}
 
 	.popover-panel {
-		position: absolute;
+		position: fixed;
 		z-index: var(--layer-popover, 70);
 		box-sizing: border-box;
 		max-width: calc(100vw - var(--space-md) * 2);
@@ -146,40 +169,17 @@
 		outline: none;
 	}
 
-	/* Alinhamentos Horizontais */
-	.align-start {
-		left: 0;
-		right: auto;
-	}
-
-	.align-end {
-		right: 0;
-		left: auto;
-	}
-
-	.align-center {
-		left: 50%;
-		right: auto;
+	.popover-panel.align-center {
+		transform: translateX(-50%);
 	}
 
 	/* Posicionamento Vertical & Animações */
-	.placement-bottom {
-		top: calc(100% + var(--popover-offset, 4px));
-		bottom: auto;
-	}
-
 	.placement-bottom:not(.align-center) {
 		animation: popover-in-bottom var(--duration-fast) var(--ease-decelerate);
 	}
 
 	.placement-bottom.align-center {
-		transform: translateX(-50%);
 		animation: popover-in-bottom-center var(--duration-fast) var(--ease-decelerate);
-	}
-
-	.placement-top {
-		bottom: calc(100% + var(--popover-offset, 4px));
-		top: auto;
 	}
 
 	.placement-top:not(.align-center) {
@@ -187,7 +187,6 @@
 	}
 
 	.placement-top.align-center {
-		transform: translateX(-50%);
 		animation: popover-in-top-center var(--duration-fast) var(--ease-decelerate);
 	}
 

@@ -39,6 +39,7 @@ export type PaletteColorId =
 export interface PaletteColorDef {
 	id: PaletteColorId;
 	hex: string;
+	subtleHex: string;
 	nameKey: string;
 }
 
@@ -47,16 +48,16 @@ export interface PaletteColorDef {
  * Base unificada para Shellfish e produtos da suíte (ex: Whallet).
  */
 export const MONSAN_PALETTE: readonly PaletteColorDef[] = [
-	{ id: 'terracotta', hex: '#b94b38', nameKey: 'palette.terracotta' },
-	{ id: 'amber', hex: '#c2831b', nameKey: 'palette.amber' },
-	{ id: 'olive', hex: '#5b6e2d', nameKey: 'palette.olive' },
-	{ id: 'emerald', hex: '#236f4c', nameKey: 'palette.emerald' },
-	{ id: 'celadon', hex: '#1d767d', nameKey: 'palette.celadon' },
-	{ id: 'cobalt', hex: '#295594', nameKey: 'palette.cobalt' },
-	{ id: 'indigo', hex: '#4e449c', nameKey: 'palette.indigo' },
-	{ id: 'plum', hex: '#823877', nameKey: 'palette.plum' },
-	{ id: 'crimson', hex: '#a82b3d', nameKey: 'palette.crimson' },
-	{ id: 'slate', hex: '#47535e', nameKey: 'palette.slate' }
+	{ id: 'terracotta', hex: '#b94b38', subtleHex: '#fbeee9', nameKey: 'palette.terracotta' },
+	{ id: 'amber', hex: '#c2831b', subtleHex: '#fef8eb', nameKey: 'palette.amber' },
+	{ id: 'olive', hex: '#5b6e2d', subtleHex: '#f2f6e9', nameKey: 'palette.olive' },
+	{ id: 'emerald', hex: '#236f4c', subtleHex: '#edf7f1', nameKey: 'palette.emerald' },
+	{ id: 'celadon', hex: '#1d767d', subtleHex: '#ecf7f7', nameKey: 'palette.celadon' },
+	{ id: 'cobalt', hex: '#295594', subtleHex: '#eff4fb', nameKey: 'palette.cobalt' },
+	{ id: 'indigo', hex: '#4e449c', subtleHex: '#f2f1fa', nameKey: 'palette.indigo' },
+	{ id: 'plum', hex: '#823877', subtleHex: '#f9eff7', nameKey: 'palette.plum' },
+	{ id: 'crimson', hex: '#a82b3d', subtleHex: '#fdefef', nameKey: 'palette.crimson' },
+	{ id: 'slate', hex: '#47535e', subtleHex: '#edf1f3', nameKey: 'palette.slate' }
 ] as const;
 
 /** Declared palette color token. */

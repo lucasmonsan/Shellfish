@@ -37,16 +37,16 @@
 
 <style>
 	.tabs-root {
-		display: flex;
+		display: grid;
 		width: 100%;
 		gap: var(--space-sm);
 	}
 
 	.tabs-root.horizontal {
-		flex-direction: column;
+		grid-template-columns: 100%;
 	}
 
 	.tabs-root.vertical {
-		flex-direction: row;
+		grid-template-columns: auto 1fr;
 	}
 </style>

@@ -92,10 +92,14 @@
 	}
 
 	.tablist.horizontal {
+		grid-column: 1;
+		grid-row: 1;
 		flex-direction: row;
 	}
 
 	.tablist.vertical {
+		grid-column: 1;
+		grid-row: 1;
 		flex-direction: column;
 		align-items: stretch;
 	}
