@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import type { ModalProps } from '$lib/types/overlay.js';
 	import { overlayStack } from '$lib/utils/overlay.svelte.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
@@ -29,16 +30,49 @@
 
 	let dialogEl = $state<HTMLDialogElement>();
 	let previousActiveElement = $state<HTMLElement | null>(null);
+	let isClosing = $state(false);
+	let closeTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
 	function close() {
-		open = false;
-		onclose?.();
+		if (isClosing) return;
+
+		const prefersReducedMotion =
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		if (prefersReducedMotion || !dialogEl?.open) {
+			open = false;
+			overlayStack.unregister(modalId);
+			if (dialogEl?.open) {
+				dialogEl.close();
+			}
+			onclose?.();
+			return;
+		}
+
+		isClosing = true;
+		overlayStack.unregister(modalId);
+
+		closeTimeoutId = setTimeout(() => {
+			isClosing = false;
+			open = false;
+			if (dialogEl?.open) {
+				dialogEl.close();
+			}
+			onclose?.();
+			closeTimeoutId = null;
+		}, 250);
 	}
 
 	$effect(() => {
 		if (typeof window === 'undefined' || !dialogEl) return;
 
 		if (open) {
+			if (closeTimeoutId) {
+				clearTimeout(closeTimeoutId);
+				closeTimeoutId = null;
+			}
+			isClosing = false;
 			previousActiveElement = document.activeElement as HTMLElement | null;
 
 			if (!dialogEl.open) {
@@ -56,15 +90,20 @@
 				restoreFocusEl: previousActiveElement
 			});
 		} else {
-			overlayStack.unregister(modalId);
-			if (dialogEl.open) {
-				dialogEl.close();
+			const currentlyClosing = untrack(() => isClosing);
+			if (dialogEl.open && !currentlyClosing) {
+				close();
 			}
 		}
 
 		return () => {
+			if (closeTimeoutId) {
+				clearTimeout(closeTimeoutId);
+				closeTimeoutId = null;
+			}
 			overlayStack.unregister(modalId);
-			if (dialogEl?.open) {
+			const currentlyClosing = untrack(() => isClosing);
+			if (dialogEl?.open && !currentlyClosing) {
 				dialogEl.close();
 			}
 		};
@@ -94,14 +133,9 @@
 	}
 
 	function handleCancel(e: Event) {
-		// Cancela o fechamento nativo se houver um overlay interno no topo (ex: Select)
-		if (!overlayStack.isTop(modalId)) {
-			e.preventDefault();
-			return;
-		}
+		e.preventDefault();
 
-		if (!closeOnEscape) {
-			e.preventDefault();
+		if (!overlayStack.isTop(modalId) || !closeOnEscape) {
 			return;
 		}
 
@@ -113,6 +147,7 @@
 	bind:this={dialogEl}
 	id={modalId}
 	class="modal-dialog {size} {className}"
+	class:is-closing={isClosing}
 	aria-labelledby={title ? titleId : undefined}
 	aria-label={!title ? ariaLabel || i18n.t('document.title') : undefined}
 	onclick={handleDialogClick}
@@ -175,14 +210,25 @@
 		backdrop-filter: var(--blur-overlay);
 	}
 
-	.modal-dialog[open]::backdrop {
+	.modal-dialog[open]:not(.is-closing)::backdrop {
 		animation: backdrop-in var(--duration-base) var(--ease-standard);
 	}
 
-	.modal-dialog[open] {
+	.modal-dialog[open].is-closing::backdrop {
+		animation: backdrop-out var(--duration-base) var(--ease-standard) forwards;
+	}
+
+	.modal-dialog[open]:not(.is-closing) {
 		display: flex;
 		flex-direction: column;
 		animation: modal-in var(--duration-base) var(--ease-decelerate);
+	}
+
+	.modal-dialog[open].is-closing {
+		display: flex;
+		flex-direction: column;
+		animation: modal-out var(--duration-base) var(--ease-standard) forwards;
+		pointer-events: none;
 	}
 
 	/* Larguras padronizadas baseadas na escala fluida */
@@ -316,6 +362,17 @@
 		}
 	}
 
+	@keyframes modal-out {
+		from {
+			opacity: 1;
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(0.97);
+		}
+	}
+
 	@keyframes backdrop-in {
 		from {
 			opacity: 0;
@@ -325,12 +382,23 @@
 		}
 	}
 
+	@keyframes backdrop-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.modal-dialog[open] {
+		.modal-dialog[open],
+		.modal-dialog[open].is-closing {
 			animation: none;
 		}
 
-		.modal-dialog[open]::backdrop {
+		.modal-dialog[open]::backdrop,
+		.modal-dialog[open].is-closing::backdrop {
 			animation: none;
 		}
 	}

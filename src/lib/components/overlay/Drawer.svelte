@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import type { DrawerProps } from '$lib/types/overlay.js';
 	import { overlayStack } from '$lib/utils/overlay.svelte.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
@@ -30,16 +31,49 @@
 
 	let dialogEl = $state<HTMLDialogElement>();
 	let previousActiveElement = $state<HTMLElement | null>(null);
+	let isClosing = $state(false);
+	let closeTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
 	function close() {
-		open = false;
-		onclose?.();
+		if (isClosing) return;
+
+		const prefersReducedMotion =
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		if (prefersReducedMotion || !dialogEl?.open) {
+			open = false;
+			overlayStack.unregister(drawerId);
+			if (dialogEl?.open) {
+				dialogEl.close();
+			}
+			onclose?.();
+			return;
+		}
+
+		isClosing = true;
+		overlayStack.unregister(drawerId);
+
+		closeTimeoutId = setTimeout(() => {
+			isClosing = false;
+			open = false;
+			if (dialogEl?.open) {
+				dialogEl.close();
+			}
+			onclose?.();
+			closeTimeoutId = null;
+		}, 250);
 	}
 
 	$effect(() => {
 		if (typeof window === 'undefined' || !dialogEl) return;
 
 		if (open) {
+			if (closeTimeoutId) {
+				clearTimeout(closeTimeoutId);
+				closeTimeoutId = null;
+			}
+			isClosing = false;
 			previousActiveElement = document.activeElement as HTMLElement | null;
 
 			if (!dialogEl.open) {
@@ -57,15 +91,20 @@
 				restoreFocusEl: previousActiveElement
 			});
 		} else {
-			overlayStack.unregister(drawerId);
-			if (dialogEl.open) {
-				dialogEl.close();
+			const currentlyClosing = untrack(() => isClosing);
+			if (dialogEl.open && !currentlyClosing) {
+				close();
 			}
 		}
 
 		return () => {
+			if (closeTimeoutId) {
+				clearTimeout(closeTimeoutId);
+				closeTimeoutId = null;
+			}
 			overlayStack.unregister(drawerId);
-			if (dialogEl?.open) {
+			const currentlyClosing = untrack(() => isClosing);
+			if (dialogEl?.open && !currentlyClosing) {
 				dialogEl.close();
 			}
 		};
@@ -94,13 +133,9 @@
 	}
 
 	function handleCancel(e: Event) {
-		if (!overlayStack.isTop(drawerId)) {
-			e.preventDefault();
-			return;
-		}
+		e.preventDefault();
 
-		if (!closeOnEscape) {
-			e.preventDefault();
+		if (!overlayStack.isTop(drawerId) || !closeOnEscape) {
 			return;
 		}
 
@@ -112,6 +147,7 @@
 	bind:this={dialogEl}
 	id={drawerId}
 	class="drawer-dialog placement-{placement} {size} {className}"
+	class:is-closing={isClosing}
 	aria-labelledby={title ? titleId : undefined}
 	aria-label={!title ? ariaLabel || i18n.t('document.title') : undefined}
 	onclick={handleDialogClick}
@@ -177,8 +213,12 @@
 		backdrop-filter: var(--blur-overlay);
 	}
 
-	.drawer-dialog[open]::backdrop {
+	.drawer-dialog[open]:not(.is-closing)::backdrop {
 		animation: backdrop-in var(--duration-base) var(--ease-standard);
+	}
+
+	.drawer-dialog[open].is-closing::backdrop {
+		animation: backdrop-out var(--duration-base) var(--ease-standard) forwards;
 	}
 
 	.drawer-dialog[open] {
@@ -186,19 +226,37 @@
 		flex-direction: column;
 	}
 
+	.drawer-dialog[open].is-closing {
+		pointer-events: none;
+	}
+
 	/* Posicionamento Lateral */
-	.placement-right {
+	.placement-right:not(.is-closing) {
 		right: 0;
 		left: auto;
 		border-left: var(--border-width) solid var(--border-color);
 		animation: drawer-in-right var(--duration-base) var(--ease-decelerate);
 	}
 
-	.placement-left {
+	.placement-right.is-closing {
+		right: 0;
+		left: auto;
+		border-left: var(--border-width) solid var(--border-color);
+		animation: drawer-out-right var(--duration-base) var(--ease-standard) forwards;
+	}
+
+	.placement-left:not(.is-closing) {
 		left: 0;
 		right: auto;
 		border-right: var(--border-width) solid var(--border-color);
 		animation: drawer-in-left var(--duration-base) var(--ease-decelerate);
+	}
+
+	.placement-left.is-closing {
+		left: 0;
+		right: auto;
+		border-right: var(--border-width) solid var(--border-color);
+		animation: drawer-out-left var(--duration-base) var(--ease-standard) forwards;
 	}
 
 	/* Larguras padronizadas baseadas na escala fluida */
@@ -320,12 +378,30 @@
 		}
 	}
 
+	@keyframes drawer-out-right {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(100%);
+		}
+	}
+
 	@keyframes drawer-in-left {
 		from {
 			transform: translateX(-100%);
 		}
 		to {
 			transform: translateX(0);
+		}
+	}
+
+	@keyframes drawer-out-left {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-100%);
 		}
 	}
 
@@ -338,13 +414,25 @@
 		}
 	}
 
+	@keyframes backdrop-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.placement-right,
-		.placement-left {
+		.placement-left,
+		.placement-right.is-closing,
+		.placement-left.is-closing {
 			animation: none;
 		}
 
-		.drawer-dialog[open]::backdrop {
+		.drawer-dialog[open]::backdrop,
+		.drawer-dialog[open].is-closing::backdrop {
 			animation: none;
 		}
 	}
