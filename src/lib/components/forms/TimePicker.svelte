@@ -5,7 +5,7 @@
 		value = $bindable(''),
 		size = 'md',
 		invalid = false,
-		block = true,
+		block = false,
 		disabled = false,
 		min,
 		max,
@@ -60,8 +60,10 @@
 		font-size: var(--text-sm);
 		line-height: var(--leading-none);
 		vertical-align: middle;
-		width: calc(5ch + var(--control-padding-md) * 2 + var(--base) * 1.5);
-		max-width: calc(5ch + var(--control-padding-md) * 2 + var(--base) * 1.5);
+		width: calc(
+			7ch + var(--control-padding-md) + var(--space-xs) + var(--base) * 1.25 + 2 *
+				var(--border-width)
+		);
 		transition:
 			border-color var(--transition-fast),
 			background-color var(--transition-fast),
@@ -69,8 +71,7 @@
 	}
 
 	.timepicker-container.block {
-		width: fit-content;
-		max-width: calc(5ch + var(--control-padding-md) * 2 + var(--base) * 1.5);
+		width: 100%;
 		display: flex;
 	}
 
@@ -79,24 +80,36 @@
 		height: var(--control-height-sm);
 		min-height: var(--control-height-sm);
 		font-size: var(--text-xs);
-		width: calc(5ch + var(--control-padding-sm) * 2 + var(--base) * 1.5);
-		max-width: calc(5ch + var(--control-padding-sm) * 2 + var(--base) * 1.5);
+		width: calc(
+			7ch + var(--control-padding-sm) + var(--space-xxs) + var(--base) * 1.25 + 2 *
+				var(--border-width)
+		);
 	}
 
 	.md {
 		height: var(--control-height);
 		min-height: var(--control-height);
 		font-size: var(--text-sm);
-		width: calc(5ch + var(--control-padding-md) * 2 + var(--base) * 1.5);
-		max-width: calc(5ch + var(--control-padding-md) * 2 + var(--base) * 1.5);
+		width: calc(
+			7ch + var(--control-padding-md) + var(--space-xs) + var(--base) * 1.25 + 2 *
+				var(--border-width)
+		);
 	}
 
 	.lg {
 		height: var(--control-height-lg);
 		min-height: var(--control-height-lg);
 		font-size: var(--text-md);
-		width: calc(5ch + var(--control-padding-lg) * 2 + var(--base) * 1.5);
-		max-width: calc(5ch + var(--control-padding-lg) * 2 + var(--base) * 1.5);
+		width: calc(
+			7ch + var(--control-padding-lg) + var(--space-sm) + var(--base) * 1.25 + 2 *
+				var(--border-width)
+		);
+	}
+
+	.timepicker-container.block.sm,
+	.timepicker-container.block.md,
+	.timepicker-container.block.lg {
+		width: 100%;
 	}
 
 	input[type='time'] {
@@ -109,7 +122,7 @@
 		font-family: inherit;
 		font-size: inherit;
 		line-height: inherit;
-		padding: 0 var(--control-padding-md);
+		padding: 0 var(--space-xs) 0 var(--control-padding-md);
 		border-radius: inherit;
 		box-sizing: border-box;
 		outline: none;
@@ -117,11 +130,11 @@
 	}
 
 	.sm input[type='time'] {
-		padding: 0 var(--control-padding-sm);
+		padding: 0 var(--space-xxs) 0 var(--control-padding-sm);
 	}
 
 	.lg input[type='time'] {
-		padding: 0 var(--control-padding-lg);
+		padding: 0 var(--space-sm) 0 var(--control-padding-lg);
 	}
 
 	/* Normalização suave do indicador nativo WebKit */

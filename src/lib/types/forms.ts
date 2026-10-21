@@ -550,7 +550,7 @@ export interface DatePickerProps extends Omit<HTMLInputAttributes, 'size' | 'typ
 	/** Whether the datepicker is in an invalid/error state. Default: false */
 	invalid?: boolean;
 
-	/** Full width container (100%). Default: true */
+	/** Full width container (100%). Default: false */
 	block?: boolean;
 
 	/** Additional CSS classes. */
@@ -571,7 +571,7 @@ export interface TimePickerProps extends Omit<HTMLInputAttributes, 'size' | 'typ
 	/** Whether the timepicker is in an invalid/error state. Default: false */
 	invalid?: boolean;
 
-	/** Full width container (100%). Default: true */
+	/** Full width container (100%). Default: false */
 	block?: boolean;
 
 	/** Additional CSS classes. */
