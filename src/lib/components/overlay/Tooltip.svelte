@@ -14,30 +14,49 @@
 	}: TooltipProps = $props();
 
 	const tooltipId = $props.id();
+	let mounted = $state(false);
 	let visible = $state(false);
 	let timeoutId = $state<ReturnType<typeof setTimeout> | null>(null);
+	let rafId: number | null = null;
+	let unmountTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
 	function show() {
 		if (disabled || !text) return;
 		clear();
+		if (unmountTimeoutId) {
+			clearTimeout(unmountTimeoutId);
+			unmountTimeoutId = null;
+		}
+		mounted = true;
 		if (delay > 0) {
 			timeoutId = setTimeout(() => {
 				visible = true;
 			}, delay);
 		} else {
-			visible = true;
+			rafId = requestAnimationFrame(() => {
+				visible = true;
+				rafId = null;
+			});
 		}
 	}
 
 	function hide() {
 		clear();
 		visible = false;
+		unmountTimeoutId = setTimeout(() => {
+			mounted = false;
+			unmountTimeoutId = null;
+		}, 200);
 	}
 
 	function clear() {
 		if (timeoutId !== null) {
 			clearTimeout(timeoutId);
 			timeoutId = null;
+		}
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
 		}
 	}
 
@@ -67,6 +86,9 @@
 	$effect(() => {
 		return () => {
 			clear();
+			if (unmountTimeoutId) {
+				clearTimeout(unmountTimeoutId);
+			}
 		};
 	});
 </script>
@@ -87,8 +109,8 @@
 		{@render children(visible ? tooltipId : undefined)}
 	{/if}
 
-	{#if visible && text}
-		<div id={tooltipId} role="tooltip" class="tooltip-bubble placement-{placement}">
+	{#if mounted && text}
+		<div id={tooltipId} role="tooltip" class="tooltip-bubble placement-{placement}" class:visible>
 			{text}
 		</div>
 	{/if}
@@ -105,6 +127,11 @@
 	.tooltip-bubble {
 		position: absolute;
 		z-index: var(--layer-toast, 110);
+		width: max-content;
+		max-width: min(calc(var(--base) * 16), calc(100vw - var(--space-xl)));
+		white-space: normal;
+		text-align: center;
+		text-wrap: balance;
 		padding: var(--space-xs, 4px) var(--space-sm, 8px);
 		border: var(--border-width, 1px) solid var(--border-color);
 		border-radius: var(--radius-xs, 2px);
@@ -113,11 +140,19 @@
 		font-family: var(--font-sans);
 		font-size: var(--text-xs, 0.75rem);
 		font-weight: 500;
-		line-height: 1.25;
-		white-space: nowrap;
+		line-height: 1.3;
 		box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
 		box-sizing: border-box;
-		animation: tooltip-in var(--duration-fast, 125ms) var(--ease-decelerate, ease-out);
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity var(--duration-fast, 125ms) var(--ease-standard),
+			transform var(--duration-fast, 125ms) var(--ease-standard);
+	}
+
+	.tooltip-bubble.visible {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	/* Zona de ponte invisível para hover contínuo (WCAG 2.1 SC 1.4.13) */
@@ -128,45 +163,64 @@
 		z-index: -1;
 	}
 
-	/* Posicionamentos */
+	/* Posicionamentos com elevação suave */
 	.placement-top {
 		bottom: calc(100% + var(--space-xs, 4px));
 		left: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%, 4px) scale(0.96);
+	}
+
+	.placement-top.visible {
+		transform: translate(-50%, 0) scale(1);
 	}
 
 	.placement-bottom {
 		top: calc(100% + var(--space-xs, 4px));
 		left: 50%;
-		transform: translateX(-50%);
+		transform: translate(-50%, -4px) scale(0.96);
+	}
+
+	.placement-bottom.visible {
+		transform: translate(-50%, 0) scale(1);
 	}
 
 	.placement-left {
 		right: calc(100% + var(--space-xs, 4px));
 		top: 50%;
-		transform: translateY(-50%);
+		transform: translate(4px, -50%) scale(0.96);
+	}
+
+	.placement-left.visible {
+		transform: translate(0, -50%) scale(1);
 	}
 
 	.placement-right {
 		left: calc(100% + var(--space-xs, 4px));
 		top: 50%;
-		transform: translateY(-50%);
+		transform: translate(-4px, -50%) scale(0.96);
 	}
 
-	@keyframes tooltip-in {
-		from {
-			opacity: 0;
-			transform: scale(0.95);
-		}
-		to {
-			opacity: 1;
-			transform: scale(1);
-		}
+	.placement-right.visible {
+		transform: translate(0, -50%) scale(1);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.tooltip-bubble {
-			animation: none;
+			transition: none;
+		}
+
+		.placement-top,
+		.placement-top.visible,
+		.placement-bottom,
+		.placement-bottom.visible {
+			transform: translate(-50%, 0);
+		}
+
+		.placement-left,
+		.placement-left.visible,
+		.placement-right,
+		.placement-right.visible {
+			transform: translate(0, -50%);
 		}
 	}
 </style>
