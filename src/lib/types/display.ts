@@ -88,3 +88,64 @@ export interface ImageProps extends HTMLAttributes<HTMLDivElement> {
 	/** Callback when image fails to load. */
 	onerror?: (event: Event) => void;
 }
+
+/** Alignment options for table cells. */
+export type TableCellAlign = 'left' | 'center' | 'right' | 'numeric';
+
+/** Props for the semantic Table primitive. */
+export interface TableProps extends HTMLAttributes<HTMLTableElement> {
+	/** Table content snippet. */
+	children?: Snippet;
+	/** Whether the table occupies 100% width of its container. Default: true. */
+	fullWidth?: boolean;
+	/** Whether alternating rows have subtle zebra backgrounds. Default: false. */
+	striped?: boolean;
+	/** Whether cells have compact padding. Default: false. */
+	dense?: boolean;
+	/** Whether rows highlight on hover. Default: true. */
+	hoverable?: boolean;
+	/** Accessible caption for screen readers. */
+	caption?: string;
+	/** Additional CSS classes. */
+	class?: string;
+}
+
+/** Props for TableHeader (thead). */
+export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {
+	children?: Snippet;
+	class?: string;
+}
+
+/** Props for TableBody (tbody). */
+export interface TableBodyProps extends HTMLAttributes<HTMLTableSectionElement> {
+	children?: Snippet;
+	class?: string;
+}
+
+/** Props for TableRow (tr). */
+export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
+	children?: Snippet;
+	/** Whether this row is currently selected/highlighted. Default: false. */
+	selected?: boolean;
+	class?: string;
+}
+
+/** Props for TableCell (td or th). */
+export interface TableCellProps extends HTMLAttributes<HTMLTableCellElement> {
+	children?: Snippet;
+	/** Renders as <th> when true, <td> when false. Default: false. */
+	asHead?: boolean;
+	/** Content alignment. 'numeric' aligns right and uses monospace font. Default: 'left'. */
+	align?: TableCellAlign;
+	/** Column span. */
+	colspan?: number;
+	/** Row span. */
+	rowspan?: number;
+	class?: string;
+}
+
+/** Props for TableFooter (tfoot). */
+export interface TableFooterProps extends HTMLAttributes<HTMLTableSectionElement> {
+	children?: Snippet;
+	class?: string;
+}

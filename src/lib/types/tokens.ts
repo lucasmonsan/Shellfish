@@ -6,7 +6,15 @@ export type Radius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 /** Shared action variant. */
 export type Variant =
-	'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'error' | 'warning' | 'success';
+	| 'primary'
+	| 'secondary'
+	| 'outline'
+	| 'ghost'
+	| 'danger'
+	| 'error'
+	| 'warning'
+	| 'success'
+	| 'info';
 
 /** Shared control height. */
 export type Size = 'sm' | 'md' | 'lg';

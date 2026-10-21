@@ -33,9 +33,26 @@ describe('Public API Contract Snapshot Invariant', () => {
 			'Card',
 			'Divider',
 			'Image',
+			'Table',
+			'TableHeader',
+			'TableBody',
+			'TableRow',
+			'TableCell',
+			'TableFooter',
 
 			// Feedback
 			'Spinner',
+			'Progress',
+			'Skeleton',
+			'Toast',
+			'ToastContainer',
+			'toast',
+
+			// Navigation
+			'Tabs',
+			'TabList',
+			'Tab',
+			'TabPanel',
 
 			// Overlays
 			'Popover',

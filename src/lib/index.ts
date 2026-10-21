@@ -24,9 +24,13 @@ export * from './components/display/index.js';
 
 // Feedback & Loading
 export * from './components/feedback/index.js';
+export { toast } from './utils/toast.svelte.js';
 
 // Curated Icons
 export * from './components/icons/index.js';
+
+// Navigation Primitives (Tabs)
+export * from './components/navigation/index.js';
 
 // Overlay & Floating Primitives
 export * from './components/overlay/index.js';
