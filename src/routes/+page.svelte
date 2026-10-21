@@ -1149,8 +1149,12 @@
 							{/snippet}
 						</FormField>
 
-						<Grid minItemWidth={120} gap="sm">
-							<FormField label={i18n.t('forms.date_label')} forId="demo-date-picker">
+						<Row gap="sm" align="start">
+							<FormField
+								label={i18n.t('forms.date_label')}
+								forId="demo-date-picker"
+								style="width: auto;"
+							>
 								{#snippet control(ctx)}
 									<DatePicker
 										id={ctx.id}
@@ -1160,7 +1164,11 @@
 								{/snippet}
 							</FormField>
 
-							<FormField label={i18n.t('forms.time_label')} forId="demo-time-picker">
+							<FormField
+								label={i18n.t('forms.time_label')}
+								forId="demo-time-picker"
+								style="width: auto;"
+							>
 								{#snippet control(ctx)}
 									<TimePicker
 										id={ctx.id}
@@ -1169,7 +1177,7 @@
 									/>
 								{/snippet}
 							</FormField>
-						</Grid>
+						</Row>
 					</Column>
 				</Grid>
 			</Column>

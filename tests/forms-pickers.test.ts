@@ -20,6 +20,14 @@ describe('Date, Time & Color Picker Primitives (DatePicker, TimePicker, ColorPic
 			expect(result.body).toContain('value="2026-10-17"');
 			expect(result.body).toContain('min="2026-01-01"');
 			expect(result.body).toContain('max="2026-12-31"');
+			expect(result.body).not.toContain('block');
+		});
+
+		it('applies block class when block is true', () => {
+			const result = render(DatePicker, {
+				props: { block: true }
+			});
+			expect(result.body).toContain('datepicker-container md');
 			expect(result.body).toContain('block');
 		});
 
@@ -65,6 +73,15 @@ describe('Date, Time & Color Picker Primitives (DatePicker, TimePicker, ColorPic
 			expect(result.body).toContain('min="08:00"');
 			expect(result.body).toContain('max="18:00"');
 			expect(result.body).toContain('step="60"');
+			expect(result.body).not.toContain('block');
+		});
+
+		it('applies block class when block is true', () => {
+			const result = render(TimePicker, {
+				props: { block: true }
+			});
+			expect(result.body).toContain('timepicker-container md');
+			expect(result.body).toContain('block');
 		});
 
 		it('applies size presets (sm, md, lg)', () => {
