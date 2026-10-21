@@ -66,7 +66,21 @@
 		DotsThreeVertical,
 		Sparkles,
 		Zap,
-		MONSAN_PALETTE
+		MONSAN_PALETTE,
+		Tabs,
+		TabList,
+		Tab,
+		TabPanel,
+		Table,
+		TableHeader,
+		TableBody,
+		TableRow,
+		TableCell,
+		TableFooter,
+		Progress,
+		Skeleton,
+		ToastContainer,
+		toast
 	} from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 	import type { LayoutData } from './$types.js';
@@ -186,6 +200,8 @@
 	let demoColor = $state('#b94b38');
 	let demoDate = $state('2026-10-17');
 	let demoTime = $state('14:30');
+	let demoTab = $state('extrato');
+	let demoProgress = $state(68);
 	let demoModalOpen = $state(false);
 	let demoDrawerOpen = $state(false);
 	let demoModalOption = $state('opt1');
@@ -450,6 +466,127 @@
 					</Card>
 				{/each}
 			</Grid>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('catalog.tabs_title')}</h2>
+			<Tabs bind:value={demoTab}>
+				<TabList label={i18n.t('catalog.tabs_title')}>
+					<Tab value="extrato">{i18n.t('catalog.tabs_sample_extrato')}</Tab>
+					<Tab value="graficos">{i18n.t('catalog.tabs_sample_graficos')}</Tab>
+					<Tab value="metas">{i18n.t('catalog.tabs_sample_metas')}</Tab>
+				</TabList>
+
+				<TabPanel value="extrato">
+					<Card variant="secondary" padding="sm">
+						<span class="mono">{i18n.t('catalog.tabs_sample_extrato')}</span>
+					</Card>
+				</TabPanel>
+				<TabPanel value="graficos">
+					<Card variant="secondary" padding="sm">
+						<span class="mono">{i18n.t('catalog.tabs_sample_graficos')}</span>
+					</Card>
+				</TabPanel>
+				<TabPanel value="metas">
+					<Card variant="secondary" padding="sm">
+						<span class="mono">{i18n.t('catalog.tabs_sample_metas')}</span>
+					</Card>
+				</TabPanel>
+			</Tabs>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('catalog.table_title')}</h2>
+			<Table fullWidth striped hoverable>
+				<TableHeader>
+					<TableRow>
+						<TableCell asHead>{i18n.t('catalog.table_col_date')}</TableCell>
+						<TableCell asHead>{i18n.t('catalog.table_col_desc')}</TableCell>
+						<TableCell asHead>{i18n.t('catalog.table_col_category')}</TableCell>
+						<TableCell asHead align="numeric">{i18n.t('catalog.table_col_amount')}</TableCell>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell>2026-10-21</TableCell>
+						<TableCell>{i18n.t('catalog.sample_tx_1')}</TableCell>
+						<TableCell>{i18n.t('catalog.sample_cat_1')}</TableCell>
+						<TableCell align="numeric">{i18n.t('catalog.sample_amt_1')}</TableCell>
+					</TableRow>
+					<TableRow selected>
+						<TableCell>2026-10-20</TableCell>
+						<TableCell>{i18n.t('catalog.sample_tx_2')}</TableCell>
+						<TableCell>{i18n.t('catalog.sample_cat_2')}</TableCell>
+						<TableCell align="numeric">{i18n.t('catalog.sample_amt_2')}</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell>2026-10-19</TableCell>
+						<TableCell>{i18n.t('catalog.sample_tx_3')}</TableCell>
+						<TableCell>{i18n.t('catalog.sample_cat_3')}</TableCell>
+						<TableCell align="numeric">{i18n.t('catalog.sample_amt_3')}</TableCell>
+					</TableRow>
+				</TableBody>
+				<TableFooter>
+					<TableRow>
+						<TableCell colspan={3}>{i18n.t('common.total')}</TableCell>
+						<TableCell align="numeric">{i18n.t('catalog.sample_amt_total')}</TableCell>
+					</TableRow>
+				</TableFooter>
+			</Table>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('catalog.progress_title')}</h2>
+			<Column gap="sm">
+				<Progress value={demoProgress} showValue variant="emerald" />
+				<Progress value={40} showValue variant="amber" size="sm" />
+				<Progress value={85} showValue variant="danger" size="lg" />
+			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('catalog.skeleton_title')}</h2>
+			<Row gap="sm" align="center">
+				<Skeleton variant="circle" />
+				<Column gap="xs" style="flex: 1;">
+					<Skeleton variant="text" width="60%" />
+					<Skeleton variant="text" width="90%" />
+				</Column>
+			</Row>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('catalog.toast_title')}</h2>
+			<Row gap="sm">
+				<Button
+					variant="success"
+					size="sm"
+					onclick={() => toast.success(i18n.t('catalog.toast_msg_success'))}
+				>
+					{i18n.t('catalog.toast_btn_success')}
+				</Button>
+				<Button
+					variant="danger"
+					size="sm"
+					onclick={() => toast.error(i18n.t('catalog.toast_msg_error'))}
+				>
+					{i18n.t('catalog.toast_btn_error')}
+				</Button>
+				<Button
+					variant="warning"
+					size="sm"
+					onclick={() => toast.warning(i18n.t('catalog.toast_msg_warning'))}
+				>
+					{i18n.t('catalog.toast_btn_warning')}
+				</Button>
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={() => toast.info(i18n.t('catalog.toast_msg_info'))}
+				>
+					{i18n.t('catalog.toast_btn_info')}
+				</Button>
+			</Row>
 		</Card>
 
 		<Card gap="sm">
@@ -1224,6 +1361,8 @@
 			</Row>
 		</Section>
 	{/snippet}
+
+	<ToastContainer />
 </AppShell>
 
 <style>
