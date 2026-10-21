@@ -79,7 +79,6 @@
 		TableFooter,
 		Progress,
 		Skeleton,
-		ToastContainer,
 		toast
 	} from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
@@ -391,18 +390,10 @@
 
 		<Card gap="sm">
 			<h2>{i18n.t('palette.title')}</h2>
-			<span class="label">{i18n.t('palette.description')}</span>
 
 			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
 				{#each MONSAN_PALETTE as color (color.id)}
-					<div
-						class="palette-card"
-						style:--palette-swatch={`var(--palette-${color.id})`}
-						style:--palette-subtle={`var(--palette-${color.id}-subtle)`}
-						style:--palette-border={`var(--palette-${color.id}-border)`}
-						style:--palette-text={`var(--palette-${color.id}-text)`}
-						style:--palette-on-solid={`var(--palette-${color.id}-on-solid)`}
-					>
+					<div class="palette-card" style:--palette-swatch={`var(--palette-${color.id})`}>
 						<div
 							class="palette-swatch-box"
 							title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
@@ -410,10 +401,6 @@
 						<div class="palette-meta">
 							<span class="palette-name">{i18n.t(color.nameKey)}</span>
 							<span class="palette-hex mono">{color.hex.toUpperCase()}</span>
-						</div>
-						<div class="palette-chips">
-							<span class="palette-chip solid">{i18n.t('palette.solid')}</span>
-							<span class="palette-chip subtle">{i18n.t('palette.subtle')}</span>
 						</div>
 					</div>
 				{/each}
@@ -478,19 +465,48 @@
 				</TabList>
 
 				<TabPanel value="extrato">
-					<Card variant="secondary" padding="sm">
-						<span class="mono">{i18n.t('catalog.tabs_sample_extrato')}</span>
-					</Card>
+					<Table fullWidth striped hoverable>
+						<TableHeader>
+							<TableRow>
+								<TableCell asHead>{i18n.t('catalog.table_col_date')}</TableCell>
+								<TableCell asHead>{i18n.t('catalog.table_col_desc')}</TableCell>
+								<TableCell asHead>{i18n.t('catalog.table_col_category')}</TableCell>
+								<TableCell asHead align="numeric">{i18n.t('catalog.table_col_amount')}</TableCell>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							<TableRow>
+								<TableCell>2026-10-21</TableCell>
+								<TableCell>{i18n.t('catalog.sample_tx_1')}</TableCell>
+								<TableCell>{i18n.t('catalog.sample_cat_1')}</TableCell>
+								<TableCell align="numeric">{i18n.t('catalog.sample_amt_1')}</TableCell>
+							</TableRow>
+							<TableRow selected>
+								<TableCell>2026-10-20</TableCell>
+								<TableCell>{i18n.t('catalog.sample_tx_2')}</TableCell>
+								<TableCell>{i18n.t('catalog.sample_cat_2')}</TableCell>
+								<TableCell align="numeric">{i18n.t('catalog.sample_amt_2')}</TableCell>
+							</TableRow>
+						</TableBody>
+					</Table>
 				</TabPanel>
 				<TabPanel value="graficos">
-					<Card variant="secondary" padding="sm">
-						<span class="mono">{i18n.t('catalog.tabs_sample_graficos')}</span>
-					</Card>
+					<Column gap="sm">
+						<Row justify="between" fullWidth>
+							<span class="mono">{i18n.t('catalog.tabs_sample_graficos')}</span>
+							<span class="mono">75%</span>
+						</Row>
+						<Progress value={75} variant="emerald" />
+					</Column>
 				</TabPanel>
 				<TabPanel value="metas">
-					<Card variant="secondary" padding="sm">
-						<span class="mono">{i18n.t('catalog.tabs_sample_metas')}</span>
-					</Card>
+					<Column gap="sm">
+						<Row justify="between" fullWidth>
+							<span class="mono">{i18n.t('catalog.tabs_sample_metas')}</span>
+							<span class="mono">42%</span>
+						</Row>
+						<Progress value={42} variant="cobalt" />
+					</Column>
 				</TabPanel>
 			</Tabs>
 		</Card>
@@ -1361,8 +1377,6 @@
 			</Row>
 		</Section>
 	{/snippet}
-
-	<ToastContainer />
 </AppShell>
 
 <style>
@@ -1439,31 +1453,5 @@
 		font-size: var(--text-xxs);
 		font-family: var(--font-mono);
 		color: var(--text-secondary);
-	}
-
-	.palette-chips {
-		display: flex;
-		gap: var(--space-xxs);
-	}
-
-	.palette-chip {
-		flex: 1;
-		text-align: center;
-		padding: var(--space-xxs) var(--space-xs);
-		font-size: var(--text-xxs);
-		font-family: var(--font-mono);
-		font-weight: 500;
-		border-radius: var(--radius-xs);
-	}
-
-	.palette-chip.solid {
-		background-color: var(--palette-swatch);
-		color: var(--palette-on-solid);
-	}
-
-	.palette-chip.subtle {
-		background-color: var(--palette-subtle);
-		color: var(--palette-text);
-		border: var(--border-width) solid var(--palette-border);
 	}
 </style>

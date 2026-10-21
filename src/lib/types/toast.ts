@@ -46,7 +46,7 @@ export interface ToastItem {
 
 /** Props for the ToastContainer viewport anchor. */
 export interface ToastContainerProps extends HTMLAttributes<HTMLDivElement> {
-	/** Screen alignment position. Default: 'bottom-right'. */
+	/** Screen alignment position. Default: 'top-right'. */
 	position?: ToastPosition;
 	/** Additional CSS classes. */
 	class?: string;

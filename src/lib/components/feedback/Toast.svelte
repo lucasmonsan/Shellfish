@@ -13,12 +13,28 @@
 	let timerId: ReturnType<typeof setTimeout> | null = null;
 	let startTime = $state(Date.now());
 	let remaining = $state(0);
+	let isDismissing = $state(false);
+
+	function triggerDismiss() {
+		if (isDismissing) return;
+		isDismissing = true;
+		if (
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			onDismiss(toast.id);
+			return;
+		}
+		setTimeout(() => {
+			onDismiss(toast.id);
+		}, 125);
+	}
 
 	function startTimer(duration: number) {
 		if (duration <= 0) return;
 		startTime = Date.now();
 		timerId = setTimeout(() => {
-			onDismiss(toast.id);
+			triggerDismiss();
 		}, duration);
 	}
 
@@ -48,6 +64,7 @@
 <div
 	role="status"
 	class="toast {toast.variant} {className}"
+	class:is-dismissing={isDismissing}
 	onmouseenter={pauseTimer}
 	onmouseleave={resumeTimer}
 	onfocusin={pauseTimer}
@@ -72,7 +89,7 @@
 				class="toast-action"
 				onclick={() => {
 					toast.action?.onClick();
-					onDismiss(toast.id);
+					triggerDismiss();
 				}}
 			>
 				{toast.action.label}
@@ -85,7 +102,7 @@
 			type="button"
 			class="toast-close"
 			aria-label={i18n.t('common.close')}
-			onclick={() => onDismiss(toast.id)}
+			onclick={triggerDismiss}
 		>
 			<X size={14} />
 		</button>
@@ -107,7 +124,27 @@
 		box-sizing: border-box;
 		color: var(--text-primary);
 		pointer-events: auto;
-		transition: transform var(--transition-fast);
+		animation: toast-in var(--duration-base) var(--ease-decelerate);
+		transition:
+			opacity var(--duration-fast) var(--ease-standard),
+			transform var(--duration-fast) var(--ease-standard);
+	}
+
+	.toast.is-dismissing {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.96);
+		pointer-events: none;
+	}
+
+	@keyframes toast-in {
+		from {
+			opacity: 0;
+			transform: translateY(-10px) scale(0.96);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
 	}
 
 	.toast.success {
@@ -214,6 +251,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.toast {
+			animation: none;
 			transition: none;
 		}
 	}

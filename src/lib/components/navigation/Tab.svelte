@@ -57,7 +57,7 @@
 		gap: var(--space-xs);
 		background-color: transparent;
 		color: var(--text-secondary);
-		border: none;
+		border: var(--border-width) solid transparent;
 		border-radius: var(--radius-xs);
 		font-family: inherit;
 		font-weight: 500;
@@ -65,10 +65,11 @@
 		white-space: nowrap;
 		flex-shrink: 0;
 		transition:
-			background-color var(--transition-fast),
-			color var(--transition-fast),
-			box-shadow var(--transition-fast),
-			transform var(--transition-fast);
+			background-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard),
+			border-color var(--duration-fast) var(--ease-standard),
+			box-shadow var(--duration-fast) var(--ease-standard),
+			transform var(--duration-fast) var(--ease-standard);
 		box-sizing: border-box;
 	}
 
@@ -98,6 +99,7 @@
 	.tab.selected {
 		background-color: var(--bg-surface);
 		color: var(--text-primary);
+		border-color: var(--border-color);
 		font-weight: 600;
 		box-shadow: var(--shadow-sm);
 	}

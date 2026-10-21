@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '$lib/styles/index.css';
 	import { setI18n, createI18n } from '$lib/utils/i18n.svelte.js';
+	import { ToastContainer } from '$lib/components/feedback/index.js';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types.js';
 
@@ -28,3 +29,5 @@
 </svelte:head>
 
 {@render children()}
+
+<ToastContainer />

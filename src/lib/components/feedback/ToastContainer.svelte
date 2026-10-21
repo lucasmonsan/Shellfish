@@ -4,7 +4,7 @@
 	import Toast from './Toast.svelte';
 
 	let {
-		position = 'bottom-right',
+		position = 'top-right',
 		class: className = '',
 		...restProps
 	}: ToastContainerProps = $props();
@@ -26,7 +26,7 @@
 		pointer-events: none;
 		box-sizing: border-box;
 		max-height: 100vh;
-		overflow: hidden;
+		overflow: visible;
 	}
 
 	.toast-container.bottom-right {
