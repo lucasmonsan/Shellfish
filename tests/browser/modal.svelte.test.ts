@@ -74,4 +74,30 @@ describe('Modal Interactive Browser Component Test', () => {
 		const body = dialog.element().querySelector('.modal-body');
 		expect(body?.classList.contains('scrollable')).toBe(true);
 	});
+
+	it('applies is-closing class during exit animation and calls onclose after transition', async () => {
+		let closed = false;
+		render(Modal, {
+			props: {
+				open: true,
+				title: 'Modal com Transição',
+				onclose: () => {
+					closed = true;
+				}
+			}
+		});
+
+		const dialog = page.getByRole('dialog');
+		await expect.element(dialog).toBeVisible();
+
+		// Pressiona Escape: e.preventDefault() impede fechamento síncrono e ativa transição
+		await userEvent.keyboard('{Escape}');
+
+		// Verifica que a classe is-closing foi aplicada durante a transição
+		expect(dialog.element().classList.contains('is-closing')).toBe(true);
+
+		// Ao finalizar a animação de saída de 250ms, o diálogo fecha e o callback onclose é invocado
+		await expect.element(dialog).not.toBeInTheDocument();
+		expect(closed).toBe(true);
+	});
 });

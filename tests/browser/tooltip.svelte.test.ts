@@ -65,4 +65,55 @@ describe('Tooltip Interactive Browser Component Test', () => {
 		// O tooltip deve permanecer visível!
 		await expect.element(tooltip).toBeVisible();
 	});
+
+	it('cancels scheduled RAF when pointer leaves immediately without flickering', async () => {
+		render(Tooltip, {
+			props: {
+				text: 'Dica rápida',
+				delay: 0,
+				children: createRawSnippet(() => ({
+					render: () => '<button type="button">Alvo Rápido</button>'
+				}))
+			}
+		});
+
+		const btn = page.getByRole('button', { name: 'Alvo Rápido' });
+
+		// Simula entrada e saída imediata no mesmo ciclo de eventos (flicker)
+		btn.element().dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
+		btn.element().dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+
+		// Aguarda a resolução dos frames de animação
+		await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+		// O tooltip não deve ter a classe .visible
+		const tooltipEl = document.querySelector('[role="tooltip"]');
+		if (tooltipEl) {
+			expect(tooltipEl.classList.contains('visible')).toBe(false);
+		}
+	});
+
+	it('smoothly unmounts tooltip bubble after pointer leaves', async () => {
+		render(Tooltip, {
+			props: {
+				text: 'Dica com Saída',
+				delay: 0,
+				children: createRawSnippet(() => ({
+					render: () => '<button type="button">Alvo Saída</button>'
+				}))
+			}
+		});
+
+		const btn = page.getByRole('button', { name: 'Alvo Saída' });
+		await btn.hover();
+
+		const tooltip = page.getByRole('tooltip');
+		await expect.element(tooltip).toBeVisible();
+
+		// Desloca o ponteiro para fora do elemento
+		btn.element().dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+
+		// Após a transição de saída (200ms), a bolha deve ser desmontada do DOM
+		await expect.element(tooltip).not.toBeInTheDocument();
+	});
 });
