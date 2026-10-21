@@ -393,14 +393,30 @@
 
 			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
 				{#each MONSAN_PALETTE as color (color.id)}
-					<div class="palette-card" style:--palette-swatch={`var(--palette-${color.id})`}>
-						<div
-							class="palette-swatch-box"
-							title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
-						></div>
+					<div
+						class="palette-card"
+						style:--palette-swatch={`var(--palette-${color.id})`}
+						style:--palette-subtle={`var(--palette-${color.id}-subtle)`}
+						style:--palette-border={`var(--palette-${color.id}-border)`}
+						style:--palette-text={`var(--palette-${color.id}-text)`}
+						style:--palette-on-solid={`var(--palette-${color.id}-on-solid)`}
+					>
+						<div class="palette-swatches">
+							<div
+								class="palette-swatch-box solid"
+								title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
+							>
+								<span class="swatch-hex mono">{color.hex.toUpperCase()}</span>
+							</div>
+							<div
+								class="palette-swatch-box subtle"
+								title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
+							>
+								<span class="swatch-hex mono">{color.subtleHex.toUpperCase()}</span>
+							</div>
+						</div>
 						<div class="palette-meta">
 							<span class="palette-name">{i18n.t(color.nameKey)}</span>
-							<span class="palette-hex mono">{color.hex.toUpperCase()}</span>
 						</div>
 					</div>
 				{/each}
@@ -1431,15 +1447,44 @@
 		background-color: var(--bg-surface);
 	}
 
-	.palette-swatch-box {
+	.palette-swatches {
+		display: flex;
+		gap: var(--space-xxs);
 		height: calc(var(--base) * 2.5);
+	}
+
+	.palette-swatch-box {
+		flex: 1;
+		height: 100%;
 		border-radius: var(--radius-xs);
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.palette-swatch-box.solid {
 		background-color: var(--palette-swatch);
+		color: var(--palette-on-solid);
+	}
+
+	.palette-swatch-box.subtle {
+		background-color: var(--palette-subtle);
+		border: var(--border-width) solid var(--palette-border);
+		color: var(--palette-text);
+	}
+
+	.swatch-hex {
+		font-size: var(--text-xxs);
+		font-family: var(--font-mono);
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: inherit;
 	}
 
 	.palette-meta {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-start;
 		align-items: center;
 	}
 
@@ -1447,11 +1492,5 @@
 		font-weight: 600;
 		font-size: var(--text-xs);
 		color: var(--text-primary);
-	}
-
-	.palette-hex {
-		font-size: var(--text-xxs);
-		font-family: var(--font-mono);
-		color: var(--text-secondary);
 	}
 </style>

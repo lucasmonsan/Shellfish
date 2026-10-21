@@ -97,9 +97,9 @@
 	}
 
 	.tab.selected {
-		background-color: var(--bg-surface);
-		color: var(--text-primary);
-		border-color: var(--border-color);
+		background-color: var(--color-primary);
+		color: var(--color-primary-contrast);
+		border-color: var(--color-primary);
 		font-weight: 600;
 		box-shadow: var(--shadow-sm);
 	}
