@@ -139,4 +139,27 @@ describe('Drawer Interactive Browser Component Test', () => {
 		dialogNode.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
 		await expect.element(dialog).not.toBeInTheDocument();
 	});
+
+	it('applies is-closing class during exit animation and calls onclose after transition on Escape key', async () => {
+		let closed = false;
+		render(Drawer, {
+			props: {
+				open: true,
+				placement: 'right',
+				title: 'Drawer com Transição',
+				onclose: () => {
+					closed = true;
+				}
+			}
+		});
+
+		const dialog = page.getByRole('dialog');
+		await expect.element(dialog).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+		expect(dialog.element().classList.contains('is-closing')).toBe(true);
+
+		await expect.element(dialog).not.toBeInTheDocument();
+		expect(closed).toBe(true);
+	});
 });
