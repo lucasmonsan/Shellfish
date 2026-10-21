@@ -288,6 +288,33 @@ describe('Invariant Test: Universal WCAG 2.1 Color Contrast Matrix (Hard Fail)',
 		}
 	];
 
+	const paletteFamilies = [
+		'terracotta',
+		'amber',
+		'olive',
+		'emerald',
+		'celadon',
+		'cobalt',
+		'indigo',
+		'plum',
+		'crimson',
+		'slate'
+	] as const;
+
+	const paletteSolidPairs: ContrastPairSpec[] = paletteFamilies.map((family) => ({
+		fg: `--palette-${family}-on-solid`,
+		bg: `--palette-${family}`,
+		minRatio: 4.5,
+		context: `Texto sobre fundo sólido da paleta ${family} (WCAG AA >= 4.5:1)`
+	}));
+
+	const paletteTextPairs: ContrastPairSpec[] = paletteFamilies.map((family) => ({
+		fg: `--palette-${family}-text`,
+		bg: '--bg-primary',
+		minRatio: 4.5,
+		context: `Texto de sotaque da paleta ${family} sobre fundo primário (WCAG AA >= 4.5:1)`
+	}));
+
 	describe('Light Theme (:root)', () => {
 		it('enforces WCAG AAA/AA on all typography and surface combinations', () => {
 			assertContrastMatrix('Light', light, typographyAndSurfacePairs);
@@ -299,6 +326,14 @@ describe('Invariant Test: Universal WCAG 2.1 Color Contrast Matrix (Hard Fail)',
 
 		it('enforces WCAG AA/UI contrast on semantic accents, error messages, and indicators', () => {
 			assertContrastMatrix('Light', light, semanticAccentPairs);
+		});
+
+		it('enforces WCAG AA (>= 4.5:1) on all 10 Monsan palette solid backgrounds', () => {
+			assertContrastMatrix('Light', light, paletteSolidPairs);
+		});
+
+		it('enforces WCAG AA (>= 4.5:1) on all 10 Monsan palette text accents on primary background', () => {
+			assertContrastMatrix('Light', light, paletteTextPairs);
 		});
 	});
 
@@ -313,6 +348,14 @@ describe('Invariant Test: Universal WCAG 2.1 Color Contrast Matrix (Hard Fail)',
 
 		it('enforces WCAG AA/UI contrast on semantic accents, error messages, and indicators', () => {
 			assertContrastMatrix('Dark', dark, semanticAccentPairs);
+		});
+
+		it('enforces WCAG AA (>= 4.5:1) on all 10 Monsan palette solid backgrounds', () => {
+			assertContrastMatrix('Dark', dark, paletteSolidPairs);
+		});
+
+		it('enforces WCAG AA (>= 4.5:1) on all 10 Monsan palette text accents on primary background', () => {
+			assertContrastMatrix('Dark', dark, paletteTextPairs);
 		});
 	});
 });

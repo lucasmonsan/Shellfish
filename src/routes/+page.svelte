@@ -65,7 +65,8 @@
 		BarChart,
 		DotsThreeVertical,
 		Sparkles,
-		Zap
+		Zap,
+		MONSAN_PALETTE
 	} from '$lib/index.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 	import type { LayoutData } from './$types.js';
@@ -370,6 +371,37 @@
 					</Badge>
 				</Row>
 			</Column>
+		</Card>
+
+		<Card gap="sm">
+			<h2>{i18n.t('palette.title')}</h2>
+			<span class="label">{i18n.t('palette.description')}</span>
+
+			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
+				{#each MONSAN_PALETTE as color (color.id)}
+					<div
+						class="palette-card"
+						style:--palette-swatch={`var(--palette-${color.id})`}
+						style:--palette-subtle={`var(--palette-${color.id}-subtle)`}
+						style:--palette-border={`var(--palette-${color.id}-border)`}
+						style:--palette-text={`var(--palette-${color.id}-text)`}
+						style:--palette-on-solid={`var(--palette-${color.id}-on-solid)`}
+					>
+						<div
+							class="palette-swatch-box"
+							title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
+						></div>
+						<div class="palette-meta">
+							<span class="palette-name">{i18n.t(color.nameKey)}</span>
+							<span class="palette-hex mono">{color.hex.toUpperCase()}</span>
+						</div>
+						<div class="palette-chips">
+							<span class="palette-chip solid">{i18n.t('palette.solid')}</span>
+							<span class="palette-chip subtle">{i18n.t('palette.subtle')}</span>
+						</div>
+					</div>
+				{/each}
+			</Grid>
 		</Card>
 
 		<Card gap="sm">
@@ -1234,5 +1266,65 @@
 		font-size: var(--text-xxs);
 		font-family: var(--font-mono);
 		color: var(--text-secondary);
+	}
+
+	.palette-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: var(--space-xs);
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--border-color);
+		background-color: var(--bg-surface);
+	}
+
+	.palette-swatch-box {
+		height: calc(var(--base) * 2.5);
+		border-radius: var(--radius-xs);
+		background-color: var(--palette-swatch);
+	}
+
+	.palette-meta {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.palette-name {
+		font-weight: 600;
+		font-size: var(--text-xs);
+		color: var(--text-primary);
+	}
+
+	.palette-hex {
+		font-size: var(--text-xxs);
+		font-family: var(--font-mono);
+		color: var(--text-secondary);
+	}
+
+	.palette-chips {
+		display: flex;
+		gap: var(--space-xxs);
+	}
+
+	.palette-chip {
+		flex: 1;
+		text-align: center;
+		padding: var(--space-xxs) var(--space-xs);
+		font-size: var(--text-xxs);
+		font-family: var(--font-mono);
+		font-weight: 500;
+		border-radius: var(--radius-xs);
+	}
+
+	.palette-chip.solid {
+		background-color: var(--palette-swatch);
+		color: var(--palette-on-solid);
+	}
+
+	.palette-chip.subtle {
+		background-color: var(--palette-subtle);
+		color: var(--palette-text);
+		border: var(--border-width) solid var(--palette-border);
 	}
 </style>

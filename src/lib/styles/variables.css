@@ -58,24 +58,97 @@
 	--color-primary-contrast: #fdfbf7;
 	--color-outline: #b94b38;
 
+	/* ==========================================================================
+	   PALETA CROMÁTICA MINERAL MONSAN (10 FAMÍLIAS DE CORES)
+	   ========================================================================== */
+	--palette-terracotta: #b94b38;
+	--palette-terracotta-hover: #9c3b2a;
+	--palette-terracotta-subtle: #fbeee9;
+	--palette-terracotta-border: rgba(185, 75, 56, 0.3);
+	--palette-terracotta-text: #8a2c1d;
+	--palette-terracotta-on-solid: #fdfbf7;
+
+	--palette-amber: #c2831b;
+	--palette-amber-hover: #a87114;
+	--palette-amber-subtle: #fef8eb;
+	--palette-amber-border: rgba(194, 131, 27, 0.3);
+	--palette-amber-text: #7a4b08;
+	--palette-amber-on-solid: #1d1817;
+
+	--palette-olive: #5b6e2d;
+	--palette-olive-hover: #4b5b24;
+	--palette-olive-subtle: #f2f6ea;
+	--palette-olive-border: rgba(91, 110, 45, 0.3);
+	--palette-olive-text: #3f4d1e;
+	--palette-olive-on-solid: #fdfbf7;
+
+	--palette-emerald: #236f4c;
+	--palette-emerald-hover: #1a563b;
+	--palette-emerald-subtle: #edf7f1;
+	--palette-emerald-border: rgba(35, 111, 76, 0.3);
+	--palette-emerald-text: #174d34;
+	--palette-emerald-on-solid: #fdfbf7;
+
+	--palette-celadon: #1d767d;
+	--palette-celadon-hover: #165f65;
+	--palette-celadon-subtle: #ecf7f8;
+	--palette-celadon-border: rgba(29, 118, 125, 0.3);
+	--palette-celadon-text: #135156;
+	--palette-celadon-on-solid: #fdfbf7;
+
+	--palette-cobalt: #295594;
+	--palette-cobalt-hover: #204377;
+	--palette-cobalt-subtle: #eff4fb;
+	--palette-cobalt-border: rgba(41, 85, 148, 0.3);
+	--palette-cobalt-text: #1a3863;
+	--palette-cobalt-on-solid: #fdfbf7;
+
+	--palette-indigo: #4e449c;
+	--palette-indigo-hover: #3e3680;
+	--palette-indigo-subtle: #f2f1fb;
+	--palette-indigo-border: rgba(78, 68, 156, 0.3);
+	--palette-indigo-text: #342c70;
+	--palette-indigo-on-solid: #fdfbf7;
+
+	--palette-plum: #823877;
+	--palette-plum-hover: #6a2c61;
+	--palette-plum-subtle: #f9eff7;
+	--palette-plum-border: rgba(130, 56, 119, 0.3);
+	--palette-plum-text: #5b2353;
+	--palette-plum-on-solid: #fdfbf7;
+
+	--palette-crimson: #a82b3d;
+	--palette-crimson-hover: #8d2030;
+	--palette-crimson-subtle: #fdefef;
+	--palette-crimson-border: rgba(168, 43, 61, 0.3);
+	--palette-crimson-text: #781725;
+	--palette-crimson-on-solid: #fdfbf7;
+
+	--palette-slate: #47535e;
+	--palette-slate-hover: #37414a;
+	--palette-slate-subtle: #edf1f3;
+	--palette-slate-border: rgba(71, 83, 94, 0.3);
+	--palette-slate-text: #293138;
+	--palette-slate-on-solid: #fdfbf7;
+
 	/* Status Semânticos */
-	--color-success: #2b6140;
-	--color-success-hover: #1e462e;
-	--color-success-subtle: #eef7f2;
+	--color-success: #236f4c;
+	--color-success-hover: #1a563b;
+	--color-success-subtle: #edf7f1;
 	--color-warning: #c2831b;
 	--color-warning-hover: #a87114;
 	--color-warning-subtle: #fef8eb;
 	--color-warning-contrast: #2d2422;
-	--color-danger: #9b2226;
-	--color-danger-hover: #7b1a1d;
-	--color-danger-subtle: #fdf0f0;
-	--color-danger-text: var(--color-danger);
-	--color-error: #9b2226;
-	--color-error-hover: #7b1a1d;
-	--color-error-subtle: #fdf0f0;
-	--color-error-text: var(--color-error);
-	--color-info: #274c77;
-	--color-info-subtle: #edf3f9;
+	--color-danger: #a82b3d;
+	--color-danger-hover: #8d2030;
+	--color-danger-subtle: #fdefef;
+	--color-danger-text: #781725;
+	--color-error: #a82b3d;
+	--color-error-hover: #8d2030;
+	--color-error-subtle: #fdefef;
+	--color-error-text: #781725;
+	--color-info: #295594;
+	--color-info-subtle: #eff4fb;
 
 	/* ==========================================================================
 	   3. BLUR & DESEMPENHO
@@ -166,6 +239,79 @@
 	--color-primary-selected: rgba(185, 75, 56, 0.22);
 	--color-primary-contrast: #fdfbf7;
 	--color-outline: #e8826b;
+
+	/* ==========================================================================
+	   PALETA CROMÁTICA MINERAL MONSAN (10 FAMÍLIAS DE CORES) - DARK THEME
+	   ========================================================================== */
+	--palette-terracotta: #b94b38;
+	--palette-terracotta-hover: #a33f2d;
+	--palette-terracotta-subtle: #38201b;
+	--palette-terracotta-border: rgba(212, 97, 76, 0.35);
+	--palette-terracotta-text: #f09a88;
+	--palette-terracotta-on-solid: #fdfbf7;
+
+	--palette-amber: #e5a93c;
+	--palette-amber-hover: #f0b84d;
+	--palette-amber-subtle: #332610;
+	--palette-amber-border: rgba(229, 155, 43, 0.35);
+	--palette-amber-text: #f8c575;
+	--palette-amber-on-solid: #1d1817;
+
+	--palette-olive: #5f762a;
+	--palette-olive-hover: #4e6221;
+	--palette-olive-subtle: #232a13;
+	--palette-olive-border: rgba(131, 157, 67, 0.35);
+	--palette-olive-text: #bcd47c;
+	--palette-olive-on-solid: #fdfbf7;
+
+	--palette-emerald: #357a5b;
+	--palette-emerald-hover: #3e8e6b;
+	--palette-emerald-subtle: #182b22;
+	--palette-emerald-border: rgba(62, 166, 116, 0.35);
+	--palette-emerald-text: #7ed4a7;
+	--palette-emerald-on-solid: #fdfbf7;
+
+	--palette-celadon: #297a82;
+	--palette-celadon-hover: #338e97;
+	--palette-celadon-subtle: #14282a;
+	--palette-celadon-border: rgba(57, 168, 177, 0.35);
+	--palette-celadon-text: #7ad9e1;
+	--palette-celadon-on-solid: #fdfbf7;
+
+	--palette-cobalt: #3f70a1;
+	--palette-cobalt-hover: #4c82b8;
+	--palette-cobalt-subtle: #182533;
+	--palette-cobalt-border: rgba(92, 142, 224, 0.35);
+	--palette-cobalt-text: #8db5f0;
+	--palette-cobalt-on-solid: #fdfbf7;
+
+	--palette-indigo: #5c52b8;
+	--palette-indigo-hover: #6b60cc;
+	--palette-indigo-subtle: #211d3d;
+	--palette-indigo-border: rgba(138, 127, 232, 0.35);
+	--palette-indigo-text: #aba2f5;
+	--palette-indigo-on-solid: #fdfbf7;
+
+	--palette-plum: #8a3f7e;
+	--palette-plum-hover: #9c4b90;
+	--palette-plum-subtle: #33182f;
+	--palette-plum-border: rgba(199, 109, 184, 0.35);
+	--palette-plum-text: #e094d4;
+	--palette-plum-on-solid: #fdfbf7;
+
+	--palette-crimson: #c4383e;
+	--palette-crimson-hover: #b03036;
+	--palette-crimson-subtle: #331719;
+	--palette-crimson-border: rgba(227, 91, 111, 0.35);
+	--palette-crimson-text: #ff7b72;
+	--palette-crimson-on-solid: #fdfbf7;
+
+	--palette-slate: #536270;
+	--palette-slate-hover: #627485;
+	--palette-slate-subtle: #1d2328;
+	--palette-slate-border: rgba(118, 134, 148, 0.35);
+	--palette-slate-text: #aab8c4;
+	--palette-slate-on-solid: #fdfbf7;
 
 	--color-success: #357a5b;
 	--color-success-hover: #3e8e6b;
