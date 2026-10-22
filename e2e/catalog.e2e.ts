@@ -6,9 +6,9 @@ const locales = [
 		id: 'pt-BR',
 		header: 'pt-BR,pt;q=0.9',
 		code: 'PT',
-		buttonTitle: 'Botão',
-		spinnerTitle: 'Carregamento (Spinner)',
-		iconsTitle: 'Ícones'
+		buttonTitle: 'Button',
+		spinnerTitle: 'Spinner',
+		iconsTitle: 'Icons'
 	},
 	{
 		id: 'en-US',
@@ -22,9 +22,9 @@ const locales = [
 		id: 'es',
 		header: 'es-ES,es;q=0.9',
 		code: 'ES',
-		buttonTitle: 'Botón',
+		buttonTitle: 'Button',
 		spinnerTitle: 'Spinner',
-		iconsTitle: 'Iconos'
+		iconsTitle: 'Icons'
 	}
 ] as const;
 
