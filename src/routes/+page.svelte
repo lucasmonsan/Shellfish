@@ -328,7 +328,7 @@
 							manualLoading = !manualLoading;
 						}}
 					>
-						Loading
+						{i18n.t('common.loading')}
 					</Button>
 
 					<Button variant="secondary" square ariaLabel={i18n.t('common.add')}>
@@ -382,7 +382,7 @@
 					<Divider vertical spacing="xs" />
 					<Badge size="sm" variant="secondary">
 						<Sparkles size={12} />
-						Icon
+						{i18n.t('catalog.icon')}
 					</Badge>
 				</Row>
 			</Column>
@@ -990,7 +990,7 @@
 			<h2>{i18n.t('modal.title')}</h2>
 
 			<Column gap="xs">
-				<span class="label">{i18n.t('modal.sample_desc')}</span>
+				<span class="label">{i18n.t('modal.title')}</span>
 				<Row gap="sm" align="center">
 					<Button variant="primary" onclick={() => (demoModalOpen = true)}>
 						{i18n.t('modal.open_button')}
