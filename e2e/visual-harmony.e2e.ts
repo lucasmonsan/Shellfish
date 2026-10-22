@@ -49,7 +49,7 @@ test.describe('Visual & Geometric Harmony Invariants (Real Browser DOM)', () => 
 		).toEqual([]);
 	});
 
-	test('enforces uniform border-radius (2px), border-width (1px), and non-transparent input surfaces across form controls', async ({
+	test('enforces uniform border-radius (2px), border-width (2px), and non-transparent input surfaces across form controls', async ({
 		page
 	}) => {
 		const audit = await page.evaluate(() => {
@@ -76,9 +76,9 @@ test.describe('Visual & Geometric Harmony Invariants (Real Browser DOM)', () => 
 						`  [RAIO DIVERGENTE] ${name} tem border-radius: ${cs.borderRadius} (esperado: 2px / var(--radius-xs))`
 					);
 				}
-				if (cs.borderTopWidth !== '1px') {
+				if (cs.borderTopWidth !== '2px') {
 					violations.push(
-						`  [BORDA DIVERGENTE] ${name} tem border-width: ${cs.borderTopWidth} (esperado: 1px / var(--border-width))`
+						`  [BORDA DIVERGENTE] ${name} tem border-width: ${cs.borderTopWidth} (esperado: 2px / var(--border-width))`
 					);
 				}
 				if (cs.backgroundColor === 'rgba(0, 0, 0, 0)' || cs.backgroundColor === 'transparent') {
