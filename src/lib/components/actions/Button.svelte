@@ -259,12 +259,10 @@
 	.primary {
 		background-color: var(--color-primary);
 		color: var(--color-primary-contrast);
-		border-color: var(--color-primary);
 	}
 
 	.primary:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-primary-hover);
-		border-color: var(--color-primary-hover);
 	}
 
 	.secondary {
@@ -300,34 +298,28 @@
 	.danger {
 		background-color: var(--color-danger);
 		color: var(--color-on-solid);
-		border-color: var(--color-danger);
 	}
 
 	.danger:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-danger-hover);
-		border-color: var(--color-danger-hover);
 	}
 
 	.warning {
 		background-color: var(--color-warning);
 		color: var(--color-warning-contrast);
-		border-color: var(--color-warning);
 	}
 
 	.warning:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-warning-hover);
-		border-color: var(--color-warning-hover);
 	}
 
 	.success {
 		background-color: var(--color-success);
 		color: var(--color-on-solid);
-		border-color: var(--color-success);
 	}
 
 	.success:hover:not(:disabled):not(.loading) {
 		background-color: var(--color-success-hover);
-		border-color: var(--color-success-hover);
 	}
 
 	/* Opção B: O botão reduz e se dissolve em transparência total */

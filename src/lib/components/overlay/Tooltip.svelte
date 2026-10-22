@@ -133,7 +133,7 @@
 		text-align: center;
 		text-wrap: balance;
 		padding: var(--space-xs, 4px) var(--space-sm, 8px);
-		border: var(--border-width, 1px) solid var(--border-color);
+		border: var(--border-width, 2px) solid var(--border-color);
 		border-radius: var(--radius-xs, 2px);
 		background-color: var(--text-primary);
 		color: var(--bg-primary);
