@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import type { TabPanelProps } from '$lib/types/navigation.js';
 	import { TABS_CONTEXT_KEY, type TabsContext } from './context.js';
 
@@ -23,14 +23,15 @@
 			typeof window !== 'undefined' &&
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		) {
-			return { duration: 0 };
+			return { duration: 0, delay: 0 };
 		}
 		return {
-			duration: 180,
+			delay: 70,
+			duration: 130,
 			easing: cubicOut,
 			css: (t: number) => `
 				opacity: ${t};
-				transform: translateY(${(1 - t) * 6}px);
+				transform: translateY(${(1 - t) * 4}px);
 			`
 		};
 	}
@@ -44,11 +45,11 @@
 			return { duration: 0 };
 		}
 		return {
-			duration: 120,
-			easing: cubicIn,
+			duration: 80,
+			easing: cubicOut,
 			css: (t: number) => `
 				opacity: ${t};
-				transform: translateY(${(1 - t) * -4}px);
+				transform: translateY(${(1 - t) * -2}px);
 			`
 		};
 	}
