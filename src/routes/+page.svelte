@@ -497,7 +497,7 @@
 								<TableCell>{i18n.t('catalog.sample_cat_1')}</TableCell>
 								<TableCell align="numeric">{i18n.t('catalog.sample_amt_1')}</TableCell>
 							</TableRow>
-							<TableRow selected>
+							<TableRow>
 								<TableCell>2026-10-20</TableCell>
 								<TableCell>{i18n.t('catalog.sample_tx_2')}</TableCell>
 								<TableCell>{i18n.t('catalog.sample_cat_2')}</TableCell>
@@ -545,7 +545,7 @@
 						<TableCell>{i18n.t('catalog.sample_cat_1')}</TableCell>
 						<TableCell align="numeric">{i18n.t('catalog.sample_amt_1')}</TableCell>
 					</TableRow>
-					<TableRow selected>
+					<TableRow>
 						<TableCell>2026-10-20</TableCell>
 						<TableCell>{i18n.t('catalog.sample_tx_2')}</TableCell>
 						<TableCell>{i18n.t('catalog.sample_cat_2')}</TableCell>
