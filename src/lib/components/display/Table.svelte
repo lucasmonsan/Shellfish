@@ -71,6 +71,10 @@
 		background-color: var(--bg-hover);
 	}
 
+	:global(.table.hoverable tbody tr.selected:hover) {
+		background-color: var(--color-primary-selected);
+	}
+
 	/* Espaçamento compacto (dense) */
 	:global(.table.dense th),
 	:global(.table.dense td) {

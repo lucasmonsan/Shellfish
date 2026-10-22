@@ -39,6 +39,8 @@
 	--bg-primary: #fdfbf7;
 	--bg-secondary: #f4efe6;
 	--bg-elevated: #faf6ef;
+	--bg-surface: #fdfbf7;
+	--bg-hover: rgba(45, 36, 34, 0.07);
 	--bg-input: #fdfbf7;
 
 	--text-primary: #2d2422;
@@ -222,6 +224,8 @@
 	--bg-primary: #221d1c;
 	--bg-secondary: #352e2d;
 	--bg-elevated: #2a2423;
+	--bg-surface: #221d1c;
+	--bg-hover: rgba(253, 251, 247, 0.08);
 	--bg-input: #1d1918;
 
 	--text-primary: #fdfbf7;
