@@ -34,6 +34,13 @@ export default defineConfig(
 		}
 	},
 	{
+		// Generic UI library components in src/lib accept arbitrary href props from consumers
+		files: ['src/lib/**/*.svelte'],
+		rules: {
+			'svelte/no-navigation-without-resolve': 'off'
+		}
+	},
+	{
 		// Override or add rule settings here, such as:
 		// 'svelte/button-has-type': 'error'
 		rules: {}

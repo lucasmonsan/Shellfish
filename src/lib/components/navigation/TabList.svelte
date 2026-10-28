@@ -7,18 +7,21 @@
 		label,
 		children,
 		fullWidth = false,
+		asNav = false,
 		class: className = '',
 		...restProps
 	}: TabListProps = $props();
 
 	const tabsCtx = getContext<TabsContext | undefined>(TABS_CONTEXT_KEY);
-	let listElement = $state<HTMLDivElement | null>(null);
+	let listElement = $state<HTMLElement | null>(null);
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (!tabsCtx || !listElement) return;
 
 		const tabs = Array.from(
-			listElement.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])')
+			listElement.querySelectorAll<HTMLElement>(
+				'[role="tab"]:not([disabled]), a.tab:not(.disabled)'
+			)
 		);
 		if (tabs.length === 0) return;
 
@@ -57,25 +60,41 @@
 				const tabValue = targetTab.dataset.value;
 				if (tabValue) {
 					tabsCtx.selectTab(tabValue);
+					if (targetTab instanceof HTMLAnchorElement) {
+						targetTab.click();
+					}
 				}
 			}
 		}
 	}
 </script>
 
-<div
-	bind:this={listElement}
-	role="tablist"
-	aria-label={label}
-	aria-orientation={tabsCtx?.getOrientation() ?? 'horizontal'}
-	class="tablist {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
-	class:full-width={fullWidth}
-	onkeydown={handleKeydown}
-	tabindex="-1"
-	{...restProps}
->
-	{@render children?.()}
-</div>
+{#if asNav}
+	<nav
+		bind:this={listElement}
+		aria-label={label}
+		class="tablist {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
+		class:full-width={fullWidth}
+		onkeydown={handleKeydown}
+		{...restProps}
+	>
+		{@render children?.()}
+	</nav>
+{:else}
+	<div
+		bind:this={listElement}
+		role="tablist"
+		aria-label={label}
+		aria-orientation={tabsCtx?.getOrientation() ?? 'horizontal'}
+		class="tablist {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
+		class:full-width={fullWidth}
+		onkeydown={handleKeydown}
+		tabindex="-1"
+		{...restProps}
+	>
+		{@render children?.()}
+	</div>
+{/if}
 
 <style>
 	.tablist {
@@ -107,6 +126,10 @@
 	.tablist.full-width {
 		display: flex;
 		width: 100%;
+	}
+
+	.tablist.full-width > :global(.tab) {
+		flex: 1 1 0%;
 	}
 
 	.tablist::-webkit-scrollbar {
