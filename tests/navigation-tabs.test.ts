@@ -37,6 +37,8 @@ describe('Tabs Navigation Primitive (WAI-ARIA APG & SSR)', () => {
 		expect(result.body).toContain('<nav');
 		expect(result.body).toContain('aria-label="Navegação Principal"');
 		expect(result.body).toContain('tablist');
+		expect(result.body).toContain('as-nav');
+		expect(result.body).toContain('clean');
 		expect(result.body).toContain('full-width');
 
 		// Deve renderizar tags <a> semânticas com href

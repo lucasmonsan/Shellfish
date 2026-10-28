@@ -8,6 +8,7 @@
 		children,
 		fullWidth = false,
 		asNav = false,
+		variant = 'default',
 		class: className = '',
 		...restProps
 	}: TabListProps = $props();
@@ -73,8 +74,9 @@
 	<nav
 		bind:this={listElement}
 		aria-label={label}
-		class="tablist {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
+		class="tablist as-nav {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
 		class:full-width={fullWidth}
+		class:clean={variant === 'clean' || asNav}
 		onkeydown={handleKeydown}
 		{...restProps}
 	>
@@ -88,6 +90,7 @@
 		aria-orientation={tabsCtx?.getOrientation() ?? 'horizontal'}
 		class="tablist {tabsCtx?.getOrientation() ?? 'horizontal'} {className}"
 		class:full-width={fullWidth}
+		class:clean={variant === 'clean'}
 		onkeydown={handleKeydown}
 		tabindex="-1"
 		{...restProps}
@@ -108,6 +111,14 @@
 		box-sizing: border-box;
 		overflow-x: auto;
 		max-width: 100%;
+	}
+
+	.tablist.clean,
+	.tablist.as-nav {
+		background-color: transparent;
+		border: none;
+		border-radius: 0;
+		padding: var(--space-xxs) var(--space-none);
 	}
 
 	.tablist.horizontal {

@@ -34,6 +34,8 @@ export interface TabListProps extends HTMLAttributes<HTMLElement> {
 	fullWidth?: boolean;
 	/** Render as semantic <nav> element instead of <div role="tablist"> when used for route navigation. Default: false. */
 	asNav?: boolean;
+	/** Visual style variant of the tablist container. Default: 'default'. */
+	variant?: 'default' | 'clean';
 	/** Additional CSS classes. */
 	class?: string;
 }
