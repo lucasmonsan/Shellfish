@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
+import type { HTMLAttributes } from 'svelte/elements';
 import type { Size } from './tokens.js';
 
 /** Orientation of the tab list. */
@@ -25,21 +25,31 @@ export interface TabsProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** Props for the TabList container. */
-export interface TabListProps extends HTMLAttributes<HTMLDivElement> {
+export interface TabListProps extends HTMLAttributes<HTMLElement> {
 	/** Accessible label for screen readers (`aria-label`). */
 	label?: string;
 	/** Tab items snippet. */
 	children?: Snippet;
 	/** Whether tab buttons expand to fill available width. Default: false. */
 	fullWidth?: boolean;
+	/** Render as semantic <nav> element instead of <div role="tablist"> when used for route navigation. Default: false. */
+	asNav?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }
 
-/** Props for an individual Tab item. */
-export interface TabProps extends HTMLButtonAttributes {
+/** Props for an individual Tab item. Supports both in-page button tabs and route link tabs. */
+export interface TabProps extends HTMLAttributes<HTMLElement> {
 	/** Unique value identifying this tab. */
 	value: string;
+	/** Destination URL when tab acts as a navigation link. When provided, renders a semantic `<a>` tag instead of `<button>`. */
+	href?: string;
+	/** Target browsing context for links (e.g. '_blank', '_self'). */
+	target?: string;
+	/** Relationship of the target URL for links (e.g. 'noopener noreferrer'). */
+	rel?: string;
+	/** HTML button type when rendered as button. Default: 'button'. */
+	type?: 'button' | 'submit' | 'reset';
 	/** Whether the tab is disabled. Default: false. */
 	disabled?: boolean;
 	/** Tab label/content snippet. */
