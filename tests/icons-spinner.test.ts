@@ -41,7 +41,25 @@ import {
 	BarChart,
 	DotsThreeVertical,
 	Sparkles,
-	Zap
+	Zap,
+	Construction,
+	ConstructionIcon,
+	Lightbulb,
+	LightbulbIcon,
+	Droplet,
+	DropletIcon,
+	Bus,
+	BusIcon,
+	HeartPulse,
+	HeartPulseIcon,
+	PawPrint,
+	PawPrintIcon,
+	Megaphone,
+	MegaphoneIcon,
+	MapPin,
+	MapPinIcon,
+	Mail,
+	MailIcon
 } from '$lib/components/icons/index.js';
 
 describe('Spinner Component (spinCube)', () => {
@@ -112,7 +130,16 @@ describe('Curated Vector Icons', () => {
 		{ name: 'BarChart', component: BarChart },
 		{ name: 'DotsThreeVertical', component: DotsThreeVertical },
 		{ name: 'Sparkles', component: Sparkles },
-		{ name: 'Zap', component: Zap }
+		{ name: 'Zap', component: Zap },
+		{ name: 'Construction', component: Construction },
+		{ name: 'Lightbulb', component: Lightbulb },
+		{ name: 'Droplet', component: Droplet },
+		{ name: 'Bus', component: Bus },
+		{ name: 'HeartPulse', component: HeartPulse },
+		{ name: 'PawPrint', component: PawPrint },
+		{ name: 'Megaphone', component: Megaphone },
+		{ name: 'MapPin', component: MapPin },
+		{ name: 'Mail', component: Mail }
 	];
 
 	for (const { name, component } of icons) {
@@ -148,5 +175,14 @@ describe('Curated Vector Icons', () => {
 		expect(Sun).toBe(SunIcon);
 		expect(Plus).toBe(PlusIcon);
 		expect(FileText).toBe(FileTextIcon);
+		expect(Construction).toBe(ConstructionIcon);
+		expect(Lightbulb).toBe(LightbulbIcon);
+		expect(Droplet).toBe(DropletIcon);
+		expect(Bus).toBe(BusIcon);
+		expect(HeartPulse).toBe(HeartPulseIcon);
+		expect(PawPrint).toBe(PawPrintIcon);
+		expect(Megaphone).toBe(MegaphoneIcon);
+		expect(MapPin).toBe(MapPinIcon);
+		expect(Mail).toBe(MailIcon);
 	});
 });

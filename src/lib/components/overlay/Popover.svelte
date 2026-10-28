@@ -50,6 +50,7 @@
 		const spaceBelow = viewportHeight - rect.bottom;
 		const spaceAbove = rect.top;
 		const estimatedPanelHeight = panelEl ? panelEl.offsetHeight : 160;
+		const estimatedPanelWidth = panelEl ? panelEl.offsetWidth : 200;
 
 		if (placement === 'auto') {
 			if (spaceBelow < estimatedPanelHeight && spaceAbove > spaceBelow) {
@@ -63,9 +64,17 @@
 
 		let horizontalCss: string;
 		if (align === 'start') {
-			horizontalCss = `left: ${rect.left}px; right: auto;`;
+			if (rect.left + estimatedPanelWidth > viewportWidth && viewportWidth - rect.right >= 0) {
+				horizontalCss = `right: ${Math.max(0, viewportWidth - rect.right)}px; left: auto;`;
+			} else {
+				horizontalCss = `left: ${Math.max(0, Math.min(rect.left, viewportWidth - estimatedPanelWidth))}px; right: auto;`;
+			}
 		} else if (align === 'end') {
-			horizontalCss = `right: ${viewportWidth - rect.right}px; left: auto;`;
+			if (viewportWidth - rect.right + estimatedPanelWidth > viewportWidth && rect.left >= 0) {
+				horizontalCss = `left: ${Math.max(0, rect.left)}px; right: auto;`;
+			} else {
+				horizontalCss = `right: ${Math.max(0, viewportWidth - rect.right)}px; left: auto;`;
+			}
 		} else {
 			horizontalCss = `left: ${rect.left + rect.width / 2}px; right: auto;`;
 		}
@@ -84,6 +93,7 @@
 		if (!open) return;
 
 		updatePlacement();
+		const raf = requestAnimationFrame(() => updatePlacement());
 
 		const triggerFocusable = rootEl?.querySelector<HTMLElement>(
 			'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -109,6 +119,7 @@
 		window.addEventListener('scroll', onViewportChange, { passive: true, capture: true });
 
 		return () => {
+			cancelAnimationFrame(raf);
 			overlayStack.unregister(panelId);
 			window.removeEventListener('resize', onViewportChange);
 			window.removeEventListener('scroll', onViewportChange, true);
@@ -135,6 +146,7 @@
 			aria-label={ariaLabel}
 			tabindex="-1"
 			style={panelStyle}
+			data-floating-positioned="true"
 			class="popover-panel align-{align} placement-{resolvedPlacement} {panelClass}"
 		>
 			{#if content}

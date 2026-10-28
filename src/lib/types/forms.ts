@@ -535,6 +535,9 @@ export interface ColorPickerProps extends HTMLAttributes<HTMLDivElement> {
 	/** Accessible label for the color swatch. */
 	label?: string;
 
+	/** Accessible label alias for the color swatch trigger. */
+	ariaLabel?: string;
+
 	/** Additional CSS classes. */
 	class?: string;
 }

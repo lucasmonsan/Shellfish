@@ -55,7 +55,13 @@
 			></div>
 		{/if}
 
-		<main bind:this={contentElement} onscroll={updateScrollState}>
+		<main
+			bind:this={contentElement}
+			class="app-shell-scroll"
+			class:has-overflow-top={hasScrollTop}
+			class:has-overflow-bottom={hasScrollBottom}
+			onscroll={updateScrollState}
+		>
 			{@render children()}
 		</main>
 

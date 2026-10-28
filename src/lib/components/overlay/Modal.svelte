@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { untrack } from 'svelte';
+	import { untrack, onDestroy } from 'svelte';
 	import type { ModalProps } from '$lib/types/overlay.js';
 	import { overlayStack } from '$lib/utils/overlay.svelte.js';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
@@ -15,6 +15,8 @@
 		closeOnClickOutside = true,
 		closeOnBack = false,
 		showCloseButton = true,
+		closeLabel,
+		beforeClose,
 		header,
 		children,
 		footer,
@@ -35,6 +37,11 @@
 
 	function close() {
 		if (isClosing) return;
+
+		if (beforeClose && !beforeClose()) {
+			open = true;
+			return;
+		}
 
 		const prefersReducedMotion =
 			typeof window !== 'undefined' &&
@@ -92,21 +99,24 @@
 		} else {
 			const currentlyClosing = untrack(() => isClosing);
 			if (dialogEl.open && !currentlyClosing) {
+				if (beforeClose && !beforeClose()) {
+					open = true;
+					return;
+				}
 				close();
 			}
 		}
+	});
 
-		return () => {
-			if (closeTimeoutId) {
-				clearTimeout(closeTimeoutId);
-				closeTimeoutId = null;
-			}
-			overlayStack.unregister(modalId);
-			const currentlyClosing = untrack(() => isClosing);
-			if (dialogEl?.open && !currentlyClosing) {
-				dialogEl.close();
-			}
-		};
+	onDestroy(() => {
+		if (closeTimeoutId) {
+			clearTimeout(closeTimeoutId);
+			closeTimeoutId = null;
+		}
+		overlayStack.unregister(modalId);
+		if (dialogEl?.open) {
+			dialogEl.close();
+		}
 	});
 
 	function handleDialogClick(e: MouseEvent) {
@@ -148,6 +158,7 @@
 	id={modalId}
 	class="modal-dialog {size} {className}"
 	class:is-closing={isClosing}
+	class:closing={isClosing}
 	aria-labelledby={title ? titleId : undefined}
 	aria-label={!title ? ariaLabel || i18n.t('document.title') : undefined}
 	onclick={handleDialogClick}
@@ -156,19 +167,19 @@
 	{...restProps}
 >
 	<div class="modal-card">
-		{#if header}
-			{@render header(close)}
-		{:else if title || showCloseButton}
+		{#if header || title || showCloseButton}
 			<header class="modal-header">
 				{#if title}
 					<h2 id={titleId} class="modal-title">{title}</h2>
 				{/if}
 
-				{#if showCloseButton}
+				{#if header}
+					{@render header(close)}
+				{:else if showCloseButton}
 					<button
 						type="button"
 						class="modal-close-btn"
-						aria-label={i18n.t('dialog.close')}
+						aria-label={closeLabel || i18n.t('dialog.close')}
 						onclick={close}
 					>
 						<X size={16} />
@@ -224,10 +235,16 @@
 		animation: modal-in var(--duration-base) var(--ease-decelerate);
 	}
 
-	.modal-dialog[open].is-closing {
+	.modal-dialog[open].is-closing,
+	.modal-dialog[open].closing {
 		display: flex;
 		flex-direction: column;
 		animation: modal-out var(--duration-base) var(--ease-standard) forwards;
+		pointer-events: none;
+	}
+
+	.modal-dialog[open].is-closing *,
+	.modal-dialog[open].closing * {
 		pointer-events: none;
 	}
 

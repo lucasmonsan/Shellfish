@@ -35,6 +35,15 @@ import BarChart from './BarChart.svelte';
 import DotsThreeVertical from './DotsThreeVertical.svelte';
 import Sparkles from './Sparkles.svelte';
 import Zap from './Zap.svelte';
+import Construction from './Construction.svelte';
+import Lightbulb from './Lightbulb.svelte';
+import Droplet from './Droplet.svelte';
+import Bus from './Bus.svelte';
+import HeartPulse from './HeartPulse.svelte';
+import PawPrint from './PawPrint.svelte';
+import Megaphone from './Megaphone.svelte';
+import MapPin from './MapPin.svelte';
+import Mail from './Mail.svelte';
 
 export {
 	Sun,
@@ -109,7 +118,25 @@ export {
 	Sparkles,
 	Sparkles as SparklesIcon,
 	Zap,
-	Zap as ZapIcon
+	Zap as ZapIcon,
+	Construction,
+	Construction as ConstructionIcon,
+	Lightbulb,
+	Lightbulb as LightbulbIcon,
+	Droplet,
+	Droplet as DropletIcon,
+	Bus,
+	Bus as BusIcon,
+	HeartPulse,
+	HeartPulse as HeartPulseIcon,
+	PawPrint,
+	PawPrint as PawPrintIcon,
+	Megaphone,
+	Megaphone as MegaphoneIcon,
+	MapPin,
+	MapPin as MapPinIcon,
+	Mail,
+	Mail as MailIcon
 };
 
 // Re-export Spinner for convenience when importing with icons
