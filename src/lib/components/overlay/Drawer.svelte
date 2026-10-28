@@ -16,6 +16,8 @@
 		closeOnClickOutside = true,
 		closeOnBack = false,
 		showCloseButton = true,
+		closeLabel,
+		beforeClose,
 		header,
 		children,
 		footer,
@@ -36,6 +38,11 @@
 
 	function close() {
 		if (isClosing) return;
+
+		if (beforeClose && !beforeClose()) {
+			open = true;
+			return;
+		}
 
 		const prefersReducedMotion =
 			typeof window !== 'undefined' &&
@@ -93,6 +100,10 @@
 		} else {
 			const currentlyClosing = untrack(() => isClosing);
 			if (dialogEl.open && !currentlyClosing) {
+				if (beforeClose && !beforeClose()) {
+					open = true;
+					return;
+				}
 				close();
 			}
 		}
@@ -156,19 +167,19 @@
 	{...restProps}
 >
 	<div class="drawer-card">
-		{#if header}
-			{@render header(close)}
-		{:else if title || showCloseButton}
+		{#if header || title || showCloseButton}
 			<header class="drawer-header">
 				{#if title}
 					<h2 id={titleId} class="drawer-title">{title}</h2>
 				{/if}
 
-				{#if showCloseButton}
+				{#if header}
+					{@render header(close)}
+				{:else if showCloseButton}
 					<button
 						type="button"
 						class="drawer-close-btn"
-						aria-label={i18n.t('dialog.close')}
+						aria-label={closeLabel || i18n.t('dialog.close')}
 						onclick={close}
 					>
 						<X size={16} />

@@ -1,10 +1,45 @@
 <script lang="ts">
-	import { MONSAN_PALETTE } from '$lib/types/tokens.js';
 	import type { ColorPickerProps } from '$lib/types/forms.js';
 	import Popover from '$lib/components/overlay/Popover.svelte';
 	import { getI18n } from '$lib/utils/i18n.svelte.js';
 
-	const DEFAULT_MONSAN_PRESETS: string[] = MONSAN_PALETTE.map((color) => color.hex);
+	const DEFAULT_MONSAN_PRESETS: string[] = [
+		'#b94b38',
+		'#c44933',
+		'#e63946',
+		'#f4a261',
+		'#e9c46a',
+		'#2d6a4f',
+		'#236f4c',
+		'#1d767d',
+		'#76a5af',
+		'#295594',
+		'#4e449c',
+		'#823877',
+		'#a82b3d',
+		'#47535e'
+	];
+
+	const COLOR_PRESET_I18N_KEYS: Record<string, string> = {
+		'#b94b38': 'palette.color_rust',
+		'#c44933': 'palette.color_classic_rust',
+		'#e63946': 'palette.color_red',
+		'#f4a261': 'palette.color_orange',
+		'#e9c46a': 'palette.color_yellow',
+		'#2d6a4f': 'palette.color_green',
+		'#236f4c': 'palette.color_emerald',
+		'#1d767d': 'palette.color_celadon',
+		'#76a5af': 'palette.color_teal',
+		'#295594': 'palette.color_blue',
+		'#4e449c': 'palette.color_purple',
+		'#823877': 'palette.color_plum',
+		'#a82b3d': 'palette.color_crimson',
+		'#47535e': 'palette.color_slate',
+		'#ffffff': 'palette.color_white',
+		'#f4efe6': 'palette.color_cream',
+		'#5e544f': 'palette.color_gray',
+		'#2d2422': 'palette.color_dark_brown'
+	};
 
 	let {
 		value = $bindable('#b94b38'),
@@ -16,13 +51,27 @@
 		disabled = false,
 		invalid = false,
 		label,
+		ariaLabel,
 		class: className = '',
 		style = '',
 		...restProps
 	}: ColorPickerProps = $props();
 
 	const i18n = getI18n();
+	let explicitAriaLabel = $derived(ariaLabel ?? (restProps['aria-label'] as string | undefined));
 	let resolvedLabel = $derived(label ?? i18n.t('forms.color_picker_label'));
+	let triggerLabel = $derived(explicitAriaLabel ?? `${resolvedLabel}: ${value}`);
+
+	function getPresetAriaLabel(presetHex: string): string {
+		const key = COLOR_PRESET_I18N_KEYS[presetHex.toLowerCase()];
+		if (key) {
+			const translated = i18n.t(key);
+			if (translated && translated !== key) {
+				return translated;
+			}
+		}
+		return i18n.t('forms.color_preset', { color: presetHex });
+	}
 
 	function selectPreset(color: string, close: () => void) {
 		if (disabled) return;
@@ -56,7 +105,7 @@
 	{style}
 	{...restProps}
 >
-	<Popover {disabled} align="start" offset={6}>
+	<Popover {disabled} align="start" offset={6} panelClass="color-picker-dropdown">
 		{#snippet trigger(toggle, open, ariaProps)}
 			<button
 				type="button"
@@ -68,7 +117,7 @@
 				class:invalid
 				{disabled}
 				style:background-color={showHexInput ? undefined : value}
-				aria-label={`${resolvedLabel}: ${value}`}
+				aria-label={triggerLabel}
 				onclick={toggle}
 				{...ariaProps}
 			>
@@ -99,7 +148,7 @@
 							class:selected={isSelected}
 							style:background-color={preset}
 							title={preset}
-							aria-label={i18n.t('forms.color_preset', { color: preset })}
+							aria-label={getPresetAriaLabel(preset)}
 							aria-checked={isSelected}
 							role="radio"
 							onclick={() => selectPreset(preset, close)}

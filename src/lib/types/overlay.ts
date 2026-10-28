@@ -72,6 +72,10 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'chi
 	closeOnBack?: boolean;
 	/** Whether to display the canonical header close 'X' button. Default: true. */
 	showCloseButton?: boolean;
+	/** Accessible label for the canonical close button. Default: i18n.t('dialog.close'). */
+	closeLabel?: string;
+	/** Optional predicate called before closing begins. Returning false aborts the close. */
+	beforeClose?: () => boolean;
 	/** Custom header snippet, receiving close function. */
 	header?: Snippet<[close: () => void]>;
 	/** Main content snippet inside the modal dialog body, receiving close function. */
@@ -114,6 +118,10 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDialogElement>, 'ch
 	closeOnBack?: boolean;
 	/** Whether to display the canonical header close 'X' button. Default: true. */
 	showCloseButton?: boolean;
+	/** Accessible label for the canonical close button. Default: i18n.t('dialog.close'). */
+	closeLabel?: string;
+	/** Optional predicate called before closing begins. Returning false aborts the close. */
+	beforeClose?: () => boolean;
 	/** Custom header snippet, receiving close function. */
 	header?: Snippet<[close: () => void]>;
 	/** Main content snippet inside the drawer body, receiving close function. */
