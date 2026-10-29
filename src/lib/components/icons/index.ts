@@ -44,6 +44,15 @@ import PawPrint from './PawPrint.svelte';
 import Megaphone from './Megaphone.svelte';
 import MapPin from './MapPin.svelte';
 import Mail from './Mail.svelte';
+import WhatsApp from './WhatsApp.svelte';
+import Instagram from './Instagram.svelte';
+import Facebook from './Facebook.svelte';
+import Twitter from './Twitter.svelte';
+import YouTube from './YouTube.svelte';
+import Telegram from './Telegram.svelte';
+import LinkedIn from './LinkedIn.svelte';
+import GitHub from './GitHub.svelte';
+import Google from './Google.svelte';
 
 export {
 	Sun,
@@ -136,7 +145,27 @@ export {
 	MapPin,
 	MapPin as MapPinIcon,
 	Mail,
-	Mail as MailIcon
+	Mail as MailIcon,
+	WhatsApp,
+	WhatsApp as WhatsAppIcon,
+	Instagram,
+	Instagram as InstagramIcon,
+	Facebook,
+	Facebook as FacebookIcon,
+	Twitter,
+	Twitter as TwitterIcon,
+	Twitter as XTwitter,
+	Twitter as XTwitterIcon,
+	YouTube,
+	YouTube as YouTubeIcon,
+	Telegram,
+	Telegram as TelegramIcon,
+	LinkedIn,
+	LinkedIn as LinkedInIcon,
+	GitHub,
+	GitHub as GitHubIcon,
+	Google,
+	Google as GoogleIcon
 };
 
 // Re-export Spinner for convenience when importing with icons

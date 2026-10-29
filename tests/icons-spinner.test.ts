@@ -59,7 +59,27 @@ import {
 	MapPin,
 	MapPinIcon,
 	Mail,
-	MailIcon
+	MailIcon,
+	WhatsApp,
+	WhatsAppIcon,
+	Instagram,
+	InstagramIcon,
+	Facebook,
+	FacebookIcon,
+	Twitter,
+	TwitterIcon,
+	XTwitter,
+	XTwitterIcon,
+	YouTube,
+	YouTubeIcon,
+	Telegram,
+	TelegramIcon,
+	LinkedIn,
+	LinkedInIcon,
+	GitHub,
+	GitHubIcon,
+	Google,
+	GoogleIcon
 } from '$lib/components/icons/index.js';
 
 describe('Spinner Component (spinCube)', () => {
@@ -139,7 +159,16 @@ describe('Curated Vector Icons', () => {
 		{ name: 'PawPrint', component: PawPrint },
 		{ name: 'Megaphone', component: Megaphone },
 		{ name: 'MapPin', component: MapPin },
-		{ name: 'Mail', component: Mail }
+		{ name: 'Mail', component: Mail },
+		{ name: 'WhatsApp', component: WhatsApp },
+		{ name: 'Instagram', component: Instagram },
+		{ name: 'Facebook', component: Facebook },
+		{ name: 'Twitter', component: Twitter },
+		{ name: 'YouTube', component: YouTube },
+		{ name: 'Telegram', component: Telegram },
+		{ name: 'LinkedIn', component: LinkedIn },
+		{ name: 'GitHub', component: GitHub },
+		{ name: 'Google', component: Google }
 	];
 
 	for (const { name, component } of icons) {
@@ -184,5 +213,16 @@ describe('Curated Vector Icons', () => {
 		expect(Megaphone).toBe(MegaphoneIcon);
 		expect(MapPin).toBe(MapPinIcon);
 		expect(Mail).toBe(MailIcon);
+		expect(WhatsApp).toBe(WhatsAppIcon);
+		expect(Instagram).toBe(InstagramIcon);
+		expect(Facebook).toBe(FacebookIcon);
+		expect(Twitter).toBe(TwitterIcon);
+		expect(Twitter).toBe(XTwitter);
+		expect(Twitter).toBe(XTwitterIcon);
+		expect(YouTube).toBe(YouTubeIcon);
+		expect(Telegram).toBe(TelegramIcon);
+		expect(LinkedIn).toBe(LinkedInIcon);
+		expect(GitHub).toBe(GitHubIcon);
+		expect(Google).toBe(GoogleIcon);
 	});
 });
