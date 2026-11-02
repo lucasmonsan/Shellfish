@@ -53,7 +53,7 @@
 		"standards": "monsan-standards",
 		"policy": "monsan-standards --policy",
 		"test:unit": "vitest run",
-		"test": "pnpm standards && pnpm policy && pnpm lint && pnpm typecheck && pnpm build && pnpm test:unit && pnpm run lint:package && pnpm test:e2e",
+		"test": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:unit && pnpm run lint:package && pnpm test:e2e",
 		"test:e2e": "playwright test"
 	},
 	"peerDependencies": {

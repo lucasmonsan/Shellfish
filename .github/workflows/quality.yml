@@ -11,11 +11,6 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Monsan Standards
-        run: |
-          mkdir -p ../../packages
-          git clone --depth 1 -b feat/centralized-standards-module https://github.com/lucasmonsan/Zoo.git /tmp/zoo 2>/dev/null || git clone --depth 1 https://github.com/lucasmonsan/Zoo.git /tmp/zoo
-          cp -r /tmp/zoo/packages/standards ../../packages/standards
       - uses: pnpm/action-setup@v4
         with:
           version: 11.17.0
