@@ -50,6 +50,8 @@
 		"lint": "prettier --check . && eslint .",
 		"lint:package": "publint run --pack false",
 		"format": "prettier --write .",
+		"standards": "monsan-standards",
+		"policy": "monsan-standards --policy",
 		"test:unit": "vitest run",
 		"test": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:unit && pnpm run lint:package && pnpm test:e2e",
 		"test:e2e": "playwright test"
@@ -61,6 +63,7 @@
 	"devDependencies": {
 		"@axe-core/playwright": "^4.13.0",
 		"@eslint/js": "^10.0.1",
+		"@monsan/standards": "link:../../packages/standards",
 		"@playwright/test": "^1.60.0",
 		"@sveltejs/adapter-auto": "^7.0.1",
 		"@sveltejs/adapter-node": "^5.5.7",
