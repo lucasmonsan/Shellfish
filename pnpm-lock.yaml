@@ -14,6 +14,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.8.1)
+      '@monsan/standards':
+        specifier: link:../../packages/standards
+        version: link:../../packages/standards
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.62.1
