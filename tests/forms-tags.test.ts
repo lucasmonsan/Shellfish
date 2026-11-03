@@ -61,6 +61,17 @@ describe('Tag & Multi-Tag Form Primitives (Tag, Tags, Chip, TagInput)', () => {
 				}
 			}
 		});
+
+		it('renders has-avatar class when avatar prop is true', () => {
+			const result = render(Tag, {
+				props: {
+					label: 'Ana',
+					avatar: true
+				}
+			});
+
+			expect(result.body).toContain('has-avatar');
+		});
 	});
 
 	describe('Tags (and TagInput alias)', () => {
