@@ -147,4 +147,16 @@ describe('Image Display Primitive', () => {
 		expect(result.body).toContain('bordered');
 		expect(result.body).toContain('user-avatar-custom');
 	});
+
+	it('supports transparent prop for vector graphics and logos', () => {
+		const result = render(Image, {
+			props: {
+				transparent: true,
+				src: '/brand/logo.svg',
+				alt: 'Logo'
+			}
+		});
+
+		expect(result.body).toContain('transparent');
+	});
 });

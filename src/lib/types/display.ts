@@ -79,6 +79,8 @@ export interface ImageProps extends HTMLAttributes<HTMLDivElement> {
 	decoding?: 'async' | 'sync' | 'auto';
 	/** Whether to display a border matching Shellfish border tokens. Default: false. */
 	bordered?: boolean;
+	/** Whether the image container background is transparent (ideal for vector SVGs and transparent logos). Default: false. */
+	transparent?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 	/** Additional inline styles. */

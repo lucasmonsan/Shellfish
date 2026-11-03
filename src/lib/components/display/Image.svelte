@@ -17,6 +17,7 @@
 		loading = 'lazy',
 		decoding = 'async',
 		bordered = false,
+		transparent = false,
 		class: className = '',
 		style = '',
 		onload,
@@ -93,6 +94,7 @@
 <div
 	class="sf-image radius-{radius} {className}"
 	class:bordered
+	class:transparent
 	class:loaded={isLoaded && !isFallbackVisible}
 	class:fallback={isFallbackVisible}
 	style="{dynamicStyles} {style}"
@@ -147,6 +149,10 @@
 		color: var(--text-primary);
 		flex-shrink: 0;
 		max-width: 100%;
+	}
+
+	.sf-image.transparent {
+		background-color: transparent;
 	}
 
 	.bordered {
