@@ -9,6 +9,7 @@
 		selected,
 		removable = false,
 		disabled = false,
+		avatar = false,
 		removeLabel,
 		label,
 		onremove,
@@ -53,6 +54,7 @@
 	aria-pressed={isButton && selected !== undefined ? selected : undefined}
 	aria-disabled={isButton && disabled ? 'true' : undefined}
 	class="chip-root {variant} {size} {className}"
+	class:has-avatar={avatar}
 	class:selected={selected === true}
 	class:removable
 	class:disabled
@@ -150,6 +152,14 @@
 	.lg.removable {
 		padding-right: 0;
 		gap: 0;
+	}
+
+	/* Avatar Chip */
+	.chip-root.has-avatar {
+		padding-left: var(--space-xxs);
+	}
+	.chip-root.has-avatar .label-content {
+		gap: var(--space-xxs);
 	}
 
 	/* Variantes */

@@ -403,6 +403,9 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 	/** Whether the tag is disabled. Default: false */
 	disabled?: boolean;
 
+	/** Whether the tag contains a leading avatar, reducing left padding to fit flush against border. Default: false */
+	avatar?: boolean;
+
 	/** Accessible label for the remove button. Default: 'Remover' */
 	removeLabel?: string;
 
