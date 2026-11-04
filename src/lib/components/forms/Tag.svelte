@@ -159,7 +159,14 @@
 		padding-left: var(--space-xxs);
 	}
 	.chip-root.has-avatar .label-content {
-		gap: var(--space-xs);
+		height: 100%;
+		gap: var(--space-sm);
+	}
+	.chip-root.has-avatar .label-content :global(.sf-image) {
+		max-height: calc(100% - 4px);
+		width: auto;
+		aspect-ratio: 1 / 1;
+		flex-shrink: 0;
 	}
 
 	/* Variantes */
