@@ -156,7 +156,7 @@
 
 	/* Avatar Chip */
 	.chip-root.has-avatar {
-		padding-left: 0;
+		padding-left: var(--space-xxs);
 	}
 	.chip-root.has-avatar .label-content {
 		gap: var(--space-xs);
