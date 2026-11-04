@@ -156,10 +156,10 @@
 
 	/* Avatar Chip */
 	.chip-root.has-avatar {
-		padding-left: var(--space-xxs);
+		padding-left: 0;
 	}
 	.chip-root.has-avatar .label-content {
-		gap: var(--space-xxs);
+		gap: var(--space-xs);
 	}
 
 	/* Variantes */
