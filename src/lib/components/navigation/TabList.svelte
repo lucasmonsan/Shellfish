@@ -103,6 +103,7 @@
 	.tablist {
 		display: inline-flex;
 		align-items: center;
+		height: var(--control-height);
 		gap: var(--space-xxs);
 		padding: var(--space-xxs);
 		background-color: var(--bg-secondary);
@@ -119,6 +120,7 @@
 		border: none;
 		border-radius: 0;
 		padding: var(--space-xxs) var(--space-none);
+		height: auto;
 	}
 
 	.tablist.horizontal {
@@ -132,6 +134,7 @@
 		grid-row: 1;
 		flex-direction: column;
 		align-items: stretch;
+		height: auto;
 	}
 
 	.tablist.full-width {
