@@ -51,4 +51,24 @@ describe('Tabs Navigation Primitive (WAI-ARIA APG & SSR)', () => {
 		expect(result.body).toContain('aria-current="page"');
 		expect(result.body).toContain('selected');
 	});
+
+	it('renders width sizing classes correctly for full, auto, and flex variants', () => {
+		const fullResult = render(TabsTestFixture, {
+			props: { width: 'full' }
+		});
+		expect(fullResult.body).toContain('width-full');
+		expect(fullResult.body).toContain('data-width="full"');
+
+		const flexResult = render(TabsTestFixture, {
+			props: { width: 'flex' }
+		});
+		expect(flexResult.body).toContain('width-flex');
+		expect(flexResult.body).toContain('data-width="flex"');
+
+		const autoResult = render(TabsTestFixture, {
+			props: { width: 'auto' }
+		});
+		expect(autoResult.body).toContain('width-auto');
+		expect(autoResult.body).toContain('data-width="auto"');
+	});
 });
