@@ -5,6 +5,9 @@ import type { Size } from './tokens.js';
 /** Orientation of the tab list. */
 export type TabsOrientation = 'horizontal' | 'vertical';
 
+/** Width behavior of the root Tabs container. Default: 'full'. */
+export type TabsWidth = 'full' | 'auto' | 'flex';
+
 /** Keyboard activation behavior for tabs. */
 export type TabsActivation = 'automatic' | 'manual';
 
@@ -14,6 +17,8 @@ export interface TabsProps extends HTMLAttributes<HTMLDivElement> {
 	value?: string;
 	/** Visual and keyboard navigation orientation. Default: 'horizontal'. */
 	orientation?: TabsOrientation;
+	/** Width sizing behavior ('full' = 100%, 'auto' = fit-content, 'flex' = flex: 1; min-width: 0). Default: 'full'. */
+	width?: TabsWidth;
 	/** Activation mode on arrow navigation. Default: 'automatic'. */
 	activation?: TabsActivation;
 	/** Size preset for tab buttons. Default: 'md'. */

@@ -8,6 +8,7 @@
 		orientation = 'horizontal',
 		activation = 'automatic',
 		size = 'md',
+		width = 'full',
 		children,
 		class: className = '',
 		...restProps
@@ -31,15 +32,37 @@
 	setContext(TABS_CONTEXT_KEY, context);
 </script>
 
-<div class="tabs-root {orientation} {className}" data-orientation={orientation} {...restProps}>
+<div
+	class="tabs-root {orientation} width-{width} {className}"
+	class:full-width={width === 'full'}
+	class:width-auto={width === 'auto'}
+	class:width-flex={width === 'flex'}
+	data-orientation={orientation}
+	data-width={width}
+	{...restProps}
+>
 	{@render children?.()}
 </div>
 
 <style>
 	.tabs-root {
 		display: grid;
-		width: 100%;
 		gap: var(--space-sm);
+	}
+
+	.tabs-root.width-full {
+		width: 100%;
+	}
+
+	.tabs-root.width-auto {
+		width: max-content;
+		max-width: 100%;
+	}
+
+	.tabs-root.width-flex {
+		flex: 1 1 0%;
+		min-width: 0;
+		width: auto;
 	}
 
 	.tabs-root.horizontal {

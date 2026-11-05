@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { Tabs, TabList, Tab, TabPanel } from '$lib/index.js';
+	import type { TabsWidth } from '$lib/types/navigation.js';
 
 	let {
 		value = $bindable('extrato'),
 		orientation = 'horizontal' as const,
-		activation = 'automatic' as const
+		activation = 'automatic' as const,
+		width = 'full' as TabsWidth
 	} = $props();
 </script>
 
-<Tabs bind:value {orientation} {activation}>
+<Tabs bind:value {orientation} {activation} {width}>
 	<TabList label="Minhas Abas">
 		<Tab value="extrato">Extrato</Tab>
 		<Tab value="graficos">Gráficos</Tab>
