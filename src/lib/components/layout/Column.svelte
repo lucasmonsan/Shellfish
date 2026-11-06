@@ -8,6 +8,7 @@
 		align = 'stretch',
 		justify = 'start',
 		fullWidth = false,
+		maxWidth,
 		class: className = '',
 		style = '',
 		...restProps
@@ -15,7 +16,7 @@
 </script>
 
 <div
-	class="column align-{align} justify-{justify} {className}"
+	class="column align-{align} justify-{justify} {maxWidth ? `max-w-${maxWidth}` : ''} {className}"
 	class:full-width={fullWidth}
 	style="--col-gap: var(--space-{gap}); --col-pad: var(--space-{padding}); {style}"
 	{...restProps}
@@ -35,6 +36,36 @@
 	}
 
 	.full-width {
+		width: 100%;
+	}
+
+	.max-w-sm {
+		max-width: var(--container-sm);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	.max-w-md {
+		max-width: var(--container-md);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	.max-w-lg {
+		max-width: var(--container-lg);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	.max-w-xl {
+		max-width: var(--container-xl);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	.max-w-full {
+		max-width: 100%;
+		margin-inline: auto;
 		width: 100%;
 	}
 

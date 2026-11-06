@@ -59,7 +59,14 @@ describe('Public API Contract Snapshot Invariant', () => {
 			'Modal',
 			'Drawer',
 			'Tooltip',
+			'FloatingBanner',
 			'overlayStack',
+
+			// Icons & Tokens
+			'Share',
+			'ShareIcon',
+			'MONSAN_PALETTE',
+			'SHELLFISH_THEME_TOKENS',
 
 			// Forms
 			'Input',

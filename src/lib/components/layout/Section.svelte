@@ -6,6 +6,7 @@
 		gap = 'md',
 		padding = 'none',
 		contained = false,
+		maxWidth,
 		class: className = '',
 		style = '',
 		...restProps
@@ -13,7 +14,7 @@
 </script>
 
 <section
-	class={className}
+	class="{maxWidth ? `max-w-${maxWidth}` : ''} {className}"
 	class:contained
 	style="--section-gap: var(--space-{gap}); --section-pad: var(--space-{padding}); {style}"
 	{...restProps}
@@ -36,5 +37,35 @@
 	section.contained {
 		max-width: var(--container-max-width);
 		margin: 0 auto;
+	}
+
+	section.max-w-sm {
+		max-width: var(--container-sm);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	section.max-w-md {
+		max-width: var(--container-md);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	section.max-w-lg {
+		max-width: var(--container-lg);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	section.max-w-xl {
+		max-width: var(--container-xl);
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	section.max-w-full {
+		max-width: 100%;
+		margin-inline: auto;
+		width: 100%;
 	}
 </style>

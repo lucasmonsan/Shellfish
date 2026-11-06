@@ -186,6 +186,10 @@
 
 	--scroll-fade-height: calc(var(--base) * 1.75);
 	--container-max-width: calc(var(--base) * 76);
+	--container-sm: calc(var(--base) * 32);
+	--container-md: calc(var(--base) * 44);
+	--container-lg: calc(var(--base) * 60);
+	--container-xl: var(--container-max-width);
 
 	--font-sans: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;

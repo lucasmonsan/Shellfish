@@ -4,6 +4,7 @@
 	let {
 		top,
 		children,
+		floatingBottom,
 		bottom,
 		scrollFades = true,
 		class: className = '',
@@ -71,6 +72,12 @@
 				class:is-active={hasScrollBottom}
 				aria-hidden="true"
 			></div>
+		{/if}
+
+		{#if floatingBottom}
+			<div class="shell-floating-bottom">
+				{@render floatingBottom()}
+			</div>
 		{/if}
 	</div>
 
@@ -157,6 +164,19 @@
 
 	.scroll-fade.is-active {
 		opacity: 1;
+	}
+
+	.shell-floating-bottom {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: var(--layer-sticky);
+		padding: var(--space-sm) var(--space-md);
+		pointer-events: none;
+		display: flex;
+		justify-content: center;
+		box-sizing: border-box;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

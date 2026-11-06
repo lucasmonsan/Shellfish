@@ -8,12 +8,17 @@ export type FlexAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
 /** Flex justification options. */
 export type FlexJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 
+/** Contained max-width presets derived from fluid --base. */
+export type ContainerMaxWidth = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
 /** Props for the canonical AppShell layout container. */
 export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
 	/** Top region snippet (e.g. Navigation, Header, Toolbar). */
 	top?: Snippet;
 	/** Main content snippet (rendered in scrollable central viewport). */
 	children: Snippet;
+	/** Optional non-blocking floating banner/panel anchored at the bottom of the content viewport above the footer. */
+	floatingBottom?: Snippet;
 	/** Bottom region snippet (e.g. Footer, Action Bar, Status). */
 	bottom?: Snippet;
 	/** Whether to display subtle fade gradients when content overflows above/below. Default: true. */
@@ -32,6 +37,8 @@ export interface SectionProps extends HTMLAttributes<HTMLElement> {
 	padding?: Space;
 	/** Centers the section with --container-max-width. Default: false. */
 	contained?: boolean;
+	/** Contained width preset ('sm' | 'md' | 'lg' | 'xl' | 'full'). Centers with margin-inline: auto. */
+	maxWidth?: ContainerMaxWidth;
 	/** Additional CSS classes. */
 	class?: string;
 }
@@ -70,6 +77,8 @@ export interface ColumnProps extends HTMLAttributes<HTMLDivElement> {
 	justify?: FlexJustify;
 	/** Expands to 100% width. Default: false. */
 	fullWidth?: boolean;
+	/** Contained width preset ('sm' | 'md' | 'lg' | 'xl' | 'full'). Centers with margin-inline: auto. */
+	maxWidth?: ContainerMaxWidth;
 	/** Additional CSS classes. */
 	class?: string;
 }

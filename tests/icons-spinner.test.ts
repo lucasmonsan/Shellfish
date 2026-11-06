@@ -25,6 +25,8 @@ import {
 	AlertCircle,
 	CheckCircle,
 	Copy,
+	Share,
+	ShareIcon,
 	User,
 	Settings,
 	LogOut,
@@ -135,6 +137,7 @@ describe('Curated Vector Icons', () => {
 		{ name: 'AlertCircle', component: AlertCircle },
 		{ name: 'CheckCircle', component: CheckCircle },
 		{ name: 'Copy', component: Copy },
+		{ name: 'Share', component: Share },
 		{ name: 'User', component: User },
 		{ name: 'Settings', component: Settings },
 		{ name: 'LogOut', component: LogOut },
@@ -224,5 +227,6 @@ describe('Curated Vector Icons', () => {
 		expect(LinkedIn).toBe(LinkedInIcon);
 		expect(GitHub).toBe(GitHubIcon);
 		expect(Google).toBe(GoogleIcon);
+		expect(Share).toBe(ShareIcon);
 	});
 });

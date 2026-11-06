@@ -1,5 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
+import type { ContainerMaxWidth } from './layout.js';
 
 /** Horizontal alignment relative to the trigger element. */
 export type PopoverAlign = 'start' | 'center' | 'end';
@@ -154,6 +155,30 @@ export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
 	/** Fallback children snippet when trigger snippet is not used, also receiving ariaDescribedBy when active. */
 	children?: Snippet<[ariaDescribedBy: string | undefined]>;
 	/** Additional CSS classes for the root wrapper. */
+	class?: string;
+	/** Additional inline styles. */
+	style?: string;
+}
+
+/** Props for the non-blocking FloatingBanner primitive anchored at the bottom of the content area. */
+export interface FloatingBannerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+	/** Two-way bindable visibility state. Default: true. */
+	open?: boolean;
+	/** Contained maximum width preset derived from --base. Default: 'md'. */
+	maxWidth?: ContainerMaxWidth;
+	/** Accessible label for the floating region landmark. */
+	ariaLabel?: string;
+	/** Whether to display a dismiss 'X' button. Default: false. */
+	dismissible?: boolean;
+	/** Accessible label for the close button. Default: i18n.t('common.close'). */
+	closeLabel?: string;
+	/** Callback invoked when the banner is dismissed. */
+	onclose?: () => void;
+	/** Main content snippet inside the floating banner. */
+	children?: Snippet;
+	/** Optional actions snippet rendered on the opposite side of the content. */
+	actions?: Snippet;
+	/** Additional CSS classes for the banner surface. */
 	class?: string;
 	/** Additional inline styles. */
 	style?: string;
