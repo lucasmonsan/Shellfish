@@ -1,7 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'svelte/server';
 import { createRawSnippet } from 'svelte';
-import { Section, Row, Column, Grid, Card, Badge, Divider } from '$lib/index.js';
+import {
+	Section,
+	Row,
+	Column,
+	Grid,
+	Card,
+	Badge,
+	Divider,
+	FloatingBanner,
+	SHELLFISH_THEME_TOKENS
+} from '$lib/index.js';
 
 describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 	it('renders semantic <section> with contained and spacing tokens', () => {
@@ -64,6 +74,56 @@ describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 		expect(result.body).toContain('column align-start justify-center');
 		expect(result.body).toContain('full-width');
 		expect(result.body).toContain('--col-gap: var(--space-xs)');
+	});
+
+	it('applies contained maxWidth presets (sm, md, lg, xl, full) on Section and Column', () => {
+		const children = createRawSnippet(() => ({
+			render: () => '<span>Contido</span>'
+		}));
+
+		const presets = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+		for (const preset of presets) {
+			const sectionRes = render(Section, { props: { maxWidth: preset, children } });
+			expect(sectionRes.body).toContain(`max-w-${preset}`);
+
+			const colRes = render(Column, { props: { maxWidth: preset, children } });
+			expect(colRes.body).toContain(`max-w-${preset}`);
+		}
+	});
+
+	it('renders non-blocking FloatingBanner with contained maxWidth and optional actions/dismiss', () => {
+		const children = createRawSnippet(() => ({
+			render: () => '<span>3 itens selecionados</span>'
+		}));
+		const actions = createRawSnippet(() => ({
+			render: () => '<button type="button">Compartilhar</button>'
+		}));
+
+		const result = render(FloatingBanner, {
+			props: {
+				maxWidth: 'lg',
+				dismissible: true,
+				ariaLabel: 'Ações em lote',
+				children,
+				actions
+			}
+		});
+
+		expect(result.body).toContain('floating-banner-anchor');
+		expect(result.body).toContain('floating-banner max-w-lg');
+		expect(result.body).toContain('aria-label="Ações em lote"');
+		expect(result.body).toContain('3 itens selecionados');
+		expect(result.body).toContain('Compartilhar');
+		expect(result.body).toContain('floating-banner-close');
+	});
+
+	it('exposes typed SHELLFISH_THEME_TOKENS for light and dark themes and all 10 Monsan mineral families', () => {
+		expect(SHELLFISH_THEME_TOKENS.light.bgPrimary).toBe('#fdfbf7');
+		expect(SHELLFISH_THEME_TOKENS.dark.bgPrimary).toBe('#221d1c');
+		expect(SHELLFISH_THEME_TOKENS.light.terracotta.base).toBe('#b94b38');
+		expect(SHELLFISH_THEME_TOKENS.dark.terracotta.text).toBe('#f09a88');
+		expect(SHELLFISH_THEME_TOKENS.light.amber.onSolid).toBe('#1d1817');
+		expect(SHELLFISH_THEME_TOKENS.dark.slate.subtle).toBe('#1d2328');
 	});
 
 	it('renders Grid with fluid default, explicit minItemWidth or fixed columns', () => {

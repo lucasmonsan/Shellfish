@@ -19,6 +19,7 @@ import EyeOff from './EyeOff.svelte';
 import AlertCircle from './AlertCircle.svelte';
 import CheckCircle from './CheckCircle.svelte';
 import Copy from './Copy.svelte';
+import Share from './Share.svelte';
 import User from './User.svelte';
 import Settings from './Settings.svelte';
 import LogOut from './LogOut.svelte';
@@ -96,6 +97,8 @@ export {
 	CheckCircle as CheckCircleIcon,
 	Copy,
 	Copy as CopyIcon,
+	Share,
+	Share as ShareIcon,
 	User,
 	User as UserIcon,
 	Settings,
