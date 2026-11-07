@@ -7,9 +7,14 @@
 		floatingBottom,
 		bottom,
 		scrollFades = true,
+		scrollFadeTop,
+		scrollFadeBottom,
 		class: className = '',
 		...restProps
 	}: AppShellProps = $props();
+
+	let showFadeTop = $derived(scrollFadeTop !== undefined ? scrollFadeTop : scrollFades);
+	let showFadeBottom = $derived(scrollFadeBottom !== undefined ? scrollFadeBottom : scrollFades);
 
 	let contentElement = $state<HTMLElement>();
 	let hasScrollTop = $state(false);
@@ -48,7 +53,7 @@
 	{/if}
 
 	<div class="shell-content-wrapper">
-		{#if scrollFades}
+		{#if showFadeTop}
 			<div
 				class="scroll-fade scroll-fade--top"
 				class:is-active={hasScrollTop}
@@ -66,7 +71,7 @@
 			{@render children()}
 		</main>
 
-		{#if scrollFades}
+		{#if showFadeBottom}
 			<div
 				class="scroll-fade scroll-fade--bottom"
 				class:is-active={hasScrollBottom}

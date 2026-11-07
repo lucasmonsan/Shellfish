@@ -171,16 +171,18 @@ describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 		expect(responsiveGrid.body).toContain('--grid-cols-md: repeat(4, minmax(0, 1fr));');
 	});
 
-	it('renders Column with sticky class when sticky prop is true', () => {
+	it('renders Column with sticky and fill classes when props are enabled', () => {
 		const children = createRawSnippet(() => ({
 			render: () => '<span>Barra fixa</span>'
 		}));
 
 		const defaultCol = render(Column, { props: { children } });
 		expect(defaultCol.body).not.toContain('sticky');
+		expect(defaultCol.body).not.toContain('fill');
 
-		const stickyCol = render(Column, { props: { sticky: true, children } });
+		const stickyCol = render(Column, { props: { sticky: true, fill: true, children } });
 		expect(stickyCol.body).toContain('sticky');
+		expect(stickyCol.body).toContain('fill');
 	});
 });
 
