@@ -152,6 +152,35 @@ describe('Layout Primitives (Section, Row, Column, Grid)', () => {
 			}
 		});
 		expect(fixedGrid.body).toContain('repeat(3, minmax(0, 1fr))');
+		expect(fixedGrid.body).toContain('cols-3');
+
+		const responsiveGrid = render(Grid, {
+			props: {
+				columns: 2,
+				columnsMd: 4,
+				fillLastItem: true,
+				gap: 'sm',
+				children
+			}
+		});
+		expect(responsiveGrid.body).toContain('cols-2');
+		expect(responsiveGrid.body).toContain('cols-md-4');
+		expect(responsiveGrid.body).toContain('has-cols-md');
+		expect(responsiveGrid.body).toContain('fill-last');
+		expect(responsiveGrid.body).toContain('--grid-cols: repeat(2, minmax(0, 1fr));');
+		expect(responsiveGrid.body).toContain('--grid-cols-md: repeat(4, minmax(0, 1fr));');
+	});
+
+	it('renders Column with sticky class when sticky prop is true', () => {
+		const children = createRawSnippet(() => ({
+			render: () => '<span>Barra fixa</span>'
+		}));
+
+		const defaultCol = render(Column, { props: { children } });
+		expect(defaultCol.body).not.toContain('sticky');
+
+		const stickyCol = render(Column, { props: { sticky: true, children } });
+		expect(stickyCol.body).toContain('sticky');
 	});
 });
 
@@ -194,7 +223,13 @@ describe('Display Primitives (Card, Badge, Divider)', () => {
 			const expected = variant === 'error' ? 'danger' : variant;
 			expect(res.body).toContain(expected);
 			expect(res.body).toContain('sm');
+			expect(res.body).not.toContain('square');
 		}
+
+		const squareBadge = render(Badge, {
+			props: { variant: 'primary', size: 'md', square: true, label: '1' }
+		});
+		expect(squareBadge.body).toContain('square');
 	});
 
 	it('renders horizontal <hr> and vertical separator for Divider', () => {

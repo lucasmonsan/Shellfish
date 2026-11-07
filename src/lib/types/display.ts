@@ -31,6 +31,8 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 	variant?: Variant;
 	/** Badge size preset ('sm' or 'md'). Default: 'md'. */
 	size?: Extract<Size, 'sm' | 'md'>;
+	/** Renders the badge with a 1:1 square aspect ratio. Default: false. */
+	square?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }
