@@ -290,6 +290,9 @@
 	.drawer-card {
 		display: flex;
 		flex-direction: column;
+		flex: 1 1 auto;
+		min-height: 0;
+		max-height: 100%;
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
@@ -362,8 +365,10 @@
 	}
 
 	.drawer-body.scrollable {
+		min-height: 0;
 		overflow-y: auto;
 		overflow-x: hidden;
+		overscroll-behavior: contain;
 	}
 
 	.drawer-footer {
