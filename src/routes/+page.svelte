@@ -13,6 +13,7 @@
 		Modal,
 		Drawer,
 		Tooltip,
+		FloatingBanner,
 		FormField,
 		Input,
 		FormStack,
@@ -50,6 +51,7 @@
 		AlertCircle,
 		CheckCircle,
 		Copy,
+		Share,
 		User,
 		Settings,
 		LogOut,
@@ -66,7 +68,26 @@
 		DotsThreeVertical,
 		Sparkles,
 		Zap,
+		Construction,
+		Lightbulb,
+		Droplet,
+		Bus,
+		HeartPulse,
+		PawPrint,
+		Megaphone,
+		MapPin,
+		Mail,
+		WhatsApp,
+		Instagram,
+		Facebook,
+		Twitter,
+		YouTube,
+		Telegram,
+		LinkedIn,
+		GitHub,
+		Google,
 		MONSAN_PALETTE,
+		SHELLFISH_THEME_TOKENS,
 		Tabs,
 		TabList,
 		Tab,
@@ -137,6 +158,7 @@
 		{ name: 'AlertCircle', component: AlertCircle },
 		{ name: 'CheckCircle', component: CheckCircle },
 		{ name: 'Copy', component: Copy },
+		{ name: 'Share', component: Share },
 		{ name: 'User', component: User },
 		{ name: 'Settings', component: Settings },
 		{ name: 'LogOut', component: LogOut },
@@ -152,7 +174,25 @@
 		{ name: 'BarChart', component: BarChart },
 		{ name: 'DotsThreeVertical', component: DotsThreeVertical },
 		{ name: 'Sparkles', component: Sparkles },
-		{ name: 'Zap', component: Zap }
+		{ name: 'Zap', component: Zap },
+		{ name: 'Construction', component: Construction },
+		{ name: 'Lightbulb', component: Lightbulb },
+		{ name: 'Droplet', component: Droplet },
+		{ name: 'Bus', component: Bus },
+		{ name: 'HeartPulse', component: HeartPulse },
+		{ name: 'PawPrint', component: PawPrint },
+		{ name: 'Megaphone', component: Megaphone },
+		{ name: 'MapPin', component: MapPin },
+		{ name: 'Mail', component: Mail },
+		{ name: 'WhatsApp', component: WhatsApp },
+		{ name: 'Instagram', component: Instagram },
+		{ name: 'Facebook', component: Facebook },
+		{ name: 'Twitter', component: Twitter },
+		{ name: 'YouTube', component: YouTube },
+		{ name: 'Telegram', component: Telegram },
+		{ name: 'LinkedIn', component: LinkedIn },
+		{ name: 'GitHub', component: GitHub },
+		{ name: 'Google', component: Google }
 	];
 
 	const SAMPLE_IMAGE =
@@ -203,6 +243,11 @@
 	let demoProgress = $state(68);
 	let demoModalOpen = $state(false);
 	let demoDrawerOpen = $state(false);
+	let demoBannerOpen = $state(false);
+	let demoBannerWidth = $state<'sm' | 'md' | 'lg' | 'xl' | 'full'>('md');
+	let demoMaxWidth = $state<'sm' | 'md' | 'lg' | 'xl' | 'full'>('md');
+	const maxWidthPresets = ['sm', 'md', 'lg', 'xl', 'full'] as const;
+	let activeThemeTokens = $derived(SHELLFISH_THEME_TOKENS[currentTheme]);
 	let demoModalOption = $state('opt1');
 
 	async function handleFormSubmit() {
@@ -393,6 +438,7 @@
 
 			<Grid minItemWidth="calc(var(--base) * 11)" gap="sm">
 				{#each MONSAN_PALETTE as color (color.id)}
+					{@const familyTokens = activeThemeTokens[color.id]}
 					<div
 						class="palette-card"
 						style:--palette-swatch={`var(--palette-${color.id})`}
@@ -406,13 +452,13 @@
 								class="palette-swatch-box solid"
 								title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
 							>
-								<span class="swatch-hex mono">{color.hex.toUpperCase()}</span>
+								<span class="swatch-hex mono">{familyTokens.base.toUpperCase()}</span>
 							</div>
 							<div
 								class="palette-swatch-box subtle"
 								title={i18n.t('palette.swatch_preview', { name: i18n.t(color.nameKey) })}
 							>
-								<span class="swatch-hex mono">{color.subtleHex.toUpperCase()}</span>
+								<span class="swatch-hex mono">{familyTokens.subtle.toUpperCase()}</span>
 							</div>
 						</div>
 						<div class="palette-meta">
@@ -421,6 +467,28 @@
 					</div>
 				{/each}
 			</Grid>
+
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('palette.theme_tokens_title')}</span>
+				<Row gap="xs" wrap>
+					<Badge size="sm" variant="secondary">{`bgPrimary: ${activeThemeTokens.bgPrimary}`}</Badge>
+					<Badge size="sm" variant="secondary"
+						>{`bgSecondary: ${activeThemeTokens.bgSecondary}`}</Badge
+					>
+					<Badge size="sm" variant="secondary"
+						>{`bgElevated: ${activeThemeTokens.bgElevated}`}</Badge
+					>
+					<Badge size="sm" variant="secondary"
+						>{`textPrimary: ${activeThemeTokens.textPrimary}`}</Badge
+					>
+					<Badge size="sm" variant="secondary"
+						>{`textSecondary: ${activeThemeTokens.textSecondary}`}</Badge
+					>
+					<Badge size="sm" variant="secondary">{`textMuted: ${activeThemeTokens.textMuted}`}</Badge>
+				</Row>
+			</Column>
 		</Card>
 
 		<Card gap="sm">
@@ -439,6 +507,28 @@
 					<span class="mono">{i18n.t('card.outlined')}</span>
 				</Card>
 			</Grid>
+
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('catalog.maxwidth_title')}</span>
+				<Row gap="xs" wrap>
+					{#each maxWidthPresets as preset (preset)}
+						<Button
+							size="sm"
+							variant={demoMaxWidth === preset ? 'primary' : 'secondary'}
+							onclick={() => (demoMaxWidth = preset)}
+						>
+							{preset}
+						</Button>
+					{/each}
+				</Row>
+				<Column maxWidth={demoMaxWidth}>
+					<Card variant="secondary" padding="sm" align="center">
+						<span class="mono">{`maxWidth="${demoMaxWidth}"`}</span>
+					</Card>
+				</Column>
+			</Column>
 		</Card>
 
 		<Card gap="sm">
@@ -1050,6 +1140,34 @@
 					</Tooltip>
 				</Row>
 			</Column>
+
+			<Divider spacing="xxs" />
+
+			<Column gap="xs">
+				<span class="label">{i18n.t('banner.title')}</span>
+				<Row gap="sm" align="center" wrap>
+					<Button
+						variant={demoBannerOpen ? 'primary' : 'secondary'}
+						onclick={() => (demoBannerOpen = !demoBannerOpen)}
+					>
+						<Share size={16} />
+						{i18n.t('banner.toggle_button')}
+					</Button>
+
+					{#each maxWidthPresets as preset (preset)}
+						<Button
+							size="sm"
+							variant={demoBannerWidth === preset ? 'primary' : 'outline'}
+							onclick={() => {
+								demoBannerWidth = preset;
+								demoBannerOpen = true;
+							}}
+						>
+							{preset}
+						</Button>
+					{/each}
+				</Row>
+			</Column>
 		</Card>
 
 		<Card gap="sm">
@@ -1383,6 +1501,27 @@
 				</Grid>
 			</Column>
 		</Card>
+		<FloatingBanner
+			bind:open={demoBannerOpen}
+			maxWidth={demoBannerWidth}
+			dismissible
+			ariaLabel={i18n.t('banner.title')}
+		>
+			<Row gap="xs" align="center">
+				<Sparkles size={16} />
+				<span>{i18n.t('banner.sample_text')}</span>
+			</Row>
+			{#snippet actions()}
+				<Button
+					size="sm"
+					variant="primary"
+					onclick={() => toast.success(i18n.t('catalog.toast_msg_success'))}
+				>
+					<Share size={14} />
+					{i18n.t('banner.share_action')}
+				</Button>
+			{/snippet}
+		</FloatingBanner>
 	</Section>
 
 	{#snippet bottom()}

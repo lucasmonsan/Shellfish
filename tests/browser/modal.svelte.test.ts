@@ -56,14 +56,14 @@ describe('Modal Interactive Browser Component Test', () => {
 		await expect.element(dialog).toBeVisible();
 	});
 
-	it('renders with scrollable class on modal-body when scrollable prop is true', async () => {
-		render(Modal, {
+	it('renders with scrollable class and flex min-height: 0 constraint when scrollable prop is true, while keeping overflow: visible by default', async () => {
+		const { unmount } = render(Modal, {
 			props: {
 				open: true,
 				scrollable: true,
 				title: 'Modal com rolagem',
 				children: createRawSnippet(() => ({
-					render: () => '<span>Conteúdo longo do modal</span>'
+					render: () => '<div style="height: 2000px;">Conteúdo longo do modal</div>'
 				}))
 			}
 		});
@@ -71,8 +71,37 @@ describe('Modal Interactive Browser Component Test', () => {
 		const dialog = page.getByRole('dialog');
 		await expect.element(dialog).toBeVisible();
 
-		const body = dialog.element().querySelector('.modal-body');
+		const card = dialog.element().querySelector('.modal-card') as HTMLElement;
+		const body = dialog.element().querySelector('.modal-body') as HTMLElement;
 		expect(body?.classList.contains('scrollable')).toBe(true);
+
+		const cardStyle = window.getComputedStyle(card);
+		const bodyStyle = window.getComputedStyle(body);
+		expect(cardStyle.minHeight).toBe('0px');
+		expect(bodyStyle.minHeight).toBe('0px');
+		expect(bodyStyle.overflowY).toBe('auto');
+		expect(bodyStyle.overscrollBehavior).toBe('contain');
+		expect(card.getBoundingClientRect().height).toBeLessThanOrEqual(
+			dialog.element().getBoundingClientRect().height + 1
+		);
+
+		unmount();
+
+		render(Modal, {
+			props: {
+				open: true,
+				scrollable: false,
+				title: 'Modal padrão',
+				children: createRawSnippet(() => ({
+					render: () => '<span>Conteúdo padrão</span>'
+				}))
+			}
+		});
+
+		const defaultDialog = page.getByRole('dialog');
+		await expect.element(defaultDialog).toBeVisible();
+		const defaultBody = defaultDialog.element().querySelector('.modal-body') as HTMLElement;
+		expect(window.getComputedStyle(defaultBody).overflow).toBe('visible');
 	});
 
 	it('applies is-closing class during exit animation and calls onclose after transition', async () => {

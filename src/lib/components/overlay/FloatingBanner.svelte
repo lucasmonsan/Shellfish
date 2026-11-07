@@ -26,7 +26,7 @@
 </script>
 
 {#if open}
-	<div role="region" aria-label={ariaLabel} class="floating-banner-anchor">
+	<div role={ariaLabel ? 'region' : 'status'} aria-label={ariaLabel} class="floating-banner-anchor">
 		<div class="floating-banner max-w-{maxWidth} {className}" {style} {...restProps}>
 			{#if children}
 				<div class="floating-banner-content">
