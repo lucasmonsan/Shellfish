@@ -406,6 +406,9 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
 	/** Whether the tag contains a leading avatar, reducing left padding to fit flush against border. Default: false */
 	avatar?: boolean;
 
+	/** Whether the tag takes full width of its container (100%) with truncated content. Default: false */
+	block?: boolean;
+
 	/** Accessible label for the remove button. Default: 'Remover' */
 	removeLabel?: string;
 

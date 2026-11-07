@@ -10,6 +10,7 @@
 		removable = false,
 		disabled = false,
 		avatar = false,
+		block = false,
 		removeLabel,
 		label,
 		onremove,
@@ -55,6 +56,7 @@
 	aria-disabled={isButton && disabled ? 'true' : undefined}
 	class="chip-root {variant} {size} {className}"
 	class:has-avatar={avatar}
+	class:block
 	class:selected={selected === true}
 	class:removable
 	class:disabled
@@ -118,6 +120,20 @@
 	.chip-root.disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
+	}
+
+	.chip-root.block {
+		display: flex;
+		width: 100%;
+		min-width: 0;
+		justify-content: space-between;
+	}
+
+	.chip-root.block .label-content {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	/* Escala de Tamanhos */
