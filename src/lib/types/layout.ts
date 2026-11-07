@@ -79,6 +79,8 @@ export interface ColumnProps extends HTMLAttributes<HTMLDivElement> {
 	fullWidth?: boolean;
 	/** Contained width preset ('sm' | 'md' | 'lg' | 'xl' | 'full'). Centers with margin-inline: auto. */
 	maxWidth?: ContainerMaxWidth;
+	/** Anchors the column to the top of the scroll container as a sticky bar. Default: false. */
+	sticky?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }
@@ -93,6 +95,10 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
 	padding?: Space;
 	/** Fixed column count. If omitted, uses auto-fill with minItemWidth. */
 	columns?: number;
+	/** Responsive column count applied at >= 768px (md breakpoint). */
+	columnsMd?: number;
+	/** Stretches the last grid item across remaining columns when row is incomplete. Default: false. */
+	fillLastItem?: boolean;
 	/** Minimum item width for auto-fill grid (number in px or CSS string). Default: calc(var(--base) * 8). */
 	minItemWidth?: number | string;
 	/** Additional CSS classes. */

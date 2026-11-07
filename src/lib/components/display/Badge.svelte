@@ -6,6 +6,7 @@
 		label,
 		variant = 'secondary',
 		size = 'md',
+		square = false,
 		class: className = '',
 		...restProps
 	}: BadgeProps = $props();
@@ -13,7 +14,7 @@
 	let resolvedVariant = $derived(variant === 'error' ? 'danger' : variant);
 </script>
 
-<span class="{resolvedVariant} {size} {className}" {...restProps}>
+<span class="{resolvedVariant} {size} {className}" class:square {...restProps}>
 	{#if children}
 		{@render children()}
 	{:else if label}
@@ -50,6 +51,19 @@
 		font-size: var(--text-xs);
 		padding: var(--space-xs) var(--space-sm);
 		gap: var(--space-xs);
+	}
+
+	.square {
+		aspect-ratio: 1 / 1;
+		padding: var(--space-xs);
+	}
+
+	.sm.square {
+		padding: var(--space-xxs);
+	}
+
+	.md.square {
+		padding: var(--space-xs);
 	}
 
 	.primary {

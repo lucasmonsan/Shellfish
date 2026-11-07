@@ -6,6 +6,8 @@
 		gap = 'sm',
 		padding = 'none',
 		columns,
+		columnsMd,
+		fillLastItem = false,
 		minItemWidth,
 		class: className = '',
 		style = '',
@@ -13,19 +15,26 @@
 	}: GridProps = $props();
 
 	let colsStyle = $derived.by(() => {
+		const parts: string[] = [];
 		if (typeof columns === 'number' && columns > 0) {
-			return `--grid-cols: repeat(${columns}, minmax(0, 1fr));`;
-		}
-		if (minItemWidth !== undefined) {
+			parts.push(`--grid-cols: repeat(${columns}, minmax(0, 1fr));`);
+		} else if (minItemWidth !== undefined) {
 			const minWidth = typeof minItemWidth === 'number' ? `${minItemWidth}px` : minItemWidth;
-			return `--grid-cols: repeat(auto-fill, minmax(${minWidth}, 1fr));`;
+			parts.push(`--grid-cols: repeat(auto-fill, minmax(${minWidth}, 1fr));`);
 		}
-		return '';
+		if (typeof columnsMd === 'number' && columnsMd > 0) {
+			parts.push(`--grid-cols-md: repeat(${columnsMd}, minmax(0, 1fr));`);
+		}
+		return parts.join(' ');
 	});
 </script>
 
 <div
-	class="grid {className}"
+	class="grid {columns ? `cols-${columns}` : ''} {columnsMd
+		? `cols-md-${columnsMd}`
+		: ''} {className}"
+	class:has-cols-md={typeof columnsMd === 'number' && columnsMd > 0}
+	class:fill-last={fillLastItem}
 	style="{colsStyle} --grid-gap: var(--space-{gap}); --grid-pad: var(--space-{padding}); {style}"
 	{...restProps}
 >
@@ -42,5 +51,47 @@
 		padding: var(--grid-pad, var(--space-none));
 		width: 100%;
 		box-sizing: border-box;
+	}
+
+	.grid.fill-last.cols-2 :global(> :last-child:nth-child(2n + 1)) {
+		grid-column: 1 / -1;
+	}
+
+	.grid.fill-last.cols-2 :global(> :last-child:nth-child(2n)) {
+		grid-column: span 1;
+	}
+
+	@media (min-width: 768px) {
+		.grid.has-cols-md {
+			grid-template-columns: var(--grid-cols-md);
+		}
+
+		.grid.fill-last.cols-md-4 :global(> :last-child:nth-child(4n + 1)) {
+			grid-column: 1 / -1;
+		}
+
+		.grid.fill-last.cols-md-4 :global(> :last-child:nth-child(4n + 2)) {
+			grid-column: span 3;
+		}
+
+		.grid.fill-last.cols-md-4 :global(> :last-child:nth-child(4n + 3)) {
+			grid-column: span 2;
+		}
+
+		.grid.fill-last.cols-md-4 :global(> :last-child:nth-child(4n)) {
+			grid-column: span 1;
+		}
+
+		.grid.fill-last.cols-md-3 :global(> :last-child:nth-child(3n + 1)) {
+			grid-column: 1 / -1;
+		}
+
+		.grid.fill-last.cols-md-3 :global(> :last-child:nth-child(3n + 2)) {
+			grid-column: span 2;
+		}
+
+		.grid.fill-last.cols-md-3 :global(> :last-child:nth-child(3n)) {
+			grid-column: span 1;
+		}
 	}
 </style>
