@@ -82,11 +82,7 @@ describe('Invariant Test: Universal Controls, Geometry & RestProps (SF-A03, SF-V
 	});
 
 	it('guarantees Rule SF-V05: single-line action and badge primitives enforce white-space: nowrap and flex-shrink: 0', () => {
-		const actionPrimitives = [
-			'actions/Button.svelte',
-			'display/Badge.svelte',
-			'forms/Tag.svelte'
-		];
+		const actionPrimitives = ['actions/Button.svelte', 'display/Badge.svelte', 'forms/Tag.svelte'];
 
 		const violations: string[] = [];
 
