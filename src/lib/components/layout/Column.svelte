@@ -10,6 +10,7 @@
 		fullWidth = false,
 		maxWidth,
 		sticky = false,
+		fill = false,
 		class: className = '',
 		style = '',
 		...restProps
@@ -20,6 +21,7 @@
 	class="column align-{align} justify-{justify} {maxWidth ? `max-w-${maxWidth}` : ''} {className}"
 	class:full-width={fullWidth}
 	class:sticky
+	class:fill
 	style="--col-gap: var(--space-{gap}); --col-pad: var(--space-{padding}); {style}"
 	{...restProps}
 >
@@ -50,6 +52,13 @@
 		padding-top: var(--section-pad, var(--space-xs));
 		padding-bottom: var(--space-xs);
 		border-bottom: var(--border-width) solid var(--border-subtle);
+		box-shadow: var(--shadow-md);
+	}
+
+	.fill {
+		flex: 1;
+		height: 100%;
+		min-height: 0;
 	}
 
 	.max-w-sm {

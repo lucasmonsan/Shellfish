@@ -23,6 +23,10 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
 	bottom?: Snippet;
 	/** Whether to display subtle fade gradients when content overflows above/below. Default: true. */
 	scrollFades?: boolean;
+	/** Controla individualmente o fade superior. Se omitido, herda o valor de scrollFades. */
+	scrollFadeTop?: boolean;
+	/** Controla individualmente o fade inferior. Se omitido, herda o valor de scrollFades. */
+	scrollFadeBottom?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }
@@ -81,6 +85,8 @@ export interface ColumnProps extends HTMLAttributes<HTMLDivElement> {
 	maxWidth?: ContainerMaxWidth;
 	/** Anchors the column to the top of the scroll container as a sticky bar. Default: false. */
 	sticky?: boolean;
+	/** Permite que a coluna expanda para ocupar todo o espaço vertical disponível no container pai (flex: 1; height: 100%). Default: false. */
+	fill?: boolean;
 	/** Additional CSS classes. */
 	class?: string;
 }

@@ -90,4 +90,40 @@ describe('AppShell Component', () => {
 
 		expect(result.body).not.toContain('scroll-fade');
 	});
+
+	it('supports granular control with scrollFadeTop and scrollFadeBottom', () => {
+		const childrenSnippet = createRawSnippet(() => ({
+			render: () => '<p>Conteúdo</p>'
+		}));
+
+		const topOnly = render(AppShell, {
+			props: {
+				children: childrenSnippet,
+				scrollFadeTop: true,
+				scrollFadeBottom: false
+			}
+		});
+		expect(topOnly.body).toContain('scroll-fade--top');
+		expect(topOnly.body).not.toContain('scroll-fade--bottom');
+
+		const bottomOnly = render(AppShell, {
+			props: {
+				children: childrenSnippet,
+				scrollFadeTop: false,
+				scrollFadeBottom: true
+			}
+		});
+		expect(bottomOnly.body).not.toContain('scroll-fade--top');
+		expect(bottomOnly.body).toContain('scroll-fade--bottom');
+
+		const overrideInherit = render(AppShell, {
+			props: {
+				children: childrenSnippet,
+				scrollFades: true,
+				scrollFadeTop: false
+			}
+		});
+		expect(overrideInherit.body).not.toContain('scroll-fade--top');
+		expect(overrideInherit.body).toContain('scroll-fade--bottom');
+	});
 });
