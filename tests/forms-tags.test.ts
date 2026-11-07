@@ -72,6 +72,25 @@ describe('Tag & Multi-Tag Form Primitives (Tag, Tags, Chip, TagInput)', () => {
 
 			expect(result.body).toContain('has-avatar');
 		});
+
+		it('renders block class when block prop is true and omits it by default', () => {
+			const defaultTag = render(Tag, {
+				props: {
+					label: 'Padrão'
+				}
+			});
+			expect(defaultTag.body).not.toContain('block');
+
+			const blockTag = render(Tag, {
+				props: {
+					label: 'Largura total com truncamento',
+					block: true,
+					removable: true
+				}
+			});
+			expect(blockTag.body).toContain('block');
+			expect(blockTag.body).toContain('remove-button');
+		});
 	});
 
 	describe('Tags (and TagInput alias)', () => {
