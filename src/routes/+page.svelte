@@ -257,7 +257,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('document.title')}</title>
+	<title>{i18n.t('showcase.page_title')}</title>
 </svelte:head>
 
 <AppShell>
