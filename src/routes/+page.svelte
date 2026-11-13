@@ -257,7 +257,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18n.t('document.title')}</title>
+	<title>Showcase · Shellfish</title>
 </svelte:head>
 
 <AppShell>
